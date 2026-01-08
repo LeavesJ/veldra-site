@@ -9,29 +9,29 @@
 
   <link rel="icon" type="image/png" href="/assets/brand/favicon.png">
   <link rel="apple-touch-icon" href="/assets/brand/veldra-mark.png">
-  <link rel="stylesheet" href="/assets/style.css?v=2">
-  <script src="/assets/script.js?v=2" defer></script>
+  <link rel="stylesheet" href="/assets/style.css?v=3">
+  <script src="/assets/script.js?v=3" defer></script>
 </head>
 
 <body>
   <div class="topbar">
     <div class="container">
       <div class="nav">
-        <a class="brand" href="/index.html" aria-label="Veldra home">
+        <a class="brand" href="/" aria-label="Veldra home">
           <img src="/assets/brand/veldra-logo.png" alt="Veldra">
         </a>
 
         <div class="navlinks">
-          <a href="/index.html">Home</a>
-          <a href="/demo.html">Demo</a>
-          <a href="/how-it-works.html">How it works</a>
-          <a aria-current="page" href="/policy.html">Policy</a>
-          <a href="/security.html">Security</a>
-          <a href="/about.html">About</a>
+          <a href="/">Home</a>
+          <a href="/demo/">Demo</a>
+          <a href="/how-it-works/">How it works</a>
+          <a aria-current="page" href="/policy/">Policy</a>
+          <a href="/security/">Security</a>
+          <a href="/about/">About</a>
         </div>
 
         <div class="navcta">
-          <a class="btn primary" href="/demo.html">View demo</a>
+          <a class="btn primary" href="/demo/">View demo</a>
         </div>
       </div>
     </div>
@@ -77,14 +77,14 @@
 
               <tr>
                 <td class="mono">CoinbaseZero</td>
-                <td>fees</td>
+                <td>template</td>
                 <td>coinbasevalue is missing or resolves to zero, so the template’s payout economics are invalid.</td>
               </tr>
 
               <tr>
                 <td class="mono">TooManyTransactions</td>
                 <td>limits</td>
-                <td>Template exceeds a configured transaction-count or size/weight limit.</td>
+                <td>Template exceeds a configured transaction-count or size or weight limit.</td>
               </tr>
 
               <tr>
@@ -106,6 +106,7 @@
               </tr>
             </tbody>
           </table>
+        </div>
       </div>
     </section>
 
@@ -118,7 +119,7 @@
       <div class="grid">
         <div class="card full">
           <div class="codepanel">
-            <button class="copybtn" data-copy="policy" onclick="copyTextFrom('policy')">Copy</button>
+            <button class="copybtn" onclick="copyTextFrom('policy')">Copy</button>
 <pre id="policy"># Example only. Match your repo schema.
 
 protocol_version = 1
@@ -158,7 +159,7 @@ min_avg_fee_sat_vb = 20.0</pre>
       <div class="grid">
         <div class="card full">
           <div class="codepanel">
-            <button class="copybtn" data-copy="contract" onclick="copyTextFrom('contract')">Copy</button>
+            <button class="copybtn" onclick="copyTextFrom('contract')">Copy</button>
 <pre id="contract">{
   "verdict": "REJECT",
   "reason_code": "MIN_AVG_FEE_TOO_LOW",
@@ -175,7 +176,7 @@ min_avg_fee_sat_vb = 20.0</pre>
 
     <div class="footer">
       <div>© 2026 Veldra</div>
-      <div>Next: <a href="/security.html">Security</a></div>
+      <div>Next: <a href="/security/">Security</a></div>
     </div>
   </main>
 </body>
