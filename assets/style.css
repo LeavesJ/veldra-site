@@ -1,85 +1,56 @@
+/* Veldra Site v2 — corporate (JPM-like) styling
+   Conservative, high-contrast, light header, navy accents.
+*/
+
 :root{
-  --bg: #ffffff;
-  --bg2: #f6f7fb;
-  --text: #0b0d12;
-  --muted: rgba(11,13,18,.62);
+  --bg: #f6f7f9;
+  --panel: #ffffff;
+  --ink: #0c0f14;
+  --muted: rgba(12,15,20,.68);
+  --border: rgba(12,15,20,.10);
 
-  --card: rgba(255,255,255,.78);
-  --cardSolid: #ffffff;
-  --border: rgba(11,13,18,.10);
-  --border2: rgba(11,13,18,.14);
+  /* “Bank navy” + Veldra green accent */
+  --navy: #0b1b2b;
+  --navy2: #102a44;
+  --accent: #76b900;
 
-  --shadow: 0 24px 60px rgba(11,13,18,.10);
-  --shadow2: 0 10px 30px rgba(11,13,18,.08);
+  --radius: 14px;
+  --shadow: 0 18px 50px rgba(12,15,20,.10);
+  --shadow2: 0 10px 26px rgba(12,15,20,.08);
 
-  --accent: #76b900; /* NVIDIA green */
-  --accentSoft: rgba(118,185,0,.18);
-
-  --radius: 20px;
-  --radius2: 28px;
-
+  --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
   --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-  --sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial;
+
+  --max: 1120px;
 }
 
 *{ box-sizing:border-box; }
-
 html, body{ height:100%; }
-
 body{
   margin:0;
   font-family: var(--sans);
-  color: var(--text);
-  background: radial-gradient(1200px 800px at 10% -10%, rgba(118,185,0,.12), transparent 55%),
-              radial-gradient(1200px 800px at 90% 0%, rgba(0,170,255,.10), transparent 55%),
-              linear-gradient(180deg, var(--bg), var(--bg2));
+  color: var(--ink);
+  background: radial-gradient(1100px 700px at 80% -10%, rgba(118,185,0,.10), transparent 55%),
+              radial-gradient(1100px 700px at 10% 0%, rgba(11,27,43,.08), transparent 60%),
+              var(--bg);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-a{ color: inherit; text-decoration: none; }
-a:hover{ text-decoration: none; }
+a{ color: inherit; text-decoration:none; }
+a:hover{ text-decoration: underline; text-underline-offset: 3px; }
 
 .container{
-  width: min(1120px, calc(100% - 40px));
+  width: min(var(--max), calc(100% - 48px));
   margin: 0 auto;
 }
 
-.bgGrid{
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  opacity: .35;
-  background-image:
-    linear-gradient(to right, rgba(11,13,18,.06) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(11,13,18,.06) 1px, transparent 1px);
-  background-size: 64px 64px;
-  mask-image: radial-gradient(60% 60% at 50% 0%, rgba(0,0,0,1), rgba(0,0,0,0));
-}
-
-.noise{
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 1;
-  opacity: .05;
-  background:
-    repeating-radial-gradient(circle at 30% 20%,
-      rgba(0,0,0,.9) 0px,
-      rgba(0,0,0,.9) 1px,
-      transparent 2px,
-      transparent 3px);
-  mix-blend-mode: soft-light;
-}
-
-header{
+.topbar{
   position: sticky;
   top: 0;
-  z-index: 30;
-  padding: 16px 0;
-  background: rgba(255,255,255,.65);
-  backdrop-filter: blur(16px);
+  z-index: 50;
+  background: rgba(255,255,255,.92);
+  backdrop-filter: blur(18px);
   border-bottom: 1px solid var(--border);
 }
 
@@ -87,92 +58,119 @@ header{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap: 16px;
+  gap: 18px;
+  padding: 14px 0;
 }
 
 .brand{
   display:flex;
   align-items:center;
   gap: 10px;
-  padding: 10px 12px;
-  border-radius: 14px;
-  background: rgba(255,255,255,.55);
-  border: 1px solid rgba(11,13,18,.08);
-  box-shadow: 0 8px 22px rgba(11,13,18,.06);
+  min-width: 160px;
 }
-.brand img{ display:block; height:28px; width:auto; }
+.brand img{
+  height: 24px;
+  width: auto;
+  display:block;
+}
+.brand .word{
+  font-weight: 650;
+  letter-spacing: -0.01em;
+}
 
 .navlinks{
   display:flex;
-  gap: 10px;
+  gap: 16px;
   flex-wrap: wrap;
   align-items:center;
+  justify-content:flex-end;
+}
+.navlinks a{
+  font-size: 14px;
+  color: rgba(12,15,20,.76);
+  padding: 8px 10px;
+  border-radius: 10px;
+}
+.navlinks a[aria-current="page"]{
+  background: rgba(11,27,43,.06);
+  color: rgba(12,15,20,.92);
+  text-decoration: none;
 }
 
-.pill{
+.navcta{
+  display:flex;
+  gap: 10px;
+  align-items:center;
+  justify-content:flex-end;
+}
+.btn{
   display:inline-flex;
   align-items:center;
-  height: 38px;
+  justify-content:center;
+  height: 40px;
   padding: 0 14px;
   border-radius: 999px;
-  border: 1px solid rgba(11,13,18,.10);
-  background: rgba(255,255,255,.55);
-  color: rgba(11,13,18,.76);
-  transition: transform .14s ease, background .14s ease, border-color .14s ease;
+  border: 1px solid var(--border);
+  background: var(--panel);
+  box-shadow: var(--shadow2);
+  font-size: 14px;
+  color: rgba(12,15,20,.86);
+  cursor:pointer;
+  transition: transform .12s ease, box-shadow .12s ease, background .12s ease, border-color .12s ease;
 }
-.pill:hover{
+.btn:hover{
   transform: translateY(-1px);
-  border-color: rgba(11,13,18,.18);
-  background: rgba(255,255,255,.80);
+  box-shadow: 0 14px 34px rgba(12,15,20,.12);
+  border-color: rgba(12,15,20,.16);
+  text-decoration:none;
 }
-.pill[aria-current="page"]{
-  background: rgba(118,185,0,.12);
-  border-color: rgba(118,185,0,.30);
-  color: rgba(11,13,18,.90);
+.btn.primary{
+  background: linear-gradient(180deg, rgba(11,27,43,.98), rgba(16,42,68,.98));
+  color: rgba(255,255,255,.94);
+  border-color: rgba(11,27,43,.30);
+}
+.btn.accent{
+  background: rgba(118,185,0,.16);
+  border-color: rgba(118,185,0,.28);
 }
 
-main{ position: relative; z-index: 5; }
+main{ padding: 34px 0 60px; }
 
 .hero{
-  padding: 56px 0 28px;
+  padding: 28px 0 8px;
 }
-
 .kicker{
   display:inline-flex;
-  align-items:center;
   gap: 10px;
-  padding: 10px 14px;
+  align-items:center;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,.78);
   border-radius: 999px;
-  border: 1px solid rgba(11,13,18,.10);
-  background: rgba(255,255,255,.60);
-  color: rgba(11,13,18,.70);
-  box-shadow: 0 8px 22px rgba(11,13,18,.06);
+  padding: 8px 12px;
+  font-size: 13px;
+  color: rgba(12,15,20,.70);
 }
-
-.dot{
-  width: 10px;
-  height: 10px;
-  border-radius: 999px;
+.kdot{
+  width: 9px;
+  height: 9px;
+  border-radius: 99px;
   background: var(--accent);
-  box-shadow: 0 0 0 6px rgba(118,185,0,.18);
+  box-shadow: 0 0 0 5px rgba(118,185,0,.14);
 }
-
 h1{
-  margin: 18px 0 10px;
-  font-size: clamp(34px, 4.2vw, 56px);
-  line-height: 1.05;
-  letter-spacing: -0.02em;
+  margin: 14px 0 10px;
+  font-size: clamp(34px, 4vw, 54px);
+  letter-spacing: -0.03em;
+  line-height: 1.04;
 }
-
-.sub{
+.lede{
   margin: 0;
+  max-width: 880px;
   color: var(--muted);
   font-size: 18px;
-  line-height: 1.55;
-  max-width: 820px;
+  line-height: 1.58;
 }
-
-.ctaRow{
+.herorow{
   margin-top: 18px;
   display:flex;
   gap: 12px;
@@ -180,86 +178,25 @@ h1{
   align-items:center;
 }
 
-.btn{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  height: 44px;
-  padding: 0 16px;
-  border-radius: 999px;
-  border: 1px solid rgba(11,13,18,.12);
-  background: rgba(255,255,255,.75);
-  color: rgba(11,13,18,.86);
-  box-shadow: 0 12px 30px rgba(11,13,18,.08);
-  transition: transform .14s ease, box-shadow .14s ease, background .14s ease, border-color .14s ease;
-}
-.btn:hover{
-  transform: translateY(-1px);
-  background: rgba(255,255,255,.92);
-  border-color: rgba(11,13,18,.18);
-  box-shadow: 0 18px 42px rgba(11,13,18,.10);
-}
-.btn.primary{
-  background: linear-gradient(180deg, rgba(118,185,0,.95), rgba(90,155,0,.95));
-  border-color: rgba(0,0,0,.10);
-  color: #0b0d12;
-}
-.btn.primary:hover{
-  box-shadow: 0 22px 52px rgba(118,185,0,.18);
-}
-.btn.ghost{
-  background: rgba(118,185,0,.10);
-  border-color: rgba(118,185,0,.25);
-}
-
-.badges{
-  margin-top: 18px;
-  display:flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.badge{
-  display:inline-flex;
-  align-items:center;
-  padding: 8px 12px;
-  border-radius: 999px;
-  border: 1px solid rgba(11,13,18,.10);
-  background: rgba(255,255,255,.60);
-  color: rgba(11,13,18,.76);
-  font-size: 13px;
-}
-.badge.mint{
-  background: rgba(118,185,0,.12);
-  border-color: rgba(118,185,0,.26);
-}
-.badge.cyan{
-  background: rgba(0,170,255,.10);
-  border-color: rgba(0,170,255,.22);
-}
-.badge.amber{
-  background: rgba(255,160,0,.10);
-  border-color: rgba(255,160,0,.22);
-}
-
 .section{
-  padding: 28px 0;
+  margin-top: 28px;
 }
-
-.h2{
+.sectionhead{
   display:flex;
-  align-items:flex-end;
-  justify-content:space-between;
-  gap: 14px;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 12px;
 }
-.h2 h2{
-  margin: 0;
-  font-size: 22px;
+.sectionhead h2{
+  margin:0;
+  font-size: 18px;
   letter-spacing: -0.01em;
 }
-.hint{
-  color: rgba(11,13,18,.55);
+.sectionhead .hint{
+  margin:0;
   font-size: 13px;
+  color: rgba(12,15,20,.56);
 }
 
 .grid{
@@ -270,64 +207,80 @@ h1{
 
 .card{
   grid-column: span 4;
-  padding: 18px;
-  border-radius: var(--radius);
+  background: var(--panel);
   border: 1px solid var(--border);
-  background: var(--card);
-  backdrop-filter: blur(12px);
-  box-shadow: var(--shadow2);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 16px;
 }
 .card.full{ grid-column: span 12; }
-.card.third{ grid-column: span 4; }
-
+.card.half{ grid-column: span 6; }
 .card h3{
   margin: 0 0 8px;
-  font-size: 16px;
+  font-size: 15px;
   letter-spacing: -0.01em;
 }
 .card p{
   margin: 0;
-  color: rgba(11,13,18,.66);
+  color: rgba(12,15,20,.66);
   line-height: 1.55;
 }
-
 .hr{
   height: 1px;
-  background: rgba(11,13,18,.10);
+  background: rgba(12,15,20,.10);
   margin: 14px 0;
 }
-
 .list{
-  margin: 0;
+  margin:0;
   padding-left: 18px;
-  color: rgba(11,13,18,.70);
-  line-height: 1.6;
+  color: rgba(12,15,20,.70);
+  line-height: 1.65;
 }
 
-.kv .row{
+.badges{
   display:flex;
-  align-items:baseline;
-  justify-content:space-between;
-  gap: 14px;
-  padding: 8px 0;
-  border-bottom: 1px solid rgba(11,13,18,.08);
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 14px;
 }
-.kv .row:last-child{ border-bottom: 0; }
-.k{ color: rgba(11,13,18,.58); font-size: 13px; }
-.v{ color: rgba(11,13,18,.80); }
+.badge{
+  font-size: 12px;
+  padding: 7px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,.76);
+  color: rgba(12,15,20,.74);
+}
+.badge.accent{
+  border-color: rgba(118,185,0,.26);
+  background: rgba(118,185,0,.12);
+}
+.badge.navy{
+  border-color: rgba(11,27,43,.18);
+  background: rgba(11,27,43,.06);
+}
+
+.kv{
+  display:grid;
+  grid-template-columns: 180px 1fr;
+  gap: 10px 14px;
+  align-items: baseline;
+  font-size: 14px;
+}
+.kv .k{ color: rgba(12,15,20,.58); }
+.kv .v{ color: rgba(12,15,20,.86); }
 .mono{ font-family: var(--mono); }
 
-.code{
+.codepanel{
   position: relative;
-  border-radius: 16px;
-  border: 1px solid rgba(11,13,18,.12);
-  background: rgba(11,13,18,.92);
+  border-radius: 14px;
+  border: 1px solid rgba(12,15,20,.12);
+  background: linear-gradient(180deg, rgba(11,27,43,.96), rgba(16,42,68,.96));
   color: rgba(255,255,255,.92);
   padding: 14px;
-  overflow: hidden;
-  box-shadow: 0 18px 48px rgba(11,13,18,.18);
+  overflow:hidden;
 }
-.code pre{
+.codepanel pre{
   margin:0;
   font-family: var(--mono);
   font-size: 13px;
@@ -335,7 +288,7 @@ h1{
   white-space: pre;
   overflow-x: auto;
 }
-.copy{
+.copybtn{
   position:absolute;
   top: 10px;
   right: 10px;
@@ -344,51 +297,44 @@ h1{
   border-radius: 999px;
   border: 1px solid rgba(255,255,255,.18);
   background: rgba(255,255,255,.10);
-  color: rgba(255,255,255,.88);
-  cursor: pointer;
-  transition: background .14s ease, transform .14s ease, border-color .14s ease;
+  color: rgba(255,255,255,.90);
+  cursor:pointer;
 }
-.copy:hover{
-  transform: translateY(-1px);
-  background: rgba(255,255,255,.16);
-  border-color: rgba(255,255,255,.24);
-}
+.copybtn:hover{ background: rgba(255,255,255,.16); }
 
 .callout{
-  padding: 12px 14px;
-  border-radius: 16px;
-  border: 1px solid rgba(118,185,0,.26);
+  border-radius: 14px;
+  border: 1px solid rgba(118,185,0,.22);
   background: rgba(118,185,0,.10);
-  color: rgba(11,13,18,.78);
+  padding: 12px 14px;
+  color: rgba(12,15,20,.78);
 }
 
 .table{
   width: 100%;
   border-collapse: collapse;
-  border-radius: 16px;
-  overflow: hidden;
-  border: 1px solid rgba(11,13,18,.12);
-  background: rgba(255,255,255,.70);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow:hidden;
 }
 .table th, .table td{
-  text-align: left;
   padding: 12px 12px;
-  border-bottom: 1px solid rgba(11,13,18,.08);
+  border-bottom: 1px solid rgba(12,15,20,.08);
+  text-align:left;
   vertical-align: top;
 }
 .table th{
   font-size: 13px;
-  color: rgba(11,13,18,.60);
-  background: rgba(255,255,255,.85);
+  color: rgba(12,15,20,.60);
+  background: rgba(11,27,43,.03);
 }
 .table tr:last-child td{ border-bottom: 0; }
 
 .video{
-  width: 100%;
-  border-radius: 18px;
-  overflow: hidden;
-  border: 1px solid rgba(11,13,18,.12);
-  box-shadow: 0 22px 60px rgba(11,13,18,.14);
+  border-radius: 14px;
+  overflow:hidden;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
   background: #000;
 }
 .video iframe{
@@ -399,229 +345,21 @@ h1{
 }
 
 .footer{
-  padding: 26px 0 34px;
-  color: rgba(11,13,18,.58);
-}
-.footerRow{
-  display:flex;
-  justify-content:space-between;
-  gap: 14px;
-  flex-wrap: wrap;
-  border-top: 1px solid rgba(11,13,18,.10);
+  margin-top: 34px;
   padding-top: 18px;
+  border-top: 1px solid var(--border);
+  color: rgba(12,15,20,.56);
+  font-size: 13px;
+  display:flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
 }
 
-.reveal{ opacity: 1; transform: none; }
-
-/* Responsive */
-@media (max-width: 900px){
+/* Mobile */
+@media (max-width: 980px){
   .card{ grid-column: span 12; }
-  .card.third{ grid-column: span 12; }
-  .h2{ align-items: flex-start; flex-direction: column; }
-}
-
-/* Optional dark mode */
-@media (prefers-color-scheme: dark){
-  :root{
-    --bg: #070b12;
-    --bg2: #0a1020;
-    --text: rgba(255,255,255,.92);
-    --muted: rgba(255,255,255,.62);
-    --card: rgba(13,20,34,.62);
-    --cardSolid: rgba(13,20,34,.92);
-    --border: rgba(255,255,255,.10);
-    --border2: rgba(255,255,255,.14);
-    --shadow: 0 26px 70px rgba(0,0,0,.40);
-    --shadow2: 0 12px 36px rgba(0,0,0,.32);
-  }
-
-  body{
-    background: radial-gradient(1200px 800px at 15% -10%, rgba(118,185,0,.18), transparent 55%),
-                radial-gradient(1200px 800px at 85% 0%, rgba(0,170,255,.18), transparent 55%),
-                linear-gradient(180deg, var(--bg), var(--bg2));
-  }
-
-  header{
-    background: rgba(7,11,18,.55);
-    border-bottom: 1px solid rgba(255,255,255,.10);
-  }
-
-  .brand{
-    background: rgba(255,255,255,.06);
-    border-color: rgba(255,255,255,.10);
-  }
-
-  .pill{
-    background: rgba(255,255,255,.06);
-    border-color: rgba(255,255,255,.10);
-    color: rgba(255,255,255,.74);
-  }
-
-  .pill:hover{
-    background: rgba(255,255,255,.10);
-    border-color: rgba(255,255,255,.16);
-  }
-
-  .badge{
-    background: rgba(255,255,255,.06);
-    border-color: rgba(255,255,255,.10);
-    color: rgba(255,255,255,.78);
-  }
-
-  .table{
-    background: rgba(255,255,255,.04);
-    border-color: rgba(255,255,255,.10);
-  }
-
-  .table th{
-    background: rgba(255,255,255,.06);
-    color: rgba(255,255,255,.62);
-  }
-
-  .callout{ color: rgba(255,255,255,.78); }
-}
-
-/* =========================
-   Veldra premium hotfix v1
-   Paste at bottom of style.css
-   ========================= */
-
-/* 1) Make header always light and premium, even if OS is in dark mode */
-header{
-  background: rgba(255,255,255,.86) !important;
-  border-bottom: 1px solid rgba(10,12,18,.08) !important;
-  backdrop-filter: blur(22px) !important;
-  box-shadow: 0 10px 30px rgba(10,12,18,.10) !important;
-}
-
-/* Nav pills should look Apple-clean, not gamer capsules */
-.pill{
-  background: rgba(255,255,255,.70) !important;
-  border: 1px solid rgba(10,12,18,.10) !important;
-  color: rgba(10,12,18,.74) !important;
-  box-shadow: 0 8px 18px rgba(10,12,18,.06) !important;
-}
-.pill:hover{
-  background: rgba(255,255,255,.92) !important;
-  border-color: rgba(10,12,18,.16) !important;
-}
-.pill[aria-current="page"]{
-  background: rgba(118,185,0,.14) !important;
-  border-color: rgba(118,185,0,.28) !important;
-  color: rgba(10,12,18,.88) !important;
-}
-
-/* 2) Remove the "box around logo". Brand should feel like a link, not a widget */
-.brand{
-  padding: 0 !important;
-  background: transparent !important;
-  border: 0 !important;
-  box-shadow: none !important;
-}
-
-/* If a page still uses the old .mark placeholder, show mark cleanly with no box */
-.brand .mark{
-  width: 30px !important;
-  height: 30px !important;
-  border-radius: 10px !important;
-  background: transparent !important;
-  border: 0 !important;
-  box-shadow: none !important;
-  background-image: url("/assets/brand/veldra-mark.png") !important;
-  background-repeat: no-repeat !important;
-  background-position: center !important;
-  background-size: 92% auto !important;
-}
-
-/* If a page uses the img logo, keep it crisp */
-.brand img{
-  height: 28px !important;
-  width: auto !important;
-  display: block !important;
-}
-
-/* 3) Typography: less boring, more premium */
-body{
-  letter-spacing: -0.01em;
-}
-h1{
-  font-weight: 720 !important;
-  letter-spacing: -0.03em !important;
-  line-height: 1.02 !important;
-  color: rgba(10,12,18,.96) !important;
-  text-shadow: 0 1px 0 rgba(255,255,255,.35);
-}
-.sub{
-  font-size: 18px !important;
-  line-height: 1.6 !important;
-  color: rgba(10,12,18,.62) !important;
-}
-.card h3{
-  font-weight: 650 !important;
-  letter-spacing: -0.015em !important;
-}
-.card p, .list, .hint{
-  color: rgba(10,12,18,.62) !important;
-}
-
-/* 4) Buttons: restore “expensive” interaction */
-.btn{
-  background: rgba(255,255,255,.78) !important;
-  border: 1px solid rgba(10,12,18,.12) !important;
-  box-shadow: 0 14px 34px rgba(10,12,18,.10) !important;
-}
-.btn:hover{
-  background: rgba(255,255,255,.95) !important;
-  border-color: rgba(10,12,18,.18) !important;
-  box-shadow: 0 20px 46px rgba(10,12,18,.12) !important;
-}
-.btn.primary{
-  background: linear-gradient(180deg, rgba(118,185,0,.98), rgba(90,155,0,.98)) !important;
-  color: rgba(10,12,18,.92) !important;
-  box-shadow: 0 20px 50px rgba(118,185,0,.22) !important;
-}
-
-/* 5) Copy button fix:
-   Your current .copy styling is acting like a random chip and looks nasty.
-   Scope it properly so it behaves inside code blocks and looks intentional.
-*/
-.copy{
-  position: static !important;
-  height: 34px !important;
-  padding: 0 12px !important;
-  border-radius: 999px !important;
-  border: 1px solid rgba(10,12,18,.14) !important;
-  background: rgba(255,255,255,.72) !important;
-  color: rgba(10,12,18,.78) !important;
-  box-shadow: 0 10px 22px rgba(10,12,18,.10) !important;
-  cursor: pointer !important;
-}
-.copy:hover{
-  background: rgba(255,255,255,.92) !important;
-  border-color: rgba(10,12,18,.20) !important;
-}
-
-/* Inside .code blocks, pin the copy button top right and style it for dark panels */
-.code{
-  position: relative !important;
-}
-.code .copy{
-  position: absolute !important;
-  top: 10px !important;
-  right: 10px !important;
-  border: 1px solid rgba(255,255,255,.18) !important;
-  background: rgba(255,255,255,.10) !important;
-  color: rgba(255,255,255,.88) !important;
-  box-shadow: none !important;
-}
-.code .copy:hover{
-  background: rgba(255,255,255,.16) !important;
-  border-color: rgba(255,255,255,.24) !important;
-}
-
-/* 6) Make cards feel less flat */
-.card{
-  box-shadow: 0 18px 60px rgba(10,12,18,.16) !important;
-  border: 1px solid rgba(10,12,18,.10) !important;
-  background: rgba(255,255,255,.78) !important;
+  .card.half{ grid-column: span 12; }
+  .nav{ flex-wrap: wrap; }
+  .brand{ min-width: auto; }
 }

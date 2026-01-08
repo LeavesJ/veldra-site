@@ -3,73 +3,56 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-
   <title>Veldra Policy</title>
-  <meta name="description" content="Reason codes, policy.toml examples, and what a traceable reject contains.">
-  <meta name="theme-color" content="#070b12">
-  <link rel="canonical" href="https://veldra.org/policy.html">
+  <meta name="description" content="Reason codes, sample policy.toml, and the traceable reject contract.">
+  <meta name="theme-color" content="#0b1b2b">
 
-  <!-- Favicons (absolute paths + cache buster) -->
-  <link rel="icon" type="image/png" href="/assets/brand/favicon.png?v=4">
-  <link rel="apple-touch-icon" href="/assets/brand/veldra-mark.png?v=4">
-
-  <!-- Open Graph -->
-  <meta property="og:title" content="Veldra Policy">
-  <meta property="og:description" content="Reason codes, policy.toml examples, and what a traceable reject contains.">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://veldra.org/policy.html">
-  <meta property="og:image" content="https://veldra.org/assets/brand/veldra-mark.png">
-
-  <!-- Twitter -->
-  <meta name="twitter:card" content="summary_large_image">
-
-  <link rel="stylesheet" href="/assets/style.css?v=20260107-1">
-  <script src="/assets/script.js?v=20260107-1" defer></script>
+  <link rel="icon" type="image/png" href="/assets/brand/favicon.png">
+  <link rel="apple-touch-icon" href="/assets/brand/veldra-mark.png">
+  <link rel="stylesheet" href="/assets/style.css?v=2">
+  <script src="/assets/script.js?v=2" defer></script>
 </head>
 
 <body>
-  <div class="bgGrid"></div>
-  <div class="noise"></div>
-
-  <header>
+  <div class="topbar">
     <div class="container">
       <div class="nav">
-        <!-- Brand: real logo image -->
         <a class="brand" href="/index.html" aria-label="Veldra home">
-          <img
-            src="/assets/brand/veldra-logo.png"
-            alt="Veldra"
-            height="28"
-            style="display:block"
-          >
+          <img src="/assets/brand/veldra-logo.png" alt="Veldra">
         </a>
 
-        <nav class="navlinks">
-          <a class="pill" href="/index.html">Home</a>
-          <a class="pill" href="/demo.html">Demo</a>
-          <a class="pill" href="/how-it-works.html">How it works</a>
-          <a class="pill" aria-current="page" href="/policy.html">Policy</a>
-          <a class="pill" href="/security.html">Security</a>
-          <a class="pill" href="/about.html">About</a>
-        </nav>
+        <div class="navlinks">
+          <a href="/index.html">Home</a>
+          <a href="/demo.html">Demo</a>
+          <a href="/how-it-works.html">How it works</a>
+          <a aria-current="page" href="/policy.html">Policy</a>
+          <a href="/security.html">Security</a>
+          <a href="/about.html">About</a>
+        </div>
+
+        <div class="navcta">
+          <a class="btn primary" href="/demo.html">View demo</a>
+        </div>
       </div>
     </div>
-  </header>
+  </div>
 
   <main class="container">
-    <section class="hero" style="padding-top:34px">
-      <div class="kicker"><span class="dot"></span> policy surface</div>
-      <h1>Reason codes and policy context</h1>
-      <p class="sub">A reject is only credible if it tells you exactly what failed. Veldra emits stable reason codes plus the threshold used and measured values.</p>
+    <section class="hero">
+      <div class="kicker"><span class="kdot"></span> Policy</div>
+      <h1>Reason codes and context</h1>
+      <p class="lede">
+        A reject is credible only when it names the failure and shows the numbers. Veldra emits stable codes plus policy context.
+      </p>
     </section>
 
-    <section class="section reveal">
-      <div class="h2">
+    <section class="section">
+      <div class="sectionhead">
         <h2>Reason codes</h2>
-        <div class="hint">Keep these stable</div>
+        <p class="hint">Stable names, stable meaning</p>
       </div>
 
-      <div class="grid" style="margin-top:14px">
+      <div class="grid">
         <div class="card full">
           <table class="table">
             <thead>
@@ -88,45 +71,45 @@
               <tr>
                 <td class="mono">MAX_SIGOPS_EXCEEDED</td>
                 <td>consensus</td>
-                <td>Sigops exceeds policy maximum or template violates expected bounds.</td>
+                <td>Sigops exceeds policy maximum.</td>
               </tr>
               <tr>
                 <td class="mono">MAX_WEIGHT_EXCEEDED</td>
                 <td>consensus</td>
-                <td>Block weight exceeds policy max or ratio constraints.</td>
+                <td>Block weight exceeds policy maximum or ratio constraint.</td>
               </tr>
               <tr>
                 <td class="mono">MEMPOOL_STALE</td>
                 <td>mempool</td>
-                <td>Mempool stats are too old to safely select fee tier thresholds.</td>
+                <td>Mempool stats are too old to safely select fee tiers.</td>
               </tr>
               <tr>
                 <td class="mono">POLICY_PARSE_ERROR</td>
                 <td>policy</td>
-                <td>Policy could not be loaded or validated.</td>
+                <td>Policy load or validation failed.</td>
               </tr>
             </tbody>
           </table>
 
           <div class="hr"></div>
-          <div class="callout">
-            Replace these placeholders with your actual reason codes from the verifier. Keep names all caps with underscores and never silently change semantics.
-          </div>
+          <p class="callout">
+            Replace this table with your verifier’s actual codes. Keep codes all caps with underscores and avoid semantic drift.
+          </p>
         </div>
       </div>
     </section>
 
-    <section class="section reveal">
-      <div class="h2">
+    <section class="section">
+      <div class="sectionhead">
         <h2>Sample policy.toml</h2>
-        <div class="hint">Readable, diffable</div>
+        <p class="hint">Readable and diffable</p>
       </div>
 
-      <div class="grid" style="margin-top:14px">
+      <div class="grid">
         <div class="card full">
-          <div class="code">
-            <button class="copy" data-copy="policy" onclick="copyFrom('policy')">Copy TOML</button>
-            <pre id="policy"># Example only. Use your repo policy schema.
+          <div class="codepanel">
+            <button class="copybtn" data-copy="policy" onclick="copyTextFrom('policy')">Copy</button>
+<pre id="policy"># Example only. Match your repo schema.
 
 protocol_version = 1
 
@@ -148,32 +131,25 @@ min_avg_fee_sat_vb = 20.0</pre>
           </div>
 
           <div class="hr"></div>
-
           <div class="kv">
-            <div class="row">
-              <div class="k">Tier selection input</div>
-              <div class="v">mempool_size, congestion, staleness</div>
-            </div>
-            <div class="row">
-              <div class="k">Tier selection output</div>
-              <div class="v mono">low | mid | high</div>
-            </div>
+            <div class="k">Tier input</div><div class="v">mempool size, congestion, staleness</div>
+            <div class="k">Tier output</div><div class="v mono">low | mid | high</div>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="section reveal">
-      <div class="h2">
+    <section class="section">
+      <div class="sectionhead">
         <h2>Traceable reject contract</h2>
-        <div class="hint">No ambiguity</div>
+        <p class="hint">What integrations can rely on</p>
       </div>
 
-      <div class="grid" style="margin-top:14px">
+      <div class="grid">
         <div class="card full">
-          <div class="code">
-            <button class="copy" data-copy="contract" onclick="copyFrom('contract')">Copy</button>
-            <pre id="contract">{
+          <div class="codepanel">
+            <button class="copybtn" data-copy="contract" onclick="copyTextFrom('contract')">Copy</button>
+<pre id="contract">{
   "verdict": "REJECT",
   "reason_code": "MIN_AVG_FEE_TOO_LOW",
   "policy_context": {
@@ -187,12 +163,10 @@ min_avg_fee_sat_vb = 20.0</pre>
       </div>
     </section>
 
-    <footer class="footer">
-      <div class="footerRow">
-        <div>Run it: <a href="/demo.html">Demo</a></div>
-        <div>Security boundaries: <a href="/security.html">Security</a></div>
-      </div>
-    </footer>
+    <div class="footer">
+      <div>© 2026 Veldra</div>
+      <div>Next: <a href="/security.html">Security</a></div>
+    </div>
   </main>
 </body>
 </html>
