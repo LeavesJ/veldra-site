@@ -480,3 +480,148 @@ h1{
 
   .callout{ color: rgba(255,255,255,.78); }
 }
+
+/* =========================
+   Veldra premium hotfix v1
+   Paste at bottom of style.css
+   ========================= */
+
+/* 1) Make header always light and premium, even if OS is in dark mode */
+header{
+  background: rgba(255,255,255,.86) !important;
+  border-bottom: 1px solid rgba(10,12,18,.08) !important;
+  backdrop-filter: blur(22px) !important;
+  box-shadow: 0 10px 30px rgba(10,12,18,.10) !important;
+}
+
+/* Nav pills should look Apple-clean, not gamer capsules */
+.pill{
+  background: rgba(255,255,255,.70) !important;
+  border: 1px solid rgba(10,12,18,.10) !important;
+  color: rgba(10,12,18,.74) !important;
+  box-shadow: 0 8px 18px rgba(10,12,18,.06) !important;
+}
+.pill:hover{
+  background: rgba(255,255,255,.92) !important;
+  border-color: rgba(10,12,18,.16) !important;
+}
+.pill[aria-current="page"]{
+  background: rgba(118,185,0,.14) !important;
+  border-color: rgba(118,185,0,.28) !important;
+  color: rgba(10,12,18,.88) !important;
+}
+
+/* 2) Remove the "box around logo". Brand should feel like a link, not a widget */
+.brand{
+  padding: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+/* If a page still uses the old .mark placeholder, show mark cleanly with no box */
+.brand .mark{
+  width: 30px !important;
+  height: 30px !important;
+  border-radius: 10px !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  background-image: url("/assets/brand/veldra-mark.png") !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-size: 92% auto !important;
+}
+
+/* If a page uses the img logo, keep it crisp */
+.brand img{
+  height: 28px !important;
+  width: auto !important;
+  display: block !important;
+}
+
+/* 3) Typography: less boring, more premium */
+body{
+  letter-spacing: -0.01em;
+}
+h1{
+  font-weight: 720 !important;
+  letter-spacing: -0.03em !important;
+  line-height: 1.02 !important;
+  color: rgba(10,12,18,.96) !important;
+  text-shadow: 0 1px 0 rgba(255,255,255,.35);
+}
+.sub{
+  font-size: 18px !important;
+  line-height: 1.6 !important;
+  color: rgba(10,12,18,.62) !important;
+}
+.card h3{
+  font-weight: 650 !important;
+  letter-spacing: -0.015em !important;
+}
+.card p, .list, .hint{
+  color: rgba(10,12,18,.62) !important;
+}
+
+/* 4) Buttons: restore “expensive” interaction */
+.btn{
+  background: rgba(255,255,255,.78) !important;
+  border: 1px solid rgba(10,12,18,.12) !important;
+  box-shadow: 0 14px 34px rgba(10,12,18,.10) !important;
+}
+.btn:hover{
+  background: rgba(255,255,255,.95) !important;
+  border-color: rgba(10,12,18,.18) !important;
+  box-shadow: 0 20px 46px rgba(10,12,18,.12) !important;
+}
+.btn.primary{
+  background: linear-gradient(180deg, rgba(118,185,0,.98), rgba(90,155,0,.98)) !important;
+  color: rgba(10,12,18,.92) !important;
+  box-shadow: 0 20px 50px rgba(118,185,0,.22) !important;
+}
+
+/* 5) Copy button fix:
+   Your current .copy styling is acting like a random chip and looks nasty.
+   Scope it properly so it behaves inside code blocks and looks intentional.
+*/
+.copy{
+  position: static !important;
+  height: 34px !important;
+  padding: 0 12px !important;
+  border-radius: 999px !important;
+  border: 1px solid rgba(10,12,18,.14) !important;
+  background: rgba(255,255,255,.72) !important;
+  color: rgba(10,12,18,.78) !important;
+  box-shadow: 0 10px 22px rgba(10,12,18,.10) !important;
+  cursor: pointer !important;
+}
+.copy:hover{
+  background: rgba(255,255,255,.92) !important;
+  border-color: rgba(10,12,18,.20) !important;
+}
+
+/* Inside .code blocks, pin the copy button top right and style it for dark panels */
+.code{
+  position: relative !important;
+}
+.code .copy{
+  position: absolute !important;
+  top: 10px !important;
+  right: 10px !important;
+  border: 1px solid rgba(255,255,255,.18) !important;
+  background: rgba(255,255,255,.10) !important;
+  color: rgba(255,255,255,.88) !important;
+  box-shadow: none !important;
+}
+.code .copy:hover{
+  background: rgba(255,255,255,.16) !important;
+  border-color: rgba(255,255,255,.24) !important;
+}
+
+/* 6) Make cards feel less flat */
+.card{
+  box-shadow: 0 18px 60px rgba(10,12,18,.16) !important;
+  border: 1px solid rgba(10,12,18,.10) !important;
+  background: rgba(255,255,255,.78) !important;
+}
