@@ -3,12 +3,30 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
+
   <title>Veldra Policy</title>
   <meta name="description" content="Reason codes, policy.toml examples, and what a traceable reject contains.">
   <meta name="theme-color" content="#070b12">
-  <link rel="stylesheet" href="assets/style.css">
-  <script src="assets/script.js" defer></script>
+  <link rel="canonical" href="https://veldra.org/policy.html">
+
+  <!-- Favicons (absolute paths + cache buster) -->
+  <link rel="icon" type="image/png" href="/assets/brand/favicon.png?v=4">
+  <link rel="apple-touch-icon" href="/assets/brand/veldra-mark.png?v=4">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Veldra Policy">
+  <meta property="og:description" content="Reason codes, policy.toml examples, and what a traceable reject contains.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://veldra.org/policy.html">
+  <meta property="og:image" content="https://veldra.org/assets/brand/veldra-mark.png">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="stylesheet" href="/assets/style.css">
+  <script src="/assets/script.js" defer></script>
 </head>
+
 <body>
   <div class="bgGrid"></div>
   <div class="noise"></div>
@@ -16,17 +34,23 @@
   <header>
     <div class="container">
       <div class="nav">
-        <div class="brand">
-          <div class="mark" aria-hidden="true"></div>
-          <div>Veldra</div>
-        </div>
+        <!-- Brand: real logo image -->
+        <a class="brand" href="/index.html" aria-label="Veldra home">
+          <img
+            src="/assets/brand/veldra-logo.png"
+            alt="Veldra"
+            height="28"
+            style="display:block"
+          >
+        </a>
+
         <nav class="navlinks">
-          <a class="pill" href="index.html">Home</a>
-          <a class="pill" href="demo.html">Demo</a>
-          <a class="pill" href="how-it-works.html">How it works</a>
-          <a class="pill" aria-current="page" href="policy.html">Policy</a>
-          <a class="pill" href="security.html">Security</a>
-          <a class="pill" href="about.html">About</a>
+          <a class="pill" href="/index.html">Home</a>
+          <a class="pill" href="/demo.html">Demo</a>
+          <a class="pill" href="/how-it-works.html">How it works</a>
+          <a class="pill" aria-current="page" href="/policy.html">Policy</a>
+          <a class="pill" href="/security.html">Security</a>
+          <a class="pill" href="/about.html">About</a>
         </nav>
       </div>
     </div>
@@ -122,7 +146,9 @@ min_avg_fee_sat_vb = 8.0
 [fees.tiers.high]
 min_avg_fee_sat_vb = 20.0</pre>
           </div>
+
           <div class="hr"></div>
+
           <div class="kv">
             <div class="row">
               <div class="k">Tier selection input</div>
@@ -163,12 +189,10 @@ min_avg_fee_sat_vb = 20.0</pre>
 
     <footer class="footer">
       <div class="footerRow">
-        <div>Run it: <a href="demo.html">Demo</a></div>
-        <div>Security boundaries: <a href="security.html">Security</a></div>
+        <div>Run it: <a href="/demo.html">Demo</a></div>
+        <div>Security boundaries: <a href="/security.html">Security</a></div>
       </div>
     </footer>
   </main>
-
-  <script src="script.js"></script>
 </body>
 </html>

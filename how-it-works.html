@@ -3,12 +3,30 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
+
   <title>How Veldra Works</title>
   <meta name="description" content="Veldra data flow: template source to template manager to pool verifier to reason coded verdicts and operator dashboard.">
   <meta name="theme-color" content="#070b12">
-  <link rel="stylesheet" href="assets/style.css">
-  <script src="assets/script.js" defer></script>
+  <link rel="canonical" href="https://veldra.org/how-it-works.html">
+
+  <!-- Favicons (absolute paths + cache buster) -->
+  <link rel="icon" type="image/png" href="/assets/brand/favicon.png?v=4">
+  <link rel="apple-touch-icon" href="/assets/brand/veldra-mark.png?v=4">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="How Veldra Works">
+  <meta property="og:description" content="Template source → template manager → pool verifier → reason coded verdicts and operator dashboard.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://veldra.org/how-it-works.html">
+  <meta property="og:image" content="https://veldra.org/assets/brand/veldra-mark.png">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="stylesheet" href="/assets/style.css">
+  <script src="/assets/script.js" defer></script>
 </head>
+
 <body>
   <div class="bgGrid"></div>
   <div class="noise"></div>
@@ -16,17 +34,23 @@
   <header>
     <div class="container">
       <div class="nav">
-        <div class="brand">
-          <div class="mark" aria-hidden="true"></div>
-          <div>Veldra</div>
-        </div>
+        <!-- Brand: real logo image -->
+        <a class="brand" href="/index.html" aria-label="Veldra home">
+          <img
+            src="/assets/brand/veldra-logo.png"
+            alt="Veldra"
+            height="28"
+            style="display:block"
+          >
+        </a>
+
         <nav class="navlinks">
-          <a class="pill" href="index.html">Home</a>
-          <a class="pill" href="demo.html">Demo</a>
-          <a class="pill" aria-current="page" href="how-it-works.html">How it works</a>
-          <a class="pill" href="policy.html">Policy</a>
-          <a class="pill" href="security.html">Security</a>
-          <a class="pill" href="about.html">About</a>
+          <a class="pill" href="/index.html">Home</a>
+          <a class="pill" href="/demo.html">Demo</a>
+          <a class="pill" aria-current="page" href="/how-it-works.html">How it works</a>
+          <a class="pill" href="/policy.html">Policy</a>
+          <a class="pill" href="/security.html">Security</a>
+          <a class="pill" href="/about.html">About</a>
         </nav>
       </div>
     </div>
@@ -45,8 +69,9 @@
           <h3>Flow</h3>
           <p>Templates are proposed, evaluated against policy, and returned with a verdict object suitable for logging and UI display.</p>
           <div class="hr"></div>
+
           <div class="diagram">
-            <svg viewBox="0 0 1120 260" xmlns="http://www.w3.org/2000/svg">
+            <svg viewBox="0 0 1120 260" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Veldra flow diagram">
               <defs>
                 <linearGradient id="g1" x1="0" x2="1">
                   <stop offset="0" stop-color="rgba(125,211,252,.85)"/>
@@ -95,10 +120,10 @@
           <p>A reject is only useful if it explains itself.</p>
           <div class="hr"></div>
           <ul class="list">
-            <li>reason_code</li>
-            <li>threshold_used</li>
-            <li>measured_value</li>
-            <li>tier selection, if any</li>
+            <li><span class="mono">reason_code</span></li>
+            <li><span class="mono">threshold_used</span></li>
+            <li><span class="mono">measured_value</span></li>
+            <li><span class="mono">tier selection</span>, if any</li>
           </ul>
         </div>
       </div>
@@ -128,12 +153,10 @@
 
     <footer class="footer">
       <div class="footerRow">
-        <div>Next: read the reason codes on <a href="policy.html">Policy</a>.</div>
+        <div>Next: read the reason codes on <a href="/policy.html">Policy</a>.</div>
         <div>Source: <a href="https://github.com/LeavesJ/veldra" target="_blank" rel="noreferrer">LeavesJ/veldra</a></div>
       </div>
     </footer>
   </main>
-
-  <script src="script.js"></script>
 </body>
 </html>

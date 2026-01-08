@@ -3,12 +3,30 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
+
   <title>Veldra Security</title>
   <meta name="description" content="Scope, limitations, and safety warnings for running Veldra.">
   <meta name="theme-color" content="#070b12">
-  <link rel="stylesheet" href="assets/style.css">
-  <script src="assets/script.js" defer></script>
+  <link rel="canonical" href="https://veldra.org/security.html">
+
+  <!-- Favicons (absolute paths + cache buster) -->
+  <link rel="icon" type="image/png" href="/assets/brand/favicon.png?v=4">
+  <link rel="apple-touch-icon" href="/assets/brand/veldra-mark.png?v=4">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Veldra Security">
+  <meta property="og:description" content="Scope, limitations, and safety warnings for running Veldra.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://veldra.org/security.html">
+  <meta property="og:image" content="https://veldra.org/assets/brand/veldra-mark.png">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="stylesheet" href="/assets/style.css">
+  <script src="/assets/script.js" defer></script>
 </head>
+
 <body>
   <div class="bgGrid"></div>
   <div class="noise"></div>
@@ -16,17 +34,23 @@
   <header>
     <div class="container">
       <div class="nav">
-        <div class="brand">
-          <div class="mark" aria-hidden="true"></div>
-          <div>Veldra</div>
-        </div>
+        <!-- Brand: real logo image -->
+        <a class="brand" href="/index.html" aria-label="Veldra home">
+          <img
+            src="/assets/brand/veldra-logo.png"
+            alt="Veldra"
+            height="28"
+            style="display:block"
+          >
+        </a>
+
         <nav class="navlinks">
-          <a class="pill" href="index.html">Home</a>
-          <a class="pill" href="demo.html">Demo</a>
-          <a class="pill" href="how-it-works.html">How it works</a>
-          <a class="pill" href="policy.html">Policy</a>
-          <a class="pill" aria-current="page" href="security.html">Security</a>
-          <a class="pill" href="about.html">About</a>
+          <a class="pill" href="/index.html">Home</a>
+          <a class="pill" href="/demo.html">Demo</a>
+          <a class="pill" href="/how-it-works.html">How it works</a>
+          <a class="pill" href="/policy.html">Policy</a>
+          <a class="pill" aria-current="page" href="/security.html">Security</a>
+          <a class="pill" href="/about.html">About</a>
         </nav>
       </div>
     </div>
@@ -77,11 +101,9 @@
     <footer class="footer">
       <div class="footerRow">
         <div>Source: <a href="https://github.com/LeavesJ/veldra" target="_blank" rel="noreferrer">LeavesJ/veldra</a></div>
-        <div>Policy: <a href="policy.html">Reason codes</a></div>
+        <div>Policy: <a href="/policy.html">Reason codes</a></div>
       </div>
     </footer>
   </main>
-
-  <script src="script.js"></script>
 </body>
 </html>
