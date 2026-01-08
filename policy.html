@@ -64,29 +64,45 @@
             </thead>
             <tbody>
               <tr>
-                <td class="mono">MIN_AVG_FEE_TOO_LOW</td>
+                <td class="mono">AverageFeeTooLow</td>
                 <td>fees</td>
-                <td>Average fee rate is below the effective minimum for the selected tier.</td>
+                <td>Average fee rate is below the effective minimum for the selected fee tier.</td>
               </tr>
+
               <tr>
-                <td class="mono">MAX_SIGOPS_EXCEEDED</td>
-                <td>consensus</td>
-                <td>Sigops exceeds policy maximum.</td>
+                <td class="mono">TotalFeesTooLow</td>
+                <td>fees</td>
+                <td>Total fees implied by the template are below the policy minimum.</td>
               </tr>
+
               <tr>
-                <td class="mono">MAX_WEIGHT_EXCEEDED</td>
-                <td>consensus</td>
-                <td>Block weight exceeds policy maximum or ratio constraint.</td>
+                <td class="mono">CoinbaseZero</td>
+                <td>fees</td>
+                <td>coinbasevalue is missing or resolves to zero, so the template’s payout economics are invalid.</td>
               </tr>
+
               <tr>
-                <td class="mono">MEMPOOL_STALE</td>
-                <td>mempool</td>
-                <td>Mempool stats are too old to safely select fee tiers.</td>
+                <td class="mono">TooManyTransactions</td>
+                <td>limits</td>
+                <td>Template exceeds a configured transaction-count or size/weight limit.</td>
               </tr>
+
               <tr>
-                <td class="mono">POLICY_PARSE_ERROR</td>
+                <td class="mono">PrevHashWrongLen</td>
+                <td>template</td>
+                <td>previousblockhash is missing or malformed, so the template cannot be anchored to a chain tip.</td>
+              </tr>
+
+              <tr>
+                <td class="mono">UnsupportedVersion</td>
                 <td>policy</td>
-                <td>Policy load or validation failed.</td>
+                <td>Policy schema or protocol version is not supported by this verifier build.</td>
+              </tr>
+
+              <tr>
+                <td class="mono">EmptyTemplate</td>
+                <td>template</td>
+                <td>Template is missing required fields or contains no evaluable content.</td>
               </tr>
             </tbody>
           </table>
