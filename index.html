@@ -1,12 +1,202 @@
 <!doctype html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Veldra</title>
-  </head>
-  <body>
-    <h1>Veldra</h1>
-    <p>Policy based template verification for Bitcoin mining pools.</p>
-  </body>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Veldra</title>
+  <meta name="description" content="Policy based template verification and operator observability for Bitcoin mining pools. Deterministic verdicts, traceable rejects, reason codes.">
+  <meta property="og:title" content="Veldra">
+  <meta property="og:description" content="Policy based template verification for Bitcoin mining pools. Deterministic verdicts with traceable rejects and reason codes.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://veldra.org/assets/og.png">
+  <meta name="theme-color" content="#070b12">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' x2='1' y1='0' y2='1'%3E%3Cstop stop-color='%237dd3fc'/%3E%3Cstop offset='1' stop-color='%23a7f3d0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='18' fill='url(%23g)'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="bgGrid"></div>
+  <div class="noise"></div>
+
+  <header>
+    <div class="container">
+      <div class="nav">
+        <div class="brand">
+          <div class="mark" aria-hidden="true"></div>
+          <div>Veldra</div>
+        </div>
+        <nav class="navlinks">
+          <a class="pill" aria-current="page" href="index.html">Home</a>
+          <a class="pill" href="demo.html">Demo</a>
+          <a class="pill" href="how-it-works.html">How it works</a>
+          <a class="pill" href="policy.html">Policy</a>
+          <a class="pill" href="security.html">Security</a>
+          <a class="pill" href="about.html">About</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div class="kicker"><span class="dot"></span> operator grade verification</div>
+      <h1>Policy based template verification for Bitcoin mining pools</h1>
+      <p class="sub">
+        Veldra evaluates block templates against operator policy and returns deterministic verdicts with reason codes and context.
+        The dashboard makes rejects explainable instead of mysterious.
+      </p>
+
+      <div class="ctaRow">
+        <a class="btn primary" href="demo.html">Run the demo</a>
+        <a class="btn" href="https://github.com/LeavesJ/veldra" target="_blank" rel="noreferrer">View GitHub</a>
+        <a class="btn ghost" href="policy.html">Reason codes</a>
+      </div>
+
+      <div class="badges">
+        <span class="badge mint">Traceable rejects</span>
+        <span class="badge cyan">Mempool aware fee tiers</span>
+        <span class="badge cyan">TemplatePropose to TemplateVerdict</span>
+        <span class="badge amber">Prototype, regtest focused</span>
+      </div>
+    </section>
+
+    <section class="section reveal">
+      <div class="h2">
+        <h2>What you get</h2>
+        <div class="hint">Determinism plus visibility</div>
+      </div>
+
+      <div class="grid" style="margin-top:14px">
+        <div class="card">
+          <h3>Explainable policy enforcement</h3>
+          <p>Every reject returns a machine readable reason code and the exact threshold used, so ops can debug quickly.</p>
+          <div class="hr"></div>
+          <div class="kv">
+            <div class="row">
+              <div class="k">Goal</div>
+              <div class="v">100 percent traceable rejects</div>
+            </div>
+            <div class="row">
+              <div class="k">Output</div>
+              <div class="v mono">reason_code + policy_context</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Operator dashboard</h3>
+          <p>Live verdicts, aggregates by reason and tier, active policy view, mempool stats, and recent templates.</p>
+          <div class="hr"></div>
+          <ul class="list">
+            <li>Latest verdict and measured values</li>
+            <li>Throughput and accept ratio</li>
+            <li>By reason and by tier breakdown</li>
+          </ul>
+        </div>
+
+        <div class="card full">
+          <h3>Architecture at a glance</h3>
+          <p>Template flows from a producer into a verifier that enforces policy and emits a verdict stream.</p>
+          <div class="hr"></div>
+
+          <div class="diagram">
+            <svg viewBox="0 0 1120 210" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Veldra data flow diagram">
+              <defs>
+                <linearGradient id="g1" x1="0" x2="1">
+                  <stop offset="0" stop-color="rgba(125,211,252,.85)"/>
+                  <stop offset="1" stop-color="rgba(167,243,208,.75)"/>
+                </linearGradient>
+              </defs>
+
+              <rect x="20" y="36" rx="18" ry="18" width="250" height="138" fill="rgba(13,20,34,.50)" stroke="rgba(255,255,255,.12)"/>
+              <text x="52" y="78" fill="rgba(232,238,246,.92)" font-size="16" font-family="ui-sans-serif,system-ui">Template source</text>
+              <text x="52" y="104" fill="rgba(232,238,246,.62)" font-size="13" font-family="ui-sans-serif,system-ui">Stratum v2 bridge or bitcoind</text>
+
+              <rect x="310" y="36" rx="18" ry="18" width="280" height="138" fill="rgba(13,20,34,.50)" stroke="rgba(255,255,255,.12)"/>
+              <text x="340" y="78" fill="rgba(232,238,246,.92)" font-size="16" font-family="ui-sans-serif,system-ui">Template manager</text>
+              <text x="340" y="104" fill="rgba(232,238,246,.62)" font-size="13" font-family="ui-sans-serif,system-ui">Builds TemplatePropose packets</text>
+
+              <rect x="630" y="36" rx="18" ry="18" width="260" height="138" fill="rgba(13,20,34,.50)" stroke="rgba(255,255,255,.12)"/>
+              <text x="660" y="78" fill="rgba(232,238,246,.92)" font-size="16" font-family="ui-sans-serif,system-ui">Pool verifier</text>
+              <text x="660" y="104" fill="rgba(232,238,246,.62)" font-size="13" font-family="ui-sans-serif,system-ui">Policy.toml → verdict stream</text>
+
+              <rect x="930" y="36" rx="18" ry="18" width="170" height="138" fill="rgba(13,20,34,.50)" stroke="rgba(255,255,255,.12)"/>
+              <text x="958" y="78" fill="rgba(232,238,246,.92)" font-size="16" font-family="ui-sans-serif,system-ui">Dashboard</text>
+              <text x="958" y="104" fill="rgba(232,238,246,.62)" font-size="13" font-family="ui-sans-serif,system-ui">Ops visibility</text>
+
+              <path d="M270 105 C 290 105, 295 105, 310 105" stroke="url(#g1)" stroke-width="3" fill="none"/>
+              <path d="M590 105 C 610 105, 615 105, 630 105" stroke="url(#g1)" stroke-width="3" fill="none"/>
+              <path d="M890 105 C 910 105, 915 105, 930 105" stroke="url(#g1)" stroke-width="3" fill="none"/>
+
+              <circle cx="298" cy="105" r="5" fill="rgba(125,211,252,.85)"/>
+              <circle cx="618" cy="105" r="5" fill="rgba(125,211,252,.85)"/>
+              <circle cx="918" cy="105" r="5" fill="rgba(125,211,252,.85)"/>
+            </svg>
+          </div>
+
+          <div class="hr"></div>
+          <div class="callout">
+            Design target: a reject is never “mysterious.” Every reject includes a reason code, the threshold used, and the measured value.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section reveal">
+      <div class="h2">
+        <h2>Sample verdict</h2>
+        <div class="hint">Copy, paste, inspect</div>
+      </div>
+
+      <div class="grid" style="margin-top:14px">
+        <div class="card full">
+          <div class="code">
+            <button class="copy" data-copy="verdict" onclick="copyFrom('verdict')">Copy JSON</button>
+            <pre id="verdict">{
+  "template_id": "regtest-000000000000000000",
+  "verdict": "REJECT",
+  "reason_code": "MIN_AVG_FEE_TOO_LOW",
+  "policy_context": {
+    "fee_tier": "mid",
+    "min_avg_fee_used_sat_vb": 8.0,
+    "measured_avg_fee_sat_vb": 4.2
+  },
+  "metrics": {
+    "weight": 3990000,
+    "sigops": 7550,
+    "mempool_size": 42150
+  },
+  "timestamp": "2026-01-07T00:00:00Z"
+}</pre>
+          </div>
+          <div class="hr"></div>
+          <div class="kv">
+            <div class="row">
+              <div class="k">Reason code</div>
+              <div class="v mono">MIN_AVG_FEE_TOO_LOW</div>
+            </div>
+            <div class="row">
+              <div class="k">Explainability</div>
+              <div class="v">Threshold and measured value are attached</div>
+            </div>
+          </div>
+          <div class="hr"></div>
+          <div style="display:flex; gap:12px; flex-wrap:wrap">
+            <a class="btn" href="demo.html">See it live in the demo</a>
+            <a class="btn" href="policy.html">Browse reason codes</a>
+            <a class="btn" href="how-it-works.html">Read the data flow</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="footerRow">
+        <div>© 2026 Veldra. Source available on <a href="https://github.com/LeavesJ/veldra" target="_blank" rel="noreferrer">GitHub</a>.</div>
+        <div>Do not expose local dashboards publicly without auth.</div>
+      </div>
+    </footer>
+  </main>
+
+  <script src="script.js"></script>
+</body>
 </html>

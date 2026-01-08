@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Veldra Security</title>
+  <meta name="description" content="Scope, limitations, and safety warnings for running Veldra.">
+  <meta name="theme-color" content="#070b12">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="bgGrid"></div>
+  <div class="noise"></div>
+
+  <header>
+    <div class="container">
+      <div class="nav">
+        <div class="brand">
+          <div class="mark" aria-hidden="true"></div>
+          <div>Veldra</div>
+        </div>
+        <nav class="navlinks">
+          <a class="pill" href="index.html">Home</a>
+          <a class="pill" href="demo.html">Demo</a>
+          <a class="pill" href="how-it-works.html">How it works</a>
+          <a class="pill" href="policy.html">Policy</a>
+          <a class="pill" aria-current="page" href="security.html">Security</a>
+          <a class="pill" href="about.html">About</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero" style="padding-top:34px">
+      <div class="kicker"><span class="dot"></span> scope and safety</div>
+      <h1>Security boundaries</h1>
+      <p class="sub">Veldra is infrastructure code. Treat the demo as local only unless you add authentication and network hardening.</p>
+    </section>
+
+    <section class="section reveal">
+      <div class="grid">
+        <div class="card">
+          <h3>What this is</h3>
+          <p>Policy evaluation and observability for templates. It produces verdicts with reason codes and policy context.</p>
+          <div class="hr"></div>
+          <ul class="list">
+            <li>Verifier and dashboard</li>
+            <li>Policy driven thresholds</li>
+            <li>Deterministic logging</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>What this is not</h3>
+          <p>No custody, no wallet logic, no key management. It is not a mining pool and not a payment system.</p>
+          <div class="hr"></div>
+          <ul class="list">
+            <li>No private keys</li>
+            <li>No signing authority</li>
+            <li>No exchange integration</li>
+          </ul>
+        </div>
+
+        <div class="card full">
+          <h3>Hard rule</h3>
+          <p>Do not expose the dashboard to the public internet without authentication. Treat all endpoints as sensitive operational surfaces.</p>
+          <div class="hr"></div>
+          <div class="callout">
+            If you need a public demo, use a screen recording or a protected tunnel with authentication.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="footerRow">
+        <div>Source: <a href="https://github.com/LeavesJ/veldra" target="_blank" rel="noreferrer">LeavesJ/veldra</a></div>
+        <div>Policy: <a href="policy.html">Reason codes</a></div>
+      </div>
+    </footer>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Veldra Policy</title>
+  <meta name="description" content="Reason codes, policy.toml examples, and what a traceable reject contains.">
+  <meta name="theme-color" content="#070b12">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="bgGrid"></div>
+  <div class="noise"></div>
+
+  <header>
+    <div class="container">
+      <div class="nav">
+        <div class="brand">
+          <div class="mark" aria-hidden="true"></div>
+          <div>Veldra</div>
+        </div>
+        <nav class="navlinks">
+          <a class="pill" href="index.html">Home</a>
+          <a class="pill" href="demo.html">Demo</a>
+          <a class="pill" href="how-it-works.html">How it works</a>
+          <a class="pill" aria-current="page" href="policy.html">Policy</a>
+          <a class="pill" href="security.html">Security</a>
+          <a class="pill" href="about.html">About</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero" style="padding-top:34px">
+      <div class="kicker"><span class="dot"></span> policy surface</div>
+      <h1>Reason codes and policy context</h1>
+      <p class="sub">A reject is only credible if it tells you exactly what failed. Veldra emits stable reason codes plus the threshold used and measured values.</p>
+    </section>
+
+    <section class="section reveal">
+      <div class="h2">
+        <h2>Reason codes</h2>
+        <div class="hint">Keep these stable</div>
+      </div>
+
+      <div class="grid" style="margin-top:14px">
+        <div class="card full">
+          <table class="table">
+            <thead>
+              <tr>
+                <th style="width:34%">Code</th>
+                <th style="width:20%">Category</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="mono">MIN_AVG_FEE_TOO_LOW</td>
+                <td>fees</td>
+                <td>Average fee rate is below the effective minimum for the selected tier.</td>
+              </tr>
+              <tr>
+                <td class="mono">MAX_SIGOPS_EXCEEDED</td>
+                <td>consensus</td>
+                <td>Sigops exceeds policy maximum or template violates expected bounds.</td>
+              </tr>
+              <tr>
+                <td class="mono">MAX_WEIGHT_EXCEEDED</td>
+                <td>consensus</td>
+                <td>Block weight exceeds policy max or ratio constraints.</td>
+              </tr>
+              <tr>
+                <td class="mono">MEMPOOL_STALE</td>
+                <td>mempool</td>
+                <td>Mempool stats are too old to safely select fee tier thresholds.</td>
+              </tr>
+              <tr>
+                <td class="mono">POLICY_PARSE_ERROR</td>
+                <td>policy</td>
+                <td>Policy could not be loaded or validated.</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="hr"></div>
+          <div class="callout">
+            Replace these placeholders with your actual reason codes from the verifier. Keep names all caps with underscores and never silently change semantics.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section reveal">
+      <div class="h2">
+        <h2>Sample policy.toml</h2>
+        <div class="hint">Readable, diffable</div>
+      </div>
+
+      <div class="grid" style="margin-top:14px">
+        <div class="card full">
+          <div class="code">
+            <button class="copy" data-copy="policy" onclick="copyFrom('policy')">Copy TOML</button>
+            <pre id="policy"># Example only. Use your repo policy schema.
+
+protocol_version = 1
+
+[limits]
+max_weight = 4000000
+max_sigops = 8000
+
+[fees]
+mode = "dynamic_tiers"
+
+[fees.tiers.low]
+min_avg_fee_sat_vb = 2.0
+
+[fees.tiers.mid]
+min_avg_fee_sat_vb = 8.0
+
+[fees.tiers.high]
+min_avg_fee_sat_vb = 20.0</pre>
+          </div>
+          <div class="hr"></div>
+          <div class="kv">
+            <div class="row">
+              <div class="k">Tier selection input</div>
+              <div class="v">mempool_size, congestion, staleness</div>
+            </div>
+            <div class="row">
+              <div class="k">Tier selection output</div>
+              <div class="v mono">low | mid | high</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section reveal">
+      <div class="h2">
+        <h2>Traceable reject contract</h2>
+        <div class="hint">No ambiguity</div>
+      </div>
+
+      <div class="grid" style="margin-top:14px">
+        <div class="card full">
+          <div class="code">
+            <button class="copy" data-copy="contract" onclick="copyFrom('contract')">Copy</button>
+            <pre id="contract">{
+  "verdict": "REJECT",
+  "reason_code": "MIN_AVG_FEE_TOO_LOW",
+  "policy_context": {
+    "fee_tier": "mid",
+    "threshold_used": 8.0,
+    "measured_value": 4.2
+  }
+}</pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="footerRow">
+        <div>Run it: <a href="demo.html">Demo</a></div>
+        <div>Security boundaries: <a href="security.html">Security</a></div>
+      </div>
+    </footer>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

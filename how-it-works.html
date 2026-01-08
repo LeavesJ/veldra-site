@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>How Veldra Works</title>
+  <meta name="description" content="Veldra data flow: template source to template manager to pool verifier to reason coded verdicts and operator dashboard.">
+  <meta name="theme-color" content="#070b12">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="bgGrid"></div>
+  <div class="noise"></div>
+
+  <header>
+    <div class="container">
+      <div class="nav">
+        <div class="brand">
+          <div class="mark" aria-hidden="true"></div>
+          <div>Veldra</div>
+        </div>
+        <nav class="navlinks">
+          <a class="pill" href="index.html">Home</a>
+          <a class="pill" href="demo.html">Demo</a>
+          <a class="pill" aria-current="page" href="how-it-works.html">How it works</a>
+          <a class="pill" href="policy.html">Policy</a>
+          <a class="pill" href="security.html">Security</a>
+          <a class="pill" href="about.html">About</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero" style="padding-top:34px">
+      <div class="kicker"><span class="dot"></span> system flow</div>
+      <h1>Templates in, verdicts out</h1>
+      <p class="sub">Veldra is designed around one invariant: any rejection is fully explainable through reason codes plus policy context.</p>
+    </section>
+
+    <section class="section reveal">
+      <div class="grid">
+        <div class="card full">
+          <h3>Flow</h3>
+          <p>Templates are proposed, evaluated against policy, and returned with a verdict object suitable for logging and UI display.</p>
+          <div class="hr"></div>
+          <div class="diagram">
+            <svg viewBox="0 0 1120 260" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="g1" x1="0" x2="1">
+                  <stop offset="0" stop-color="rgba(125,211,252,.85)"/>
+                  <stop offset="1" stop-color="rgba(167,243,208,.75)"/>
+                </linearGradient>
+              </defs>
+
+              <rect x="24" y="46" rx="18" ry="18" width="260" height="170" fill="rgba(13,20,34,.50)" stroke="rgba(255,255,255,.12)"/>
+              <text x="54" y="86" fill="rgba(232,238,246,.92)" font-size="16">Source</text>
+              <text x="54" y="112" fill="rgba(232,238,246,.62)" font-size="13">Stratum v2 bridge or bitcoind</text>
+              <text x="54" y="150" fill="rgba(232,238,246,.78)" font-size="13" font-family="ui-monospace">block template</text>
+
+              <rect x="320" y="46" rx="18" ry="18" width="300" height="170" fill="rgba(13,20,34,.50)" stroke="rgba(255,255,255,.12)"/>
+              <text x="350" y="86" fill="rgba(232,238,246,.92)" font-size="16">Template manager</text>
+              <text x="350" y="112" fill="rgba(232,238,246,.62)" font-size="13">Build TemplatePropose</text>
+              <text x="350" y="150" fill="rgba(232,238,246,.78)" font-size="13" font-family="ui-monospace">TemplatePropose</text>
+
+              <rect x="660" y="46" rx="18" ry="18" width="260" height="170" fill="rgba(13,20,34,.50)" stroke="rgba(255,255,255,.12)"/>
+              <text x="690" y="86" fill="rgba(232,238,246,.92)" font-size="16">Pool verifier</text>
+              <text x="690" y="112" fill="rgba(232,238,246,.62)" font-size="13">PolicyConfig evaluation</text>
+              <text x="690" y="150" fill="rgba(232,238,246,.78)" font-size="13" font-family="ui-monospace">TemplateVerdict</text>
+
+              <rect x="950" y="46" rx="18" ry="18" width="146" height="170" fill="rgba(13,20,34,.50)" stroke="rgba(255,255,255,.12)"/>
+              <text x="972" y="86" fill="rgba(232,238,246,.92)" font-size="16">Outputs</text>
+              <text x="972" y="112" fill="rgba(232,238,246,.62)" font-size="13">log + UI</text>
+
+              <path d="M284 130 C 304 130, 308 130, 320 130" stroke="url(#g1)" stroke-width="3" fill="none"/>
+              <path d="M620 130 C 640 130, 646 130, 660 130" stroke="url(#g1)" stroke-width="3" fill="none"/>
+              <path d="M920 130 C 940 130, 944 130, 950 130" stroke="url(#g1)" stroke-width="3" fill="none"/>
+            </svg>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Protocol objects</h3>
+          <p>Two objects define the contract between producers and the verifier.</p>
+          <div class="hr"></div>
+          <ul class="list">
+            <li><span class="mono">TemplatePropose</span> contains the candidate block template and metadata</li>
+            <li><span class="mono">TemplateVerdict</span> returns ACCEPT or REJECT plus reason context</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>What makes a reject traceable</h3>
+          <p>A reject is only useful if it explains itself.</p>
+          <div class="hr"></div>
+          <ul class="list">
+            <li>reason_code</li>
+            <li>threshold_used</li>
+            <li>measured_value</li>
+            <li>tier selection, if any</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section reveal">
+      <div class="h2">
+        <h2>Design constraints</h2>
+        <div class="hint">Make failure legible</div>
+      </div>
+
+      <div class="grid" style="margin-top:14px">
+        <div class="card third">
+          <h3>Deterministic evaluation</h3>
+          <p>Same template plus same policy yields the same verdict.</p>
+        </div>
+        <div class="card third">
+          <h3>Policy visibility</h3>
+          <p>The active policy is readable from the dashboard and API endpoints.</p>
+        </div>
+        <div class="card third">
+          <h3>Operational defaults</h3>
+          <p>Reason codes are stable, grep friendly, and instrumentable.</p>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="footerRow">
+        <div>Next: read the reason codes on <a href="policy.html">Policy</a>.</div>
+        <div>Source: <a href="https://github.com/LeavesJ/veldra" target="_blank" rel="noreferrer">LeavesJ/veldra</a></div>
+      </div>
+    </footer>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
