@@ -3,17 +3,31 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
+
   <title>Veldra</title>
   <meta name="description" content="Policy based template verification and operator observability for Bitcoin mining pools. Deterministic verdicts, traceable rejects, reason codes.">
+  <meta name="theme-color" content="#070b12">
+
+  <link rel="canonical" href="https://veldra.org/">
+
+  <!-- Favicons (match your repo paths) -->
+  <link rel="icon" type="image/png" href="assets/brand/favicon.png">
+  <link rel="apple-touch-icon" href="assets/brand/veldra-mark.png">
+
+  <!-- Open Graph -->
   <meta property="og:title" content="Veldra">
   <meta property="og:description" content="Policy based template verification for Bitcoin mining pools. Deterministic verdicts with traceable rejects and reason codes.">
   <meta property="og:type" content="website">
-  <meta property="og:image" content="https://veldra.org/assets/og.png">
-  <meta name="theme-color" content="#070b12">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' x2='1' y1='0' y2='1'%3E%3Cstop stop-color='%237dd3fc'/%3E%3Cstop offset='1' stop-color='%23a7f3d0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='18' fill='url(%23g)'/%3E%3C/svg%3E">
+  <meta property="og:url" content="https://veldra.org/">
+  <meta property="og:image" content="https://veldra.org/assets/brand/veldra-mark.png">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+
   <link rel="stylesheet" href="assets/style.css">
   <script src="assets/script.js" defer></script>
 </head>
+
 <body>
   <div class="bgGrid"></div>
   <div class="noise"></div>
@@ -21,10 +35,16 @@
   <header>
     <div class="container">
       <div class="nav">
-        <div class="brand">
-          <div class="mark" aria-hidden="true"></div>
-          <div>Veldra</div>
-        </div>
+        <!-- Brand: real logo image -->
+        <a class="brand" href="index.html" aria-label="Veldra home">
+          <img
+            src="assets/brand/veldra-logo.png"
+            alt="Veldra"
+            height="28"
+            style="display:block"
+          >
+        </a>
+
         <nav class="navlinks">
           <a class="pill" aria-current="page" href="index.html">Home</a>
           <a class="pill" href="demo.html">Demo</a>
@@ -169,7 +189,9 @@
   "timestamp": "2026-01-07T00:00:00Z"
 }</pre>
           </div>
+
           <div class="hr"></div>
+
           <div class="kv">
             <div class="row">
               <div class="k">Reason code</div>
@@ -180,7 +202,9 @@
               <div class="v">Threshold and measured value are attached</div>
             </div>
           </div>
+
           <div class="hr"></div>
+
           <div style="display:flex; gap:12px; flex-wrap:wrap">
             <a class="btn" href="demo.html">See it live in the demo</a>
             <a class="btn" href="policy.html">Browse reason codes</a>
@@ -197,7 +221,5 @@
       </div>
     </footer>
   </main>
-
-  <script src="script.js"></script>
 </body>
 </html>
