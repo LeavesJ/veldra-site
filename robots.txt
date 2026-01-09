@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://veldra.org/sitemap.xml
