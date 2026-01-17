@@ -66,43 +66,43 @@
               <tr>
                 <td class="mono">AverageFeeTooLow</td>
                 <td>fees</td>
-                <td>Average fee rate is below the effective minimum for the selected fee tier.</td>
+                <td>Average fee per transaction (sats per tx) is below the effective minimum for the selected fee tier.</td>
               </tr>
 
               <tr>
                 <td class="mono">TotalFeesTooLow</td>
                 <td>fees</td>
-                <td>Total fees implied by the template are below the policy minimum.</td>
+                <td>Total fees implied by the template are below <span class="mono">min_total_fees</span>.</td>
               </tr>
 
               <tr>
                 <td class="mono">CoinbaseZero</td>
                 <td>template</td>
-                <td>coinbasevalue is missing or resolves to zero, so the template’s payout economics are invalid.</td>
+                <td><span class="mono">coinbase_value</span> is zero and <span class="mono">reject_coinbase_zero</span> is enabled (applies to non empty templates).</td>
               </tr>
 
               <tr>
                 <td class="mono">TooManyTransactions</td>
                 <td>limits</td>
-                <td>Template exceeds a configured transaction-count or size or weight limit.</td>
+                <td>Template <span class="mono">tx_count</span> exceeds <span class="mono">max_tx_count</span>.</td>
               </tr>
 
               <tr>
                 <td class="mono">PrevHashWrongLen</td>
                 <td>template</td>
-                <td>previousblockhash is missing or malformed, so the template cannot be anchored to a chain tip.</td>
+                <td><span class="mono">prev_hash</span> length does not match <span class="mono">required_prevhash_len</span>.</td>
               </tr>
 
               <tr>
                 <td class="mono">UnsupportedVersion</td>
                 <td>policy</td>
-                <td>Policy schema or protocol version is not supported by this verifier build.</td>
+                <td>Template protocol version does not match <span class="mono">protocol_version</span>.</td>
               </tr>
 
               <tr>
                 <td class="mono">EmptyTemplate</td>
                 <td>template</td>
-                <td>Template is missing required fields or contains no evaluable content.</td>
+                <td><span class="mono">tx_count == 0</span> and <span class="mono">reject_empty_templates</span> is enabled.</td>
               </tr>
             </tbody>
           </table>
@@ -122,28 +122,36 @@
             <button class="copybtn" onclick="copyTextFrom('policy')">Copy</button>
 <pre id="policy"># Example only. Match your repo schema.
 
+[policy]
 protocol_version = 1
+required_prevhash_len = 64
 
-[limits]
-max_weight = 4000000
-max_sigops = 8000
+min_total_fees = 0
+max_tx_count = 100
+min_avg_fee = 0
 
-[fees]
-mode = "dynamic_tiers"
+low_mempool_tx = 50
+high_mempool_tx = 500
 
-[fees.tiers.low]
-min_avg_fee_sat_vb = 2.0
+# Required by current PolicyConfig (even if unused by the evaluator today)
+tx_count_mid_threshold = 10
+tx_count_hi_threshold = 50
 
-[fees.tiers.mid]
-min_avg_fee_sat_vb = 8.0
+# Dynamic tier floors (avg fee per tx, sats/tx)
+min_avg_fee_lo = 0
+min_avg_fee_mid = 0
+min_avg_fee_hi = 0
 
-[fees.tiers.high]
-min_avg_fee_sat_vb = 20.0</pre>
+max_weight_ratio = 0.999
+
+reject_empty_templates = true
+reject_coinbase_zero = false
+unknown_mempool_as_high = true</pre>
           </div>
 
           <div class="hr"></div>
           <div class="kv">
-            <div class="k">Tier input</div><div class="v">mempool size, congestion, staleness</div>
+            <div class="k">Tier input</div><div class="v">mempool tx count (or unknown fallback)</div>
             <div class="k">Tier output</div><div class="v mono">low | mid | high</div>
           </div>
         </div>
@@ -161,12 +169,15 @@ min_avg_fee_sat_vb = 20.0</pre>
           <div class="codepanel">
             <button class="copybtn" onclick="copyTextFrom('contract')">Copy</button>
 <pre id="contract">{
-  "verdict": "REJECT",
-  "reason_code": "MIN_AVG_FEE_TOO_LOW",
+  "accepted": false,
+  "reason_code": "AverageFeeTooLow",
+  "reason_detail": "avg_fee=4 &lt; min_required=8",
   "policy_context": {
     "fee_tier": "mid",
-    "threshold_used": 8.0,
-    "measured_value": 4.2
+    "min_avg_fee_used": 8,
+    "avg_fee_sats_per_tx": 4,
+    "mempool_tx_count": 220,
+    "unknown_mempool_as_high": true
   }
 }</pre>
           </div>
