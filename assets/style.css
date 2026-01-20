@@ -69,7 +69,7 @@ a:hover{ text-decoration: underline; text-underline-offset: 3px; }
   min-width: 160px;
 }
 .brand img{
-  height: 44px;
+  height: 50px;
   width: auto;
   display:block;
 }
