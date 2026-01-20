@@ -73,6 +73,14 @@ a:hover{ text-decoration: underline; text-underline-offset: 3px; }
   width: auto;
   display:block;
 }
+
+.brand-logo{
+  width: min(520px, 72vw);
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
 .brand .word{
   font-weight: 650;
   letter-spacing: -0.01em;
