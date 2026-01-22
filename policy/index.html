@@ -162,30 +162,28 @@
 <pre id="policy"># Example only. 
 
 [policy]
-protocol_version = 1
+protocol_version = 2
 required_prevhash_len = 64
 
 min_total_fees = 0
-max_tx_count = 100
-min_avg_fee = 0
+max_tx_count = 12
 
-low_mempool_tx = 50
-high_mempool_tx = 500
+low_mempool_tx = 5
+high_mempool_tx = 20
 
-# Required by current PolicyConfig 
-tx_count_mid_threshold = 10
-tx_count_hi_threshold = 50
-
-# Dynamic tier floors (avg fee per tx, sats/tx)
-min_avg_fee_lo = 0
-min_avg_fee_mid = 0
-min_avg_fee_hi = 0
-
-max_weight_ratio = 0.999
+# avg fee floors are sats/tx (NOT sat/vB)
+# ~1 sat/vB  => ~150-250 sats/tx (reject)
+# ~25 sat/vB => ~3_750-6_250 sats/tx (accept)
+min_avg_fee_lo  = 900
+min_avg_fee_mid = 1900
+min_avg_fee_hi  = 4200
 
 reject_empty_templates = true
 reject_coinbase_zero = false
-unknown_mempool_as_high = true</pre>
+unknown_mempool_as_high = false
+
+[policy.safety]
+max_weight_ratio = 0.999</pre>
           </div>
 
           <div class="hr"></div>
@@ -209,8 +207,8 @@ unknown_mempool_as_high = true</pre>
             <button class="copybtn" onclick="copyTextFrom('contract')">Copy</button>
 <pre id="contract">{
   "accepted": false,
-  "reason_code": "AverageFeeTooLow",
-  "reason_detail": "avg_fee=4 &lt; min_required=8",
+  "reason_code": "avg_fee_below_minimum",
+  "reason_detail": "avg_fee=141 &lt; min_avg_fee_used=200",
   "policy_context": {
     "fee_tier": "mid",
     "min_avg_fee_used": 8,
