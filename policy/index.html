@@ -64,51 +64,90 @@
             </thead>
             <tbody>
               <tr>
-                <td class="mono">AverageFeeTooLow</td>
+                <td class="mono">avg_fee_below_minimum</td>
                 <td>fees</td>
-                <td>Average fee per transaction (sats per tx) is below the effective minimum for the selected fee tier.</td>
+                <td>
+                  Average fee per transaction (<span class="mono">total_fees / tx_count</span>) is below the effective minimum
+                  (<span class="mono">min_avg_fee_used</span>) for the selected <span class="mono">fee_tier</span>.
+                  Effective minimum is derived from <span class="mono">min_avg_fee_lo</span>, <span class="mono">min_avg_fee_mid</span>,
+                  <span class="mono">min_avg_fee_hi</span> and mempool tier thresholds.
+                </td>
               </tr>
 
               <tr>
-                <td class="mono">TotalFeesTooLow</td>
+                <td class="mono">total_fees_below_minimum</td>
                 <td>fees</td>
-                <td>Total fees implied by the template are below <span class="mono">min_total_fees</span>.</td>
+                <td>
+                  Total fees implied by the template are below <span class="mono">min_total_fees</span>.
+                </td>
               </tr>
 
               <tr>
-                <td class="mono">CoinbaseZero</td>
+                <td class="mono">coinbase_value_zero_rejected</td>
                 <td>template</td>
-                <td><span class="mono">coinbase_value</span> is zero and <span class="mono">reject_coinbase_zero</span> is enabled (applies to non empty templates).</td>
+                <td>
+                  <span class="mono">coinbase_value</span> is zero and <span class="mono">reject_coinbase_zero</span> is enabled
+                  (applies to non empty templates: <span class="mono">tx_count &gt; 0</span>).
+                </td>
               </tr>
 
               <tr>
-                <td class="mono">TooManyTransactions</td>
+                <td class="mono">tx_count_exceeded</td>
                 <td>limits</td>
-                <td>Template <span class="mono">tx_count</span> exceeds <span class="mono">max_tx_count</span>.</td>
+                <td>
+                  Template <span class="mono">tx_count</span> exceeds <span class="mono">max_tx_count</span>.
+                </td>
               </tr>
 
               <tr>
-                <td class="mono">PrevHashWrongLen</td>
+                <td class="mono">prev_hash_len_mismatch</td>
                 <td>template</td>
-                <td><span class="mono">prev_hash</span> length does not match <span class="mono">required_prevhash_len</span>.</td>
+                <td>
+                  <span class="mono">prev_hash</span> length does not match <span class="mono">required_prevhash_len</span>.
+                </td>
               </tr>
 
               <tr>
-                <td class="mono">UnsupportedVersion</td>
+                <td class="mono">protocol_version_mismatch</td>
                 <td>policy</td>
-                <td>Template protocol version does not match <span class="mono">protocol_version</span>.</td>
+                <td>
+                  Template protocol version does not match <span class="mono">protocol_version</span>.
+                </td>
               </tr>
 
               <tr>
-                <td class="mono">EmptyTemplate</td>
+                <td class="mono">invalid_prev_hash</td>
                 <td>template</td>
-                <td><span class="mono">tx_count == 0</span> and <span class="mono">reject_empty_templates</span> is enabled.</td>
+                <td>
+                  <span class="mono">prev_hash</span> is not valid hex.
+                </td>
+              </tr>
+
+              <tr>
+                <td class="mono">empty_template_rejected</td>
+                <td>template</td>
+                <td>
+                  <span class="mono">tx_count == 0</span> and <span class="mono">reject_empty_templates</span> is enabled.
+                </td>
+              </tr>
+
+              <tr>
+                <td class="mono">ok</td>
+                <td>verdict</td>
+                <td>
+                  Template accepted.
+                </td>
               </tr>
             </tbody>
           </table>
+
+          <p class="hint" style="margin-top:12px">
+            <span class="mono">reason_code</span> is the stable contract. UI labels and internal enum names may change without notice.
+          </p>
         </div>
       </div>
     </section>
+
 
     <section class="section">
       <div class="sectionhead">
