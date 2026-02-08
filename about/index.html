@@ -3,94 +3,174 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>About Veldra</title>
-  <meta name="description" content="Project summary, contact, and repository licensing.">
-  <meta name="theme-color" content="#0b1b2b">
+  <title>About — Veldra</title>
+  <meta name="description" content="Veldra builds verification and observability infrastructure for Bitcoin mining pool operators.">
+  <meta name="theme-color" content="#0a1628">
 
-  <link rel="icon" type="image/png" href="/assets/brand/favicon.png?v=20260120">
-  <link rel="apple-touch-icon" href="/assets/brand/veldra-mark.png?v=20260120">
-  <link rel="stylesheet" href="/assets/style.css?v=3">
-  <script src="/assets/script.js?v=3" defer></script>
+  <link rel="canonical" href="https://veldra.org/about/">
+  <link rel="icon" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/brand/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/brand/favicon-16.png">
+  <link rel="apple-touch-icon" href="/assets/brand/apple-touch-icon.png">
+
+  <meta property="og:title" content="About — Veldra">
+  <meta property="og:description" content="Veldra builds verification and observability infrastructure for Bitcoin mining pool operators.">
+  <meta property="og:url" content="https://veldra.org/about/">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="stylesheet" href="/assets/style.css?v=4">
+  <script src="/assets/script.js?v=4" defer></script>
 </head>
-
 <body>
-  <div class="topbar">
+
+  <nav class="topbar">
     <div class="container">
       <div class="nav">
         <a class="brand" href="/" aria-label="Veldra home">
-          <img src="/assets/brand/veldra-logo.png?v=20260120" alt="Veldra">
+          <img src="/assets/brand/veldra-logo.png" alt="Veldra">
         </a>
-
         <div class="navlinks">
           <a href="/">Home</a>
-          <a href="/demo/">Demo</a>
-          <a href="/how-it-works/">How it works</a>
-          <a href="/policy/">Policy</a>
-          <a href="/security/">Security</a>
-          <a aria-current="page" href="/about/">About</a>
+          <a href="/product/">Product</a>
+          <a href="/docs/">Docs</a>
+          <a href="/about/" aria-current="page">About</a>
         </div>
+        <div class="nav-actions">
+          <a href="https://github.com/LeavesJ/veldra" class="btn btn-primary btn-sm" target="_blank" rel="noreferrer">GitHub</a>
+        </div>
+        <button class="nav-toggle" aria-label="Menu" aria-expanded="false">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+        </button>
+      </div>
+    </div>
+  </nav>
 
-        <div class="navcta">
-          <a class="btn primary" href="https://github.com/LeavesJ/veldra" target="_blank" rel="noreferrer">Repo</a>
+  <section class="hero-light">
+    <div class="container">
+      <div class="hero-inner">
+        <div class="hero-label">
+          <span class="hero-label-dot"></span>
+          <span class="section-eyebrow">Company</span>
+        </div>
+        <h1 class="hero-title">About Veldra</h1>
+        <p class="hero-sub">Building verification and observability infrastructure for Bitcoin mining pool operators.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <h2>What we do</h2>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-icon card-icon-blue">&#x2690;</div>
+          <h3>Mission</h3>
+          <p>Eliminate ambiguous template failures. Every reject must be self-explanatory with a stable reason code and measured context. No mysterious failure modes.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon-navy">&#x2699;</div>
+          <h3>Approach</h3>
+          <p>Production-grade Rust. Deterministic evaluation. Structured observability. Explicit errors over silent fallbacks. Stable machine interfaces.</p>
         </div>
       </div>
     </div>
-  </div>
+  </section>
 
-  <main class="container">
-    <section class="hero">
-      <div class="kicker"><span class="kdot"></span> About</div>
-      <h1>Veldra</h1>
-      <p class="lede">
-        Veldra's ReserveGrid OS is a policy-based template verifier and operator dashboard for Bitcoin mining pools.
-        The goal: every reject explains itself.
-      </p>
-    </section>
-
-    <section class="section">
-      <div class="sectionhead">
-        <h2>Project</h2>
-        <p class="hint">Practical infrastructure</p>
+  <section class="section section-alt">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-eyebrow">Flagship product</div>
+        <h2>ReserveGrid OS</h2>
+        <p>Template verification and observability built for production mining pools.</p>
       </div>
-
-      <div class="grid">
-        <div class="card">
-          <h3>What it delivers</h3>
-          <p>Deterministic verdicts and a clean operational surface for review and debugging.</p>
-          <div class="hr"></div>
-          <div class="badges">
-            <span class="badge accent">Reason codes</span>
-            <span class="badge navy">Policy context</span>
-            <span class="badge navy">Regtest demo</span>
-          </div>
-        </div>
-
-        <div class="card">
-          <h3>Contact</h3>
-          <p>For pilots or questions.</p>
-          <div class="hr"></div>
-          <div class="codepanel" style="padding:12px">
-<pre class="mono" style="white-space:pre-wrap">jarrondeng@veldra.org</pre>
-          </div>
-        </div>
-
-        <div class="card full">
-          <h3>Licensing</h3>
-          <p>This repository is source available under the Veldra license included in the repo.</p>
-          <div class="hr"></div>
-          <div style="display:flex; gap:12px; flex-wrap:wrap">
-            <a class="btn" href="https://github.com/LeavesJ/veldra" target="_blank" rel="noreferrer">View code</a>
-            <a class="btn" href="/demo/">Demo</a>
-            <a class="btn" href="/security/">Security boundaries</a>
-          </div>
+      <div class="card" style="max-width:720px;margin:0 auto;">
+        <p>ReserveGrid OS evaluates block templates against operator policy with explainable rejections, live dashboards, and structured exports. Built in Rust with deterministic evaluation, zero silent failures, and comprehensive reason codes for every decision.</p>
+        <div style="margin-top:20px;">
+          <a href="/product/" class="btn btn-primary">Explore ReserveGrid OS</a>
         </div>
       </div>
-    </section>
-
-    <div class="footer">
-      <div>© 2026 Veldra, Inc.</div>
-      <div><a href="/policy/">Reason codes</a></div>
     </div>
-  </main>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-eyebrow">Open source</div>
+        <h2>Source-available</h2>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <h3>Core repository</h3>
+          <p>The ReserveGrid OS codebase: rg-protocol, pool-verifier, template-manager, and sv2-bridge.</p>
+          <div style="margin-top:16px;">
+            <a href="https://github.com/LeavesJ/veldra" class="btn btn-sm" target="_blank" rel="noreferrer">github.com/LeavesJ/veldra</a>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Website</h3>
+          <p>This site. Static HTML, CSS, JS. Hosted on GitHub Pages.</p>
+          <div style="margin-top:16px;">
+            <a href="https://github.com/LeavesJ/veldra-site" class="btn btn-sm" target="_blank" rel="noreferrer">github.com/LeavesJ/veldra-site</a>
+          </div>
+        </div>
+      </div>
+      <div class="callout callout-blue mt-6">
+        Both repositories are source-available under the Veldra license included in each repo.
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-eyebrow">Contact</div>
+        <h2>Get in touch</h2>
+        <p>For pilots, feedback, or collaboration inquiries.</p>
+      </div>
+      <div class="code-panel" style="max-width:420px;margin:0 auto;text-align:center;padding:24px;">
+        <pre style="font-size:15px;">jarrondeng@veldra.org</pre>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <img src="/assets/brand/veldra-logo.png" alt="Veldra" style="height:28px;filter:brightness(0) invert(1);opacity:.7;">
+          <p>Infrastructure for Bitcoin mining pool operators.</p>
+        </div>
+        <div>
+          <h4>Product</h4>
+          <div class="footer-links">
+            <a href="/product/">ReserveGrid OS</a>
+            <a href="/product/#demo">Demo</a>
+          </div>
+        </div>
+        <div>
+          <h4>Resources</h4>
+          <div class="footer-links">
+            <a href="/docs/">Documentation</a>
+            <a href="https://github.com/LeavesJ/veldra" target="_blank" rel="noreferrer">GitHub</a>
+          </div>
+        </div>
+        <div>
+          <h4>Company</h4>
+          <div class="footer-links">
+            <a href="/about/">About</a>
+            <a href="mailto:jarrondeng@veldra.org">Contact</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2026 Veldra, Inc.</span>
+        <span>Source-available under the Veldra license</span>
+      </div>
+    </div>
+  </footer>
+
 </body>
 </html>

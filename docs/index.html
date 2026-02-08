@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Documentation — Veldra</title>
+  <meta name="description" content="Technical reference for ReserveGrid OS: reason codes, policy configuration, protocol contract, and security boundaries.">
+  <meta name="theme-color" content="#0a1628">
+
+  <link rel="canonical" href="https://veldra.org/docs/">
+  <link rel="icon" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/brand/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/brand/favicon-16.png">
+  <link rel="apple-touch-icon" href="/assets/brand/apple-touch-icon.png">
+
+  <meta property="og:title" content="Documentation — Veldra">
+  <meta property="og:description" content="Technical reference for ReserveGrid OS: reason codes, policy configuration, protocol contract, and security boundaries.">
+  <meta property="og:url" content="https://veldra.org/docs/">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="stylesheet" href="/assets/style.css?v=4">
+  <script src="/assets/script.js?v=4" defer></script>
+</head>
+<body>
+
+  <nav class="topbar">
+    <div class="container">
+      <div class="nav">
+        <a class="brand" href="/" aria-label="Veldra home">
+          <img src="/assets/brand/veldra-logo.png" alt="Veldra">
+        </a>
+        <div class="navlinks">
+          <a href="/">Home</a>
+          <a href="/product/">Product</a>
+          <a href="/docs/" aria-current="page">Docs</a>
+          <a href="/about/">About</a>
+        </div>
+        <div class="nav-actions">
+          <a href="https://github.com/LeavesJ/veldra" class="btn btn-primary btn-sm" target="_blank" rel="noreferrer">GitHub</a>
+        </div>
+        <button class="nav-toggle" aria-label="Menu" aria-expanded="false">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <section class="hero-light">
+    <div class="container">
+      <div class="hero-inner">
+        <div class="hero-label">
+          <span class="hero-label-dot"></span>
+          <span class="section-eyebrow">Documentation</span>
+        </div>
+        <h1 class="hero-title">Technical reference</h1>
+        <p class="hero-sub">Reason codes, policy configuration, protocol contract, and security boundaries.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-eyebrow">Reference</div>
+        <h2>Reason codes</h2>
+        <p>Every verdict carries a stable reason_code. These are the canonical codes across protocol, verifier, exports, and docs.</p>
+      </div>
+      <div class="table-wrap fade-up">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Code</th>
+              <th>Category</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>ok</code></td>
+              <td><span class="tag-green">verdict</span></td>
+              <td>Template accepted</td>
+            </tr>
+            <tr>
+              <td><code>avg_fee_below_minimum</code></td>
+              <td><span class="tag-blue">fees</span></td>
+              <td>Avg fee per tx below effective minimum for selected fee_tier</td>
+            </tr>
+            <tr>
+              <td><code>total_fees_below_minimum</code></td>
+              <td><span class="tag-blue">fees</span></td>
+              <td>Total fees below min_total_fees</td>
+            </tr>
+            <tr>
+              <td><code>coinbase_value_zero_rejected</code></td>
+              <td><span class="tag-green">template</span></td>
+              <td>coinbase_value is zero and reject_coinbase_zero enabled</td>
+            </tr>
+            <tr>
+              <td><code>tx_count_exceeded</code></td>
+              <td><span class="tag-navy">limits</span></td>
+              <td>tx_count exceeds max_tx_count</td>
+            </tr>
+            <tr>
+              <td><code>prev_hash_len_mismatch</code></td>
+              <td><span class="tag-green">template</span></td>
+              <td>prev_hash length mismatch</td>
+            </tr>
+            <tr>
+              <td><code>invalid_prev_hash</code></td>
+              <td><span class="tag-green">template</span></td>
+              <td>prev_hash not valid hex</td>
+            </tr>
+            <tr>
+              <td><code>protocol_version_mismatch</code></td>
+              <td><span class="tag-navy">protocol</span></td>
+              <td>Protocol version mismatch</td>
+            </tr>
+            <tr>
+              <td><code>empty_template_rejected</code></td>
+              <td><span class="tag-green">template</span></td>
+              <td>tx_count == 0 and reject_empty_templates enabled</td>
+            </tr>
+            <tr>
+              <td><code>policy_load_error</code></td>
+              <td><span class="tag-navy">system</span></td>
+              <td>Policy state unavailable (e.g., lock poisoned)</td>
+            </tr>
+            <tr>
+              <td><code>mempool_backend_unavailable</code></td>
+              <td><span class="tag-navy">system</span></td>
+              <td>Reserved for future fail-closed mode</td>
+            </tr>
+            <tr>
+              <td><code>internal_error</code></td>
+              <td><span class="tag-navy">system</span></td>
+              <td>Unexpected handler failure</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout-blue mt-6">
+        <strong>Contract stability:</strong> reason_code is the stable contract. System-category codes are emitted at the handler boundary, not by the policy evaluator.
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-eyebrow">Configuration</div>
+        <h2>Policy configuration</h2>
+        <p>All policy lives in a flat [policy] table in policy.toml. VELDRA_ env vars override at startup.</p>
+      </div>
+      <div class="code-panel fade-up">
+        <button class="copy-btn">Copy</button>
+<pre><span style="color:#6a9955;"># policy.toml — regtest example</span>
+
+[policy]
+protocol_version      = 2
+required_prevhash_len = 64
+
+min_total_fees        = 0
+max_tx_count          = 12
+
+low_mempool_tx        = 5
+high_mempool_tx       = 20
+
+min_avg_fee_lo        = 900
+min_avg_fee_mid       = 1900
+min_avg_fee_hi        = 4200
+
+reject_empty_templates = true
+reject_coinbase_zero   = false
+unknown_mempool_as_high = false</pre>
+      </div>
+      <div style="max-width:600px;margin:24px auto 0;">
+        <dl style="display:grid;grid-template-columns:auto 1fr;gap:8px 16px;font-size:14px;">
+          <dt style="color:var(--muted);font-weight:600;">Tier input</dt>
+          <dd style="margin:0;">mempool tx count</dd>
+          <dt style="color:var(--muted);font-weight:600;">Tier output</dt>
+          <dd style="margin:0;">low | mid | high</dd>
+          <dt style="color:var(--muted);font-weight:600;">Tier source</dt>
+          <dd style="margin:0;">"measured" or "fallback"</dd>
+          <dt style="color:var(--muted);font-weight:600;">Fallback rule</dt>
+          <dd style="margin:0;">unknown_mempool_as_high selects high tier when mempool is unavailable</dd>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-eyebrow">Protocol</div>
+        <h2>Protocol contract</h2>
+        <p>Line-delimited JSON over TCP. Each message is a TemplatePropose or TemplateVerdict.</p>
+      </div>
+      <div class="code-panel fade-up">
+        <button class="copy-btn">Copy</button>
+<pre>{
+  "version": 2,
+  "id": 42,
+  "accepted": false,
+  "reason_code": "avg_fee_below_minimum",
+  "reason_detail": "avg_fee=141 &lt; min_avg_fee_used=200",
+  "policy_context": {
+    "fee_tier": "mid",
+    "min_avg_fee_used": 200,
+    "min_total_fees_used": 0,
+    "reject_coinbase_zero": false,
+    "unknown_mempool_as_high": true
+  }
+}</pre>
+      </div>
+      <div class="callout callout-blue mt-6">
+        <strong>Backward compatibility:</strong> New fields use <code>serde(default)</code>, so old clients ignore unknown fields without error. A version bump occurs only for breaking changes to the verdict structure.
+      </div>
+    </div>
+  </section>
+
+  <section id="security" class="section section-alt">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-eyebrow">Security</div>
+        <h2>Security boundaries</h2>
+      </div>
+      <div class="grid-3 fade-up">
+        <div class="card">
+          <h3>What it is</h3>
+          <p>Policy evaluation and observability for block templates. Veldra rates templates against configurable fee and structural constraints, emitting structured verdicts for downstream use.</p>
+        </div>
+        <div class="card">
+          <h3>What it is not</h3>
+          <p>No custody, no keys, no signing, no wallet, no payout logic. Veldra does not hold, sign, or move funds. It is a stateless evaluator with optional logging.</p>
+        </div>
+        <div class="card">
+          <h3>Operational guidance</h3>
+          <p>Keep endpoints local or behind a VPN. Store audit logs securely. Add authentication and rate limiting before exposing the API to untrusted networks.</p>
+        </div>
+      </div>
+      <div class="callout callout-blue mt-6">
+        <strong>Warning:</strong> Do not expose the dashboard to the public internet without authentication and network hardening.
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="card card-dark fade-up" style="padding:40px;text-align:center;">
+        <div class="section-eyebrow" style="color:rgba(255,255,255,.4);">Source</div>
+        <h2 style="color:#fff;margin:12px 0 8px;font-size:28px;">Explore the codebase</h2>
+        <p style="color:rgba(255,255,255,.55);max-width:500px;margin:0 auto 24px;">rg-protocol, pool-verifier, template-manager, and sv2-bridge. All source-available under the Veldra license.</p>
+        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+          <a href="https://github.com/LeavesJ/veldra" class="btn btn-primary" target="_blank" rel="noreferrer">View on GitHub</a>
+          <a href="/product/" class="btn" style="border-color:rgba(255,255,255,.15);color:rgba(255,255,255,.8);background:rgba(255,255,255,.06);">Back to Product</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <img src="/assets/brand/veldra-logo.png" alt="Veldra" style="height:28px;filter:brightness(0) invert(1);opacity:.7;">
+          <p>Infrastructure for Bitcoin mining pool operators.</p>
+        </div>
+        <div>
+          <h4>Product</h4>
+          <div class="footer-links">
+            <a href="/product/">ReserveGrid OS</a>
+            <a href="/product/#demo">Demo</a>
+          </div>
+        </div>
+        <div>
+          <h4>Resources</h4>
+          <div class="footer-links">
+            <a href="/docs/">Documentation</a>
+            <a href="https://github.com/LeavesJ/veldra" target="_blank" rel="noreferrer">GitHub</a>
+          </div>
+        </div>
+        <div>
+          <h4>Company</h4>
+          <div class="footer-links">
+            <a href="/about/">About</a>
+            <a href="mailto:jarrondeng@veldra.org">Contact</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2026 Veldra, Inc.</span>
+        <span>Source-available under the Veldra license</span>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

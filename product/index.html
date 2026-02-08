@@ -3,21 +3,20 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Veldra — Infrastructure for Mining Pool Operators</title>
-  <meta name="description" content="Policy-based template verification and observability for Bitcoin mining pools. Deterministic verdicts with reason codes and measured context.">
+  <title>ReserveGrid OS — Template Verification for Mining Pools</title>
+  <meta name="description" content="ReserveGrid OS: Rust-based template verification and observability stack for Bitcoin mining pools. Evaluate templates against operator policy with explainable rejections and live dashboards.">
   <meta name="theme-color" content="#0a1628">
 
-  <link rel="canonical" href="https://veldra.org/">
+  <link rel="canonical" href="https://veldra.org/product/">
   <link rel="icon" href="/favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/brand/favicon-32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/assets/brand/favicon-16.png">
   <link rel="apple-touch-icon" href="/assets/brand/apple-touch-icon.png">
 
-  <meta property="og:title" content="Veldra — Infrastructure for Mining Pool Operators">
-  <meta property="og:description" content="Policy-based template verification and observability for Bitcoin mining pools.">
-  <meta property="og:url" content="https://veldra.org/">
+  <meta property="og:title" content="ReserveGrid OS — Template Verification for Mining Pools">
+  <meta property="og:description" content="Rust-based template verification and observability for Bitcoin mining pools.">
+  <meta property="og:url" content="https://veldra.org/product/">
   <meta property="og:type" content="website">
-  <meta property="og:image" content="https://veldra.org/assets/brand/veldra-mark.png">
   <meta name="twitter:card" content="summary_large_image">
 
   <link rel="stylesheet" href="/assets/style.css?v=4">
@@ -32,8 +31,8 @@
           <img src="/assets/brand/veldra-logo.png" alt="Veldra">
         </a>
         <div class="navlinks">
-          <a href="/" aria-current="page">Home</a>
-          <a href="/product/">Product</a>
+          <a href="/">Home</a>
+          <a href="/product/" aria-current="page">Product</a>
           <a href="/docs/">Docs</a>
           <a href="/about/">About</a>
         </div>
@@ -47,22 +46,17 @@
     </div>
   </nav>
 
-  <section class="hero-dark">
+  <section class="hero-light">
     <div class="container">
-      <div class="hero-inner fade-up">
+      <div class="hero-inner">
         <div class="hero-label">
           <span class="hero-label-dot"></span>
-          <span>Bitcoin Mining Infrastructure</span>
+          <span class="section-eyebrow">ReserveGrid OS</span>
         </div>
-        <h1 class="hero-title">
-          Infrastructure for mining pool <span class="accent">operators</span>
-        </h1>
-        <p class="hero-sub">
-          Veldra builds policy-based template verification and observability tools for Bitcoin mining pools.
-          Deterministic verdicts with reason codes and measured context.
-        </p>
+        <h1 class="hero-title">Template verification built for production</h1>
+        <p class="hero-sub">Evaluate block templates against operator policy with explainable rejections, live observability, and structured exports. Built in Rust for Bitcoin mining pools.</p>
         <div class="hero-actions">
-          <a href="/product/" class="btn btn-primary">Explore ReserveGrid OS</a>
+          <a href="/docs/" class="btn btn-primary">Read the Docs</a>
           <a href="https://github.com/LeavesJ/veldra" class="btn" style="border-color:rgba(255,255,255,.18);color:rgba(255,255,255,.85);background:rgba(255,255,255,.06);" target="_blank" rel="noreferrer">View on GitHub</a>
         </div>
       </div>
@@ -71,58 +65,8 @@
 
   <section class="section">
     <div class="container">
-      <div class="stat-grid fade-up">
-        <div class="stat-item">
-          <div class="stat-value">11</div>
-          <div class="stat-label">Reason codes</div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-value">3</div>
-          <div class="stat-label">Fee tiers</div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-value">&lt;1ms</div>
-          <div class="stat-label">Verdict latency</div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-value">v2</div>
-          <div class="stat-label">Protocol version</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section section-alt">
-    <div class="container">
       <div class="section-header">
-        <div class="section-eyebrow">Capabilities</div>
-        <h2>What we build</h2>
-        <p>Verification infrastructure with observability built in from day one.</p>
-      </div>
-      <div class="grid-3">
-        <div class="card fade-up fade-up-d1">
-          <div class="card-icon card-icon-blue">&#x2713;</div>
-          <h3>Deterministic verdicts</h3>
-          <p>Same template plus same policy always yields the same verdict. Every reject includes a stable reason_code and policy_context.</p>
-        </div>
-        <div class="card fade-up fade-up-d2">
-          <div class="card-icon card-icon-green">&#x25C6;</div>
-          <h3>Mempool-aware fee tiers</h3>
-          <p>Dynamic low, mid, and high tier selection based on real-time mempool tx count. Graceful fallback when mempool is unavailable.</p>
-        </div>
-        <div class="card fade-up fade-up-d3">
-          <div class="card-icon card-icon-navy">&#x25A6;</div>
-          <h3>Operator dashboard</h3>
-          <p>Live verdicts, aggregates by reason and tier, policy view, and recent templates. CSV and NDJSON export for compliance.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="container">
-      <div class="section-header">
-        <h2>Verification flow</h2>
+        <h2>How it works</h2>
         <p>Templates in, verdicts out. One contract, end to end.</p>
       </div>
       <div class="flow-steps fade-up">
@@ -156,6 +100,47 @@
   <section class="section section-alt">
     <div class="container">
       <div class="section-header">
+        <div class="section-eyebrow">Capabilities</div>
+        <h2>Core capabilities</h2>
+      </div>
+      <div class="grid-3">
+        <div class="card fade-up fade-up-d1">
+          <div class="card-icon card-icon-blue">&#x2713;</div>
+          <h3>Explainable rejects</h3>
+          <p>Every rejection includes reason_code and policy_context, so you understand exactly why a template was rejected.</p>
+        </div>
+        <div class="card fade-up fade-up-d2">
+          <div class="card-icon card-icon-green">&#x25C6;</div>
+          <h3>Mempool-aware fee tiers</h3>
+          <p>Automatic low, mid, and high fee tier classification based on real-time mempool transaction counts.</p>
+        </div>
+        <div class="card fade-up fade-up-d3">
+          <div class="card-icon card-icon-navy">&#x25A6;</div>
+          <h3>Live operator dashboard</h3>
+          <p>Real-time verdicts, aggregates, and charts for instant visibility into template acceptance rates.</p>
+        </div>
+        <div class="card fade-up fade-up-d1">
+          <div class="card-icon card-icon-navy">&#x2699;</div>
+          <h3>Policy wizard</h3>
+          <p>Generate policy.toml from a simple UI instead of hand-editing TOML configuration files.</p>
+        </div>
+        <div class="card fade-up fade-up-d2">
+          <div class="card-icon card-icon-blue">&#x2261;</div>
+          <h3>Deterministic evaluation</h3>
+          <p>Same template and policy always produce the same verdict. No randomness, 100% reproducible.</p>
+        </div>
+        <div class="card fade-up fade-up-d3">
+          <div class="card-icon card-icon-green">&#x25A0;</div>
+          <h3>Structured exports</h3>
+          <p>NDJSON logs, CSV reports, and stats API for easy integration with monitoring and compliance tools.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
         <h2>Sample verdict</h2>
         <p>What the dashboard, logs, and integrations consume.</p>
       </div>
@@ -179,6 +164,36 @@
     </div>
   </section>
 
+  <section id="demo" class="section section-alt">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-eyebrow">Demo</div>
+        <h2>See it in action</h2>
+      </div>
+      <div style="max-width:800px;margin:0 auto;">
+        <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;">
+          <iframe style="position:absolute;top:0;left:0;width:100%;height:100%;" src="https://www.youtube.com/embed/lDIIl7Oe73Y" title="ReserveGrid OS Demo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+      </div>
+      <div style="margin-top:48px;">
+        <div class="section-header">
+          <h3>Quick start</h3>
+        </div>
+        <div class="code-panel fade-up">
+          <button class="copy-btn">Copy</button>
+<pre># Clone the repository
+git clone https://github.com/LeavesJ/veldra.git
+cd veldra
+
+# Start regtest environment (bitcoind + pool-verifier + dashboard)
+./scripts/dev-regtest.sh
+
+# Dashboard available at http://localhost:9000</pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="section">
     <div class="container">
       <div class="card card-dark fade-up" style="padding:40px;text-align:center;">
@@ -186,8 +201,8 @@
         <h2 style="color:#fff;margin:12px 0 8px;font-size:28px;">Ready to verify your templates?</h2>
         <p style="color:rgba(255,255,255,.55);max-width:500px;margin:0 auto 24px;">Deploy ReserveGrid OS and get deterministic, observable template verification with full reason codes.</p>
         <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
-          <a href="/product/" class="btn btn-primary">Explore ReserveGrid OS</a>
-          <a href="/docs/" class="btn" style="border-color:rgba(255,255,255,.15);color:rgba(255,255,255,.8);background:rgba(255,255,255,.06);">Read the docs</a>
+          <a href="/docs/" class="btn btn-primary">Read the docs</a>
+          <a href="https://github.com/LeavesJ/veldra" class="btn" style="border-color:rgba(255,255,255,.15);color:rgba(255,255,255,.8);background:rgba(255,255,255,.06);" target="_blank" rel="noreferrer">View on GitHub</a>
         </div>
       </div>
     </div>
