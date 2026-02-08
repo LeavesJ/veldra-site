@@ -103,7 +103,7 @@ ul { list-style: none; }
   flex-shrink: 0;
 }
 .brand img {
-  height: 36px;
+  height: 48px;
   width: auto;
 }
 
@@ -245,7 +245,7 @@ ul { list-style: none; }
 }
 
 .hero-label {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   gap: 8px;
   font-size: 13px;
@@ -254,6 +254,9 @@ ul { list-style: none; }
   text-transform: uppercase;
   color: rgba(255,255,255,.56);
   margin-bottom: 20px;
+}
+.hero-label .section-eyebrow {
+  margin-bottom: 0;
 }
 .hero-label-dot {
   width: 8px;
