@@ -623,12 +623,11 @@
         <div class="navlinks">
           <a href="/">Home</a>
           <a href="/product/">Product</a>
-          <a href="/observe/" aria-current="page">Observe</a>
           <a href="/docs/">Docs</a>
           <a href="/about/">About</a>
         </div>
         <div class="nav-actions">
-          <a href="https://github.com/LeavesJ/veldra" class="btn btn-primary btn-sm" target="_blank" rel="noreferrer">GitHub</a>
+          <a href="/observe/" class="btn btn-primary btn-sm" aria-current="page">Observe</a>
         </div>
         <button class="nav-toggle" aria-label="Menu" aria-expanded="false">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
@@ -1032,7 +1031,6 @@
           <h4>Resources</h4>
           <div class="footer-links">
             <a href="/docs/">Documentation</a>
-            <a href="https://github.com/LeavesJ/veldra" target="_blank" rel="noreferrer">GitHub</a>
           </div>
         </div>
         <div>
@@ -1337,7 +1335,7 @@
     // ── Init ────────────────────────────────────
     function init() {
       var params = new URLSearchParams(window.location.search);
-      var authRequired = params.has('auth');
+      var authRequired = !params.has('noauth');
       state.authUrl = extractAuthUrl();
 
       // Wire up auth form toggles
