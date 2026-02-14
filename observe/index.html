@@ -1335,7 +1335,7 @@
     // ── Init ────────────────────────────────────
     function init() {
       var params = new URLSearchParams(window.location.search);
-      var authRequired = !params.has('noauth');
+      var authRequired = params.has('auth');
       state.authUrl = extractAuthUrl();
 
       // Wire up auth form toggles
