@@ -609,7 +609,220 @@
       .reason-item { grid-template-columns: 1fr 40px; }
       .reason-label { grid-column: 1 / -1; }
       .connection-bar { flex-direction: column; align-items: stretch; }
+      .safety-grid { grid-template-columns: 1fr !important; }
     }
+
+    /* ── Consensus safety panel ──────────────── */
+    .safety-section {
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      background: var(--panel);
+      overflow: hidden;
+      margin-bottom: 40px;
+    }
+    .safety-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--ink);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .safety-header small {
+      font-weight: 400;
+      color: var(--ink-subtle);
+      font-size: 12px;
+    }
+    .safety-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--border);
+    }
+    .safety-metric {
+      background: var(--panel);
+      padding: 20px;
+    }
+    .safety-metric-label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      color: var(--ink-muted);
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+    .gauge-track {
+      height: 14px;
+      background: var(--bg);
+      border-radius: 7px;
+      overflow: hidden;
+      margin-bottom: 6px;
+    }
+    .gauge-fill {
+      height: 100%;
+      border-radius: 7px;
+      min-width: 2px;
+      transition: width .4s ease, background .3s;
+    }
+    .gauge-fill.weight { background: var(--blue); }
+    .gauge-fill.weight.critical { background: #dc503c; }
+    .gauge-fill.sigops { background: var(--green); }
+    .gauge-fill.sigops.critical { background: #dc503c; }
+    .gauge-label {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--ink-muted);
+    }
+    .safety-value {
+      font-family: var(--mono);
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--ink);
+      margin-top: 4px;
+    }
+    .safety-value.warn { color: #dc503c; }
+    .safety-warnings-bar {
+      padding: 12px 20px;
+      border-top: 1px solid var(--border);
+      font-size: 13px;
+      color: var(--ink-muted);
+    }
+    .safety-warnings-bar.active {
+      color: #b45309;
+      background: rgba(220,160,40,.04);
+    }
+
+    /* ── Collapsible reason rows ─────────────── */
+    .reason-item.expandable { cursor: pointer; }
+    .reason-item.expandable:hover { background: rgba(0,104,181,.02); }
+    .reason-chevron {
+      font-size: 10px;
+      color: var(--ink-muted);
+      transition: transform .15s;
+      margin-right: 6px;
+      display: inline-block;
+    }
+    .reason-chevron.open { transform: rotate(90deg); }
+    .reason-detail-row {
+      padding: 6px 20px 6px 32px;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--ink-subtle);
+      border-bottom: 1px solid var(--border);
+    }
+    .reason-detail-row:last-child { border-bottom: none; }
+    .reason-more {
+      padding: 4px 20px 8px 32px;
+      font-size: 11px;
+      color: var(--ink-subtle);
+    }
+
+    /* ── Safety verdict badge ────────────────── */
+    .verdict-warning-dot {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #d4880f;
+      margin-left: 4px;
+      vertical-align: middle;
+    }
+
+    /* ── Safety catalog category ─────────────── */
+    .cat-safety { color: #7c5cff; background: rgba(124,92,255,.06); }
+
+    /* ── Enforcement mode badge ──────────────── */
+    .enforce-badge {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      padding: 1px 6px;
+      border-radius: 3px;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+    .enforce-badge.enforced {
+      color: #9c2b1a;
+      background: rgba(220,80,60,.08);
+    }
+    .enforce-badge.observe {
+      color: var(--ink-muted);
+      background: var(--bg);
+    }
+
+    /* ── Export bar ──────────────────────────── */
+    .export-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 20px;
+      border-top: 1px solid var(--border);
+      font-size: 12px;
+      color: var(--ink-muted);
+    }
+    .export-link {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--blue);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .export-link:hover { text-decoration: underline; }
+
+    /* ── Mempool context ─────────────────────── */
+    .mempool-bar {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 14px 20px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--r-md);
+      margin-bottom: 16px;
+      font-size: 13px;
+      flex-wrap: wrap;
+    }
+    .mempool-stat {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .mempool-stat-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .03em;
+      color: var(--ink-muted);
+      font-weight: 600;
+    }
+    .mempool-stat-value {
+      font-family: var(--mono);
+      font-size: 13px;
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    /* ── Mixed content warning ───────────────── */
+    .mixed-content-warn {
+      font-size: 12px;
+      color: #b45309;
+      background: rgba(220,160,40,.06);
+      border: 1px solid rgba(220,160,40,.14);
+      padding: 6px 12px;
+      border-radius: 6px;
+      margin-top: 8px;
+      display: none;
+    }
+
+    /* ── Extended stale overlay ──────────────── */
+    .stale .verdict-stream { opacity: .5; }
+    .stale .reason-panel { opacity: .5; }
+    .stale .safety-section { opacity: .5; }
+    .stale .tier-card { opacity: .5; }
+    .stale .mempool-bar { opacity: .5; }
   </style>
 </head>
 <body>
@@ -730,9 +943,36 @@
         <button class="logout-link" id="logout-btn">Sign out</button>
       </div>
 
+      <div class="mixed-content-warn" id="mixed-content-warn">
+        The API endpoint uses http:// but this page is served over https://. Browsers block mixed content requests. Use an https:// endpoint or access this page over http:// for local testing.
+      </div>
+
       <div class="demo-banner hidden" id="demo-banner">
         <strong>DEMO MODE</strong>
         <span>No live backend detected. Showing example data to illustrate the dashboard.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Mempool context ──────────────────────── -->
+  <section style="padding: 0 0 4px;">
+    <div class="container">
+      <div class="mempool-bar fade-up" id="mempool-bar" style="animation-delay:.12s;display:none;">
+        <div class="mempool-stat">
+          <span class="mempool-stat-label">Mempool TX</span>
+          <span class="mempool-stat-value" id="mempool-tx">--</span>
+        </div>
+        <div class="mempool-stat">
+          <span class="mempool-stat-label">Usage</span>
+          <span class="mempool-stat-value" id="mempool-usage">--</span>
+        </div>
+        <div class="mempool-stat">
+          <span class="mempool-stat-label">Expected Tier</span>
+          <span class="mempool-stat-value" id="mempool-tier">--</span>
+        </div>
+        <div class="mempool-stat" style="margin-left:auto;">
+          <span class="mempool-stat-label" id="mempool-freshness"></span>
+        </div>
       </div>
     </div>
   </section>
@@ -781,6 +1021,13 @@
           </div>
         </div>
 
+        <!-- Export bar -->
+        <div class="export-bar" id="export-bar" style="display:none;grid-column:1/-1;">
+          <span>Export verdict data:</span>
+          <a class="export-link" id="export-csv" href="#" target="_blank">CSV</a>
+          <a class="export-link" id="export-ndjson" href="#" target="_blank">NDJSON</a>
+        </div>
+
         <!-- Reason breakdown -->
         <div class="reason-panel">
           <div class="reason-panel-header">Rejection Reasons</div>
@@ -789,6 +1036,43 @@
           </div>
         </div>
 
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Consensus safety ─────────────────────── -->
+  <section style="padding: 0 0 8px;">
+    <div class="container">
+      <div class="safety-section fade-up" style="animation-delay:.22s;">
+        <div class="safety-header">
+          Consensus Safety
+          <small>from latest verdict</small>
+        </div>
+        <div class="safety-grid">
+          <div class="safety-metric">
+            <div class="safety-metric-label">Weight utilization <span class="enforce-badge observe" id="badge-weight-mode">observe</span></div>
+            <div class="gauge-track">
+              <div class="gauge-fill weight" id="gauge-weight" style="width:0%;"></div>
+            </div>
+            <div class="gauge-label" id="label-weight">n/a</div>
+          </div>
+          <div class="safety-metric">
+            <div class="safety-metric-label">Sigops headroom <span class="enforce-badge observe" id="badge-sigops-mode">observe</span></div>
+            <div class="gauge-track">
+              <div class="gauge-fill sigops" id="gauge-sigops" style="width:0%;"></div>
+            </div>
+            <div class="gauge-label" id="label-sigops">n/a</div>
+          </div>
+          <div class="safety-metric">
+            <div class="safety-metric-label">Template age <span class="enforce-badge observe" id="badge-age-mode">observe</span></div>
+            <div class="safety-value" id="label-template-age">n/a</div>
+          </div>
+          <div class="safety-metric">
+            <div class="safety-metric-label">Coinbase sigops <span class="enforce-badge observe" id="badge-coinbase-mode">observe</span></div>
+            <div class="safety-value" id="label-coinbase-sigops">n/a</div>
+          </div>
+        </div>
+        <div class="safety-warnings-bar" id="safety-warnings-bar">No warnings</div>
       </div>
     </div>
   </section>
@@ -972,6 +1256,26 @@
               <td><span class="catalog-category cat-system">System</span></td>
               <td>Unexpected handler failure during template evaluation.</td>
             </tr>
+            <tr>
+              <td>weight_ratio_exceeded</td>
+              <td><span class="catalog-category cat-safety">Safety</span></td>
+              <td>Template weight as a fraction of MAX_BLOCK_WEIGHT (4,000,000 WU) exceeds the configured max_weight_ratio threshold.</td>
+            </tr>
+            <tr>
+              <td>template_stale</td>
+              <td><span class="catalog-category cat-safety">Safety</span></td>
+              <td>Template age exceeds max_template_age_ms, indicating the template may be based on outdated chain state.</td>
+            </tr>
+            <tr>
+              <td>sigops_budget_warning</td>
+              <td><span class="catalog-category cat-safety">Safety</span></td>
+              <td>Total sigops in the template exceed the configured warn_sigops_ratio of MAX_BLOCK_SIGOPS (80,000). Observe-only by default.</td>
+            </tr>
+            <tr>
+              <td>coinbase_sigops_abnormal</td>
+              <td><span class="catalog-category cat-safety">Safety</span></td>
+              <td>Coinbase transaction sigops exceed warn_coinbase_sigops_max, which may indicate an unusual or adversarial coinbase. Observe-only by default.</td>
+            </tr>
           </tbody>
         </table>
       </div>
@@ -994,7 +1298,7 @@
         <div class="flow-step">
           <span class="flow-step-num">2</span>
           <h3>Policy Evaluated</h3>
-          <p>Pool Verifier checks the template against policy.toml rules in sequence: protocol version, prev hash, fees, tx limits, and tier thresholds.</p>
+          <p>Pool Verifier checks the template against policy.toml rules in sequence: protocol version, prev hash, fees, tx limits, tier thresholds, and consensus safety checks (weight ratio, template staleness, sigops budget).</p>
         </div>
         <div class="flow-step">
           <span class="flow-step-num">3</span>
@@ -1064,7 +1368,9 @@
       failures: 0,
       pollTimer: null,
       authToken: null,
-      authUser: null
+      authUser: null,
+      expandedReasons: {},
+      mempool: null
     };
 
     // ── DOM refs — dashboard ────────────────────
@@ -1108,7 +1414,8 @@
         'tx_count_exceeded': 9,
         'total_fees_below_minimum': 4,
         'empty_template_rejected': 3,
-        'internal_error': 2
+        'weight_ratio_exceeded': 1,
+        'internal_error': 1
       },
       by_tier: { 'low': 387, 'mid': 534, 'high': 326 }
     };
@@ -1126,18 +1433,27 @@
       reject_empty_templates: true,
       reject_coinbase_zero: false,
       unknown_mempool_as_high: true,
-      max_weight_ratio: 0.999
+      max_weight_ratio: 0.999,
+      enforce_weight_ratio: false,
+      max_template_age_ms: null,
+      enforce_template_age: false,
+      warn_sigops_ratio: 0.95,
+      warn_coinbase_sigops_max: 400
     };
 
     function generateMockVerdicts() {
       var reasons = [null, null, null, null, null, null, 'avg_fee_below_minimum', 'tx_count_exceeded', null, null,
-                     null, null, 'total_fees_below_minimum', null, null, null, 'empty_template_rejected', null, null, null];
+                     null, null, 'total_fees_below_minimum', null, null, null, 'empty_template_rejected', null, 'sigops_budget_warning', null];
       var tiers = ['low', 'mid', 'mid', 'high', 'mid', 'low', 'high', 'mid'];
       var out = [];
       var now = Date.now();
       for (var i = 0; i < 20; i++) {
         var rc = reasons[i % reasons.length];
-        var accepted = rc === null;
+        var accepted = rc === null || rc === 'sigops_budget_warning';
+        var weight = accepted ? (2800000 + Math.floor(Math.random() * 1000000)) : (3900000 + Math.floor(Math.random() * 90000));
+        var sigops = accepted ? (40000 + Math.floor(Math.random() * 30000)) : (76000 + Math.floor(Math.random() * 4000));
+        var warnings = [];
+        if (rc === 'sigops_budget_warning') warnings.push('sigops_budget_warning: ' + sigops + ' / 80000');
         out.push({
           log_id: 1247 - i,
           template_id: (1000 + i),
@@ -1145,13 +1461,18 @@
           total_fees: accepted ? (1500000 + Math.floor(Math.random() * 2000000)) : (50000 + Math.floor(Math.random() * 100000)),
           tx_count: accepted ? (2000 + Math.floor(Math.random() * 3000)) : (12000 + Math.floor(Math.random() * 2000)),
           accepted: accepted,
-          reason_code: rc,
+          reason_code: (rc === 'sigops_budget_warning') ? null : rc,
           reason_detail: rc ? rc.replace(/_/g, ' ') : null,
           timestamp: Math.floor((now - i * 6000) / 1000),
           min_avg_fee_used: 500,
           fee_tier: tiers[i % tiers.length],
           tier_source: 'measured',
-          avg_fee_sats_per_tx: accepted ? (500 + Math.floor(Math.random() * 1000)) : (80 + Math.floor(Math.random() * 100))
+          avg_fee_sats_per_tx: accepted ? (500 + Math.floor(Math.random() * 1000)) : (80 + Math.floor(Math.random() * 100)),
+          template_weight: weight,
+          total_sigops: sigops,
+          coinbase_sigops: null,
+          created_at_unix_ms: now - i * 6000,
+          safety_warnings: warnings
         });
       }
       return out;
@@ -1191,10 +1512,12 @@
       // Start the dashboard connection
       state.apiUrl = extractApiUrl();
       $apiUrl.value = state.apiUrl;
+      checkMixedContent();
       $apiUrl.addEventListener('change', function () {
         var v = $apiUrl.value.trim();
         if (v && v !== state.apiUrl) {
           state.apiUrl = v;
+          checkMixedContent();
           stopPolling();
           state.failures = 0;
           setMode('connecting');
@@ -1335,7 +1658,8 @@
     // ── Init ────────────────────────────────────
     function init() {
       var params = new URLSearchParams(window.location.search);
-      var authRequired = params.has('auth');
+      var isLocal = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+      var authRequired = !(params.has('noauth') && isLocal);
       state.authUrl = extractAuthUrl();
 
       // Wire up auth form toggles
@@ -1380,10 +1704,12 @@
       $userBar.classList.add('hidden');
       state.apiUrl = extractApiUrl();
       $apiUrl.value = state.apiUrl;
+      checkMixedContent();
       $apiUrl.addEventListener('change', function () {
         var v = $apiUrl.value.trim();
         if (v && v !== state.apiUrl) {
           state.apiUrl = v;
+          checkMixedContent();
           stopPolling();
           state.failures = 0;
           setMode('connecting');
@@ -1460,11 +1786,13 @@
       Promise.all([
         safeFetch(state.apiUrl + '/stats'),
         safeFetch(state.apiUrl + '/verdicts'),
-        safeFetch(state.apiUrl + '/policy')
+        safeFetch(state.apiUrl + '/policy'),
+        safeFetch(state.apiUrl + '/mempool').catch(function () { return null; })
       ]).then(function (results) {
         if (results[0]) state.stats = results[0];
         if (results[1]) state.verdicts = results[1].slice(0, 100);
         if (results[2]) state.policy = results[2];
+        state.mempool = results[3] || null;
         state.lastUpdate = Date.now();
         state.failures = 0;
         renderAll();
@@ -1490,6 +1818,10 @@
       renderStats();
       renderVerdicts();
       renderReasons();
+      renderSafety();
+      renderEnforcementBadges();
+      renderMempool();
+      renderExportLinks();
       renderTiers();
       renderPolicy();
       renderLastUpdated();
@@ -1537,6 +1869,9 @@
         if (v.reason_code && !v.accepted) {
           html += '<div class="verdict-reason">' + escHtml(v.reason_code) + '</div>';
         }
+        if (v.safety_warnings && v.safety_warnings.length > 0) {
+          html += '<div class="verdict-reason" style="color:#b45309;">' + escHtml(v.safety_warnings.join('; ')) + '</div>';
+        }
         html += '</div>';
       }
       $verdictList.innerHTML = html;
@@ -1547,25 +1882,231 @@
       var reasons = state.stats.by_reason;
       var entries = Object.keys(reasons).map(function (k) {
         return { code: k, count: reasons[k] };
-      }).sort(function (a, b) { return b.count - a.count; }).slice(0, 6);
+      }).sort(function (a, b) { return b.count - a.count; }).slice(0, 8);
 
       if (entries.length === 0) {
         $reasonChart.innerHTML = '<div class="reason-empty">No rejections recorded</div>';
         return;
       }
 
+      // Build a map of reason_code to matching verdicts for drill-down
+      var byReasonVerdicts = {};
+      (state.verdicts || []).forEach(function (v) {
+        if (!v.accepted && v.reason_code) {
+          if (!byReasonVerdicts[v.reason_code]) byReasonVerdicts[v.reason_code] = [];
+          byReasonVerdicts[v.reason_code].push(v);
+        }
+      });
+
       var maxCount = entries[0].count;
+      var AGG_LIMIT = 10;
       var html = '';
       for (var i = 0; i < entries.length; i++) {
         var e = entries[i];
         var pct = maxCount > 0 ? (e.count / maxCount) * 100 : 0;
-        html += '<div class="reason-item">';
-        html += '<div class="reason-label">' + escHtml(e.code) + '</div>';
+        var matching = byReasonVerdicts[e.code] || [];
+        var canExpand = matching.length > 0;
+        var isExpanded = !!state.expandedReasons[e.code];
+
+        html += '<div class="reason-item' + (canExpand ? ' expandable' : '') + '" data-reason="' + escHtml(e.code) + '">';
+        html += '<div class="reason-label">';
+        if (canExpand) {
+          html += '<span class="reason-chevron' + (isExpanded ? ' open' : '') + '">&#x25B6;</span>';
+        }
+        html += escHtml(e.code) + '</div>';
         html += '<div class="bar-track"><div class="bar-fill" style="width:' + pct + '%"></div></div>';
         html += '<div class="reason-count">' + e.count + '</div>';
         html += '</div>';
+
+        if (isExpanded && canExpand) {
+          var slice = matching.slice(0, AGG_LIMIT);
+          for (var j = 0; j < slice.length; j++) {
+            var v = slice[j];
+            var parts = [];
+            parts.push(relTime(v.timestamp));
+            parts.push('#' + v.template_id);
+            parts.push('h:' + formatNum(v.height));
+            if (v.reason_detail) parts.push(v.reason_detail);
+            html += '<div class="reason-detail-row">' + escHtml(parts.join('  ')) + '</div>';
+          }
+          if (matching.length > AGG_LIMIT) {
+            html += '<div class="reason-more">\u2026 ' + (matching.length - AGG_LIMIT) + ' more</div>';
+          }
+        }
       }
       $reasonChart.innerHTML = html;
+
+      // Wire up click handlers for expandable rows
+      var expandables = $reasonChart.querySelectorAll('.reason-item.expandable');
+      for (var k = 0; k < expandables.length; k++) {
+        (function (el) {
+          el.addEventListener('click', function () {
+            var code = el.getAttribute('data-reason');
+            state.expandedReasons[code] = !state.expandedReasons[code];
+            renderReasons();
+          });
+        })(expandables[k]);
+      }
+    }
+
+    function renderSafety() {
+      var src = (state.verdicts && state.verdicts.length > 0)
+        ? state.verdicts[state.verdicts.length - 1]
+        : null;
+
+      var gaugeWeight = document.getElementById('gauge-weight');
+      var lblWeight = document.getElementById('label-weight');
+      if (src && typeof src.template_weight === 'number') {
+        var wpct = (src.template_weight / 4000000 * 100);
+        if (gaugeWeight) {
+          gaugeWeight.style.width = Math.min(wpct, 100).toFixed(1) + '%';
+          gaugeWeight.className = 'gauge-fill weight' + (wpct > 99 ? ' critical' : '');
+        }
+        if (lblWeight) lblWeight.textContent = Number(src.template_weight).toLocaleString() + ' / 4,000,000 WU (' + wpct.toFixed(1) + '%)';
+      } else {
+        if (gaugeWeight) gaugeWeight.style.width = '0%';
+        if (lblWeight) lblWeight.textContent = 'n/a';
+      }
+
+      var gaugeSigops = document.getElementById('gauge-sigops');
+      var lblSigops = document.getElementById('label-sigops');
+      if (src && typeof src.total_sigops === 'number') {
+        var spct = (src.total_sigops / 80000 * 100);
+        if (gaugeSigops) {
+          gaugeSigops.style.width = Math.min(spct, 100).toFixed(1) + '%';
+          gaugeSigops.className = 'gauge-fill sigops' + (spct > 95 ? ' critical' : '');
+        }
+        if (lblSigops) lblSigops.textContent = Number(src.total_sigops).toLocaleString() + ' / 80,000 (' + spct.toFixed(1) + '%)';
+      } else {
+        if (gaugeSigops) gaugeSigops.style.width = '0%';
+        if (lblSigops) lblSigops.textContent = 'n/a';
+      }
+
+      var lblAge = document.getElementById('label-template-age');
+      if (src && typeof src.created_at_unix_ms === 'number') {
+        var ageMs = Date.now() - src.created_at_unix_ms;
+        if (lblAge) {
+          lblAge.textContent = (ageMs / 1000).toFixed(1) + 's';
+          lblAge.className = 'safety-value' + (ageMs > 30000 ? ' warn' : '');
+        }
+      } else {
+        if (lblAge) { lblAge.textContent = 'n/a'; lblAge.className = 'safety-value'; }
+      }
+
+      var lblCb = document.getElementById('label-coinbase-sigops');
+      if (src && typeof src.coinbase_sigops === 'number') {
+        if (lblCb) {
+          lblCb.textContent = String(src.coinbase_sigops);
+          lblCb.className = 'safety-value' + (src.coinbase_sigops > 400 ? ' warn' : '');
+        }
+      } else {
+        if (lblCb) { lblCb.textContent = 'n/a'; lblCb.className = 'safety-value'; }
+      }
+
+      var warnBar = document.getElementById('safety-warnings-bar');
+      if (src && Array.isArray(src.safety_warnings) && src.safety_warnings.length > 0) {
+        if (warnBar) {
+          warnBar.textContent = src.safety_warnings.length + ' warning(s): ' + src.safety_warnings.join(', ');
+          warnBar.className = 'safety-warnings-bar active';
+        }
+      } else {
+        if (warnBar) { warnBar.textContent = 'No warnings'; warnBar.className = 'safety-warnings-bar'; }
+      }
+    }
+
+    function renderEnforcementBadges() {
+      var p = state.policy;
+      function setBadge(id, enforced) {
+        var el = document.getElementById(id);
+        if (!el) return;
+        if (enforced) {
+          el.textContent = 'enforced';
+          el.className = 'enforce-badge enforced';
+        } else {
+          el.textContent = 'observe';
+          el.className = 'enforce-badge observe';
+        }
+      }
+      if (p) {
+        setBadge('badge-weight-mode', p.enforce_weight_ratio);
+        setBadge('badge-age-mode', p.enforce_template_age);
+        // Sigops and coinbase are always observe-only in 0.2.2
+        setBadge('badge-sigops-mode', false);
+        setBadge('badge-coinbase-mode', false);
+      }
+    }
+
+    function renderMempool() {
+      var bar = document.getElementById('mempool-bar');
+      var mp = state.mempool;
+      if (!mp || mp.error || typeof mp.tx_count !== 'number') {
+        if (bar) bar.style.display = 'none';
+        return;
+      }
+      if (bar) bar.style.display = '';
+
+      var txEl = document.getElementById('mempool-tx');
+      var usageEl = document.getElementById('mempool-usage');
+      var tierEl = document.getElementById('mempool-tier');
+      var freshEl = document.getElementById('mempool-freshness');
+
+      if (txEl) txEl.textContent = formatNum(mp.tx_count);
+
+      if (usageEl) {
+        if (typeof mp.usage === 'number' && typeof mp.max === 'number' && mp.max > 0) {
+          var pct = (mp.usage * 100.0 / mp.max);
+          usageEl.textContent = pct.toFixed(1) + '%';
+        } else if (typeof mp.usage === 'number') {
+          usageEl.textContent = formatNum(mp.usage) + ' bytes';
+        } else if (typeof mp.bytes === 'number') {
+          usageEl.textContent = formatNum(mp.bytes) + ' bytes';
+        } else {
+          usageEl.textContent = 'n/a';
+        }
+      }
+
+      if (tierEl && state.policy) {
+        var lo = state.policy.low_mempool_tx;
+        var hi = state.policy.high_mempool_tx;
+        if (typeof lo === 'number' && typeof hi === 'number') {
+          if (mp.tx_count < lo) tierEl.textContent = 'low';
+          else if (mp.tx_count < hi) tierEl.textContent = 'mid';
+          else tierEl.textContent = 'high';
+        } else {
+          tierEl.textContent = 'n/a';
+        }
+      }
+
+      if (freshEl && typeof mp.timestamp === 'number') {
+        var ageSec = Math.floor(Date.now() / 1000) - mp.timestamp;
+        if (ageSec > 30) freshEl.textContent = 'stale (' + ageSec + 's ago)';
+        else freshEl.textContent = 'updated ' + ageSec + 's ago';
+      }
+    }
+
+    function renderExportLinks() {
+      var bar = document.getElementById('export-bar');
+      if (state.mode !== 'live' || !state.apiUrl) {
+        if (bar) bar.style.display = 'none';
+        return;
+      }
+      if (bar) bar.style.display = '';
+      var csvLink = document.getElementById('export-csv');
+      var ndjsonLink = document.getElementById('export-ndjson');
+      if (csvLink) csvLink.href = state.apiUrl + '/verdicts.csv';
+      if (ndjsonLink) ndjsonLink.href = state.apiUrl + '/verdicts/log';
+    }
+
+    function checkMixedContent() {
+      var warn = document.getElementById('mixed-content-warn');
+      if (!warn) return;
+      var pageHttps = window.location.protocol === 'https:';
+      var apiHttp = state.apiUrl && state.apiUrl.indexOf('http://') === 0;
+      if (pageHttps && apiHttp) {
+        warn.style.display = 'block';
+      } else {
+        warn.style.display = 'none';
+      }
     }
 
     function renderTiers() {
@@ -1607,6 +2148,8 @@
       var stale = ago > 30;
       $lastUpdated.textContent = 'Last updated: ' + (ago < 2 ? 'just now' : ago + 's ago');
       $statsGrid.classList.toggle('stale', stale);
+      // Extend stale overlay to the entire dashboard container
+      $dashboard.classList.toggle('stale', stale);
     }
 
     // ── Helpers ─────────────────────────────────
