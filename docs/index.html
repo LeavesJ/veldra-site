@@ -136,6 +136,26 @@
               <td><span class="tag-navy">system</span></td>
               <td>Unexpected handler failure</td>
             </tr>
+            <tr>
+              <td><code>weight_ratio_exceeded</code></td>
+              <td><span class="tag-orange">safety</span></td>
+              <td>Template weight exceeds configured max_weight_ratio of MAX_BLOCK_WEIGHT (4,000,000 WU)</td>
+            </tr>
+            <tr>
+              <td><code>template_stale</code></td>
+              <td><span class="tag-orange">safety</span></td>
+              <td>Template age exceeds max_template_age_ms threshold</td>
+            </tr>
+            <tr>
+              <td><code>sigops_budget_warning</code></td>
+              <td><span class="tag-orange">safety</span></td>
+              <td>Total sigops approaching consensus limit (observe only in v0.2.2)</td>
+            </tr>
+            <tr>
+              <td><code>coinbase_sigops_abnormal</code></td>
+              <td><span class="tag-orange">safety</span></td>
+              <td>Coinbase transaction sigops exceeds warn_coinbase_sigops_max (observe only in v0.2.2)</td>
+            </tr>
           </tbody>
         </table>
       </div>
@@ -172,7 +192,15 @@ min_avg_fee_hi        = 4200
 
 reject_empty_templates = true
 reject_coinbase_zero   = false
-unknown_mempool_as_high = false</pre>
+unknown_mempool_as_high = false
+
+<span style="color:#6a9955;"># consensus safety (v0.2.2)</span>
+max_weight_ratio       = 0.999
+enforce_weight_ratio   = false
+max_template_age_ms    = 30000
+enforce_template_age   = false
+warn_sigops_ratio      = 0.95
+warn_coinbase_sigops_max = 400</pre>
       </div>
       <div style="max-width:600px;margin:24px auto 0;">
         <dl style="display:grid;grid-template-columns:auto 1fr;gap:8px 16px;font-size:14px;">
@@ -228,7 +256,7 @@ unknown_mempool_as_high = false</pre>
       <div class="grid-3 fade-up">
         <div class="card">
           <h3>What it is</h3>
-          <p>Policy evaluation and observability for block templates. Veldra rates templates against configurable fee and structural constraints, emitting structured verdicts for downstream use.</p>
+          <p>Policy evaluation and observability for block templates. Veldra rates templates against configurable fee, structural, and consensus safety constraints, emitting structured verdicts for downstream use.</p>
         </div>
         <div class="card">
           <h3>What it is not</h3>

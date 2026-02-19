@@ -84,7 +84,7 @@
         <div class="flow-step">
           <div class="flow-step-num">03</div>
           <h4>Policy verifier</h4>
-          <p>Evaluates against policy.toml, emits TemplateVerdict with context.</p>
+          <p>Evaluates fee policy and consensus safety checks, emits TemplateVerdict with context.</p>
           <span class="flow-arrow">&#x2192;</span>
         </div>
         <div class="flow-step">
@@ -132,6 +132,11 @@
           <div class="card-icon card-icon-green">&#x25A0;</div>
           <h3>Structured exports</h3>
           <p>NDJSON logs, CSV reports, and stats API for easy integration with monitoring and compliance tools.</p>
+        </div>
+        <div class="card fade-up fade-up-d1">
+          <div class="card-icon card-icon-blue">&#x26A0;</div>
+          <h3>Consensus safety checks</h3>
+          <p>Weight ratio, template age, sigops budget, and coinbase sigops monitoring with observe-first enforcement defaults.</p>
         </div>
       </div>
     </div>
