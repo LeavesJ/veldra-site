@@ -1658,8 +1658,9 @@
     // ── Init ────────────────────────────────────
     function init() {
       var params = new URLSearchParams(window.location.search);
-      var isLocal = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
-      var authRequired = !(params.has('noauth') && isLocal);
+      //var isLocal = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+      //var authRequired = !(params.has('noauth') && isLocal);
+      var authRequired = !params.has('noauth');
       state.authUrl = extractAuthUrl();
 
       // Wire up auth form toggles
