@@ -1658,9 +1658,8 @@
     // ── Init ────────────────────────────────────
     function init() {
       var params = new URLSearchParams(window.location.search);
-      //var isLocal = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
-      //var authRequired = !(params.has('noauth') && isLocal);
-      var authRequired = !params.has('noauth');
+      var isLocal = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+      var authRequired = !(params.has('noauth') && isLocal);
       state.authUrl = extractAuthUrl();
 
       // Wire up auth form toggles
@@ -1688,8 +1687,8 @@
         if (e.key === 'Enter') doRegister();
       });
 
-      // If no ?auth= param, skip auth gate and go straight to dashboard
-      if (!authRequired) {
+      // If no ?auth= param, skip auth gate and go straight to dashboard （with ! or without !)
+      if (authRequired) {
         showDashboardNoAuth();
         return;
       }
