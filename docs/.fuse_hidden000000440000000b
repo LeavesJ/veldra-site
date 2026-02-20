@@ -314,7 +314,8 @@ warn_coinbase_sigops_max = 400</pre>
             <a href="mailto:jarrondeng@veldra.org">Contact</a>
           </div>
         </div>
-
+        <div>
+        </div>
       </div>
       <div class="footer-bottom">
         <span>&copy; 2026 Veldra, Inc.</span>

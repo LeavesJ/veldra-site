@@ -49,14 +49,18 @@
   <section class="hero-light">
     <div class="container">
       <div class="hero-inner">
+        <div class="hero-label">
+          <span class="hero-label-dot"></span>
+          <span class="section-eyebrow">Legal</span>
+        </div>
         <h1 class="hero-title">Terms of Service</h1>
-        <p class="legal-updated">Last updated: February 19, 2026</p>
+        <p class="hero-sub">Last updated: February 19, 2026</p>
       </div>
     </div>
   </section>
 
   <section class="section">
-    <div class="legal-body">
+    <div class="container" style="max-width:760px;">
 
       <h2>1. Acceptance of terms</h2>
       <p>By accessing or using veldra.org, the observe mode dashboard, or any Veldra software (collectively, the "Services"), you agree to be bound by these Terms of Service. If you do not agree, do not use the Services.</p>
@@ -133,7 +137,8 @@
             <a href="mailto:jarrondeng@veldra.org">Contact</a>
           </div>
         </div>
-
+        <div>
+        </div>
       </div>
       <div class="footer-bottom">
         <span>&copy; 2026 Veldra, Inc.</span>

@@ -49,14 +49,18 @@
   <section class="hero-light">
     <div class="container">
       <div class="hero-inner">
+        <div class="hero-label">
+          <span class="hero-label-dot"></span>
+          <span class="section-eyebrow">Legal</span>
+        </div>
         <h1 class="hero-title">Privacy Policy</h1>
-        <p class="legal-updated">Last updated: February 19, 2026</p>
+        <p class="hero-sub">Last updated: February 19, 2026</p>
       </div>
     </div>
   </section>
 
   <section class="section">
-    <div class="legal-body">
+    <div class="container" style="max-width:760px;">
 
       <h2>1. Who we are</h2>
       <p>Veldra, Inc. ("Veldra", "we", "us") operates the veldra.org website and the ReserveGrid OS software suite. This policy describes how we collect, use, and protect your information when you interact with our services.</p>
@@ -101,7 +105,6 @@
     </div>
   </section>
 
-
   <footer class="footer">
     <div class="container">
       <div class="footer-inner">
@@ -129,7 +132,8 @@
             <a href="mailto:jarrondeng@veldra.org">Contact</a>
           </div>
         </div>
-
+        <div>
+        </div>
       </div>
       <div class="footer-bottom">
         <span>&copy; 2026 Veldra, Inc.</span>

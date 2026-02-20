@@ -684,6 +684,19 @@ ul { list-style: none; }
   align-items: center;
   font-size: 13px;
 }
+.footer-legal {
+  display: flex;
+  gap: 16px;
+}
+.footer-legal a {
+  font-size: 12px;
+  color: rgba(255,255,255,.35);
+  text-decoration: none;
+  transition: color .15s;
+}
+.footer-legal a:hover {
+  color: rgba(255,255,255,.6);
+}
 
 /* ── Architecture flow ─────────────────────────── */
 .flow-steps {
@@ -794,3 +807,49 @@ ul { list-style: none; }
 .fade-up-d1 { animation-delay: .1s; }
 .fade-up-d2 { animation-delay: .2s; }
 .fade-up-d3 { animation-delay: .3s; }
+
+/* ── Legal pages ─────────────────────────────── */
+.legal-body {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 0 24px 64px;
+}
+.legal-body h2 {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 48px 0 12px;
+  padding-top: 32px;
+  border-top: 1px solid rgba(10,22,40,.08);
+}
+.legal-body h2:first-child {
+  border-top: none;
+  padding-top: 0;
+  margin-top: 0;
+}
+.legal-body h3 {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--navy);
+  margin: 28px 0 8px;
+}
+.legal-body p {
+  font-size: 15px;
+  line-height: 1.7;
+  color: #4a5568;
+  margin: 0 0 16px;
+}
+.legal-body a {
+  color: var(--blue);
+  text-decoration: none;
+}
+.legal-body a:hover {
+  text-decoration: underline;
+}
+.legal-updated {
+  font-size: 13px;
+  color: var(--muted);
+  letter-spacing: .02em;
+}
