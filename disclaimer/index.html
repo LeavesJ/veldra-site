@@ -56,41 +56,57 @@
   </section>
 
   <section class="section">
-    <div class="legal-body">
+    <div class="legal-layout">
+      <nav class="legal-toc" aria-label="Table of contents">
+        <p class="legal-toc-title">On this page</p>
+        <a href="#as-is">Software provided "as is"</a>
+        <a href="#not-advice">Not financial advice</a>
+        <a href="#mining-risk">Mining risk</a>
+        <a href="#correctness">No guarantee of correctness</a>
+        <a href="#consensus">Consensus safety checks</a>
+        <a href="#liability">Limitation of liability</a>
+        <a href="#operator">Operator responsibility</a>
+        <a href="#third-party">Third-party dependencies</a>
+        <a href="#observe-data">Observe mode data</a>
+        <a href="#changes">Changes</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <div class="legal-body">
 
-      <h2>Software provided "as is"</h2>
-      <p>ReserveGrid OS and all associated software components are provided "as is" and "as available" without warranty of any kind, whether express, implied, or statutory. Veldra, Inc. specifically disclaims all implied warranties of merchantability, fitness for a particular purpose, and non-infringement.</p>
+        <h2 id="as-is">Software provided "as is"</h2>
+        <p>ReserveGrid OS and all associated software components are provided "as is" and "as available" without warranty of any kind, whether express, implied, or statutory. Veldra, Inc. specifically disclaims all implied warranties of merchantability, fitness for a particular purpose, and non-infringement.</p>
 
-      <h2>Not financial or investment advice</h2>
-      <p>ReserveGrid OS is a technical verification tool for block template policy evaluation. Nothing in the software, documentation, website, or observe mode dashboard constitutes financial advice, investment advice, trading advice, or any other form of professional financial guidance. Template verdicts (accept/reject) reflect operator-configured policy rules applied to technical block data. They are not recommendations to mine, not mine, buy, sell, or hold any asset.</p>
+        <h2 id="not-advice">Not financial or investment advice</h2>
+        <p>ReserveGrid OS is a technical verification tool for block template policy evaluation. Nothing in the software, documentation, website, or observe mode dashboard constitutes financial advice, investment advice, trading advice, or any other form of professional financial guidance. Template verdicts (accept/reject) reflect operator-configured policy rules applied to technical block data. They are not recommendations to mine, not mine, buy, sell, or hold any asset.</p>
 
-      <h2>Mining risk acknowledgment</h2>
-      <p>Bitcoin mining involves inherent technical and financial risks. By using ReserveGrid OS, you acknowledge that template verification is one component of a mining operation and does not guarantee profitability, block production, or revenue. Rejected templates may result in miners receiving no work assignments, which reduces hash utilization. Accepted templates may still produce blocks that the Bitcoin network rejects for reasons outside the scope of policy evaluation (network forks, competing blocks, consensus rule changes).</p>
+        <h2 id="mining-risk">Mining risk acknowledgment</h2>
+        <p>Bitcoin mining involves inherent technical and financial risks. By using ReserveGrid OS, you acknowledge that template verification is one component of a mining operation and does not guarantee profitability, block production, or revenue. Rejected templates may result in miners receiving no work assignments, which reduces hash utilization. Accepted templates may still produce blocks that the Bitcoin network rejects for reasons outside the scope of policy evaluation (network forks, competing blocks, consensus rule changes).</p>
 
-      <h2>No guarantee of correctness</h2>
-      <p>While ReserveGrid OS is designed for deterministic, reproducible evaluation, Veldra does not guarantee that the software is free from bugs, errors, or vulnerabilities. Policy configuration errors, software defects, or unexpected interactions with upstream systems (bitcoind, Stratum V2 servers, mempool data sources) may cause incorrect verdicts. Operators are responsible for testing their policy configuration and monitoring verdict outcomes.</p>
+        <h2 id="correctness">No guarantee of correctness</h2>
+        <p>While ReserveGrid OS is designed for deterministic, reproducible evaluation, Veldra does not guarantee that the software is free from bugs, errors, or vulnerabilities. Policy configuration errors, software defects, or unexpected interactions with upstream systems (bitcoind, Stratum V2 servers, mempool data sources) may cause incorrect verdicts. Operators are responsible for testing their policy configuration and monitoring verdict outcomes.</p>
 
-      <h2>Consensus safety checks</h2>
-      <p>The consensus safety features (weight ratio, template age, sigops budget, coinbase sigops) are informational checks based on known Bitcoin consensus constants. They do not replace full consensus validation performed by Bitcoin Core or equivalent full node software. A template that passes all ReserveGrid OS safety checks may still be invalid under Bitcoin consensus rules.</p>
+        <h2 id="consensus">Consensus safety checks</h2>
+        <p>The consensus safety features (weight ratio, template age, sigops budget, coinbase sigops) are informational checks based on known Bitcoin consensus constants. They do not replace full consensus validation performed by Bitcoin Core or equivalent full node software. A template that passes all ReserveGrid OS safety checks may still be invalid under Bitcoin consensus rules.</p>
 
-      <h2>Limitation of liability</h2>
-      <p>To the maximum extent permitted by applicable law, Veldra, Inc. and its officers, directors, employees, and agents shall not be liable for any direct, indirect, incidental, special, consequential, or punitive damages arising from the use of or inability to use the software, including but not limited to lost mining revenue, missed blocks, orphaned blocks, incorrect template verdicts, policy misconfiguration, data loss, or service interruption.</p>
+        <h2 id="liability">Limitation of liability</h2>
+        <p>To the maximum extent permitted by applicable law, Veldra, Inc. and its officers, directors, employees, and agents shall not be liable for any direct, indirect, incidental, special, consequential, or punitive damages arising from the use of or inability to use the software, including but not limited to lost mining revenue, missed blocks, orphaned blocks, incorrect template verdicts, policy misconfiguration, data loss, or service interruption.</p>
 
-      <h2>Operator responsibility</h2>
-      <p>Operators deploying ReserveGrid OS in production are solely responsible for securing the deployment environment (network access, TLS, authentication), configuring policy rules appropriate for their operation, monitoring verdict logs and system health, maintaining backups and disaster recovery procedures, and complying with all applicable laws and regulations in their jurisdiction.</p>
+        <h2 id="operator">Operator responsibility</h2>
+        <p>Operators deploying ReserveGrid OS in production are solely responsible for securing the deployment environment (network access, TLS, authentication), configuring policy rules appropriate for their operation, monitoring verdict logs and system health, maintaining backups and disaster recovery procedures, and complying with all applicable laws and regulations in their jurisdiction.</p>
 
-      <h2>Third-party dependencies</h2>
-      <p>ReserveGrid OS depends on third-party software components (Rust crates, operating system libraries, Bitcoin Core RPC). Veldra does not guarantee the security, availability, or correctness of third-party dependencies. Operators should review dependency licenses and security advisories independently.</p>
+        <h2 id="third-party">Third-party dependencies</h2>
+        <p>ReserveGrid OS depends on third-party software components (Rust crates, operating system libraries, Bitcoin Core RPC). Veldra does not guarantee the security, availability, or correctness of third-party dependencies. Operators should review dependency licenses and security advisories independently.</p>
 
-      <h2>Observe mode data</h2>
-      <p>Data displayed in the observe mode dashboard is provided for informational and evaluation purposes only. Dashboard metrics, charts, and verdicts reflect real-time or simulated data depending on the connection state. Veldra makes no representation about the accuracy, completeness, or timeliness of data displayed in observe mode.</p>
+        <h2 id="observe-data">Observe mode data</h2>
+        <p>Data displayed in the observe mode dashboard is provided for informational and evaluation purposes only. Dashboard metrics, charts, and verdicts reflect real-time or simulated data depending on the connection state. Veldra makes no representation about the accuracy, completeness, or timeliness of data displayed in observe mode.</p>
 
-      <h2>Changes to this disclaimer</h2>
-      <p>We may update this disclaimer from time to time. Changes will be posted on this page with an updated revision date. Continued use of the software or Services after changes constitutes acceptance of the revised disclaimer.</p>
+        <h2 id="changes">Changes to this disclaimer</h2>
+        <p>We may update this disclaimer from time to time. Changes will be posted on this page with an updated revision date. Continued use of the software or Services after changes constitutes acceptance of the revised disclaimer.</p>
 
-      <h2>Contact</h2>
-      <p>For questions about this disclaimer, contact us at <a href="mailto:jarrondeng@veldra.org">jarrondeng@veldra.org</a>.</p>
+        <h2 id="contact">Contact</h2>
+        <p>For questions about this disclaimer, contact us at <a href="mailto:jarrondeng@veldra.org">jarrondeng@veldra.org</a>.</p>
 
+      </div>
     </div>
   </section>
 

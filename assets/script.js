@@ -77,6 +77,31 @@
     }, 1200);
   }
 
+  // ── Legal TOC active section tracking ────────
+  var legalToc = document.querySelector('.legal-toc');
+  if (legalToc && 'IntersectionObserver' in window) {
+    var tocLinks = legalToc.querySelectorAll('a[href^="#"]');
+    var sectionIds = [];
+    tocLinks.forEach(function (link) {
+      sectionIds.push(link.getAttribute('href').slice(1));
+    });
+
+    var tocObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          tocLinks.forEach(function (link) { link.classList.remove('active'); });
+          var match = legalToc.querySelector('a[href="#' + entry.target.id + '"]');
+          if (match) match.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-80px 0px -60% 0px', threshold: 0 });
+
+    sectionIds.forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) tocObserver.observe(el);
+    });
+  }
+
   // ── Intersection observer for fade-up ────────
   if ('IntersectionObserver' in window) {
     var observer = new IntersectionObserver(function (entries) {
