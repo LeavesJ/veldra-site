@@ -1344,6 +1344,14 @@
             <a href="mailto:jarrondeng@veldra.org">Contact</a>
           </div>
         </div>
+        <div>
+          <h4>Legal</h4>
+          <div class="footer-links">
+            <a href="/privacy/">Privacy</a>
+            <a href="/terms/">Terms</a>
+            <a href="/disclaimer/">Disclaimer</a>
+          </div>
+        </div>
       </div>
       <div class="footer-bottom">
         <span>&copy; 2026 Veldra, Inc.</span>
@@ -1688,7 +1696,7 @@
       });
 
       // If no ?auth= param, skip auth gate and go straight to dashboard
-      if (authRequired) {
+      if (!authRequired) {
         showDashboardNoAuth();
         return;
       }
