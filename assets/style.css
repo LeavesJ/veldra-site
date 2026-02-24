@@ -632,12 +632,12 @@ ul { list-style: none; }
 /* ── Observe hero: heartbeat signal ────────── */
 .hero-signal {
   position: absolute;
-  bottom: 16px;
+  bottom: 0;
   left: 0;
   right: 0;
-  height: 80px;
+  height: 60px;
   pointer-events: none;
-  opacity: .7;
+  opacity: .55;
 }
 .hero-signal svg {
   width: 100%;
