@@ -14,14 +14,14 @@
   <link rel="apple-touch-icon" href="/assets/brand/apple-touch-icon.png">
 
   <meta property="og:title" content="ReserveGrid OS — SV2 Mining Gateway">
-  <meta property="og:description" content="Miner-facing Stratum V2 gateway with Noise NX, template verification, prevhash fail-closed switching, and two-event share lifecycle. 34 reason codes, 51 config keys, 3 deployment modes.">
+  <meta property="og:description" content="Miner-facing Stratum V2 gateway with Noise NX, template verification, prevhash fail-closed switching, and two-event share lifecycle.">
   <meta property="og:url" content="https://veldra.org/product/">
   <meta property="og:type" content="website">
   <meta property="og:image" content="https://veldra.org/assets/brand/veldra-mark.png">
   <meta name="twitter:card" content="summary_large_image">
 
-  <link rel="stylesheet" href="/assets/style.css?v=8">
-  <script src="/assets/script.js?v=8" defer></script>
+  <link rel="stylesheet" href="/assets/style.css?v=10">
+  <script src="/assets/script.js?v=10" defer></script>
 </head>
 <body>
 
@@ -47,8 +47,9 @@
     </div>
   </nav>
 
-  <!-- ── Hero (Light variant) ─────────────────── -->
-  <section class="hero-light">
+  <!-- ── Hero ──────────────────────────────────── -->
+  <section class="hero-dark">
+    <div class="hero-grid"></div>
     <div class="container">
       <div class="hero-inner fade-up">
         <div class="hero-label">
@@ -56,156 +57,275 @@
           <span>ReserveGrid OS</span>
         </div>
         <h1 class="hero-title">
-          Miner-facing standard job server for Stratum V2
+          Miner-facing standard job server for <span class="accent">Stratum V2</span>
         </h1>
         <p class="hero-sub">
           Built in Rust with policy evaluation, share lifecycle tracking, and end-to-end observability.
           Every rejection carries a machine-readable reason code. Every share follows a two-event pipeline.
-          Choose your deployment mode and scale with confidence.
         </p>
         <div class="hero-actions">
-          <a href="/docs/" class="btn btn-primary">Read the Docs</a>
+          <a href="/docs/" class="btn btn-glow">Read the Docs</a>
+          <a href="#demo" class="btn btn-outline">Watch demo</a>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ── Feature Cards (6 expandable) ───────── -->
+  <hr class="glow-line">
+
+  <!-- ── Feature Accordions ─────────────────────── -->
   <section class="section">
     <div class="container">
       <div class="section-header">
         <div class="section-eyebrow">Core capabilities</div>
         <h2>Built for production SV2 deployment</h2>
+        <p>Six pillars that make ReserveGrid OS production-ready from day one.</p>
       </div>
-      <div class="feature-grid fade-up">
-        <div class="feature-card">
-          <div class="feature-header">
-            <div class="feature-icon card-icon-blue">&#x2713;</div>
+
+      <!-- 1: Explainable rejects -->
+      <div class="feature-card fade-up">
+        <div class="feature-card-header" aria-expanded="false">
+          <div class="feature-card-icon icon-blue">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </div>
+          <div class="feature-card-text">
             <h3>Explainable rejects</h3>
+            <p>34 GatewayReason codes across 6 categories. Every rejection includes reason_code + policy_context for full observability.</p>
           </div>
-          <p>34 GatewayReason codes. Every rejection includes reason_code + policy_context for full observability.</p>
-          <button class="feature-toggle" aria-expanded="false">Show categories</button>
-          <div class="feature-content" hidden>
-            <dl class="feature-detail-list">
-              <dt>Transport errors</dt>
-              <dd>Channel setup, frame parsing, protocol violations</dd>
-              <dt>Framing errors</dt>
-              <dd>Message size, frame sequence, encoding issues</dd>
-              <dt>Auth errors</dt>
-              <dd>Invalid credentials, worker ID format, allowlist mismatch</dd>
-              <dt>Channel errors</dt>
-              <dd>Unknown channel_id, channel not open, subscriber role violation</dd>
-              <dt>Job errors</dt>
-              <dd>Invalid job_id, unknown job, stale prevhash</dd>
-              <dt>Share errors</dt>
-              <dd>Difficulty below target, ntime out of range, duplicate nonce</dd>
-            </dl>
+          <div class="feature-card-toggle">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"/></svg>
           </div>
         </div>
-
-        <div class="feature-card">
-          <div class="feature-header">
-            <div class="feature-icon card-icon-green">&#x25C6;</div>
-            <h3>Two-event share lifecycle</h3>
-          </div>
-          <p>share_accepted at ACK time, share_forward_result after upstream POST. Deterministic joins via share_id.</p>
-          <button class="feature-toggle" aria-expanded="false">Show fields</button>
-          <div class="feature-content" hidden>
-            <dl class="feature-detail-list">
-              <dt>Event 1: share_accepted</dt>
-              <dd>share_id, event_id, timestamp, miner_id, job_id, reason_code, sv2_response</dd>
-              <dt>Event 2: share_forward_result</dt>
-              <dd>share_id, event_id, timestamp, forwarded, upstream_accepted, upstream_http_status, error_detail</dd>
-              <dt>Join key</dt>
-              <dd>Both events carry the same share_id for 1:1 correlation</dd>
-            </dl>
-          </div>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-header">
-            <div class="feature-icon card-icon-navy">&#x25A6;</div>
-            <h3>Three deployment modes</h3>
-          </div>
-          <p>shadow/observe/inline. Start with audit, graduate to enforcement without code changes.</p>
-          <button class="feature-toggle" aria-expanded="false">Show comparison</button>
-          <div class="feature-content" hidden>
-            <dl class="feature-detail-list">
-              <dt>Shadow</dt>
-              <dd>Templates verified internally, results logged, no miner impact (audit only)</dd>
-              <dt>Observe</dt>
-              <dd>Miners connected, all templates pass, rejections logged but not enforced, full observability</dd>
-              <dt>Inline</dt>
-              <dd>Full enforcement, no unverified job reaches a miner, prevhash switching is fail-closed</dd>
-            </dl>
-          </div>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-header">
-            <div class="feature-icon card-icon-blue">&#x25C8;</div>
-            <h3>Prevhash fail-closed</h3>
-          </div>
-          <p>50ms verdict timeout, 5s stale hold, deterministic disconnect on timeout. Happy path and timeout path hardened.</p>
-          <button class="feature-toggle" aria-expanded="false">Show details</button>
-          <div class="feature-content" hidden>
-            <dl class="feature-detail-list">
-              <dt>Happy path</dt>
-              <dd>Verdict arrives within 50ms. New prevhash + job broadcast immediately. Target: p50&lt;50ms, p95&lt;150ms, p99&lt;300ms.</dd>
-              <dt>Timeout path</dt>
-              <dd>No verdict within 50ms. Miners hold stale job for up to 5s. After 5s without verdict, deterministic disconnect with prevhash_switch_timeout code.</dd>
-              <dt>Risk model</dt>
-              <dd>Zero stale work distributed. Gateway blocks on miner demand rather than dropping shares.</dd>
-            </dl>
-          </div>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-header">
-            <div class="feature-icon card-icon-green">&#x2699;</div>
-            <h3>51-key config surface</h3>
-          </div>
-          <p>TOML + environment variable overrides. 6 config sections for fine-grained control.</p>
-          <button class="feature-toggle" aria-expanded="false">Show sections</button>
-          <div class="feature-content" hidden>
-            <dl class="feature-detail-list">
-              <dt>Core</dt>
-              <dd>mode, listen_addr, verifier_addr, upstream_url, upstream_failure_policy, http_api_key</dd>
-              <dt>Noise</dt>
-              <dd>privkey, pubkey, authorized_keys, handshake_timeout_ms</dd>
-              <dt>Timing</dt>
-              <dd>prevhash_verdict_timeout_ms, prevhash_stale_hold_ms, upstream_poll_interval_ms, job_broadcast_interval_ms</dd>
-              <dt>Ntime</dt>
-              <dd>ntime_leniency_seconds, ntime_max_age_blocks</dd>
-              <dt>Share</dt>
-              <dd>share_upstream_url, share_upstream_secret, share_forward_queue_size, share_forward_max_in_flight, share_batch_interval_ms</dd>
-              <dt>Auth</dt>
-              <dd>mode (allowlist/prefix_map/open), allowlist, prefix_map, max_worker_id_bytes, max_workers_per_channel</dd>
-            </dl>
-          </div>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-header">
-            <div class="feature-icon card-icon-navy">&#x25A3;</div>
-            <h3>Live observability</h3>
-          </div>
-          <p>Prometheus metrics (30+ gauges/counters/histograms), event stream NDJSON, Grafana dashboards included.</p>
-          <button class="feature-toggle" aria-expanded="false">Show metrics</button>
-          <div class="feature-content" hidden>
-            <dl class="feature-detail-list">
-              <dt>Prometheus endpoint</dt>
-              <dd>/metrics on HTTP API. 30+ metrics covering connections, jobs, shares, verdicts, prevhash latencies.</dd>
-              <dt>Event stream</dt>
-              <dd>/gateway/events NDJSON endpoint. Real-time share_accepted, share_forward_result, template_verdict events. Supports filtering by type and time.</dd>
-              <dt>CSV export</dt>
-              <dd>Share history export via HTTP API. Bulk analysis, compliance audits, performance reporting.</dd>
-              <dt>Grafana dashboards</dt>
-              <dd>Pre-built dashboards for miner connections, job distribution, prevhash switching health, upstream responsiveness.</dd>
-            </dl>
+        <div class="feature-card-body">
+          <div class="feature-card-content">
+            <div class="detail-grid">
+              <dl class="detail-item">
+                <dt>Transport</dt>
+                <dd>Channel setup, frame parsing, protocol violations (4 codes)</dd>
+              </dl>
+              <dl class="detail-item">
+                <dt>Framing</dt>
+                <dd>Message size, frame sequence, encoding issues (7 codes)</dd>
+              </dl>
+              <dl class="detail-item">
+                <dt>Auth</dt>
+                <dd>Invalid credentials, worker ID format, allowlist mismatch (3 codes)</dd>
+              </dl>
+              <dl class="detail-item">
+                <dt>Channel</dt>
+                <dd>Unknown channel_id, channel not open, subscriber role violation (4 codes)</dd>
+              </dl>
+              <dl class="detail-item">
+                <dt>Job</dt>
+                <dd>Invalid job_id, unknown job, stale prevhash reference (5 codes)</dd>
+              </dl>
+              <dl class="detail-item">
+                <dt>Share</dt>
+                <dd>Difficulty below target, ntime out of range, duplicate nonce (11 codes)</dd>
+              </dl>
+            </div>
           </div>
         </div>
       </div>
+
+      <!-- 2: Two-event share lifecycle -->
+      <div class="feature-card fade-up fade-up-d1">
+        <div class="feature-card-header" aria-expanded="false">
+          <div class="feature-card-icon icon-green">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          </div>
+          <div class="feature-card-text">
+            <h3>Two-event share lifecycle</h3>
+            <p>share_accepted at ACK time, share_forward_result after upstream POST. Deterministic joins via share_id.</p>
+          </div>
+          <div class="feature-card-toggle">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"/></svg>
+          </div>
+        </div>
+        <div class="feature-card-body">
+          <div class="feature-card-content">
+            <div class="detail-grid">
+              <dl class="detail-item">
+                <dt>Event 1: share_accepted</dt>
+                <dd>share_id, event_id, timestamp, miner_id, job_id, reason_code, sv2_response</dd>
+              </dl>
+              <dl class="detail-item">
+                <dt>Event 2: share_forward_result</dt>
+                <dd>share_id, event_id, timestamp, forwarded, upstream_accepted, upstream_http_status, error_detail</dd>
+              </dl>
+              <dl class="detail-item">
+                <dt>Join key</dt>
+                <dd>Both events carry the same share_id for 1:1 correlation. The adapter blocks on channel capacity rather than dropping.</dd>
+              </dl>
+              <dl class="detail-item">
+                <dt>Invariant</dt>
+                <dd>Every share_accepted with sv2_response = "success" produces exactly one share_forward_result.</dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3: Three deployment modes -->
+      <div class="feature-card fade-up fade-up-d2">
+        <div class="feature-card-header" aria-expanded="false">
+          <div class="feature-card-icon icon-cyan">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zm0 8a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zm10 0a1 1 0 011-1h4a1 1 0 011 1v6a1 1 0 01-1 1h-4a1 1 0 01-1-1v-6z"/></svg>
+          </div>
+          <div class="feature-card-text">
+            <h3>Three deployment modes</h3>
+            <p>shadow / observe / inline. Start with audit, graduate to enforcement without code changes.</p>
+          </div>
+          <div class="feature-card-toggle">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"/></svg>
+          </div>
+        </div>
+        <div class="feature-card-body">
+          <div class="feature-card-content">
+            <div class="detail-grid">
+              <dl class="detail-item">
+                <dt>Shadow</dt>
+                <dd>Templates verified internally, results logged, no miner impact. Zero risk audit mode.</dd>
+              </dl>
+              <dl class="detail-item">
+                <dt>Observe</dt>
+                <dd>Miners connected, all templates pass, rejections logged but not enforced. Full share lifecycle active.</dd>
+              </dl>
+              <dl class="detail-item">
+                <dt>Inline</dt>
+                <dd>Full enforcement. No unverified job reaches a miner. Prevhash switching is fail-closed.</dd>
+              </dl>
+              <dl class="detail-item">
+                <dt>Migration</dt>
+                <dd>Switch modes by changing one TOML key. No binary rebuild, no schema change, no downtime.</dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4: Prevhash fail-closed -->
+      <div class="feature-card fade-up fade-up-d3">
+        <div class="feature-card-header" aria-expanded="false">
+          <div class="feature-card-icon icon-amber">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+          </div>
+          <div class="feature-card-text">
+            <h3>Prevhash fail-closed</h3>
+            <p>50ms verdict timeout, 5s stale hold, deterministic disconnect on timeout. Both happy and timeout paths are hardened.</p>
+          </div>
+          <div class="feature-card-toggle">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"/></svg>
+          </div>
+        </div>
+        <div class="feature-card-body">
+          <div class="feature-card-content">
+            <div class="detail-grid">
+              <dl class="detail-item">
+                <dt>Happy path</dt>
+                <dd>Verdict arrives within 50ms. New prevhash + job broadcast immediately. Target: p50 &lt; 50ms, p95 &lt; 150ms, p99 &lt; 300ms.</dd>
+              </dl>
+              <dl class="detail-item">
+                <dt>Timeout path</dt>
+                <dd>No verdict within 50ms. Miners hold stale job for up to 5s. After 5s, deterministic disconnect with prevhash_switch_timeout.</dd>
+              </dl>
+              <dl class="detail-item">
+                <dt>Risk model</dt>
+                <dd>Zero stale work distributed. Gateway blocks on miner demand rather than dropping shares.</dd>
+              </dl>
+              <dl class="detail-item">
+                <dt>Escape hatch</dt>
+                <dd>VELDRA_ALLOW_NO_SHARE_UPSTREAM_READY_INLINE relaxes upstream-ready check if needed during initial deploy.</dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5: 51-key config surface -->
+      <div class="feature-card fade-up fade-up-d4">
+        <div class="feature-card-header" aria-expanded="false">
+          <div class="feature-card-icon icon-purple">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.573-1.066z"/><circle cx="12" cy="12" r="3"/></svg>
+          </div>
+          <div class="feature-card-text">
+            <h3>51-key config surface</h3>
+            <p>TOML + environment variable overrides. 6 config sections for fine-grained control over every behavior.</p>
+          </div>
+          <div class="feature-card-toggle">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"/></svg>
+          </div>
+        </div>
+        <div class="feature-card-body">
+          <div class="feature-card-content">
+            <div class="detail-grid">
+              <dl class="detail-item">
+                <dt>Core</dt>
+                <dd>mode, listen_addr, verifier_addr, upstream_url, upstream_failure_policy, http_api_key</dd>
+              </dl>
+              <dl class="detail-item">
+                <dt>Noise</dt>
+                <dd>privkey, pubkey, authorized_keys, handshake_timeout_ms</dd>
+              </dl>
+              <dl class="detail-item">
+                <dt>Timing</dt>
+                <dd>prevhash_verdict_timeout_ms, prevhash_stale_hold_ms, upstream_poll_interval_ms, job_broadcast_interval_ms</dd>
+              </dl>
+              <dl class="detail-item">
+                <dt>Share</dt>
+                <dd>share_upstream_url, share_upstream_secret, share_forward_queue_size, share_forward_max_in_flight</dd>
+              </dl>
+              <dl class="detail-item">
+                <dt>Auth</dt>
+                <dd>mode (allowlist/prefix_map/open), allowlist, prefix_map, max_worker_id_bytes, max_workers_per_channel</dd>
+              </dl>
+              <dl class="detail-item">
+                <dt>Escape hatches</dt>
+                <dd>6 VELDRA_ env vars for relaxing constraints during development and initial deployment</dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6: Live observability -->
+      <div class="feature-card fade-up fade-up-d4">
+        <div class="feature-card-header" aria-expanded="false">
+          <div class="feature-card-icon icon-blue">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+          </div>
+          <div class="feature-card-text">
+            <h3>Live observability</h3>
+            <p>Prometheus metrics (30+ gauges/counters/histograms), event stream NDJSON, CSV export, Grafana dashboards included.</p>
+          </div>
+          <div class="feature-card-toggle">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"/></svg>
+          </div>
+        </div>
+        <div class="feature-card-body">
+          <div class="feature-card-content">
+            <div class="detail-grid">
+              <dl class="detail-item">
+                <dt>Prometheus</dt>
+                <dd>/metrics on HTTP API. 30+ metrics covering connections, jobs, shares, verdicts, prevhash latencies.</dd>
+              </dl>
+              <dl class="detail-item">
+                <dt>Event stream</dt>
+                <dd>/gateway/events NDJSON endpoint. Real-time share_accepted, share_forward_result, template_verdict events.</dd>
+              </dl>
+              <dl class="detail-item">
+                <dt>CSV export</dt>
+                <dd>Share history export via HTTP API. Bulk analysis, compliance audits, performance reporting.</dd>
+              </dl>
+              <dl class="detail-item">
+                <dt>Grafana dashboards</dt>
+                <dd>Pre-built dashboards for miner connections, job distribution, prevhash switching health, upstream responsiveness.</dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </section>
 
@@ -229,10 +349,6 @@
             <dd>No</dd>
             <dt>Config required</dt>
             <dd>verifier_addr, policy context</dd>
-            <dt>Miners connected</dt>
-            <dd>None</dd>
-            <dt>Verification</dt>
-            <dd>Active (log only)</dd>
             <dt>Risk</dt>
             <dd>Zero (no miner impact)</dd>
           </dl>
@@ -249,10 +365,6 @@
             <dd>Yes</dd>
             <dt>Config required</dt>
             <dd>listen_addr, upstream_url, share_upstream_url, verifier_addr</dd>
-            <dt>Miners connected</dt>
-            <dd>Yes</dd>
-            <dt>Verification</dt>
-            <dd>Active (log, never gate)</dd>
             <dt>Risk</dt>
             <dd>Low (unverified templates may reach miners)</dd>
           </dl>
@@ -269,10 +381,6 @@
             <dd>Yes</dd>
             <dt>Config required</dt>
             <dd>All keys, especially timing, gates, and disconnect policy</dd>
-            <dt>Miners connected</dt>
-            <dd>Yes</dd>
-            <dt>Verification</dt>
-            <dd>Active (gating enforced)</dd>
             <dt>Risk</dt>
             <dd>Production (fail-closed protects integrity)</dd>
           </dl>
@@ -281,7 +389,7 @@
     </div>
   </section>
 
-  <!-- ── Config Reference Preview ───────────── -->
+  <!-- ── Config Reference ──────────────────────── -->
   <section class="section">
     <div class="container">
       <div class="section-header">
@@ -297,7 +405,7 @@
           <button class="tab-btn" data-tab="config-auth">Auth</button>
         </div>
 
-        <div id="config-core" class="tab-panel active">
+        <div class="tab-content active" data-tab="config-core">
           <div class="code-panel" data-lang="toml">
             <button class="copy-btn">Copy</button>
 <pre>[gateway]
@@ -310,7 +418,7 @@ http_api_key = "your-secret-here"        # Authentication for metrics/events</pr
           </div>
         </div>
 
-        <div id="config-timing" class="tab-panel">
+        <div class="tab-content" data-tab="config-timing">
           <div class="code-panel" data-lang="toml">
             <button class="copy-btn">Copy</button>
 <pre>[timing]
@@ -328,7 +436,7 @@ nonce_expire_secs = 60                   # Expire old nonces from dedup filter</
           </div>
         </div>
 
-        <div id="config-share" class="tab-panel">
+        <div class="tab-content" data-tab="config-share">
           <div class="code-panel" data-lang="toml">
             <button class="copy-btn">Copy</button>
 <pre>[share]
@@ -341,7 +449,7 @@ share_forward_timeout_ms = 5000          # Upstream request timeout</pre>
           </div>
         </div>
 
-        <div id="config-auth" class="tab-panel">
+        <div class="tab-content" data-tab="config-auth">
           <div class="code-panel" data-lang="toml">
             <button class="copy-btn">Copy</button>
 <pre>[auth]
@@ -376,21 +484,27 @@ max_workers_per_channel = 1000           # Limit concurrent workers per channel<
       </div>
       <div class="grid-3 fade-up">
         <div class="card">
-          <div class="card-icon card-icon-green">&#x2713;</div>
+          <div class="card-icon card-icon-green">
+            <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </div>
           <h3>What it is</h3>
           <p><strong>Policy evaluation engine:</strong> Validates templates against operator rules before distribution.</p>
           <p><strong>Share lifecycle tracker:</strong> Records two deterministic events for every share with full context.</p>
           <p><strong>Observable gateway:</strong> Exposes metrics, event stream, and config surface for production monitoring.</p>
         </div>
         <div class="card">
-          <div class="card-icon card-icon-navy">&#x26A0;</div>
+          <div class="card-icon card-icon-navy">
+            <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
+          </div>
           <h3>What it is not</h3>
           <p><strong>Not a pool:</strong> Does not track payouts or maintain miner accounts. Upstream HTTP API handles accounting.</p>
           <p><strong>Not a custodian:</strong> Does not hold or sign blocks. Only verifies before forwarding to upstream.</p>
           <p><strong>Not a payout calculator:</strong> Share credits are determined by upstream pool backend.</p>
         </div>
         <div class="card">
-          <div class="card-icon card-icon-blue">&#x2699;</div>
+          <div class="card-icon card-icon-blue">
+            <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+          </div>
           <h3>Operational guidance</h3>
           <p><strong>Network isolation:</strong> Run on private network or VPN. Use http_api_key for HTTP API authentication.</p>
           <p><strong>TLS for non-loopback:</strong> Enable TLS if verifier or upstream are remote. Noise NX already encrypts miner traffic.</p>
@@ -400,7 +514,7 @@ max_workers_per_channel = 1000           # Limit concurrent workers per channel<
     </div>
   </section>
 
-  <!-- ── Demo Section ──────────────────────── -->
+  <!-- ── Demo ──────────────────────────────────── -->
   <section class="section" id="demo">
     <div class="container">
       <div class="section-header">
@@ -427,14 +541,14 @@ max_workers_per_channel = 1000           # Limit concurrent workers per channel<
   <!-- ── CTA ─────────────────────────────────── -->
   <section class="section">
     <div class="container">
-      <div class="card card-glow fade-up" style="padding:48px;text-align:center;">
-        <div class="section-eyebrow" style="color:rgba(255,255,255,.4);">Get started</div>
-        <h2 style="color:#fff;margin:12px 0 8px;font-size:28px;">Ready to deploy SV2 with confidence?</h2>
-        <p style="color:rgba(255,255,255,.55);max-width:540px;margin:0 auto 24px;">
+      <div class="card-glow fade-up">
+        <div class="section-eyebrow" style="position:relative;z-index:1;">Get started</div>
+        <h2 style="color:var(--ink);margin:12px 0 8px;font-size:32px;font-weight:800;position:relative;z-index:1;">Ready to deploy SV2 with confidence?</h2>
+        <p style="color:var(--ink-muted);max-width:540px;margin:0 auto 28px;position:relative;z-index:1;">
           Shadow mode costs nothing. Observe mode builds trust. Inline mode protects revenue.
         </p>
-        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
-          <a href="/docs/" class="btn btn-primary">Read the docs</a>
+        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;position:relative;z-index:1;">
+          <a href="/docs/" class="btn btn-glow">Read the docs</a>
           <a href="/observe/" class="btn btn-outline">Try observe mode</a>
         </div>
       </div>
@@ -446,7 +560,7 @@ max_workers_per_channel = 1000           # Limit concurrent workers per channel<
     <div class="container">
       <div class="footer-inner">
         <div class="footer-brand">
-          <img src="/assets/brand/veldra-logo.png" alt="Veldra" style="height:28px;filter:brightness(0) invert(1);opacity:.7;">
+          <img src="/assets/brand/veldra-logo.png" alt="Veldra">
           <p>SV2 mining gateway infrastructure for production pool operators.</p>
         </div>
         <div>
@@ -483,54 +597,6 @@ max_workers_per_channel = 1000           # Limit concurrent workers per channel<
       </div>
     </div>
   </footer>
-
-  <script>
-    // Feature card expansion toggle
-    document.querySelectorAll('.feature-toggle').forEach(button => {
-      button.addEventListener('click', function() {
-        const content = this.nextElementSibling;
-        const isExpanded = this.getAttribute('aria-expanded') === 'true';
-        this.setAttribute('aria-expanded', !isExpanded);
-        content.hidden = isExpanded;
-      });
-    });
-
-    // Tab group functionality
-    document.querySelectorAll('.tab-btn').forEach(btn => {
-      btn.addEventListener('click', function() {
-        const tabName = this.getAttribute('data-tab');
-        const tabGroup = this.closest('.tab-group');
-
-        // Hide all panels
-        tabGroup.querySelectorAll('.tab-panel').forEach(panel => {
-          panel.classList.remove('active');
-        });
-
-        // Remove active from all buttons
-        tabGroup.querySelectorAll('.tab-btn').forEach(b => {
-          b.classList.remove('active');
-        });
-
-        // Show selected panel and mark button as active
-        document.getElementById(tabName).classList.add('active');
-        this.classList.add('active');
-      });
-    });
-
-    // Copy button functionality
-    document.querySelectorAll('.copy-btn').forEach(btn => {
-      btn.addEventListener('click', function() {
-        const code = this.nextElementSibling.textContent;
-        navigator.clipboard.writeText(code).then(() => {
-          const original = this.textContent;
-          this.textContent = 'Copied!';
-          setTimeout(() => {
-            this.textContent = original;
-          }, 2000);
-        });
-      });
-    });
-  </script>
 
 </body>
 </html>
