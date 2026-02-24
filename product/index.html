@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>ReserveGrid OS — Template Verification for Mining Pools</title>
-  <meta name="description" content="ReserveGrid OS: Rust-based template verification and observability stack for Bitcoin mining pools. Evaluate templates against operator policy with explainable rejections and live dashboards.">
+  <title>ReserveGrid OS — SV2 Mining Gateway</title>
+  <meta name="description" content="Miner-facing Stratum V2 gateway with Noise NX, template verification, prevhash fail-closed switching, and two-event share lifecycle. 34 reason codes, 51 config keys, 3 deployment modes.">
   <meta name="theme-color" content="#0a1628">
 
   <link rel="canonical" href="https://veldra.org/product/">
@@ -13,10 +13,11 @@
   <link rel="icon" type="image/png" sizes="16x16" href="/assets/brand/favicon-16.png">
   <link rel="apple-touch-icon" href="/assets/brand/apple-touch-icon.png">
 
-  <meta property="og:title" content="ReserveGrid OS — Template Verification for Mining Pools">
-  <meta property="og:description" content="Rust-based template verification and observability for Bitcoin mining pools.">
+  <meta property="og:title" content="ReserveGrid OS — SV2 Mining Gateway">
+  <meta property="og:description" content="Miner-facing Stratum V2 gateway with Noise NX, template verification, prevhash fail-closed switching, and two-event share lifecycle. 34 reason codes, 51 config keys, 3 deployment modes.">
   <meta property="og:url" content="https://veldra.org/product/">
   <meta property="og:type" content="website">
+  <meta property="og:image" content="https://veldra.org/assets/brand/veldra-mark.png">
   <meta name="twitter:card" content="summary_large_image">
 
   <link rel="stylesheet" href="/assets/style.css?v=7">
@@ -46,15 +47,22 @@
     </div>
   </nav>
 
+  <!-- ── Hero (Light variant) ─────────────────── -->
   <section class="hero-light">
     <div class="container">
-      <div class="hero-inner">
+      <div class="hero-inner fade-up">
         <div class="hero-label">
           <span class="hero-label-dot"></span>
-          <span class="section-eyebrow">ReserveGrid OS</span>
+          <span>ReserveGrid OS</span>
         </div>
-        <h1 class="hero-title">Template verification built for production</h1>
-        <p class="hero-sub">Evaluate block templates against operator policy with explainable rejections, live observability, and structured exports. Built in Rust for Bitcoin mining pools.</p>
+        <h1 class="hero-title">
+          Miner-facing standard job server for Stratum V2
+        </h1>
+        <p class="hero-sub">
+          Built in Rust with policy evaluation, share lifecycle tracking, and end-to-end observability.
+          Every rejection carries a machine-readable reason code. Every share follows a two-event pipeline.
+          Choose your deployment mode and scale with confidence.
+        </p>
         <div class="hero-actions">
           <a href="/docs/" class="btn btn-primary">Read the Docs</a>
         </div>
@@ -62,166 +70,399 @@
     </div>
   </section>
 
+  <!-- ── Feature Cards (6 expandable) ───────── -->
   <section class="section">
     <div class="container">
       <div class="section-header">
-        <h2>How it works</h2>
-        <p>Templates in, verdicts out. One contract, end to end.</p>
+        <div class="section-eyebrow">Core capabilities</div>
+        <h2>Built for production SV2 deployment</h2>
       </div>
-      <div class="flow-steps fade-up">
-        <div class="flow-step">
-          <div class="flow-step-num">01</div>
-          <h4>Template source</h4>
-          <p>Stratum v2 bridge or bitcoind produces a candidate block template.</p>
-          <span class="flow-arrow">&#x2192;</span>
+      <div class="feature-grid fade-up">
+        <div class="feature-card">
+          <div class="feature-header">
+            <div class="feature-icon card-icon-blue">&#x2713;</div>
+            <h3>Explainable rejects</h3>
+          </div>
+          <p>34 GatewayReason codes. Every rejection includes reason_code + policy_context for full observability.</p>
+          <button class="feature-toggle" aria-expanded="false">Show categories</button>
+          <div class="feature-content" hidden>
+            <dl class="feature-detail-list">
+              <dt>Transport errors</dt>
+              <dd>Channel setup, frame parsing, protocol violations</dd>
+              <dt>Framing errors</dt>
+              <dd>Message size, frame sequence, encoding issues</dd>
+              <dt>Auth errors</dt>
+              <dd>Invalid credentials, worker ID format, allowlist mismatch</dd>
+              <dt>Channel errors</dt>
+              <dd>Unknown channel_id, channel not open, subscriber role violation</dd>
+              <dt>Job errors</dt>
+              <dd>Invalid job_id, unknown job, stale prevhash</dd>
+              <dt>Share errors</dt>
+              <dd>Difficulty below target, ntime out of range, duplicate nonce</dd>
+            </dl>
+          </div>
         </div>
-        <div class="flow-step">
-          <div class="flow-step-num">02</div>
-          <h4>Template manager</h4>
-          <p>Packages the candidate as a TemplatePropose message.</p>
-          <span class="flow-arrow">&#x2192;</span>
+
+        <div class="feature-card">
+          <div class="feature-header">
+            <div class="feature-icon card-icon-green">&#x25C6;</div>
+            <h3>Two-event share lifecycle</h3>
+          </div>
+          <p>share_accepted at ACK time, share_forward_result after upstream POST. Deterministic joins via share_id.</p>
+          <button class="feature-toggle" aria-expanded="false">Show fields</button>
+          <div class="feature-content" hidden>
+            <dl class="feature-detail-list">
+              <dt>Event 1: share_accepted</dt>
+              <dd>share_id, event_id, timestamp, miner_id, job_id, reason_code, sv2_response</dd>
+              <dt>Event 2: share_forward_result</dt>
+              <dd>share_id, event_id, timestamp, forwarded, upstream_accepted, upstream_http_status, error_detail</dd>
+              <dt>Join key</dt>
+              <dd>Both events carry the same share_id for 1:1 correlation</dd>
+            </dl>
+          </div>
         </div>
-        <div class="flow-step">
-          <div class="flow-step-num">03</div>
-          <h4>Policy verifier</h4>
-          <p>Evaluates fee policy and consensus safety checks, emits TemplateVerdict with context.</p>
-          <span class="flow-arrow">&#x2192;</span>
+
+        <div class="feature-card">
+          <div class="feature-header">
+            <div class="feature-icon card-icon-navy">&#x25A6;</div>
+            <h3>Three deployment modes</h3>
+          </div>
+          <p>shadow/observe/inline. Start with audit, graduate to enforcement without code changes.</p>
+          <button class="feature-toggle" aria-expanded="false">Show comparison</button>
+          <div class="feature-content" hidden>
+            <dl class="feature-detail-list">
+              <dt>Shadow</dt>
+              <dd>Templates verified internally, results logged, no miner impact (audit only)</dd>
+              <dt>Observe</dt>
+              <dd>Miners connected, all templates pass, rejections logged but not enforced, full observability</dd>
+              <dt>Inline</dt>
+              <dd>Full enforcement, no unverified job reaches a miner, prevhash switching is fail-closed</dd>
+            </dl>
+          </div>
         </div>
-        <div class="flow-step">
-          <div class="flow-step-num">04</div>
-          <h4>Dashboard + logs</h4>
-          <p>Live verdicts, aggregates, CSV/NDJSON export.</p>
+
+        <div class="feature-card">
+          <div class="feature-header">
+            <div class="feature-icon card-icon-blue">&#x25C8;</div>
+            <h3>Prevhash fail-closed</h3>
+          </div>
+          <p>50ms verdict timeout, 5s stale hold, deterministic disconnect on timeout. Happy path and timeout path hardened.</p>
+          <button class="feature-toggle" aria-expanded="false">Show details</button>
+          <div class="feature-content" hidden>
+            <dl class="feature-detail-list">
+              <dt>Happy path</dt>
+              <dd>Verdict arrives within 50ms. New prevhash + job broadcast immediately. Target: p50&lt;50ms, p95&lt;150ms, p99&lt;300ms.</dd>
+              <dt>Timeout path</dt>
+              <dd>No verdict within 50ms. Miners hold stale job for up to 5s. After 5s without verdict, deterministic disconnect with prevhash_switch_timeout code.</dd>
+              <dt>Risk model</dt>
+              <dd>Zero stale work distributed. Gateway blocks on miner demand rather than dropping shares.</dd>
+            </dl>
+          </div>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-header">
+            <div class="feature-icon card-icon-green">&#x2699;</div>
+            <h3>51-key config surface</h3>
+          </div>
+          <p>TOML + environment variable overrides. 6 config sections for fine-grained control.</p>
+          <button class="feature-toggle" aria-expanded="false">Show sections</button>
+          <div class="feature-content" hidden>
+            <dl class="feature-detail-list">
+              <dt>Core</dt>
+              <dd>mode, listen_addr, verifier_addr, upstream_url, upstream_failure_policy, http_api_key</dd>
+              <dt>Noise</dt>
+              <dd>privkey, pubkey, authorized_keys, handshake_timeout_ms</dd>
+              <dt>Timing</dt>
+              <dd>prevhash_verdict_timeout_ms, prevhash_stale_hold_ms, upstream_poll_interval_ms, job_broadcast_interval_ms</dd>
+              <dt>Ntime</dt>
+              <dd>ntime_leniency_seconds, ntime_max_age_blocks</dd>
+              <dt>Share</dt>
+              <dd>share_upstream_url, share_upstream_secret, share_forward_queue_size, share_forward_max_in_flight, share_batch_interval_ms</dd>
+              <dt>Auth</dt>
+              <dd>mode (allowlist/prefix_map/open), allowlist, prefix_map, max_worker_id_bytes, max_workers_per_channel</dd>
+            </dl>
+          </div>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-header">
+            <div class="feature-icon card-icon-navy">&#x25A3;</div>
+            <h3>Live observability</h3>
+          </div>
+          <p>Prometheus metrics (30+ gauges/counters/histograms), event stream NDJSON, Grafana dashboards included.</p>
+          <button class="feature-toggle" aria-expanded="false">Show metrics</button>
+          <div class="feature-content" hidden>
+            <dl class="feature-detail-list">
+              <dt>Prometheus endpoint</dt>
+              <dd>/metrics on HTTP API. 30+ metrics covering connections, jobs, shares, verdicts, prevhash latencies.</dd>
+              <dt>Event stream</dt>
+              <dd>/gateway/events NDJSON endpoint. Real-time share_accepted, share_forward_result, template_verdict events. Supports filtering by type and time.</dd>
+              <dt>CSV export</dt>
+              <dd>Share history export via HTTP API. Bulk analysis, compliance audits, performance reporting.</dd>
+              <dt>Grafana dashboards</dt>
+              <dd>Pre-built dashboards for miner connections, job distribution, prevhash switching health, upstream responsiveness.</dd>
+            </dl>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
+  <!-- ── Mode Comparison ──────────────────────── -->
   <section class="section section-alt">
     <div class="container">
       <div class="section-header">
-        <div class="section-eyebrow">Capabilities</div>
-        <h2>Core capabilities</h2>
+        <div class="section-eyebrow">Deployment modes</div>
+        <h2>Detailed comparison</h2>
       </div>
-      <div class="grid-3">
-        <div class="card fade-up fade-up-d1">
-          <div class="card-icon card-icon-blue">&#x2713;</div>
-          <h3>Explainable rejects</h3>
-          <p>Every rejection includes reason_code and policy_context, so you understand exactly why a template was rejected.</p>
+      <div class="grid-3 fade-up">
+        <div class="mode-card mode-shadow">
+          <h3>Shadow</h3>
+          <p>Audit template policy without affecting live mining. No miners, no risk, maximum observability.</p>
+          <dl class="mode-card-detail">
+            <dt>Gates templates</dt>
+            <dd>No</dd>
+            <dt>Prevhash fail-closed</dt>
+            <dd>N/A</dd>
+            <dt>Share forwarding</dt>
+            <dd>No</dd>
+            <dt>Config required</dt>
+            <dd>verifier_addr, policy context</dd>
+            <dt>Miners connected</dt>
+            <dd>None</dd>
+            <dt>Verification</dt>
+            <dd>Active (log only)</dd>
+            <dt>Risk</dt>
+            <dd>Zero (no miner impact)</dd>
+          </dl>
         </div>
-        <div class="card fade-up fade-up-d2">
-          <div class="card-icon card-icon-green">&#x25C6;</div>
-          <h3>Mempool-aware fee tiers</h3>
-          <p>Automatic low, mid, and high fee tier classification based on real-time mempool transaction counts.</p>
+        <div class="mode-card mode-observe">
+          <h3>Observe</h3>
+          <p>Miners receive all jobs. Rejection verdicts logged but never gated. Build confidence before inline.</p>
+          <dl class="mode-card-detail">
+            <dt>Gates templates</dt>
+            <dd>No</dd>
+            <dt>Prevhash fail-closed</dt>
+            <dd>N/A</dd>
+            <dt>Share forwarding</dt>
+            <dd>Yes</dd>
+            <dt>Config required</dt>
+            <dd>listen_addr, upstream_url, share_upstream_url, verifier_addr</dd>
+            <dt>Miners connected</dt>
+            <dd>Yes</dd>
+            <dt>Verification</dt>
+            <dd>Active (log, never gate)</dd>
+            <dt>Risk</dt>
+            <dd>Low (unverified templates may reach miners)</dd>
+          </dl>
         </div>
-        <div class="card fade-up fade-up-d3">
-          <div class="card-icon card-icon-navy">&#x25A6;</div>
-          <h3>Live operator dashboard</h3>
-          <p>Real-time verdicts, aggregates, and charts for instant visibility into template acceptance rates.</p>
-        </div>
-        <div class="card fade-up fade-up-d1">
-          <div class="card-icon card-icon-navy">&#x2699;</div>
-          <h3>Policy wizard</h3>
-          <p>Generate policy.toml from a simple UI instead of hand-editing TOML configuration files.</p>
-        </div>
-        <div class="card fade-up fade-up-d2">
-          <div class="card-icon card-icon-blue">&#x2261;</div>
-          <h3>Deterministic evaluation</h3>
-          <p>Same template and policy always produce the same verdict. No randomness, 100% reproducible.</p>
-        </div>
-        <div class="card fade-up fade-up-d3">
-          <div class="card-icon card-icon-green">&#x25A0;</div>
-          <h3>Structured exports</h3>
-          <p>NDJSON logs, CSV reports, and stats API for easy integration with monitoring and compliance tools.</p>
-        </div>
-        <div class="card fade-up fade-up-d1">
-          <div class="card-icon card-icon-blue">&#x26A0;</div>
-          <h3>Consensus safety checks</h3>
-          <p>Weight ratio, template age, sigops budget, and coinbase sigops monitoring with observe-first enforcement defaults.</p>
+        <div class="mode-card mode-inline">
+          <h3>Inline</h3>
+          <p>Full enforcement. No invalid template reaches a miner. Prevhash switching is deterministic and fail-closed.</p>
+          <dl class="mode-card-detail">
+            <dt>Gates templates</dt>
+            <dd>Yes</dd>
+            <dt>Prevhash fail-closed</dt>
+            <dd>Yes (50ms timeout + 5s hold)</dd>
+            <dt>Share forwarding</dt>
+            <dd>Yes</dd>
+            <dt>Config required</dt>
+            <dd>All keys, especially timing, gates, and disconnect policy</dd>
+            <dt>Miners connected</dt>
+            <dd>Yes</dd>
+            <dt>Verification</dt>
+            <dd>Active (gating enforced)</dd>
+            <dt>Risk</dt>
+            <dd>Production (fail-closed protects integrity)</dd>
+          </dl>
         </div>
       </div>
     </div>
   </section>
 
+  <!-- ── Config Reference Preview ───────────── -->
   <section class="section">
     <div class="container">
       <div class="section-header">
-        <h2>Sample verdict</h2>
-        <p>What the dashboard, logs, and integrations consume.</p>
+        <div class="section-eyebrow">Configuration</div>
+        <h2>Quick reference</h2>
+        <p>All configuration via TOML with optional environment variable overrides (format: RESERVEGRID_SECTION_KEY).</p>
       </div>
-      <div class="code-panel fade-up">
-        <button class="copy-btn">Copy</button>
-<pre>{
-  "version": 2,
-  "id": 42,
-  "accepted": false,
-  "reason_code": "avg_fee_below_minimum",
-  "reason_detail": "avg_fee=141 &lt; min_avg_fee_used=200",
-  "policy_context": {
-    "fee_tier": "mid",
-    "min_avg_fee_used": 200,
-    "min_total_fees_used": 0,
-    "reject_coinbase_zero": false,
-    "unknown_mempool_as_high": true
-  }
-}</pre>
+      <div class="tab-group fade-up">
+        <div class="tab-buttons">
+          <button class="tab-btn active" data-tab="config-core">Core</button>
+          <button class="tab-btn" data-tab="config-timing">Timing</button>
+          <button class="tab-btn" data-tab="config-share">Share</button>
+          <button class="tab-btn" data-tab="config-auth">Auth</button>
+        </div>
+
+        <div id="config-core" class="tab-panel active">
+          <div class="code-panel" data-lang="toml">
+            <button class="copy-btn">Copy</button>
+<pre>[gateway]
+mode = "inline"                          # shadow, observe, or inline
+listen_addr = "0.0.0.0:3333"             # Miner connection address
+verifier_addr = "127.0.0.1:5001"         # pool-verifier TCP address
+upstream_url = "http://bitcoind:8332"    # Block template source
+upstream_failure_policy = "fail_closed"  # fail_closed or permit_all
+http_api_key = "your-secret-here"        # Authentication for metrics/events</pre>
+          </div>
+        </div>
+
+        <div id="config-timing" class="tab-panel">
+          <div class="code-panel" data-lang="toml">
+            <button class="copy-btn">Copy</button>
+<pre>[timing]
+# Prevhash switching
+prevhash_verdict_timeout_ms = 50         # Wait time for verdict before timeout
+prevhash_stale_hold_ms = 5000            # Hold stale job after timeout
+
+# Polling and broadcast
+upstream_poll_interval_ms = 1000         # Check for new templates every 1s
+job_broadcast_interval_ms = 100          # Aggregate job broadcasts
+
+# Message timeouts
+channel_idle_timeout_ms = 3600000        # Close idle channels after 1 hour
+nonce_expire_secs = 60                   # Expire old nonces from dedup filter</pre>
+          </div>
+        </div>
+
+        <div id="config-share" class="tab-panel">
+          <div class="code-panel" data-lang="toml">
+            <button class="copy-btn">Copy</button>
+<pre>[share]
+share_upstream_url = "http://pool-backend:9090/shares"
+share_upstream_secret = "hmac-key-here"  # HMAC-SHA256 signing key
+share_forward_queue_size = 10000         # Max pending shares in queue
+share_forward_max_in_flight = 100        # Max concurrent upstream requests
+share_batch_interval_ms = 100            # Batch shares before sending
+share_forward_timeout_ms = 5000          # Upstream request timeout</pre>
+          </div>
+        </div>
+
+        <div id="config-auth" class="tab-panel">
+          <div class="code-panel" data-lang="toml">
+            <button class="copy-btn">Copy</button>
+<pre>[auth]
+mode = "prefix_map"                      # allowlist, prefix_map, or open
+
+# Allowlist mode: explicit list of authorized credentials
+allowlist = [
+  { username = "miner1", password = "secret1" },
+  { username = "miner2", password = "secret2" }
+]
+
+# Prefix map mode: pattern-based authorization
+prefix_map = [
+  { prefix = "farm1_", secret = "farm1-key" },
+  { prefix = "farm2_", secret = "farm2-key" }
+]
+
+max_worker_id_bytes = 512                # Limit worker_name field length
+max_workers_per_channel = 1000           # Limit concurrent workers per channel</pre>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
-  <section id="demo" class="section section-alt">
+  <!-- ── Security Boundaries ──────────────────── -->
+  <section class="section section-alt">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-eyebrow">Scope</div>
+        <h2>What ReserveGrid OS is and isn't</h2>
+      </div>
+      <div class="grid-3 fade-up">
+        <div class="card">
+          <div class="card-icon card-icon-green">&#x2713;</div>
+          <h3>What it is</h3>
+          <p><strong>Policy evaluation engine:</strong> Validates templates against operator rules before distribution.</p>
+          <p><strong>Share lifecycle tracker:</strong> Records two deterministic events for every share with full context.</p>
+          <p><strong>Observable gateway:</strong> Exposes metrics, event stream, and config surface for production monitoring.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon-navy">&#x26A0;</div>
+          <h3>What it is not</h3>
+          <p><strong>Not a pool:</strong> Does not track payouts or maintain miner accounts. Upstream HTTP API handles accounting.</p>
+          <p><strong>Not a custodian:</strong> Does not hold or sign blocks. Only verifies before forwarding to upstream.</p>
+          <p><strong>Not a payout calculator:</strong> Share credits are determined by upstream pool backend.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon-blue">&#x2699;</div>
+          <h3>Operational guidance</h3>
+          <p><strong>Network isolation:</strong> Run on private network or VPN. Use http_api_key for HTTP API authentication.</p>
+          <p><strong>TLS for non-loopback:</strong> Enable TLS if verifier or upstream are remote. Noise NX already encrypts miner traffic.</p>
+          <p><strong>Monitoring:</strong> Expose Prometheus metrics only to internal dashboards. Use event stream for audit logging.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Demo Section ──────────────────────── -->
+  <section class="section" id="demo">
     <div class="container">
       <div class="section-header">
         <div class="section-eyebrow">Demo</div>
         <h2>See it in action</h2>
       </div>
-      <div style="max-width:800px;margin:0 auto;">
-        <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;">
-          <iframe style="position:absolute;top:0;left:0;width:100%;height:100%;" src="https://www.youtube.com/embed/lDIIl7Oe73Y" title="ReserveGrid OS Demo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-        </div>
+      <div class="video-wrap fade-up">
+        <iframe
+          width="100%"
+          height="600"
+          src="https://www.youtube.com/embed/lDIIl7Oe73Y"
+          title="ReserveGrid OS Demo"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen>
+        </iframe>
       </div>
-      <div style="margin-top:48px;">
-        <div class="section-header">
-          <h3>Try it live</h3>
-        </div>
-        <div class="callout callout-blue" style="text-align:center;">
-          <p style="margin:0 0 12px;">Request access to the live observe dashboard and see ReserveGrid OS evaluating templates in real time.</p>
-          <a href="/observe/" class="btn btn-primary">Observe mode</a>
-        </div>
+      <div class="callout callout-blue mt-6 fade-up" style="text-align:center;">
+        <strong>Not ready for inline?</strong> Try observe mode first. It requires the same configuration but logs all verdicts without gating. No production impact, full visibility.
       </div>
     </div>
   </section>
 
+  <!-- ── CTA ─────────────────────────────────── -->
   <section class="section">
     <div class="container">
-      <div class="card card-dark fade-up" style="padding:40px;text-align:center;">
+      <div class="card card-dark fade-up" style="padding:48px;text-align:center;">
         <div class="section-eyebrow" style="color:rgba(255,255,255,.4);">Get started</div>
-        <h2 style="color:#fff;margin:12px 0 8px;font-size:28px;">Ready to verify your templates?</h2>
-        <p style="color:rgba(255,255,255,.55);max-width:500px;margin:0 auto 24px;">Explore the documentation and request observe mode access to see deterministic template verification with full reason codes.</p>
+        <h2 style="color:#fff;margin:12px 0 8px;font-size:28px;">Ready to deploy SV2 with confidence?</h2>
+        <p style="color:rgba(255,255,255,.55);max-width:540px;margin:0 auto 24px;">
+          Shadow mode costs nothing. Observe mode builds trust. Inline mode protects revenue.
+        </p>
         <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
           <a href="/docs/" class="btn btn-primary">Read the docs</a>
+          <a href="/observe/" class="btn" style="border-color:rgba(255,255,255,.15);color:rgba(255,255,255,.8);background:rgba(255,255,255,.06);">Try observe mode</a>
         </div>
       </div>
     </div>
   </section>
 
+  <!-- ── Footer ──────────────────────────────── -->
   <footer class="footer">
     <div class="container">
       <div class="footer-inner">
         <div class="footer-brand">
           <img src="/assets/brand/veldra-logo.png" alt="Veldra" style="height:28px;filter:brightness(0) invert(1);opacity:.7;">
-          <p>Infrastructure for Bitcoin mining pool operators.</p>
+          <p>SV2 mining gateway infrastructure for production pool operators.</p>
         </div>
         <div>
           <h4>Product</h4>
           <div class="footer-links">
             <a href="/product/">ReserveGrid OS</a>
             <a href="/product/#demo">Demo</a>
+            <a href="/observe/">Observe Mode</a>
           </div>
         </div>
         <div>
           <h4>Resources</h4>
           <div class="footer-links">
             <a href="/docs/">Documentation</a>
+            <a href="/docs/#reason-codes">Reason Codes</a>
+            <a href="/docs/#config">Configuration</a>
           </div>
         </div>
         <div>
@@ -231,7 +472,6 @@
             <a href="mailto:jarrondeng@veldra.org">Contact</a>
           </div>
         </div>
-
       </div>
       <div class="footer-bottom">
         <span>&copy; 2026 Veldra, Inc.</span>
@@ -243,6 +483,54 @@
       </div>
     </div>
   </footer>
+
+  <script>
+    // Feature card expansion toggle
+    document.querySelectorAll('.feature-toggle').forEach(button => {
+      button.addEventListener('click', function() {
+        const content = this.nextElementSibling;
+        const isExpanded = this.getAttribute('aria-expanded') === 'true';
+        this.setAttribute('aria-expanded', !isExpanded);
+        content.hidden = isExpanded;
+      });
+    });
+
+    // Tab group functionality
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const tabName = this.getAttribute('data-tab');
+        const tabGroup = this.closest('.tab-group');
+
+        // Hide all panels
+        tabGroup.querySelectorAll('.tab-panel').forEach(panel => {
+          panel.classList.remove('active');
+        });
+
+        // Remove active from all buttons
+        tabGroup.querySelectorAll('.tab-btn').forEach(b => {
+          b.classList.remove('active');
+        });
+
+        // Show selected panel and mark button as active
+        document.getElementById(tabName).classList.add('active');
+        this.classList.add('active');
+      });
+    });
+
+    // Copy button functionality
+    document.querySelectorAll('.copy-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const code = this.nextElementSibling.textContent;
+        navigator.clipboard.writeText(code).then(() => {
+          const original = this.textContent;
+          this.textContent = 'Copied!';
+          setTimeout(() => {
+            this.textContent = original;
+          }, 2000);
+        });
+      });
+    });
+  </script>
 
 </body>
 </html>

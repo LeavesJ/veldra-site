@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>About — Veldra</title>
-  <meta name="description" content="Veldra builds verification and observability infrastructure for Bitcoin mining pool operators.">
+  <meta name="description" content="Veldra builds SV2 mining gateway infrastructure. Production Rust. Deterministic verification. Structured observability.">
   <meta name="theme-color" content="#0a1628">
 
   <link rel="canonical" href="https://veldra.org/about/">
@@ -14,9 +14,10 @@
   <link rel="apple-touch-icon" href="/assets/brand/apple-touch-icon.png">
 
   <meta property="og:title" content="About — Veldra">
-  <meta property="og:description" content="Veldra builds verification and observability infrastructure for Bitcoin mining pool operators.">
+  <meta property="og:description" content="Veldra builds SV2 mining gateway infrastructure. Production Rust. Deterministic verification. Structured observability.">
   <meta property="og:url" content="https://veldra.org/about/">
   <meta property="og:type" content="website">
+  <meta property="og:image" content="https://veldra.org/assets/brand/veldra-mark.png">
   <meta name="twitter:card" content="summary_large_image">
 
   <link rel="stylesheet" href="/assets/style.css?v=7">
@@ -24,6 +25,7 @@
 </head>
 <body>
 
+  <!-- ── Navigation ──────────────────────────── -->
   <nav class="topbar">
     <div class="container">
       <div class="nav">
@@ -46,108 +48,165 @@
     </div>
   </nav>
 
+  <!-- ── Hero ────────────────────────────────── -->
   <section class="hero-light">
     <div class="container">
-      <div class="hero-inner">
+      <div class="hero-inner fade-up">
         <div class="hero-label">
           <span class="hero-label-dot"></span>
-          <span class="section-eyebrow">Company</span>
+          <span>Company</span>
         </div>
-        <h1 class="hero-title">About Veldra</h1>
-        <p class="hero-sub">Building verification and observability infrastructure for Bitcoin mining pool operators.</p>
+        <h1 class="hero-title">
+          Building the infrastructure layer for SV2 mining
+        </h1>
+        <p class="hero-sub">
+          Veldra builds verification and observability infrastructure for production pool operators.
+          We enable SV2 adoption by providing fail-closed safety, deterministic policy evaluation,
+          and structured reason codes for every decision.
+        </p>
       </div>
     </div>
   </section>
 
+  <!-- ── Mission and Approach ──────────────── -->
   <section class="section">
     <div class="container">
       <div class="section-header">
-        <h2>What we do</h2>
+        <div class="section-eyebrow">Who we are</div>
+        <h2>Mission and approach</h2>
       </div>
-      <div class="grid-2">
+      <div class="grid-2 fade-up">
         <div class="card">
-          <div class="card-icon card-icon-blue">&#x2690;</div>
           <h3>Mission</h3>
-          <p>Eliminate ambiguous template failures. Every reject must be self-explanatory with a stable reason code and measured context. No mysterious failure modes.</p>
+          <p>Eliminate template ambiguity in SV2 mining pools. Every rejection must be self-explanatory with a stable reason_code and measured context. No opaque failures.</p>
         </div>
         <div class="card">
-          <div class="card-icon card-icon-navy">&#x2699;</div>
           <h3>Approach</h3>
-          <p>Production-grade Rust. Deterministic evaluation. Structured observability. Explicit errors over silent fallbacks. Stable machine interfaces.</p>
+          <p>Production-grade Rust (tokio, serde, tracing, clap). Deterministic evaluation. Structured observability from day one. Explicit errors with canonical reason codes. Stable machine-readable interfaces.</p>
         </div>
       </div>
     </div>
   </section>
 
+  <!-- ── ReserveGrid OS ────────────────────── -->
   <section class="section section-alt">
     <div class="container">
       <div class="section-header">
-        <div class="section-eyebrow">Flagship product</div>
+        <div class="section-eyebrow">Featured product</div>
         <h2>ReserveGrid OS</h2>
-        <p>Template verification and observability built for production mining pools.</p>
+        <p>
+          SV2 miner-facing gateway. Noise NX transport. Template verification against operator policy.
+          Prevhash fail-closed switching. Two-event share lifecycle. 34 GatewayReason codes. 51 TOML config keys.
+        </p>
       </div>
-      <div class="card" style="max-width:720px;margin:0 auto;">
-        <p>ReserveGrid OS evaluates block templates against operator policy with explainable rejections, live dashboards, and structured exports. Built in Rust with deterministic evaluation, zero silent failures, and comprehensive reason codes for every decision.</p>
-        <div style="margin-top:20px;">
-          <a href="/product/" class="btn btn-primary">Explore ReserveGrid OS</a>
-        </div>
+      <div class="fade-up" style="text-align:center;margin-top:32px;">
+        <a href="/product/" class="btn btn-primary">Explore ReserveGrid OS</a>
       </div>
     </div>
   </section>
 
+  <!-- ── Technology Stack ─────────────────── -->
   <section class="section">
     <div class="container">
       <div class="section-header">
         <div class="section-eyebrow">Architecture</div>
-        <h2>Built in Rust</h2>
+        <h2>Technology stack</h2>
       </div>
-      <div class="grid-2">
+      <div class="grid-4 fade-up">
         <div class="card">
-          <h3>Core stack</h3>
-          <p>rg-protocol, pool-verifier, template-manager, and sv2-bridge. All written in Rust with deterministic, fail-fast design.</p>
+          <h3>sv2-gateway</h3>
+          <p>Noise NX handshake, SV2 frame decode, channel management, share validation, job distribution.</p>
         </div>
         <div class="card">
-          <h3>Observe mode</h3>
-          <p>Auth-gated live dashboard for prospective operators. Real-time verdicts, consensus safety metrics, and structured exports.</p>
+          <h3>pool-verifier</h3>
+          <p>Template evaluation against policy.toml, fee tier selection, consensus safety checks.</p>
         </div>
-      </div>
-      <div class="callout callout-blue mt-6">
-        Interested in early access? <a href="/observe/" style="color:inherit;text-decoration:underline;">Request observe mode access</a>.
+        <div class="card">
+          <h3>template-manager</h3>
+          <p>Upstream template polling, deduplication, TemplatePropose packaging.</p>
+        </div>
+        <div class="card">
+          <h3>rg-protocol</h3>
+          <p>Shared types (GatewayReason, ShareAccepted, ShareForwardResult), NDJSON wire format.</p>
+        </div>
       </div>
     </div>
   </section>
 
+  <!-- ── Design Principles ────────────────── -->
   <section class="section section-alt">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-eyebrow">Engineering</div>
+        <h2>Design principles</h2>
+      </div>
+      <div class="grid-3 fade-up">
+        <div class="card">
+          <h3>Deterministic evaluation</h3>
+          <p>Same input, same policy, same verdict. Always.</p>
+        </div>
+        <div class="card">
+          <h3>Fail-closed safety</h3>
+          <p>50ms verdict timeout, 5s stale hold, explicit disconnect.</p>
+        </div>
+        <div class="card">
+          <h3>Observable by default</h3>
+          <p>Every decision logged with tracing spans, metrics, events.</p>
+        </div>
+        <div class="card">
+          <h3>Zero silent failures</h3>
+          <p>Every disconnect, every rejection has a machine-readable reason_code.</p>
+        </div>
+        <div class="card">
+          <h3>Stateless gateway</h3>
+          <p>Reproducible, scalable, auditable. No hidden state accumulation.</p>
+        </div>
+        <div class="card">
+          <h3>Miner-aligned</h3>
+          <p>Designed for the SV2 standard job server profile, not centralized control.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Contact ──────────────────────────── -->
+  <section class="section">
     <div class="container">
       <div class="section-header">
         <div class="section-eyebrow">Contact</div>
         <h2>Get in touch</h2>
-        <p>For pilots, feedback, or collaboration inquiries.</p>
       </div>
-      <div class="code-panel" style="max-width:420px;margin:0 auto;text-align:center;padding:24px;">
-        <pre style="font-size:15px;">jarrondeng@veldra.org</pre>
+      <div class="fade-up" style="text-align:center;margin-top:32px;">
+        <div class="code-panel" data-lang="text">
+          <button class="copy-btn">Copy</button>
+<pre>jarrondeng@veldra.org</pre>
+        </div>
       </div>
     </div>
   </section>
 
+  <!-- ── Footer ──────────────────────────────── -->
   <footer class="footer">
     <div class="container">
       <div class="footer-inner">
         <div class="footer-brand">
           <img src="/assets/brand/veldra-logo.png" alt="Veldra" style="height:28px;filter:brightness(0) invert(1);opacity:.7;">
-          <p>Infrastructure for Bitcoin mining pool operators.</p>
+          <p>SV2 mining gateway infrastructure for production pool operators.</p>
         </div>
         <div>
           <h4>Product</h4>
           <div class="footer-links">
             <a href="/product/">ReserveGrid OS</a>
             <a href="/product/#demo">Demo</a>
+            <a href="/observe/">Observe Mode</a>
           </div>
         </div>
         <div>
           <h4>Resources</h4>
           <div class="footer-links">
             <a href="/docs/">Documentation</a>
+            <a href="/docs/#reason-codes">Reason Codes</a>
+            <a href="/docs/#config">Configuration</a>
           </div>
         </div>
         <div>
@@ -157,7 +216,6 @@
             <a href="mailto:jarrondeng@veldra.org">Contact</a>
           </div>
         </div>
-
       </div>
       <div class="footer-bottom">
         <span>&copy; 2026 Veldra, Inc.</span>

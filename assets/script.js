@@ -20,7 +20,6 @@
       var expanded = navlinks.classList.contains('open');
       toggle.setAttribute('aria-expanded', expanded);
     });
-    // Close on outside click
     document.addEventListener('click', function (e) {
       if (!toggle.contains(e.target) && !navlinks.contains(e.target)) {
         navlinks.classList.remove('open');
@@ -118,4 +117,111 @@
       observer.observe(el);
     });
   }
+
+  // ── Feature card expand/collapse ─────────────
+  document.addEventListener('click', function (e) {
+    var header = e.target.closest('.feature-card-header');
+    if (!header) return;
+
+    var card = header.closest('.feature-card');
+    if (!card) return;
+
+    var isExpanded = card.classList.contains('expanded');
+    card.classList.toggle('expanded');
+    header.setAttribute('aria-expanded', !isExpanded);
+  });
+
+  // ── Tab switcher ─────────────────────────────
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest('.tab-btn');
+    if (!btn) return;
+
+    var group = btn.closest('.tab-group');
+    if (!group) return;
+
+    var target = btn.getAttribute('data-tab');
+
+    group.querySelectorAll('.tab-btn').forEach(function (b) {
+      b.classList.remove('active');
+    });
+    btn.classList.add('active');
+
+    group.querySelectorAll('.tab-content').forEach(function (content) {
+      content.classList.toggle('active', content.getAttribute('data-tab') === target);
+    });
+  });
+
+  // ── Timeline scroll animation ────────────────
+  if ('IntersectionObserver' in window) {
+    var timelineObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('animated');
+          timelineObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.2 });
+
+    document.querySelectorAll('.timeline').forEach(function (tl) {
+      timelineObserver.observe(tl);
+    });
+  }
+
+  // ── Reason code filter ───────────────────────
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest('.filter-btn');
+    if (!btn) return;
+
+    var bar = btn.closest('.filter-bar');
+    if (!bar) return;
+
+    var category = btn.getAttribute('data-filter');
+    var container = bar.parentElement;
+    var table = container.querySelector('.data-table');
+    if (!table) return;
+
+    bar.querySelectorAll('.filter-btn').forEach(function (b) {
+      b.classList.remove('active');
+    });
+    btn.classList.add('active');
+
+    table.querySelectorAll('tbody tr').forEach(function (row) {
+      if (category === 'all') {
+        row.style.display = '';
+      } else {
+        row.style.display = row.getAttribute('data-category') === category ? '' : 'none';
+      }
+    });
+  });
+
+  // ── Basic syntax highlighting for code panels ─
+  document.querySelectorAll('.code-panel[data-lang]').forEach(function (panel) {
+    var pre = panel.querySelector('pre');
+    if (!pre) return;
+
+    var lang = panel.getAttribute('data-lang');
+    var html = pre.innerHTML;
+
+    if (lang === 'json') {
+      html = html
+        .replace(/"([^"]+)"(\s*:)/g, '<span class="tok-key">"$1"</span>$2')
+        .replace(/:\s*"([^"]*)"/g, ': <span class="tok-str">"$1"</span>')
+        .replace(/:\s*(\d+\.?\d*)/g, ': <span class="tok-num">$1</span>')
+        .replace(/:\s*(true|false)/g, ': <span class="tok-bool">$1</span>')
+        .replace(/:\s*(null)/g, ': <span class="tok-null">$1</span>');
+    }
+
+    if (lang === 'toml') {
+      html = html
+        .replace(/^(\s*#.*)$/gm, '<span class="tok-comment">$1</span>')
+        .replace(/^(\s*\[.*\])\s*$/gm, '<span class="tok-key">$1</span>')
+        .replace(/^(\s*\w[\w.]*)\s*=/gm, '<span class="tok-key">$1</span> =')
+        .replace(/=\s*"([^"]*)"/g, '= <span class="tok-str">"$1"</span>')
+        .replace(/=\s*(\d+\.?\d*)/g, '= <span class="tok-num">$1</span>')
+        .replace(/=\s*(true|false)/g, '= <span class="tok-bool">$1</span>');
+    }
+
+    pre.innerHTML = html;
+  });
+
 })();
