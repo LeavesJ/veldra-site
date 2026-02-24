@@ -151,6 +151,22 @@
     });
   });
 
+  // ── Chip schematic activation ───────────────
+  if ('IntersectionObserver' in window) {
+    var chipObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('chip-active');
+          chipObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.3 });
+
+    document.querySelectorAll('.chip').forEach(function (chip) {
+      chipObserver.observe(chip);
+    });
+  }
+
   // ── Timeline scroll animation ────────────────
   if ('IntersectionObserver' in window) {
     var timelineObserver = new IntersectionObserver(function (entries) {

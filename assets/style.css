@@ -588,7 +588,40 @@ ul { list-style: none; }
   max-width: 820px;
 }
 
-/* The central IC body */
+/* ── Entrance: everything starts hidden, revealed by JS ── */
+.chip-body,
+.chip-pins-left .chip-pin,
+.chip-pins-right .chip-pin,
+.chip-substrate {
+  opacity: 0;
+  transition: opacity .6s ease, transform .6s ease, box-shadow 1s ease;
+}
+.chip-body       { transform: scale(.92); }
+.chip-pins-left .chip-pin  { transform: translateX(20px); }
+.chip-pins-right .chip-pin { transform: translateX(-20px); }
+
+/* When .chip-active is added by JS */
+.chip.chip-active .chip-body {
+  opacity: 1;
+  transform: scale(1);
+}
+.chip.chip-active .chip-substrate {
+  opacity: 1;
+}
+.chip.chip-active .chip-pins-left .chip-pin,
+.chip.chip-active .chip-pins-right .chip-pin {
+  opacity: 1;
+  transform: translateX(0);
+}
+/* Stagger pin entrance */
+.chip.chip-active .chip-pins-left .chip-pin:nth-child(1)  { transition-delay: .45s; }
+.chip.chip-active .chip-pins-left .chip-pin:nth-child(2)  { transition-delay: .6s; }
+.chip.chip-active .chip-pins-right .chip-pin:nth-child(1) { transition-delay: .55s; }
+.chip.chip-active .chip-pins-right .chip-pin:nth-child(2) { transition-delay: .7s; }
+.chip.chip-active .chip-body       { transition-delay: .1s; }
+.chip.chip-active .chip-substrate  { transition-delay: 0s; }
+
+/* ── Central IC body ── */
 .chip-body {
   grid-column: 2;
   grid-row: 2;
@@ -599,14 +632,23 @@ ul { list-style: none; }
       rgba(212,148,60,.04) 0%,
       rgba(15,21,32,.95) 50%,
       rgba(212,148,60,.03) 100%);
-  border: 1.5px solid rgba(212,148,60,.35);
+  border: 1.5px solid rgba(212,148,60,.2);
   border-radius: 6px;
   text-align: center;
   z-index: 2;
   box-shadow:
-    0 0 40px rgba(212,148,60,.08),
-    inset 0 1px 0 rgba(232,176,96,.1);
+    0 0 20px rgba(212,148,60,.04),
+    inset 0 1px 0 rgba(232,176,96,.06);
 }
+/* "Power on" glow ramp */
+.chip.chip-active .chip-body {
+  border-color: rgba(212,148,60,.4);
+  box-shadow:
+    0 0 50px rgba(212,148,60,.12),
+    0 0 100px rgba(212,148,60,.05),
+    inset 0 1px 0 rgba(232,176,96,.12);
+}
+
 /* Corner notch (IC orientation mark) */
 .chip-body::before {
   content: '';
@@ -616,9 +658,15 @@ ul { list-style: none; }
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: rgba(212,148,60,.2);
-  border: 1px solid rgba(212,148,60,.3);
+  background: rgba(212,148,60,.15);
+  border: 1px solid rgba(212,148,60,.2);
+  transition: background .8s ease .3s, box-shadow .8s ease .3s;
 }
+.chip.chip-active .chip-body::before {
+  background: rgba(212,148,60,.5);
+  box-shadow: 0 0 8px rgba(212,148,60,.6);
+}
+
 /* Amber glow overhead */
 .chip-body::after {
   content: '';
@@ -631,7 +679,13 @@ ul { list-style: none; }
   background: radial-gradient(ellipse, rgba(212,148,60,.1) 0%, transparent 70%);
   pointer-events: none;
   z-index: -1;
+  opacity: 0;
+  transition: opacity 1.2s ease .4s;
 }
+.chip.chip-active .chip-body::after {
+  opacity: 1;
+}
+
 .chip-name {
   font-family: var(--mono);
   font-size: clamp(22px, 3vw, 32px);
@@ -650,7 +704,7 @@ ul { list-style: none; }
   text-transform: uppercase;
 }
 
-/* Pins (stats) positioned around the chip */
+/* ── Pins ── */
 .chip-pin {
   display: flex;
   align-items: center;
@@ -673,7 +727,73 @@ ul { list-style: none; }
   white-space: nowrap;
 }
 
-/* Left pins (flow: value → trace → chip) */
+/* ── Trace lines with data packet particles ── */
+.chip-trace {
+  position: relative;
+  width: 60px;
+  height: 2px;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+/* The static wire */
+.chip-trace::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(212,148,60,.2);
+}
+/* The traveling data packet */
+.chip-trace::after {
+  content: '';
+  position: absolute;
+  top: -1px;
+  width: 12px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--amber-light);
+  box-shadow: 0 0 8px rgba(212,148,60,.8), 0 0 20px rgba(212,148,60,.4);
+  opacity: 0;
+}
+
+/* Left traces: packet travels right (toward chip) */
+.chip-pins-left .chip-trace::after {
+  left: -12px;
+  animation: packetRight 2.4s ease-in-out infinite;
+}
+/* Right traces: packet travels left (away from chip) */
+.chip-pins-right .chip-trace::after {
+  right: -12px;
+  animation: packetLeft 2.4s ease-in-out infinite;
+}
+
+@keyframes packetRight {
+  0%   { left: -12px; opacity: 0; }
+  10%  { opacity: 1; }
+  80%  { opacity: 1; }
+  100% { left: calc(100% + 4px); opacity: 0; }
+}
+@keyframes packetLeft {
+  0%   { right: -12px; opacity: 0; }
+  10%  { opacity: 1; }
+  80%  { opacity: 1; }
+  100% { right: calc(100% + 4px); opacity: 0; }
+}
+
+/* Stagger packet timing so they don't all fire in sync */
+.chip-pins-left  .chip-pin:nth-child(1) .chip-trace::after { animation-delay: 0s; }
+.chip-pins-left  .chip-pin:nth-child(2) .chip-trace::after { animation-delay: 1.2s; }
+.chip-pins-right .chip-pin:nth-child(1) .chip-trace::after { animation-delay: .6s; }
+.chip-pins-right .chip-pin:nth-child(2) .chip-trace::after { animation-delay: 1.8s; }
+
+/* Pause packets until chip is active */
+.chip-trace::after {
+  animation-play-state: paused;
+}
+.chip.chip-active .chip-trace::after {
+  animation-play-state: running;
+}
+
+/* Left pins */
 .chip-pins-left {
   grid-column: 1;
   grid-row: 2;
@@ -682,21 +802,12 @@ ul { list-style: none; }
   align-items: flex-end;
   gap: 8px;
   justify-self: end;
-  padding-right: 0;
 }
 .chip-pins-left .chip-pin {
   flex-direction: row;
 }
-/* Trace line from left pins to chip body */
-.chip-pins-left .chip-pin::after {
-  content: '';
-  width: 40px;
-  height: 1.5px;
-  background: linear-gradient(90deg, rgba(212,148,60,.1), rgba(212,148,60,.5));
-  flex-shrink: 0;
-}
 
-/* Right pins (flow: chip → trace → value) */
+/* Right pins */
 .chip-pins-right {
   grid-column: 3;
   grid-row: 2;
@@ -705,32 +816,12 @@ ul { list-style: none; }
   align-items: flex-start;
   gap: 8px;
   justify-self: start;
-  padding-left: 0;
 }
 .chip-pins-right .chip-pin {
   flex-direction: row-reverse;
 }
-.chip-pins-right .chip-pin::after {
-  content: '';
-  width: 40px;
-  height: 1.5px;
-  background: linear-gradient(90deg, rgba(212,148,60,.5), rgba(212,148,60,.1));
-  flex-shrink: 0;
-}
 
-/* Animated trace glow */
-@keyframes tracePulse {
-  0%, 100% { opacity: .5; }
-  50%      { opacity: 1; }
-}
-.chip-pin::after {
-  animation: tracePulse 3s ease-in-out infinite;
-}
-.chip-pins-left .chip-pin:nth-child(2)::after { animation-delay: .5s; }
-.chip-pins-right .chip-pin:nth-child(1)::after { animation-delay: .25s; }
-.chip-pins-right .chip-pin:nth-child(2)::after { animation-delay: .75s; }
-
-/* Substrate grid behind chip */
+/* ── Substrate grid ── */
 .chip-substrate {
   position: absolute;
   inset: -20px;
@@ -745,6 +836,26 @@ ul { list-style: none; }
   z-index: 0;
 }
 
+/* ── Ambient chip body pulse (after power on) ── */
+@keyframes chipGlow {
+  0%, 100% {
+    box-shadow:
+      0 0 50px rgba(212,148,60,.12),
+      0 0 100px rgba(212,148,60,.05),
+      inset 0 1px 0 rgba(232,176,96,.12);
+  }
+  50% {
+    box-shadow:
+      0 0 60px rgba(212,148,60,.18),
+      0 0 120px rgba(212,148,60,.08),
+      inset 0 1px 0 rgba(232,176,96,.15);
+  }
+}
+.chip.chip-active .chip-body {
+  animation: chipGlow 4s ease-in-out infinite;
+  animation-delay: 1.2s;
+}
+
 @media (max-width: 768px) {
   .chip {
     grid-template-columns: 1fr;
@@ -757,7 +868,6 @@ ul { list-style: none; }
     flex-direction: row;
     align-items: center;
     justify-self: center;
-    padding-right: 0;
     gap: 24px;
   }
   .chip-pins-right {
@@ -765,7 +875,6 @@ ul { list-style: none; }
     flex-direction: row;
     align-items: center;
     justify-self: center;
-    padding-left: 0;
     gap: 24px;
   }
   .chip-pins-left .chip-pin,
@@ -773,9 +882,19 @@ ul { list-style: none; }
     flex-direction: column;
     text-align: center;
     gap: 4px;
+    transform: none;
   }
-  .chip-pin::after { display: none; }
+  .chip-trace { display: none; }
   .chip-pin-value { font-size: 22px; }
+  /* Skip entrance transforms on mobile */
+  .chip-pins-left .chip-pin,
+  .chip-pins-right .chip-pin {
+    transform: translateY(10px);
+  }
+  .chip.chip-active .chip-pins-left .chip-pin,
+  .chip.chip-active .chip-pins-right .chip-pin {
+    transform: translateY(0);
+  }
 }
 
 /* ── Code panels ───────────────────────────────── */
