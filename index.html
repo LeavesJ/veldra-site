@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Veldra — SV2 Mining Gateway for Production Pools</title>
   <meta name="description" content="ReserveGrid OS is a Stratum V2 miner-facing gateway with Noise NX transport, prevhash fail-closed switching, two-event share lifecycle, and 34 machine-readable reason codes.">
-  <meta name="theme-color" content="#0a1628">
+  <meta name="theme-color" content="#080e1a">
 
   <link rel="canonical" href="https://veldra.org/">
   <link rel="icon" href="/favicon.ico">
@@ -20,8 +20,8 @@
   <meta property="og:image" content="https://veldra.org/assets/brand/veldra-mark.png">
   <meta name="twitter:card" content="summary_large_image">
 
-  <link rel="stylesheet" href="/assets/style.css?v=7">
-  <script src="/assets/script.js?v=7" defer></script>
+  <link rel="stylesheet" href="/assets/style.css?v=8">
+  <script src="/assets/script.js?v=8" defer></script>
 </head>
 <body>
 
@@ -50,6 +50,7 @@
 
   <!-- ── Hero ────────────────────────────────── -->
   <section class="hero-dark">
+    <div class="hero-grid"></div>
     <div class="container">
       <div class="hero-inner fade-up">
         <div class="hero-label">
@@ -57,7 +58,7 @@
           <span>Stratum V2 Infrastructure</span>
         </div>
         <h1 class="hero-title">
-          SV2 mining gateway built for <span class="accent">production</span> pools
+          SV2 mining gateway<br>built for <span class="accent">production</span> pools
         </h1>
         <p class="hero-sub">
           ReserveGrid OS is a miner-facing Stratum V2 gateway with Noise NX encrypted transport,
@@ -65,12 +66,14 @@
           Every decision carries a machine-readable reason code.
         </p>
         <div class="hero-actions">
-          <a href="/product/" class="btn btn-primary">Explore ReserveGrid OS</a>
-          <a href="/docs/" class="btn" style="border-color:rgba(255,255,255,.15);color:rgba(255,255,255,.8);background:rgba(255,255,255,.06);">Read the docs</a>
+          <a href="/product/" class="btn btn-glow">Explore ReserveGrid OS</a>
+          <a href="/docs/" class="btn btn-outline">Read the docs</a>
         </div>
       </div>
     </div>
   </section>
+
+  <hr class="glow-line">
 
   <!-- ── Key metrics ─────────────────────────── -->
   <section class="section">
@@ -101,24 +104,28 @@
     <div class="container">
       <div class="section-header">
         <div class="section-eyebrow">The problem</div>
-        <h2>SV2 enables miner autonomy. That autonomy needs guardrails.</h2>
+        <h2>SV2 enables miner autonomy.<br>That autonomy needs guardrails.</h2>
       </div>
       <div class="split fade-up">
         <div class="card">
-          <div class="card-icon card-icon-navy">&#x26A0;</div>
+          <div class="card-icon card-icon-navy">
+            <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
+          </div>
           <h3>The SV2 adoption challenge</h3>
-          <p>Stratum V2 lets miners propose their own block templates. Pools gain encrypted transport and reduced bandwidth, but lose visibility into what miners submit. Without verification, a pool has no way to detect malformed templates, fee policy violations, or stale prevhash references before distributing work to the network.</p>
+          <p>Stratum V2 lets miners propose their own block templates. Pools gain encrypted transport and reduced bandwidth, but lose visibility into what miners submit. Without verification, a pool has no way to detect malformed templates, fee policy violations, or stale prevhash references before distributing work.</p>
         </div>
         <div class="card">
-          <div class="card-icon card-icon-blue">&#x2713;</div>
+          <div class="card-icon card-icon-green">
+            <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+          </div>
           <h3>The ReserveGrid solution</h3>
-          <p>ReserveGrid OS sits between miners and the pool as a standard job server. It verifies every template against operator policy, switches prevhash references with fail-closed safety, tracks shares through a two-event lifecycle, and emits structured reason codes for every decision. The pool gets SV2 benefits without blind trust.</p>
+          <p>ReserveGrid OS sits between miners and the pool as a standard job server. It verifies every template against operator policy, switches prevhash references with fail-closed safety, tracks shares through a two-event lifecycle, and emits structured reason codes for every decision.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ── Architecture ────────────────────────── -->
+  <!-- ── Architecture (SVG) ───────────────────── -->
   <section class="section">
     <div class="container">
       <div class="section-header">
@@ -126,54 +133,68 @@
         <h2>End-to-end gateway flow</h2>
         <p>From miner handshake to upstream share submission, every hop is observable.</p>
       </div>
-      <div class="arch-diagram fade-up">
-        <div class="arch-node">
-          <div class="arch-node-box">
-            <div class="arch-node-label">Miner</div>
-            <div class="arch-node-sub">SV2 client</div>
-          </div>
-        </div>
-        <div class="arch-arrow">
-          <div class="arch-arrow-line"></div>
-          <div class="arch-arrow-label">Noise NX</div>
-        </div>
-        <div class="arch-node">
-          <div class="arch-node-box highlighted">
-            <div class="arch-node-label">sv2-gateway</div>
-            <div class="arch-node-sub">ReserveGrid OS</div>
-          </div>
-        </div>
-        <div class="arch-arrow">
-          <div class="arch-arrow-line"></div>
-          <div class="arch-arrow-label">TCP/NDJSON</div>
-        </div>
-        <div class="arch-node">
-          <div class="arch-node-box">
-            <div class="arch-node-label">pool-verifier</div>
-            <div class="arch-node-sub">Policy engine</div>
-          </div>
-        </div>
-        <div class="arch-arrow">
-          <div class="arch-arrow-line"></div>
-          <div class="arch-arrow-label">HTTP</div>
-        </div>
-        <div class="arch-node">
-          <div class="arch-node-box">
-            <div class="arch-node-label">template-manager</div>
-            <div class="arch-node-sub">Upstream poller</div>
-          </div>
-        </div>
-        <div class="arch-arrow">
-          <div class="arch-arrow-line"></div>
-          <div class="arch-arrow-label">RPC</div>
-        </div>
-        <div class="arch-node">
-          <div class="arch-node-box">
-            <div class="arch-node-label">bitcoind</div>
-            <div class="arch-node-sub">Block templates</div>
-          </div>
-        </div>
+
+      <div class="arch-svg-wrap fade-up">
+        <svg viewBox="0 0 960 200" width="960" height="200" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="glow-line-grad" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#3da5ff"/>
+              <stop offset="50%" stop-color="#22d3ee"/>
+              <stop offset="100%" stop-color="#4ade80"/>
+            </linearGradient>
+            <filter id="node-glow">
+              <feGaussianBlur stdDeviation="4" result="blur"/>
+              <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+            <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+              <path d="M0,0 L8,3 L0,6" fill="#3da5ff"/>
+            </marker>
+          </defs>
+
+          <!-- Connection lines -->
+          <line x1="155" y1="90" x2="245" y2="90" stroke="url(#glow-line-grad)" stroke-width="2" marker-end="url(#arrow)" opacity=".7"/>
+          <line x1="415" y1="90" x2="505" y2="90" stroke="url(#glow-line-grad)" stroke-width="2" marker-end="url(#arrow)" opacity=".7"/>
+          <line x1="695" y1="90" x2="785" y2="90" stroke="url(#glow-line-grad)" stroke-width="2" marker-end="url(#arrow)" opacity=".7"/>
+
+          <!-- Bidirectional line for gateway ↔ verifier -->
+          <line x1="415" y1="90" x2="505" y2="90" stroke="url(#glow-line-grad)" stroke-width="2" marker-end="url(#arrow)" opacity=".7"/>
+
+          <!-- Protocol labels on lines -->
+          <text x="200" y="78" fill="#3da5ff" font-size="10" text-anchor="middle" opacity=".7">Noise NX</text>
+          <text x="460" y="78" fill="#22d3ee" font-size="10" text-anchor="middle" opacity=".7">TCP/NDJSON</text>
+          <text x="740" y="78" fill="#4ade80" font-size="10" text-anchor="middle" opacity=".7">RPC</text>
+
+          <!-- Node: Miner -->
+          <rect x="30" y="55" width="125" height="70" rx="12" fill="#0f172a" stroke="rgba(226,232,240,0.12)" stroke-width="1"/>
+          <text x="92" y="85" fill="#e2e8f0" font-size="13" font-weight="600" text-anchor="middle">Miner</text>
+          <text x="92" y="105" fill="rgba(226,232,240,0.4)" font-size="10" text-anchor="middle">SV2 client</text>
+
+          <!-- Node: Gateway (highlighted) -->
+          <rect x="245" y="50" width="170" height="80" rx="12" fill="rgba(0,128,229,0.08)" stroke="#0080e5" stroke-width="1.5" filter="url(#node-glow)"/>
+          <rect x="245" y="50" width="170" height="3" rx="1" fill="url(#glow-line-grad)"/>
+          <text x="330" y="82" fill="#3da5ff" font-size="14" font-weight="700" text-anchor="middle">sv2-gateway</text>
+          <text x="330" y="102" fill="rgba(226,232,240,0.5)" font-size="10" text-anchor="middle">ReserveGrid OS</text>
+
+          <!-- Gateway → Verifier (below) -->
+          <line x1="330" y1="130" x2="330" y2="165" stroke="#22d3ee" stroke-width="1.5" stroke-dasharray="4 3" opacity=".5"/>
+          <rect x="270" y="165" width="120" height="30" rx="6" fill="#0f172a" stroke="rgba(226,232,240,0.08)" stroke-width="1"/>
+          <text x="330" y="185" fill="#22d3ee" font-size="11" font-weight="500" text-anchor="middle">pool-verifier</text>
+
+          <!-- Node: template-manager -->
+          <rect x="505" y="55" width="190" height="70" rx="12" fill="#0f172a" stroke="rgba(226,232,240,0.12)" stroke-width="1"/>
+          <text x="600" y="85" fill="#e2e8f0" font-size="13" font-weight="600" text-anchor="middle">template-manager</text>
+          <text x="600" y="105" fill="rgba(226,232,240,0.4)" font-size="10" text-anchor="middle">Upstream poller</text>
+
+          <!-- Node: bitcoind -->
+          <rect x="785" y="55" width="140" height="70" rx="12" fill="#0f172a" stroke="rgba(226,232,240,0.12)" stroke-width="1"/>
+          <text x="855" y="85" fill="#e2e8f0" font-size="13" font-weight="600" text-anchor="middle">bitcoind</text>
+          <text x="855" y="105" fill="rgba(226,232,240,0.4)" font-size="10" text-anchor="middle">Block templates</text>
+
+          <!-- Share upstream arrow (going up from gateway) -->
+          <text x="330" y="40" fill="rgba(226,232,240,0.3)" font-size="9" text-anchor="middle">shares → pool backend (HTTP POST)</text>
+        </svg>
       </div>
+
       <div class="callout callout-blue mt-4 fade-up" style="text-align:center;">
         The gateway also forwards valid shares upstream via HTTP POST to the pool backend.
         Shares flow through a bounded queue with configurable backpressure policy.
@@ -292,12 +313,12 @@
           <div class="timeline-desc">TemplatePropose sent to verifier over TCP</div>
         </div>
         <div class="timeline-step active">
-          <div class="timeline-dot" style="background:var(--warning);">3</div>
+          <div class="timeline-dot dot-warn">3</div>
           <div class="timeline-label">50ms window</div>
           <div class="timeline-desc">Gateway waits for verdict. Miners stay on last verified job</div>
         </div>
         <div class="timeline-step">
-          <div class="timeline-dot dot-green">4a</div>
+          <div class="timeline-dot dot-green">4</div>
           <div class="timeline-label">Verdict accepted</div>
           <div class="timeline-desc">SetNewPrevHash + new job broadcast to all channels</div>
         </div>
@@ -391,7 +412,7 @@
       </div>
       <div class="split fade-up">
         <div>
-          <h3 style="font-size:14px;font-weight:600;margin-bottom:12px;">Template verdict</h3>
+          <h3 style="font-family:var(--mono);font-size:13px;font-weight:600;margin-bottom:12px;color:var(--blue-light);">Template verdict</h3>
           <div class="code-panel" data-lang="json">
             <button class="copy-btn">Copy</button>
 <pre>{
@@ -409,7 +430,7 @@
           </div>
         </div>
         <div>
-          <h3 style="font-size:14px;font-weight:600;margin-bottom:12px;">Gateway config (excerpt)</h3>
+          <h3 style="font-family:var(--mono);font-size:13px;font-weight:600;margin-bottom:12px;color:var(--blue-light);">Gateway config (excerpt)</h3>
           <div class="code-panel" data-lang="toml">
             <button class="copy-btn">Copy</button>
 <pre>[gateway]
@@ -434,15 +455,15 @@ share_upstream_secret = "hmac-secret-here"</pre>
   <!-- ── CTA ─────────────────────────────────── -->
   <section class="section">
     <div class="container">
-      <div class="card card-dark fade-up" style="padding:48px;text-align:center;">
-        <div class="section-eyebrow" style="color:rgba(255,255,255,.4);">Get started</div>
-        <h2 style="color:#fff;margin:12px 0 8px;font-size:28px;">Ready to deploy SV2 with confidence?</h2>
-        <p style="color:rgba(255,255,255,.55);max-width:540px;margin:0 auto 24px;">
+      <div class="card-glow fade-up">
+        <div class="section-eyebrow" style="position:relative;z-index:1;">Get started</div>
+        <h2 style="color:var(--ink);margin:12px 0 8px;font-size:32px;font-weight:800;position:relative;z-index:1;">Ready to deploy SV2 with confidence?</h2>
+        <p style="color:var(--ink-muted);max-width:540px;margin:0 auto 28px;position:relative;z-index:1;">
           Shadow mode costs nothing. Observe mode builds trust. Inline mode protects revenue.
         </p>
-        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
-          <a href="/product/" class="btn btn-primary">Explore ReserveGrid OS</a>
-          <a href="/docs/" class="btn" style="border-color:rgba(255,255,255,.15);color:rgba(255,255,255,.8);background:rgba(255,255,255,.06);">Read the docs</a>
+        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;position:relative;z-index:1;">
+          <a href="/product/" class="btn btn-glow">Explore ReserveGrid OS</a>
+          <a href="/docs/" class="btn btn-outline">Read the docs</a>
         </div>
       </div>
     </div>
