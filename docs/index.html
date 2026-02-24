@@ -21,9 +21,9 @@
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary_large_image">
 
-  <link rel="stylesheet" href="/assets/style.css?v=15">
-  <script src="/assets/script.js?v=15" defer></script>
-  <script src="/assets/i18n.js?v=15" defer></script>
+  <link rel="stylesheet" href="/assets/style.css?v=16">
+  <script src="/assets/script.js?v=16" defer></script>
+  <script src="/assets/i18n.js?v=16" defer></script>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
 </head>
 <body>
@@ -123,7 +123,7 @@
           <thead>
             <tr>
               <th data-i18n="docs.th.code">Code</th>
-              <th>Category</th>
+              <th data-i18n="docs.th.category">Category</th>
               <th data-i18n="docs.th.description">Description</th>
             </tr>
           </thead>
@@ -131,183 +131,183 @@
             <!-- Transport (4) -->
             <tr data-category="transport">
               <td><code>noise_handshake_failed</code></td>
-              <td><span class="tag tag-transport">Transport</span></td>
-              <td>Noise NX handshake did not complete (crypto failure or incompatible params)</td>
+              <td><span class="tag tag-transport" data-i18n="docs.tag.transport">Transport</span></td>
+              <td data-i18n="docs.gw.noise_handshake_failed">Noise NX handshake did not complete (crypto failure or incompatible params)</td>
             </tr>
             <tr data-category="transport">
               <td><code>noise_handshake_timeout</code></td>
-              <td><span class="tag tag-transport">Transport</span></td>
-              <td>Handshake exceeded handshake_timeout_ms</td>
+              <td><span class="tag tag-transport" data-i18n="docs.tag.transport">Transport</span></td>
+              <td data-i18n="docs.gw.noise_handshake_timeout">Handshake exceeded handshake_timeout_ms</td>
             </tr>
             <tr data-category="transport">
               <td><code>unsupported_protocol_version</code></td>
-              <td><span class="tag tag-transport">Transport</span></td>
-              <td>Miner offered unsupported SV2 protocol version</td>
+              <td><span class="tag tag-transport" data-i18n="docs.tag.transport">Transport</span></td>
+              <td data-i18n="docs.gw.unsupported_protocol_version">Miner offered unsupported SV2 protocol version</td>
             </tr>
             <tr data-category="transport">
               <td><code>connection_rate_limited</code></td>
-              <td><span class="tag tag-transport">Transport</span></td>
-              <td>Inbound connections exceeded per-IP rate limit</td>
+              <td><span class="tag tag-transport" data-i18n="docs.tag.transport">Transport</span></td>
+              <td data-i18n="docs.gw.connection_rate_limited">Inbound connections exceeded per-IP rate limit</td>
             </tr>
 
             <!-- Framing (7) -->
             <tr data-category="framing">
               <td><code>frame_decode_error</code></td>
-              <td><span class="tag tag-framing">Framing</span></td>
-              <td>SV2 binary frame could not be decoded</td>
+              <td><span class="tag tag-framing" data-i18n="docs.tag.framing">Framing</span></td>
+              <td data-i18n="docs.gw.frame_decode_error">SV2 binary frame could not be decoded</td>
             </tr>
             <tr data-category="framing">
               <td><code>frame_too_large</code></td>
-              <td><span class="tag tag-framing">Framing</span></td>
-              <td>Frame exceeded maximum allowed size</td>
+              <td><span class="tag tag-framing" data-i18n="docs.tag.framing">Framing</span></td>
+              <td data-i18n="docs.gw.frame_too_large">Frame exceeded maximum allowed size</td>
             </tr>
             <tr data-category="framing">
               <td><code>peer_quota_exceeded</code></td>
-              <td><span class="tag tag-framing">Framing</span></td>
-              <td>Peer exceeded rate_limit_messages_per_sec or rate_limit_bytes_per_sec</td>
+              <td><span class="tag tag-framing" data-i18n="docs.tag.framing">Framing</span></td>
+              <td data-i18n="docs.gw.peer_quota_exceeded">Peer exceeded rate_limit_messages_per_sec or rate_limit_bytes_per_sec</td>
             </tr>
             <tr data-category="framing">
               <td><code>internal_framing_error</code></td>
-              <td><span class="tag tag-framing">Framing</span></td>
-              <td>Internal NDJSON message could not be parsed</td>
+              <td><span class="tag tag-framing" data-i18n="docs.tag.framing">Framing</span></td>
+              <td data-i18n="docs.gw.internal_framing_error">Internal NDJSON message could not be parsed</td>
             </tr>
             <tr data-category="framing">
               <td><code>internal_line_too_large</code></td>
-              <td><span class="tag tag-framing">Framing</span></td>
-              <td>Internal message exceeded MAX_INTERNAL_LINE_BYTES (1 MiB)</td>
+              <td><span class="tag tag-framing" data-i18n="docs.tag.framing">Framing</span></td>
+              <td data-i18n="docs.gw.internal_line_too_large">Internal message exceeded MAX_INTERNAL_LINE_BYTES (1 MiB)</td>
             </tr>
             <tr data-category="framing">
               <td><code>internal_version_mismatch</code></td>
-              <td><span class="tag tag-framing">Framing</span></td>
-              <td>Internal msg_type version not supported</td>
+              <td><span class="tag tag-framing" data-i18n="docs.tag.framing">Framing</span></td>
+              <td data-i18n="docs.gw.internal_version_mismatch">Internal msg_type version not supported</td>
             </tr>
             <tr data-category="framing">
               <td><code>internal_unknown_msg_flood</code></td>
-              <td><span class="tag tag-framing">Framing</span></td>
-              <td>Unknown msg_type exceeded MAX_UNKNOWN_MSG_TYPE_PER_MINUTE (60)</td>
+              <td><span class="tag tag-framing" data-i18n="docs.tag.framing">Framing</span></td>
+              <td data-i18n="docs.gw.internal_unknown_msg_flood">Unknown msg_type exceeded MAX_UNKNOWN_MSG_TYPE_PER_MINUTE (60)</td>
             </tr>
 
             <!-- Auth (3) -->
             <tr data-category="auth">
               <td><code>miner_unauthorized</code></td>
-              <td><span class="tag tag-auth">Auth</span></td>
-              <td>Worker identity not in allowlist and no prefix match</td>
+              <td><span class="tag tag-auth" data-i18n="docs.tag.auth">Auth</span></td>
+              <td data-i18n="docs.gw.miner_unauthorized">Worker identity not in allowlist and no prefix match</td>
             </tr>
             <tr data-category="auth">
               <td><code>identity_prefix_unmatched</code></td>
-              <td><span class="tag tag-auth">Auth</span></td>
-              <td>Worker identity did not match any prefix_map entry</td>
+              <td><span class="tag tag-auth" data-i18n="docs.tag.auth">Auth</span></td>
+              <td data-i18n="docs.gw.identity_prefix_unmatched">Worker identity did not match any prefix_map entry</td>
             </tr>
             <tr data-category="auth">
               <td><code>identity_too_long</code></td>
-              <td><span class="tag tag-auth">Auth</span></td>
-              <td>user_identity exceeded max_worker_id_bytes (128)</td>
+              <td><span class="tag tag-auth" data-i18n="docs.tag.auth">Auth</span></td>
+              <td data-i18n="docs.gw.identity_too_long">user_identity exceeded max_worker_id_bytes (128)</td>
             </tr>
 
             <!-- Channel (4) -->
             <tr data-category="channel">
               <td><code>channel_open_rejected</code></td>
-              <td><span class="tag tag-channel">Channel</span></td>
-              <td>OpenMiningChannel denied (mapped to SV2 error)</td>
+              <td><span class="tag tag-channel" data-i18n="docs.tag.channel">Channel</span></td>
+              <td data-i18n="docs.gw.channel_open_rejected">OpenMiningChannel denied (mapped to SV2 error)</td>
             </tr>
             <tr data-category="channel">
               <td><code>channel_limit_exceeded</code></td>
-              <td><span class="tag tag-channel">Channel</span></td>
-              <td>Connection exceeded max_channels_per_connection</td>
+              <td><span class="tag tag-channel" data-i18n="docs.tag.channel">Channel</span></td>
+              <td data-i18n="docs.gw.channel_limit_exceeded">Connection exceeded max_channels_per_connection</td>
             </tr>
             <tr data-category="channel">
               <td><code>invalid_channel_id</code></td>
-              <td><span class="tag tag-channel">Channel</span></td>
-              <td>Share referenced a channel_id not assigned to this connection</td>
+              <td><span class="tag tag-channel" data-i18n="docs.tag.channel">Channel</span></td>
+              <td data-i18n="docs.gw.invalid_channel_id">Share referenced a channel_id not assigned to this connection</td>
             </tr>
             <tr data-category="channel">
               <td><code>extended_channel_unsupported</code></td>
-              <td><span class="tag tag-channel">Channel</span></td>
-              <td>Miner requested extended channel (V1.0.0 supports standard only)</td>
+              <td><span class="tag tag-channel" data-i18n="docs.tag.channel">Channel</span></td>
+              <td data-i18n="docs.gw.extended_channel_unsupported">Miner requested extended channel (V1.0.0 supports standard only)</td>
             </tr>
 
             <!-- Job (5) -->
             <tr data-category="job">
               <td><code>prevhash_switch_timeout</code></td>
-              <td><span class="tag tag-job">Job</span></td>
-              <td>Verdict did not arrive within prevhash_verdict_timeout_ms and stale hold expired</td>
+              <td><span class="tag tag-job" data-i18n="docs.tag.job">Job</span></td>
+              <td data-i18n="docs.gw.prevhash_switch_timeout">Verdict did not arrive within prevhash_verdict_timeout_ms and stale hold expired</td>
             </tr>
             <tr data-category="job">
               <td><code>prevhash_verdict_rejected</code></td>
-              <td><span class="tag tag-job">Job</span></td>
-              <td>Verifier rejected the prevhash template (inline mode gates it)</td>
+              <td><span class="tag tag-job" data-i18n="docs.tag.job">Job</span></td>
+              <td data-i18n="docs.gw.prevhash_verdict_rejected">Verifier rejected the prevhash template (inline mode gates it)</td>
             </tr>
             <tr data-category="job">
               <td><code>template_cache_miss</code></td>
-              <td><span class="tag tag-job">Job</span></td>
-              <td>Template referenced by share not found in LRU cache</td>
+              <td><span class="tag tag-job" data-i18n="docs.tag.job">Job</span></td>
+              <td data-i18n="docs.gw.template_cache_miss">Template referenced by share not found in LRU cache</td>
             </tr>
             <tr data-category="job">
               <td><code>stale_job_submission</code></td>
-              <td><span class="tag tag-job">Job</span></td>
-              <td>Share referenced a job_id from a superseded template</td>
+              <td><span class="tag tag-job" data-i18n="docs.tag.job">Job</span></td>
+              <td data-i18n="docs.gw.stale_job_submission">Share referenced a job_id from a superseded template</td>
             </tr>
             <tr data-category="job">
               <td><code>upstream_unavailable</code></td>
-              <td><span class="tag tag-job">Job</span></td>
-              <td>Template source (template-manager) not reachable</td>
+              <td><span class="tag tag-job" data-i18n="docs.tag.job">Job</span></td>
+              <td data-i18n="docs.gw.upstream_unavailable">Template source (template-manager) not reachable</td>
             </tr>
 
             <!-- Share (11) -->
             <tr data-category="share">
               <td><code>share_replay_detected</code></td>
-              <td><span class="tag tag-share">Share</span></td>
-              <td>share_id already seen in dedup window</td>
+              <td><span class="tag tag-share" data-i18n="docs.tag.share">Share</span></td>
+              <td data-i18n="docs.gw.share_replay_detected">share_id already seen in dedup window</td>
             </tr>
             <tr data-category="share">
               <td><code>share_difficulty_below_target</code></td>
-              <td><span class="tag tag-share">Share</span></td>
-              <td>Share hash did not meet channel difficulty</td>
+              <td><span class="tag tag-share" data-i18n="docs.tag.share">Share</span></td>
+              <td data-i18n="docs.gw.share_difficulty_below_target">Share hash did not meet channel difficulty</td>
             </tr>
             <tr data-category="share">
               <td><code>share_invalid_job_id</code></td>
-              <td><span class="tag tag-share">Share</span></td>
-              <td>job_id not in active job table</td>
+              <td><span class="tag tag-share" data-i18n="docs.tag.share">Share</span></td>
+              <td data-i18n="docs.gw.share_invalid_job_id">job_id not in active job table</td>
             </tr>
             <tr data-category="share">
               <td><code>share_invalid_nonce</code></td>
-              <td><span class="tag tag-share">Share</span></td>
-              <td>Nonce validation failed</td>
+              <td><span class="tag tag-share" data-i18n="docs.tag.share">Share</span></td>
+              <td data-i18n="docs.gw.share_invalid_nonce">Nonce validation failed</td>
             </tr>
             <tr data-category="share">
               <td><code>version_bit_violation</code></td>
-              <td><span class="tag tag-share">Share</span></td>
-              <td>version_bits outside BIP320 general purpose mask</td>
+              <td><span class="tag tag-share" data-i18n="docs.tag.share">Share</span></td>
+              <td data-i18n="docs.gw.version_bit_violation">version_bits outside BIP320 general purpose mask</td>
             </tr>
             <tr data-category="share">
               <td><code>ntime_out_of_range</code></td>
-              <td><span class="tag tag-share">Share</span></td>
-              <td>ntime outside allowed bounds</td>
+              <td><span class="tag tag-share" data-i18n="docs.tag.share">Share</span></td>
+              <td data-i18n="docs.gw.ntime_out_of_range">ntime outside allowed bounds</td>
             </tr>
             <tr data-category="share">
               <td><code>share_forward_failed</code></td>
-              <td><span class="tag tag-share">Share</span></td>
-              <td>HTTP POST to share upstream failed (transport)</td>
+              <td><span class="tag tag-share" data-i18n="docs.tag.share">Share</span></td>
+              <td data-i18n="docs.gw.share_forward_failed">HTTP POST to share upstream failed (transport)</td>
             </tr>
             <tr data-category="share">
               <td><code>share_upstream_rejected</code></td>
-              <td><span class="tag tag-share">Share</span></td>
-              <td>Upstream returned accepted=false</td>
+              <td><span class="tag tag-share" data-i18n="docs.tag.share">Share</span></td>
+              <td data-i18n="docs.gw.share_upstream_rejected">Upstream returned accepted=false</td>
             </tr>
             <tr data-category="share">
               <td><code>share_dropped_queue_full</code></td>
-              <td><span class="tag tag-share">Share</span></td>
-              <td>Forward queue at capacity, share dropped per policy</td>
+              <td><span class="tag tag-share" data-i18n="docs.tag.share">Share</span></td>
+              <td data-i18n="docs.gw.share_dropped_queue_full">Forward queue at capacity, share dropped per policy</td>
             </tr>
             <tr data-category="share">
               <td><code>share_evicted_from_queue</code></td>
-              <td><span class="tag tag-share">Share</span></td>
-              <td>Share evicted from queue under drop_old policy</td>
+              <td><span class="tag tag-share" data-i18n="docs.tag.share">Share</span></td>
+              <td data-i18n="docs.gw.share_evicted_from_queue">Share evicted from queue under drop_old policy</td>
             </tr>
             <tr data-category="share">
               <td><code>share_rate_limited</code></td>
-              <td><span class="tag tag-share">Share</span></td>
-              <td>Per-connection share rate exceeded limit</td>
+              <td><span class="tag tag-share" data-i18n="docs.tag.share">Share</span></td>
+              <td data-i18n="docs.gw.share_rate_limited">Per-connection share rate exceeded limit</td>
             </tr>
           </tbody>
         </table>
@@ -328,90 +328,90 @@
           <thead>
             <tr>
               <th data-i18n="docs.th.code">Code</th>
-              <th>Category</th>
+              <th data-i18n="docs.th.category">Category</th>
               <th data-i18n="docs.th.description">Description</th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td><code>ok</code></td>
-              <td><span class="tag tag-verdict">Verdict</span></td>
-              <td>Template accepted by verifier</td>
+              <td><span class="tag tag-verdict" data-i18n="docs.tag.verdict">Verdict</span></td>
+              <td data-i18n="docs.vr.ok">Template accepted by verifier</td>
             </tr>
             <tr>
               <td><code>avg_fee_below_minimum</code></td>
-              <td><span class="tag tag-fees">Fees</span></td>
-              <td>Average fee per vByte below configured minimum</td>
+              <td><span class="tag tag-fees" data-i18n="docs.tag.fees">Fees</span></td>
+              <td data-i18n="docs.vr.avg_fee_below_minimum">Average fee per vByte below configured minimum</td>
             </tr>
             <tr>
               <td><code>total_fees_below_minimum</code></td>
-              <td><span class="tag tag-fees">Fees</span></td>
-              <td>Total coinbase rewards below policy threshold</td>
+              <td><span class="tag tag-fees" data-i18n="docs.tag.fees">Fees</span></td>
+              <td data-i18n="docs.vr.total_fees_below_minimum">Total coinbase rewards below policy threshold</td>
             </tr>
             <tr>
               <td><code>coinbase_value_zero_rejected</code></td>
-              <td><span class="tag tag-template">Template</span></td>
-              <td>Coinbase output value is zero and policy rejects it</td>
+              <td><span class="tag tag-template" data-i18n="docs.tag.template">Template</span></td>
+              <td data-i18n="docs.vr.coinbase_value_zero_rejected">Coinbase output value is zero and policy rejects it</td>
             </tr>
             <tr>
               <td><code>tx_count_exceeded</code></td>
-              <td><span class="tag tag-template">Template</span></td>
-              <td>Transaction count exceeds policy maximum</td>
+              <td><span class="tag tag-template" data-i18n="docs.tag.template">Template</span></td>
+              <td data-i18n="docs.vr.tx_count_exceeded">Transaction count exceeds policy maximum</td>
             </tr>
             <tr>
               <td><code>prev_hash_len_mismatch</code></td>
-              <td><span class="tag tag-template">Template</span></td>
-              <td>Previous block hash length does not match expected value</td>
+              <td><span class="tag tag-template" data-i18n="docs.tag.template">Template</span></td>
+              <td data-i18n="docs.vr.prev_hash_len_mismatch">Previous block hash length does not match expected value</td>
             </tr>
             <tr>
               <td><code>invalid_prev_hash</code></td>
-              <td><span class="tag tag-template">Template</span></td>
-              <td>Previous block hash does not reference valid chain</td>
+              <td><span class="tag tag-template" data-i18n="docs.tag.template">Template</span></td>
+              <td data-i18n="docs.vr.invalid_prev_hash">Previous block hash does not reference valid chain</td>
             </tr>
             <tr>
               <td><code>protocol_version_mismatch</code></td>
-              <td><span class="tag tag-navy">Protocol</span></td>
-              <td>Block version or protocol level not supported</td>
+              <td><span class="tag tag-navy" data-i18n="docs.tag.protocol">Protocol</span></td>
+              <td data-i18n="docs.vr.protocol_version_mismatch">Block version or protocol level not supported</td>
             </tr>
             <tr>
               <td><code>empty_template_rejected</code></td>
-              <td><span class="tag tag-template">Template</span></td>
-              <td>Template contains no transactions and policy rejects it</td>
+              <td><span class="tag tag-template" data-i18n="docs.tag.template">Template</span></td>
+              <td data-i18n="docs.vr.empty_template_rejected">Template contains no transactions and policy rejects it</td>
             </tr>
             <tr>
               <td><code>policy_load_error</code></td>
-              <td><span class="tag tag-system">System</span></td>
-              <td>Verifier could not load or parse policy configuration</td>
+              <td><span class="tag tag-system" data-i18n="docs.tag.system">System</span></td>
+              <td data-i18n="docs.vr.policy_load_error">Verifier could not load or parse policy configuration</td>
             </tr>
             <tr>
               <td><code>mempool_backend_unavailable</code></td>
-              <td><span class="tag tag-system">System</span></td>
-              <td>Connection to mempool data source lost or unavailable</td>
+              <td><span class="tag tag-system" data-i18n="docs.tag.system">System</span></td>
+              <td data-i18n="docs.vr.mempool_backend_unavailable">Connection to mempool data source lost or unavailable</td>
             </tr>
             <tr>
               <td><code>internal_error</code></td>
-              <td><span class="tag tag-system">System</span></td>
-              <td>Internal verifier error or panic</td>
+              <td><span class="tag tag-system" data-i18n="docs.tag.system">System</span></td>
+              <td data-i18n="docs.vr.internal_error">Internal verifier error or panic</td>
             </tr>
             <tr>
               <td><code>weight_ratio_exceeded</code></td>
-              <td><span class="tag tag-safety">Safety</span></td>
-              <td>Transaction weight exceeds allowed ratio to block size</td>
+              <td><span class="tag tag-safety" data-i18n="docs.tag.safety">Safety</span></td>
+              <td data-i18n="docs.vr.weight_ratio_exceeded">Transaction weight exceeds allowed ratio to block size</td>
             </tr>
             <tr>
               <td><code>template_stale</code></td>
-              <td><span class="tag tag-safety">Safety</span></td>
-              <td>Template exceeds max_template_age_ms without update</td>
+              <td><span class="tag tag-safety" data-i18n="docs.tag.safety">Safety</span></td>
+              <td data-i18n="docs.vr.template_stale">Template exceeds max_template_age_ms without update</td>
             </tr>
             <tr>
               <td><code>sigops_budget_warning</code></td>
-              <td><span class="tag tag-safety">Safety</span></td>
-              <td>Cumulative sigops budget near capacity</td>
+              <td><span class="tag tag-safety" data-i18n="docs.tag.safety">Safety</span></td>
+              <td data-i18n="docs.vr.sigops_budget_warning">Cumulative sigops budget near capacity</td>
             </tr>
             <tr>
               <td><code>coinbase_sigops_abnormal</code></td>
-              <td><span class="tag tag-safety">Safety</span></td>
-              <td>Coinbase script sigops count is abnormally high</td>
+              <td><span class="tag tag-safety" data-i18n="docs.tag.safety">Safety</span></td>
+              <td data-i18n="docs.vr.coinbase_sigops_abnormal">Coinbase script sigops count is abnormally high</td>
             </tr>
           </tbody>
         </table>
@@ -429,77 +429,77 @@
 
       <!-- share_accepted -->
       <div class="mb-6 fade-up">
-        <h3 style="margin-bottom:16px;">share_accepted</h3>
-        <p style="margin-bottom:20px;color:rgba(255,255,255,.6);">Emitted immediately when share is accepted by gateway. One event per valid share submission.</p>
+        <h3 style="margin-bottom:16px;" data-i18n="docs.sa.title">share_accepted</h3>
+        <p style="margin-bottom:20px;color:rgba(255,255,255,.6);" data-i18n="docs.sa.desc">Emitted immediately when share is accepted by gateway. One event per valid share submission.</p>
         <div class="table-wrap">
           <table class="data-table">
             <thead>
               <tr>
-                <th>Field</th>
-                <th>Type</th>
-                <th>Description</th>
+                <th data-i18n="docs.th.field">Field</th>
+                <th data-i18n="docs.th.type">Type</th>
+                <th data-i18n="docs.th.description">Description</th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <td><code>share_id</code></td>
-                <td>SHA256 hash</td>
-                <td>Proof-of-work deduplication key; stable identifier for this share</td>
+                <td data-i18n="docs.sa.share_id.type">SHA256 hash</td>
+                <td data-i18n="docs.sa.share_id">Proof-of-work deduplication key; stable identifier for this share</td>
               </tr>
               <tr>
                 <td><code>event_id</code></td>
-                <td>SHA256 hash</td>
-                <td>Event attribution and integrity key; joins share_accepted to share_forward_result</td>
+                <td data-i18n="docs.sa.event_id.type">SHA256 hash</td>
+                <td data-i18n="docs.sa.event_id">Event attribution and integrity key; joins share_accepted to share_forward_result</td>
               </tr>
               <tr>
                 <td><code>channel_id</code></td>
-                <td>u32</td>
-                <td>SV2 channel ID assigned to this miner connection</td>
+                <td data-i18n="docs.sa.channel_id.type">u32</td>
+                <td data-i18n="docs.sa.channel_id">SV2 channel ID assigned to this miner connection</td>
               </tr>
               <tr>
                 <td><code>job_id</code></td>
-                <td>u32</td>
-                <td>Job ID from active template cache</td>
+                <td data-i18n="docs.sa.job_id.type">u32</td>
+                <td data-i18n="docs.sa.job_id">Job ID from active template cache</td>
               </tr>
               <tr>
                 <td><code>worker_id</code></td>
-                <td>String</td>
-                <td>Authenticated worker identity from SV2 connection</td>
+                <td data-i18n="docs.sa.worker_id.type">String</td>
+                <td data-i18n="docs.sa.worker_id">Authenticated worker identity from SV2 connection</td>
               </tr>
               <tr>
                 <td><code>validation_level</code></td>
-                <td>String</td>
-                <td>Depth of validation performed: "basic", "full", or "enhanced"</td>
+                <td data-i18n="docs.sa.validation_level.type">String</td>
+                <td data-i18n="docs.sa.validation_level">Depth of validation performed: "basic", "full", or "enhanced"</td>
               </tr>
               <tr>
                 <td><code>sv2_response</code></td>
-                <td>"success" | "error"</td>
-                <td>Whether share was accepted (success) or rejected (error)</td>
+                <td data-i18n="docs.sa.sv2_response.type">"success" | "error"</td>
+                <td data-i18n="docs.sa.sv2_response">Whether share was accepted (success) or rejected (error)</td>
               </tr>
               <tr>
                 <td><code>reason_code</code></td>
-                <td>GatewayReason</td>
-                <td>Machine-readable code for the decision; present if sv2_response = "error"</td>
+                <td data-i18n="docs.sa.reason_code.type">GatewayReason</td>
+                <td data-i18n="docs.sa.reason_code">Machine-readable code for the decision; present if sv2_response = "error"</td>
               </tr>
               <tr>
                 <td><code>fee_tier</code></td>
-                <td>String</td>
-                <td>Configured fee tier from policy (e.g., "low", "mid", "high")</td>
+                <td data-i18n="docs.sa.fee_tier.type">String</td>
+                <td data-i18n="docs.sa.fee_tier">Configured fee tier from policy (e.g., "low", "mid", "high")</td>
               </tr>
               <tr>
                 <td><code>difficulty_target</code></td>
-                <td>f64</td>
-                <td>Channel difficulty at time of submission</td>
+                <td data-i18n="docs.sa.difficulty_target.type">f64</td>
+                <td data-i18n="docs.sa.difficulty_target">Channel difficulty at time of submission</td>
               </tr>
               <tr>
                 <td><code>timestamp_ms</code></td>
-                <td>u64</td>
-                <td>Unix timestamp in milliseconds at gateway receipt</td>
+                <td data-i18n="docs.sa.timestamp_ms.type">u64</td>
+                <td data-i18n="docs.sa.timestamp_ms">Unix timestamp in milliseconds at gateway receipt</td>
               </tr>
               <tr>
                 <td><code>gateway_instance_id</code></td>
-                <td>String</td>
-                <td>Identifier for the gateway process handling this share</td>
+                <td data-i18n="docs.sa.gateway_instance_id.type">String</td>
+                <td data-i18n="docs.sa.gateway_instance_id">Identifier for the gateway process handling this share</td>
               </tr>
             </tbody>
           </table>
@@ -508,57 +508,57 @@
 
       <!-- share_forward_result -->
       <div class="mb-6 fade-up">
-        <h3 style="margin-bottom:16px;">share_forward_result</h3>
-        <p style="margin-bottom:20px;color:rgba(255,255,255,.6);">Emitted after upstream HTTP response is received (or timeout occurs). One event per share_accepted with sv2_response = "success".</p>
+        <h3 style="margin-bottom:16px;" data-i18n="docs.sfr.title">share_forward_result</h3>
+        <p style="margin-bottom:20px;color:rgba(255,255,255,.6);" data-i18n="docs.sfr.desc">Emitted after upstream HTTP response is received (or timeout occurs). One event per share_accepted with sv2_response = "success".</p>
         <div class="table-wrap">
           <table class="data-table">
             <thead>
               <tr>
-                <th>Field</th>
-                <th>Type</th>
-                <th>Description</th>
+                <th data-i18n="docs.th.field">Field</th>
+                <th data-i18n="docs.th.type">Type</th>
+                <th data-i18n="docs.th.description">Description</th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <td><code>share_id</code></td>
-                <td>SHA256 hash</td>
-                <td>Same share_id from corresponding share_accepted event</td>
+                <td data-i18n="docs.sfr.share_id.type">SHA256 hash</td>
+                <td data-i18n="docs.sfr.share_id">Same share_id from corresponding share_accepted event</td>
               </tr>
               <tr>
                 <td><code>event_id</code></td>
-                <td>SHA256 hash</td>
-                <td>Same event_id from corresponding share_accepted; join key</td>
+                <td data-i18n="docs.sfr.event_id.type">SHA256 hash</td>
+                <td data-i18n="docs.sfr.event_id">Same event_id from corresponding share_accepted; join key</td>
               </tr>
               <tr>
                 <td><code>forwarded</code></td>
-                <td>bool</td>
-                <td>Whether share was successfully transmitted to upstream (true = sent, false = queue dropped)</td>
+                <td data-i18n="docs.sfr.forwarded.type">bool</td>
+                <td data-i18n="docs.sfr.forwarded">Whether share was successfully transmitted to upstream (true = sent, false = queue dropped)</td>
               </tr>
               <tr>
                 <td><code>upstream_accepted</code></td>
-                <td>Option&lt;bool&gt;</td>
-                <td>Upstream accept field from JSON response; null if connection failed</td>
+                <td data-i18n="docs.sfr.upstream_accepted.type">Option&lt;bool&gt;</td>
+                <td data-i18n="docs.sfr.upstream_accepted">Upstream accept field from JSON response; null if connection failed</td>
               </tr>
               <tr>
                 <td><code>upstream_http_status</code></td>
-                <td>Option&lt;u16&gt;</td>
-                <td>HTTP status code from upstream response; null if transport error</td>
+                <td data-i18n="docs.sfr.upstream_http_status.type">Option&lt;u16&gt;</td>
+                <td data-i18n="docs.sfr.upstream_http_status">HTTP status code from upstream response; null if transport error</td>
               </tr>
               <tr>
                 <td><code>upstream_error</code></td>
-                <td>Option&lt;String&gt;</td>
-                <td>Error message from upstream response; null if accepted or transport error</td>
+                <td data-i18n="docs.sfr.upstream_error.type">Option&lt;String&gt;</td>
+                <td data-i18n="docs.sfr.upstream_error">Error message from upstream response; null if accepted or transport error</td>
               </tr>
               <tr>
                 <td><code>reason_code</code></td>
-                <td>Option&lt;GatewayReason&gt;</td>
-                <td>Gateway reason if forwarded=false (queue drop, timeout, etc.); null if forwarded=true</td>
+                <td data-i18n="docs.sfr.reason_code.type">Option&lt;GatewayReason&gt;</td>
+                <td data-i18n="docs.sfr.reason_code">Gateway reason if forwarded=false (queue drop, timeout, etc.); null if forwarded=true</td>
               </tr>
               <tr>
                 <td><code>timestamp_ms</code></td>
-                <td>u64</td>
-                <td>Unix timestamp in milliseconds at result recording</td>
+                <td data-i18n="docs.sfr.timestamp_ms.type">u64</td>
+                <td data-i18n="docs.sfr.timestamp_ms">Unix timestamp in milliseconds at result recording</td>
               </tr>
             </tbody>
           </table>
@@ -566,7 +566,7 @@
       </div>
 
       <!-- 1:1 join invariant -->
-      <div class="callout callout-green fade-up">
+      <div class="callout callout-green fade-up" data-i18n="docs.callout.join" data-i18n-html="true">
         <strong>1:1 join invariant:</strong> Every <code>share_accepted</code> with <code>sv2_response = "success"</code> produces exactly one <code>share_forward_result</code>. The adapter blocks on channel capacity rather than dropping results.
       </div>
     </div>
@@ -597,46 +597,46 @@
             <table class="data-table">
               <thead>
                 <tr>
-                  <th>Key</th>
-                  <th>Default</th>
-                  <th>Notes</th>
+                  <th data-i18n="docs.th.key">Key</th>
+                  <th data-i18n="docs.th.default">Default</th>
+                  <th data-i18n="docs.th.notes">Notes</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td><code>mode</code></td>
-                  <td>(required)</td>
-                  <td>Deployment mode: "shadow", "observe", or "inline"</td>
+                  <td data-i18n="docs.cfg.core.mode.default">(required)</td>
+                  <td data-i18n="docs.cfg.core.mode">Deployment mode: "shadow", "observe", or "inline"</td>
                 </tr>
                 <tr>
                   <td><code>listen_addr</code></td>
-                  <td>0.0.0.0:3333</td>
-                  <td>Socket address for inbound miner connections</td>
+                  <td data-i18n="docs.cfg.core.listen_addr.default">0.0.0.0:3333</td>
+                  <td data-i18n="docs.cfg.core.listen_addr">Socket address for inbound miner connections</td>
                 </tr>
                 <tr>
                   <td><code>http_addr</code></td>
-                  <td>127.0.0.1:8082</td>
-                  <td>Socket address for HTTP API and metrics (/gateway/events, /metrics)</td>
+                  <td data-i18n="docs.cfg.core.http_addr.default">127.0.0.1:8082</td>
+                  <td data-i18n="docs.cfg.core.http_addr">Socket address for HTTP API and metrics (/gateway/events, /metrics)</td>
                 </tr>
                 <tr>
                   <td><code>verifier_addr</code></td>
-                  <td>127.0.0.1:5001</td>
-                  <td>TCP address of pool-verifier for template verdicts</td>
+                  <td data-i18n="docs.cfg.core.verifier_addr.default">127.0.0.1:5001</td>
+                  <td data-i18n="docs.cfg.core.verifier_addr">TCP address of pool-verifier for template verdicts</td>
                 </tr>
                 <tr>
                   <td><code>verifier_http_url</code></td>
-                  <td>(derived)</td>
-                  <td>HTTP endpoint for verifier GET /status; defaults to http://verifier_addr/status</td>
+                  <td data-i18n="docs.cfg.core.verifier_http_url.default">(derived)</td>
+                  <td data-i18n="docs.cfg.core.verifier_http_url">HTTP endpoint for verifier GET /status; defaults to http://verifier_addr/status</td>
                 </tr>
                 <tr>
                   <td><code>upstream_url</code></td>
-                  <td>(required)</td>
-                  <td>URL of job server (template-manager or bitcoind RPC)</td>
+                  <td data-i18n="docs.cfg.core.upstream_url.default">(required)</td>
+                  <td data-i18n="docs.cfg.core.upstream_url">URL of job server (template-manager or bitcoind RPC)</td>
                 </tr>
                 <tr>
                   <td><code>upstream_failure_policy</code></td>
-                  <td>(required)</td>
-                  <td>Action on upstream disconnect: "fail_closed" or "fail_open"</td>
+                  <td data-i18n="docs.cfg.core.upstream_failure_policy.default">(required)</td>
+                  <td data-i18n="docs.cfg.core.upstream_failure_policy">Action on upstream disconnect: "fail_closed" or "fail_open"</td>
                 </tr>
               </tbody>
             </table>
@@ -649,41 +649,41 @@
             <table class="data-table">
               <thead>
                 <tr>
-                  <th>Key</th>
-                  <th>Default</th>
-                  <th>Notes</th>
+                  <th data-i18n="docs.th.key">Key</th>
+                  <th data-i18n="docs.th.default">Default</th>
+                  <th data-i18n="docs.th.notes">Notes</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td><code>noise_key_file</code></td>
-                  <td>(required)</td>
-                  <td>Path to gateway's Noise static private key (32 bytes, hex encoded)</td>
+                  <td data-i18n="docs.cfg.noise.noise_key_file.default">(required)</td>
+                  <td data-i18n="docs.cfg.noise.noise_key_file">Path to gateway's Noise static private key (32 bytes, hex encoded)</td>
                 </tr>
                 <tr>
                   <td><code>noise_cert_file</code></td>
-                  <td>(required)</td>
-                  <td>Path to gateway's certificate (for miner identity binding)</td>
+                  <td data-i18n="docs.cfg.noise.noise_cert_file.default">(required)</td>
+                  <td data-i18n="docs.cfg.noise.noise_cert_file">Path to gateway's certificate (for miner identity binding)</td>
                 </tr>
                 <tr>
                   <td><code>authority_public_key_file</code></td>
-                  <td>(required)</td>
-                  <td>Path to authorized public key for Noise handshake validation</td>
+                  <td data-i18n="docs.cfg.noise.authority_public_key_file.default">(required)</td>
+                  <td data-i18n="docs.cfg.noise.authority_public_key_file">Path to authorized public key for Noise handshake validation</td>
                 </tr>
                 <tr>
                   <td><code>http_api_key</code></td>
-                  <td>(optional)</td>
-                  <td>API key for HTTP endpoints; if set, all requests must include X-API-Key header</td>
+                  <td data-i18n="docs.cfg.noise.http_api_key.default">(optional)</td>
+                  <td data-i18n="docs.cfg.noise.http_api_key">API key for HTTP endpoints; if set, all requests must include X-API-Key header</td>
                 </tr>
                 <tr>
                   <td><code>http_tls_cert_file</code></td>
-                  <td>(optional)</td>
-                  <td>Path to TLS certificate for HTTPS HTTP server</td>
+                  <td data-i18n="docs.cfg.noise.http_tls_cert_file.default">(optional)</td>
+                  <td data-i18n="docs.cfg.noise.http_tls_cert_file">Path to TLS certificate for HTTPS HTTP server</td>
                 </tr>
                 <tr>
                   <td><code>http_tls_key_file</code></td>
-                  <td>(optional)</td>
-                  <td>Path to TLS private key for HTTPS HTTP server</td>
+                  <td data-i18n="docs.cfg.noise.http_tls_key_file.default">(optional)</td>
+                  <td data-i18n="docs.cfg.noise.http_tls_key_file">Path to TLS private key for HTTPS HTTP server</td>
                 </tr>
               </tbody>
             </table>
@@ -696,61 +696,61 @@
             <table class="data-table">
               <thead>
                 <tr>
-                  <th>Key</th>
-                  <th>Default</th>
-                  <th>Notes</th>
+                  <th data-i18n="docs.th.key">Key</th>
+                  <th data-i18n="docs.th.default">Default</th>
+                  <th data-i18n="docs.th.notes">Notes</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td><code>upstream_poll_interval_ms</code></td>
-                  <td>3000</td>
-                  <td>Milliseconds between upstream template polls</td>
+                  <td data-i18n="docs.cfg.timing.upstream_poll_interval_ms.default">3000</td>
+                  <td data-i18n="docs.cfg.timing.upstream_poll_interval_ms">Milliseconds between upstream template polls</td>
                 </tr>
                 <tr>
                   <td><code>upstream_health_timeout_ms</code></td>
-                  <td>5000</td>
-                  <td>Timeout for upstream health check request</td>
+                  <td data-i18n="docs.cfg.timing.upstream_health_timeout_ms.default">5000</td>
+                  <td data-i18n="docs.cfg.timing.upstream_health_timeout_ms">Timeout for upstream health check request</td>
                 </tr>
                 <tr>
                   <td><code>upstream_stale_max_ms</code></td>
-                  <td>30000</td>
-                  <td>Maximum age of template before marking upstream unavailable</td>
+                  <td data-i18n="docs.cfg.timing.upstream_stale_max_ms.default">30000</td>
+                  <td data-i18n="docs.cfg.timing.upstream_stale_max_ms">Maximum age of template before marking upstream unavailable</td>
                 </tr>
                 <tr>
                   <td><code>prevhash_verdict_timeout_ms</code></td>
-                  <td>50</td>
-                  <td>Milliseconds to wait for verifier verdict on prevhash change</td>
+                  <td data-i18n="docs.cfg.timing.prevhash_verdict_timeout_ms.default">50</td>
+                  <td data-i18n="docs.cfg.timing.prevhash_verdict_timeout_ms">Milliseconds to wait for verifier verdict on prevhash change</td>
                 </tr>
                 <tr>
                   <td><code>prevhash_stale_hold_ms</code></td>
-                  <td>5000</td>
-                  <td>Milliseconds to hold stale job before disconnect on prevhash timeout</td>
+                  <td data-i18n="docs.cfg.timing.prevhash_stale_hold_ms.default">5000</td>
+                  <td data-i18n="docs.cfg.timing.prevhash_stale_hold_ms">Milliseconds to hold stale job before disconnect on prevhash timeout</td>
                 </tr>
                 <tr>
                   <td><code>health_probe_interval_ms</code></td>
-                  <td>30000</td>
-                  <td>Milliseconds between verifier health probes</td>
+                  <td data-i18n="docs.cfg.timing.health_probe_interval_ms.default">30000</td>
+                  <td data-i18n="docs.cfg.timing.health_probe_interval_ms">Milliseconds between verifier health probes</td>
                 </tr>
                 <tr>
                   <td><code>verifier_heartbeat_interval_ms</code></td>
-                  <td>15000</td>
-                  <td>Milliseconds between heartbeat messages to verifier</td>
+                  <td data-i18n="docs.cfg.timing.verifier_heartbeat_interval_ms.default">15000</td>
+                  <td data-i18n="docs.cfg.timing.verifier_heartbeat_interval_ms">Milliseconds between heartbeat messages to verifier</td>
                 </tr>
                 <tr>
                   <td><code>max_template_age_ms</code></td>
-                  <td>60000</td>
-                  <td>Maximum age of cached template before VerdictReason: template_stale</td>
+                  <td data-i18n="docs.cfg.timing.max_template_age_ms.default">60000</td>
+                  <td data-i18n="docs.cfg.timing.max_template_age_ms">Maximum age of cached template before VerdictReason: template_stale</td>
                 </tr>
                 <tr>
                   <td><code>template_cache_size</code></td>
-                  <td>64</td>
-                  <td>Maximum number of templates to retain in LRU cache</td>
+                  <td data-i18n="docs.cfg.timing.template_cache_size.default">64</td>
+                  <td data-i18n="docs.cfg.timing.template_cache_size">Maximum number of templates to retain in LRU cache</td>
                 </tr>
                 <tr>
                   <td><code>max_future_templates</code></td>
-                  <td>2</td>
-                  <td>Maximum number of unverified future templates allowed in-flight</td>
+                  <td data-i18n="docs.cfg.timing.max_future_templates.default">2</td>
+                  <td data-i18n="docs.cfg.timing.max_future_templates">Maximum number of unverified future templates allowed in-flight</td>
                 </tr>
               </tbody>
             </table>
@@ -763,56 +763,56 @@
             <table class="data-table">
               <thead>
                 <tr>
-                  <th>Key</th>
-                  <th>Default</th>
-                  <th>Notes</th>
+                  <th data-i18n="docs.th.key">Key</th>
+                  <th data-i18n="docs.th.default">Default</th>
+                  <th data-i18n="docs.th.notes">Notes</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td><code>share_upstream_url</code></td>
-                  <td>(required)</td>
-                  <td>HTTP endpoint for share submissions (pool backend POST target)</td>
+                  <td data-i18n="docs.cfg.share.share_upstream_url.default">(required)</td>
+                  <td data-i18n="docs.cfg.share.share_upstream_url">HTTP endpoint for share submissions (pool backend POST target)</td>
                 </tr>
                 <tr>
                   <td><code>share_upstream_secret</code></td>
-                  <td>(required)</td>
-                  <td>HMAC-SHA256 secret for signing share POST requests</td>
+                  <td data-i18n="docs.cfg.share.share_upstream_secret.default">(required)</td>
+                  <td data-i18n="docs.cfg.share.share_upstream_secret">HMAC-SHA256 secret for signing share POST requests</td>
                 </tr>
                 <tr>
                   <td><code>share_upstream_retries</code></td>
-                  <td>2</td>
-                  <td>Number of retries on transient upstream failures</td>
+                  <td data-i18n="docs.cfg.share.share_upstream_retries.default">2</td>
+                  <td data-i18n="docs.cfg.share.share_upstream_retries">Number of retries on transient upstream failures</td>
                 </tr>
                 <tr>
                   <td><code>share_forward_queue_size</code></td>
-                  <td>50000</td>
-                  <td>Maximum pending shares in forward queue</td>
+                  <td data-i18n="docs.cfg.share.share_forward_queue_size.default">50000</td>
+                  <td data-i18n="docs.cfg.share.share_forward_queue_size">Maximum pending shares in forward queue</td>
                 </tr>
                 <tr>
                   <td><code>share_forward_max_in_flight</code></td>
-                  <td>256</td>
-                  <td>Maximum concurrent upstream requests</td>
+                  <td data-i18n="docs.cfg.share.share_forward_max_in_flight.default">256</td>
+                  <td data-i18n="docs.cfg.share.share_forward_max_in_flight">Maximum concurrent upstream requests</td>
                 </tr>
                 <tr>
                   <td><code>share_forward_queue_drop_policy</code></td>
-                  <td>drop_new</td>
-                  <td>Policy on queue overflow: "drop_new" or "drop_old"</td>
+                  <td data-i18n="docs.cfg.share.share_forward_queue_drop_policy.default">drop_new</td>
+                  <td data-i18n="docs.cfg.share.share_forward_queue_drop_policy">Policy on queue overflow: "drop_new" or "drop_old"</td>
                 </tr>
                 <tr>
                   <td><code>share_dedup_window_size</code></td>
-                  <td>10000</td>
-                  <td>Deduplication window size (number of unique share_ids to track)</td>
+                  <td data-i18n="docs.cfg.share.share_dedup_window_size.default">10000</td>
+                  <td data-i18n="docs.cfg.share.share_dedup_window_size">Deduplication window size (number of unique share_ids to track)</td>
                 </tr>
                 <tr>
                   <td><code>initial_difficulty</code></td>
-                  <td>1.0</td>
-                  <td>Initial share difficulty for new channels</td>
+                  <td data-i18n="docs.cfg.share.initial_difficulty.default">1.0</td>
+                  <td data-i18n="docs.cfg.share.initial_difficulty">Initial share difficulty for new channels</td>
                 </tr>
                 <tr>
                   <td><code>share_upstream_submit_timeout_ms</code></td>
-                  <td>2000</td>
-                  <td>Timeout for individual upstream share submission</td>
+                  <td data-i18n="docs.cfg.share.share_upstream_submit_timeout_ms.default">2000</td>
+                  <td data-i18n="docs.cfg.share.share_upstream_submit_timeout_ms">Timeout for individual upstream share submission</td>
                 </tr>
               </tbody>
             </table>
@@ -825,31 +825,31 @@
             <table class="data-table">
               <thead>
                 <tr>
-                  <th>Key</th>
-                  <th>Default</th>
-                  <th>Notes</th>
+                  <th data-i18n="docs.th.key">Key</th>
+                  <th data-i18n="docs.th.default">Default</th>
+                  <th data-i18n="docs.th.notes">Notes</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td><code>auth.mode</code></td>
-                  <td>(required)</td>
-                  <td>Authentication strategy: "allowlist", "prefix_map", or "open"</td>
+                  <td data-i18n="docs.cfg.auth.auth_mode.default">(required)</td>
+                  <td data-i18n="docs.cfg.auth.auth_mode">Authentication strategy: "allowlist", "prefix_map", or "open"</td>
                 </tr>
                 <tr>
                   <td><code>auth.allowlist</code></td>
-                  <td>(optional)</td>
-                  <td>Array of allowed worker identities (for allowlist mode)</td>
+                  <td data-i18n="docs.cfg.auth.auth_allowlist.default">(optional)</td>
+                  <td data-i18n="docs.cfg.auth.auth_allowlist">Array of allowed worker identities (for allowlist mode)</td>
                 </tr>
                 <tr>
                   <td><code>auth.prefix_map</code></td>
-                  <td>(optional)</td>
-                  <td>Map of identity prefixes to policies (for prefix_map mode)</td>
+                  <td data-i18n="docs.cfg.auth.auth_prefix_map.default">(optional)</td>
+                  <td data-i18n="docs.cfg.auth.auth_prefix_map">Map of identity prefixes to policies (for prefix_map mode)</td>
                 </tr>
                 <tr>
                   <td><code>max_worker_id_bytes</code></td>
-                  <td>128</td>
-                  <td>Maximum allowed length of worker identity string</td>
+                  <td data-i18n="docs.cfg.auth.max_worker_id_bytes.default">128</td>
+                  <td data-i18n="docs.cfg.auth.max_worker_id_bytes">Maximum allowed length of worker identity string</td>
                 </tr>
               </tbody>
             </table>
@@ -862,34 +862,34 @@
             <table class="data-table">
               <thead>
                 <tr>
-                  <th>Environment Variable</th>
-                  <th>Purpose</th>
+                  <th data-i18n="docs.th.envvar">Environment Variable</th>
+                  <th data-i18n="docs.th.purpose">Purpose</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td><code>VELDRA_ALLOW_DROP_OLD_INLINE</code></td>
-                  <td>Allows drop_old share queue policy in inline mode (default: forbidden for safety)</td>
+                  <td data-i18n="docs.esc.VELDRA_ALLOW_DROP_OLD_INLINE">Allows drop_old share queue policy in inline mode (default: forbidden for safety)</td>
                 </tr>
                 <tr>
                   <td><code>VELDRA_GATEWAY_ALLOW_OPEN_AUTH</code></td>
-                  <td>Permits auth.mode = "open" without allowlist/prefix_map (default: forbidden)</td>
+                  <td data-i18n="docs.esc.VELDRA_GATEWAY_ALLOW_OPEN_AUTH">Permits auth.mode = "open" without allowlist/prefix_map (default: forbidden)</td>
                 </tr>
                 <tr>
                   <td><code>VELDRA_ALLOW_NO_API_KEY</code></td>
-                  <td>Allows http_addr to be exposed without http_api_key authentication (default: forbidden)</td>
+                  <td data-i18n="docs.esc.VELDRA_ALLOW_NO_API_KEY">Allows http_addr to be exposed without http_api_key authentication (default: forbidden)</td>
                 </tr>
                 <tr>
                   <td><code>VELDRA_ALLOW_PLAINTEXT</code></td>
-                  <td>Permits miner connections without Noise encryption (default: forbidden)</td>
+                  <td data-i18n="docs.esc.VELDRA_ALLOW_PLAINTEXT">Permits miner connections without Noise encryption (default: forbidden)</td>
                 </tr>
                 <tr>
                   <td><code>VELDRA_ALLOW_INSECURE_HTTP_UPSTREAM</code></td>
-                  <td>Allows upstream_url to use http:// instead of https:// (default: forbidden)</td>
+                  <td data-i18n="docs.esc.VELDRA_ALLOW_INSECURE_HTTP_UPSTREAM">Allows upstream_url to use http:// instead of https:// (default: forbidden)</td>
                 </tr>
                 <tr>
                   <td><code>VELDRA_ALLOW_NO_SHARE_UPSTREAM_READY_INLINE</code></td>
-                  <td>Permits inline mode when share upstream is not reachable at startup (default: forbidden)</td>
+                  <td data-i18n="docs.esc.VELDRA_ALLOW_NO_SHARE_UPSTREAM_READY_INLINE">Permits inline mode when share upstream is not reachable at startup (default: forbidden)</td>
                 </tr>
               </tbody>
             </table>
@@ -909,40 +909,40 @@
 
       <div class="grid-3 fade-up">
         <div class="card">
-          <h3>What it is</h3>
+          <h3 data-i18n="docs.sec.is.title">What it is</h3>
           <ul style="list-style-position:inside;color:rgba(255,255,255,.65);line-height:1.7;">
-            <li>A miner-facing gateway that verifies templates in real-time</li>
-            <li>Noise NX encrypted transport with certificate binding</li>
-            <li>Deterministic fail-closed prevhash switching with 50ms timeout</li>
-            <li>Machine-readable reason codes for every decision</li>
-            <li>Two-event share lifecycle with HMAC-SHA256 signing</li>
+            <li data-i18n="docs.sec.is.1">A miner-facing gateway that verifies templates in real-time</li>
+            <li data-i18n="docs.sec.is.2">Noise NX encrypted transport with certificate binding</li>
+            <li data-i18n="docs.sec.is.3">Deterministic fail-closed prevhash switching with 50ms timeout</li>
+            <li data-i18n="docs.sec.is.4">Machine-readable reason codes for every decision</li>
+            <li data-i18n="docs.sec.is.5">Two-event share lifecycle with HMAC-SHA256 signing</li>
           </ul>
         </div>
 
         <div class="card">
-          <h3>What it is not</h3>
+          <h3 data-i18n="docs.sec.isnot.title">What it is not</h3>
           <ul style="list-style-position:inside;color:rgba(255,255,255,.65);line-height:1.7;">
-            <li>A pool backend or share accounting system</li>
-            <li>A replacement for upstream policy enforcement</li>
-            <li>A DDoS mitigation appliance (no rate limiting beyond peer quotas)</li>
-            <li>A full peer-to-peer SV2 implementation</li>
-            <li>A substitute for operator vigilance and monitoring</li>
+            <li data-i18n="docs.sec.isnot.1">A pool backend or share accounting system</li>
+            <li data-i18n="docs.sec.isnot.2">A replacement for upstream policy enforcement</li>
+            <li data-i18n="docs.sec.isnot.3">A DDoS mitigation appliance (no rate limiting beyond peer quotas)</li>
+            <li data-i18n="docs.sec.isnot.4">A full peer-to-peer SV2 implementation</li>
+            <li data-i18n="docs.sec.isnot.5">A substitute for operator vigilance and monitoring</li>
           </ul>
         </div>
 
         <div class="card">
-          <h3>Operational guidance</h3>
+          <h3 data-i18n="docs.sec.ops.title">Operational guidance</h3>
           <ul style="list-style-position:inside;color:rgba(255,255,255,.65);line-height:1.7;">
-            <li>Always run in shadow mode first to establish trust</li>
-            <li>Monitor verifier latency and uptime continuously</li>
-            <li>Audit share_forward_result for upstream rejections</li>
-            <li>Rotate http_api_key regularly and keep secure</li>
-            <li>Use TLS for HTTP endpoints in production</li>
+            <li data-i18n="docs.sec.ops.1">Always run in shadow mode first to establish trust</li>
+            <li data-i18n="docs.sec.ops.2">Monitor verifier latency and uptime continuously</li>
+            <li data-i18n="docs.sec.ops.3">Audit share_forward_result for upstream rejections</li>
+            <li data-i18n="docs.sec.ops.4">Rotate http_api_key regularly and keep secure</li>
+            <li data-i18n="docs.sec.ops.5">Use TLS for HTTP endpoints in production</li>
           </ul>
         </div>
       </div>
 
-      <div class="callout callout-warn fade-up" style="margin-top:32px;">
+      <div class="callout callout-warn fade-up" style="margin-top:32px;" data-i18n="docs.callout.critical" data-i18n-html="true">
         <strong>⚠ Critical:</strong> Do not expose <code>/gateway/events</code> or <code>/metrics</code> to untrusted networks.
         Set <code>http_api_key</code> in production. Both endpoints require authentication to prevent information leakage.
       </div>

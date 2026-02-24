@@ -21,9 +21,9 @@
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary_large_image">
 
-  <link rel="stylesheet" href="/assets/style.css?v=15">
-  <script src="/assets/script.js?v=15" defer></script>
-  <script src="/assets/i18n.js?v=15" defer></script>
+  <link rel="stylesheet" href="/assets/style.css?v=16">
+  <script src="/assets/script.js?v=16" defer></script>
+  <script src="/assets/i18n.js?v=16" defer></script>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
 </head>
 <body>
@@ -59,7 +59,7 @@
     <div class="container">
       <div class="hero-inner">
         <h1 class="hero-title" data-i18n="legal.disclaimer.title">Disclaimer</h1>
-        <p class="legal-updated">Last updated: February 19, 2026</p>
+        <p class="legal-updated" data-i18n="legal.updated_date">Last updated: February 19, 2026</p>
       </div>
     </div>
   </section>
@@ -72,52 +72,52 @@
     <div class="legal-layout">
       <nav class="legal-toc" aria-label="Table of contents">
         <p class="legal-toc-title" data-i18n="legal.toc_title">On this page</p>
-        <a href="#as-is">Software provided "as is"</a>
-        <a href="#not-advice">Not financial advice</a>
-        <a href="#mining-risk">Mining risk</a>
-        <a href="#correctness">No guarantee of correctness</a>
-        <a href="#consensus">Consensus safety checks</a>
-        <a href="#liability">Limitation of liability</a>
-        <a href="#operator">Operator responsibility</a>
-        <a href="#third-party">Third-party dependencies</a>
-        <a href="#observe-data">Observe mode data</a>
-        <a href="#changes">Changes</a>
-        <a href="#contact">Contact</a>
+        <a href="#as-is" data-i18n="legal.disclaimer.toc.as_is">Software provided "as is"</a>
+        <a href="#not-advice" data-i18n="legal.disclaimer.toc.not_advice">Not financial advice</a>
+        <a href="#mining-risk" data-i18n="legal.disclaimer.toc.mining">Mining risk</a>
+        <a href="#correctness" data-i18n="legal.disclaimer.toc.correctness">No guarantee of correctness</a>
+        <a href="#consensus" data-i18n="legal.disclaimer.toc.consensus">Consensus safety checks</a>
+        <a href="#liability" data-i18n="legal.disclaimer.toc.liability">Limitation of liability</a>
+        <a href="#operator" data-i18n="legal.disclaimer.toc.operator">Operator responsibility</a>
+        <a href="#third-party" data-i18n="legal.disclaimer.toc.third_party">Third-party dependencies</a>
+        <a href="#observe-data" data-i18n="legal.disclaimer.toc.observe_data">Observe mode data</a>
+        <a href="#changes" data-i18n="legal.disclaimer.toc.changes">Changes</a>
+        <a href="#contact" data-i18n="legal.disclaimer.toc.contact">Contact</a>
       </nav>
       <div class="legal-body">
 
         <h2 id="as-is" data-i18n="legal.disclaimer.s1.title">Software provided "as is"</h2>
-        <p>ReserveGrid OS and all associated software components are provided "as is" and "as available" without warranty of any kind, whether express, implied, or statutory. Veldra, Inc. specifically disclaims all implied warranties of merchantability, fitness for a particular purpose, and non-infringement.</p>
+        <p data-i18n="legal.disclaimer.s1.body">ReserveGrid OS and all associated software components are provided "as is" and "as available" without warranty of any kind, whether express, implied, or statutory. Veldra, Inc. specifically disclaims all implied warranties of merchantability, fitness for a particular purpose, and non-infringement.</p>
 
         <h2 id="not-advice" data-i18n="legal.disclaimer.s2.title">Not financial or investment advice</h2>
-        <p>ReserveGrid OS is a technical verification tool for block template policy evaluation. Nothing in the software, documentation, website, or observe mode dashboard constitutes financial advice, investment advice, trading advice, or any other form of professional financial guidance. Template verdicts (accept/reject) reflect operator-configured policy rules applied to technical block data. They are not recommendations to mine, not mine, buy, sell, or hold any asset.</p>
+        <p data-i18n="legal.disclaimer.s2.body">ReserveGrid OS is a technical verification tool for block template policy evaluation. Nothing in the software, documentation, website, or observe mode dashboard constitutes financial advice, investment advice, trading advice, or any other form of professional financial guidance. Template verdicts (accept/reject) reflect operator-configured policy rules applied to technical block data. They are not recommendations to mine, not mine, buy, sell, or hold any asset.</p>
 
         <h2 id="mining-risk" data-i18n="legal.disclaimer.s3.title">Mining risk acknowledgment</h2>
-        <p>Bitcoin mining involves inherent technical and financial risks. By using ReserveGrid OS, you acknowledge that template verification is one component of a mining operation and does not guarantee profitability, block production, or revenue. Rejected templates may result in miners receiving no work assignments, which reduces hash utilization. Accepted templates may still produce blocks that the Bitcoin network rejects for reasons outside the scope of policy evaluation (network forks, competing blocks, consensus rule changes).</p>
+        <p data-i18n="legal.disclaimer.s3.body">Bitcoin mining involves inherent technical and financial risks. By using ReserveGrid OS, you acknowledge that template verification is one component of a mining operation and does not guarantee profitability, block production, or revenue. Rejected templates may result in miners receiving no work assignments, which reduces hash utilization. Accepted templates may still produce blocks that the Bitcoin network rejects for reasons outside the scope of policy evaluation (network forks, competing blocks, consensus rule changes).</p>
 
         <h2 id="correctness" data-i18n="legal.disclaimer.s4.title">No guarantee of correctness</h2>
-        <p>While ReserveGrid OS is designed for deterministic, reproducible evaluation, Veldra does not guarantee that the software is free from bugs, errors, or vulnerabilities. Policy configuration errors, software defects, or unexpected interactions with upstream systems (bitcoind, Stratum V2 servers, mempool data sources) may cause incorrect verdicts. Operators are responsible for testing their policy configuration and monitoring verdict outcomes.</p>
+        <p data-i18n="legal.disclaimer.s4.body">While ReserveGrid OS is designed for deterministic, reproducible evaluation, Veldra does not guarantee that the software is free from bugs, errors, or vulnerabilities. Policy configuration errors, software defects, or unexpected interactions with upstream systems (bitcoind, Stratum V2 servers, mempool data sources) may cause incorrect verdicts. Operators are responsible for testing their policy configuration and monitoring verdict outcomes.</p>
 
         <h2 id="consensus" data-i18n="legal.disclaimer.s5.title">Consensus safety checks</h2>
-        <p>The consensus safety features (weight ratio, template age, sigops budget, coinbase sigops) are informational checks based on known Bitcoin consensus constants. They do not replace full consensus validation performed by Bitcoin Core or equivalent full node software. A template that passes all ReserveGrid OS safety checks may still be invalid under Bitcoin consensus rules.</p>
+        <p data-i18n="legal.disclaimer.s5.body">The consensus safety features (weight ratio, template age, sigops budget, coinbase sigops) are informational checks based on known Bitcoin consensus constants. They do not replace full consensus validation performed by Bitcoin Core or equivalent full node software. A template that passes all ReserveGrid OS safety checks may still be invalid under Bitcoin consensus rules.</p>
 
         <h2 id="liability" data-i18n="legal.disclaimer.s6.title">Limitation of liability</h2>
-        <p>To the maximum extent permitted by applicable law, Veldra, Inc. and its officers, directors, employees, and agents shall not be liable for any direct, indirect, incidental, special, consequential, or punitive damages arising from the use of or inability to use the software, including but not limited to lost mining revenue, missed blocks, orphaned blocks, incorrect template verdicts, policy misconfiguration, data loss, or service interruption.</p>
+        <p data-i18n="legal.disclaimer.s6.body">To the maximum extent permitted by applicable law, Veldra, Inc. and its officers, directors, employees, and agents shall not be liable for any direct, indirect, incidental, special, consequential, or punitive damages arising from the use of or inability to use the software, including but not limited to lost mining revenue, missed blocks, orphaned blocks, incorrect template verdicts, policy misconfiguration, data loss, or service interruption.</p>
 
         <h2 id="operator" data-i18n="legal.disclaimer.s7.title">Operator responsibility</h2>
-        <p>Operators deploying ReserveGrid OS in production are solely responsible for securing the deployment environment (network access, TLS, authentication), configuring policy rules appropriate for their operation, monitoring verdict logs and system health, maintaining backups and disaster recovery procedures, and complying with all applicable laws and regulations in their jurisdiction.</p>
+        <p data-i18n="legal.disclaimer.s7.body">Operators deploying ReserveGrid OS in production are solely responsible for securing the deployment environment (network access, TLS, authentication), configuring policy rules appropriate for their operation, monitoring verdict logs and system health, maintaining backups and disaster recovery procedures, and complying with all applicable laws and regulations in their jurisdiction.</p>
 
         <h2 id="third-party" data-i18n="legal.disclaimer.s8.title">Third-party dependencies</h2>
-        <p>ReserveGrid OS depends on third-party software components (Rust crates, operating system libraries, Bitcoin Core RPC). Veldra does not guarantee the security, availability, or correctness of third-party dependencies. Operators should review dependency licenses and security advisories independently.</p>
+        <p data-i18n="legal.disclaimer.s8.body">ReserveGrid OS depends on third-party software components (Rust crates, operating system libraries, Bitcoin Core RPC). Veldra does not guarantee the security, availability, or correctness of third-party dependencies. Operators should review dependency licenses and security advisories independently.</p>
 
         <h2 id="observe-data" data-i18n="legal.disclaimer.s9.title">Observe mode data</h2>
-        <p>Data displayed in the observe mode dashboard is provided for informational and evaluation purposes only. Dashboard metrics, charts, and verdicts reflect real-time or simulated data depending on the connection state. Veldra makes no representation about the accuracy, completeness, or timeliness of data displayed in observe mode.</p>
+        <p data-i18n="legal.disclaimer.s9.body">Data displayed in the observe mode dashboard is provided for informational and evaluation purposes only. Dashboard metrics, charts, and verdicts reflect real-time or simulated data depending on the connection state. Veldra makes no representation about the accuracy, completeness, or timeliness of data displayed in observe mode.</p>
 
         <h2 id="changes" data-i18n="legal.disclaimer.s10.title">Changes to this disclaimer</h2>
-        <p>We may update this disclaimer from time to time. Changes will be posted on this page with an updated revision date. Continued use of the software or Services after changes constitutes acceptance of the revised disclaimer.</p>
+        <p data-i18n="legal.disclaimer.s10.body">We may update this disclaimer from time to time. Changes will be posted on this page with an updated revision date. Continued use of the software or Services after changes constitutes acceptance of the revised disclaimer.</p>
 
         <h2 id="contact" data-i18n="legal.disclaimer.s11.title">Contact</h2>
-        <p>For questions about this disclaimer, contact us at <a href="mailto:jarrondeng@veldra.org">jarrondeng@veldra.org</a>.</p>
+        <p data-i18n="legal.disclaimer.s11.body" data-i18n-html="true">For questions about this disclaimer, contact us at <a href="mailto:jarrondeng@veldra.org">jarrondeng@veldra.org</a>.</p>
 
       </div>
     </div>

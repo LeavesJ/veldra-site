@@ -289,6 +289,25 @@ ul { list-style: none; }
   box-shadow: 0 4px 20px var(--blue-glow);
 }
 
+/* Observe nav button accent — subtle pulse ring */
+.nav-actions .btn-primary.btn-sm {
+  position: relative;
+  overflow: visible;
+}
+.nav-actions .btn-primary.btn-sm::before {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 12px;
+  border: 1px solid rgba(212,148,60,.2);
+  animation: observePulse 3s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes observePulse {
+  0%, 100% { opacity: .3; transform: scale(1); }
+  50%      { opacity: .7; transform: scale(1.04); }
+}
+
 .btn-glow {
   background: linear-gradient(135deg, var(--amber) 0%, var(--amber-light) 100%);
   color: #0a0e18;
@@ -512,13 +531,13 @@ ul { list-style: none; }
 .hero-terminal {
   position: absolute;
   top: 50%;
-  right: 10%;
+  right: 6%;
   transform: translateY(-50%);
   pointer-events: none;
   font-family: var(--mono);
   font-size: 72px;
   font-weight: 300;
-  color: rgba(136,153,173,.1);
+  color: rgba(136,153,173,.08);
   letter-spacing: .15em;
   line-height: 1;
   display: flex;
@@ -561,10 +580,10 @@ ul { list-style: none; }
 .hero-radial {
   position: absolute;
   top: 50%;
-  right: 10%;
-  width: 300px;
-  height: 300px;
-  margin-top: -150px;
+  right: 6%;
+  width: 280px;
+  height: 280px;
+  margin-top: -140px;
   pointer-events: none;
 }
 .hero-radial-ring {
@@ -711,7 +730,7 @@ ul { list-style: none; }
   overflow: hidden;
 }
 .hero-light .hero-inner {
-  padding: 56px 0 48px;
+  padding: 64px 0 56px;
 }
 .hero-light .hero-label {
   color: var(--blue-light);
