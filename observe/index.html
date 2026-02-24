@@ -860,6 +860,26 @@
 
   <!-- ── Hero ──────────────────────────────────── -->
   <section class="hero-light" style="padding: 48px 0 32px;">
+    <div class="hero-signal">
+      <svg viewBox="0 0 400 80" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0 40h120l8-28 16 56 12-42 10 34 8-20h226" stroke="rgba(212,148,60,.15)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M0 40h120l8-28 16 56 12-42 10 34 8-20h226" stroke="url(#signalGrad)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="800" stroke-dashoffset="800">
+          <animate attributeName="stroke-dashoffset" from="800" to="0" dur="3s" fill="freeze" begin="0.5s"/>
+        </path>
+        <circle r="3" fill="rgba(212,148,60,.6)">
+          <animateMotion dur="3s" begin="0.5s" fill="freeze" path="M0 40h120l8-28 16 56 12-42 10 34 8-20h226"/>
+        </circle>
+        <defs>
+          <linearGradient id="signalGrad" x1="0" y1="0" x2="400" y2="0" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="rgba(212,148,60,.0)"/>
+            <stop offset=".3" stop-color="rgba(212,148,60,.3)"/>
+            <stop offset=".5" stop-color="rgba(212,148,60,.5)"/>
+            <stop offset=".7" stop-color="rgba(212,148,60,.3)"/>
+            <stop offset="1" stop-color="rgba(212,148,60,.0)"/>
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
     <div class="container">
       <div class="hero-inner fade-up">
         <div class="hero-label">
