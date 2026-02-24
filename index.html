@@ -22,8 +22,10 @@
   <meta property="og:image" content="https://veldra.org/assets/brand/veldra-mark.png">
   <meta name="twitter:card" content="summary_large_image">
 
-  <link rel="stylesheet" href="/assets/style.css?v=14">
-  <script src="/assets/script.js?v=14" defer></script>
+  <link rel="stylesheet" href="/assets/style.css?v=15">
+  <script src="/assets/script.js?v=15" defer></script>
+  <script src="/assets/i18n.js?v=15" defer></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
 </head>
 <body>
 
@@ -35,13 +37,18 @@
           <img src="/assets/brand/veldra-logo.png" alt="Veldra">
         </a>
         <div class="navlinks">
-          <a href="/" aria-current="page">Home</a>
-          <a href="/product/">Product</a>
-          <a href="/docs/">Docs</a>
-          <a href="/about/">About</a>
+          <a href="/" aria-current="page" data-i18n="nav.home">Home</a>
+          <a href="/product/" data-i18n="nav.product">Product</a>
+          <a href="/docs/" data-i18n="nav.docs">Docs</a>
+          <a href="/about/" data-i18n="nav.about">About</a>
         </div>
         <div class="nav-actions">
-          <a href="/observe/" class="btn btn-primary btn-sm">Observe</a>
+          <div class="lang-toggle">
+            <button class="lang-btn active" data-lang="en">EN</button>
+            <button class="lang-btn" data-lang="es">ES</button>
+            <button class="lang-btn" data-lang="zh">中</button>
+          </div>
+          <a href="/observe/" class="btn btn-primary btn-sm" data-i18n="nav.observe">Observe</a>
         </div>
         <button class="nav-toggle" aria-label="Menu" aria-expanded="false">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
@@ -70,19 +77,19 @@
       <div class="hero-inner fade-up">
         <div class="hero-label">
           <span class="hero-label-dot"></span>
-          <span>Stratum V2 Infrastructure</span>
+          <span data-i18n="home.hero.label">Stratum V2 Infrastructure</span>
         </div>
-        <h1 class="hero-title">
+        <h1 class="hero-title" data-i18n="home.hero.title" data-i18n-html="true">
           SV2 mining gateway<br>built for <span class="accent">production</span> pools
         </h1>
-        <p class="hero-sub">
+        <p class="hero-sub" data-i18n="home.hero.sub">
           ReserveGrid OS is a miner-facing Stratum V2 gateway with Noise NX encrypted transport,
           template verification, fail-closed prevhash switching, and a two-event share lifecycle.
           Every decision carries a machine-readable reason code.
         </p>
         <div class="hero-actions">
-          <a href="/product/" class="btn btn-glow">Explore ReserveGrid OS</a>
-          <a href="/docs/" class="btn btn-outline">Read the docs</a>
+          <a href="/product/" class="btn btn-glow" data-i18n="btn.explore">Explore ReserveGrid OS</a>
+          <a href="/docs/" class="btn btn-outline" data-i18n="btn.docs">Read the docs</a>
         </div>
       </div>
     </div>
@@ -102,14 +109,14 @@
             <div class="chip-pin">
               <div>
                 <div class="chip-pin-value">34</div>
-                <div class="chip-pin-label">GatewayReason codes</div>
+                <div class="chip-pin-label" data-i18n="home.chip.codes">GatewayReason codes</div>
               </div>
               <div class="chip-trace"></div>
             </div>
             <div class="chip-pin">
               <div>
                 <div class="chip-pin-value">50<span style="font-size:16px;opacity:.6;">ms</span></div>
-                <div class="chip-pin-label">Verdict timeout</div>
+                <div class="chip-pin-label" data-i18n="home.chip.timeout">Verdict timeout</div>
               </div>
               <div class="chip-trace"></div>
             </div>
@@ -126,14 +133,14 @@
             <div class="chip-pin">
               <div>
                 <div class="chip-pin-value">3</div>
-                <div class="chip-pin-label">Deployment modes</div>
+                <div class="chip-pin-label" data-i18n="home.chip.modes">Deployment modes</div>
               </div>
               <div class="chip-trace"></div>
             </div>
             <div class="chip-pin">
               <div>
                 <div class="chip-pin-value">2</div>
-                <div class="chip-pin-label">Share lifecycle events</div>
+                <div class="chip-pin-label" data-i18n="home.chip.events">Share lifecycle events</div>
               </div>
               <div class="chip-trace"></div>
             </div>
@@ -148,23 +155,23 @@
   <section class="section section-alt">
     <div class="container">
       <div class="section-header">
-        <div class="section-eyebrow">The problem</div>
-        <h2>SV2 enables miner autonomy.<br>That autonomy needs guardrails.</h2>
+        <div class="section-eyebrow" data-i18n="home.problem.eyebrow">The problem</div>
+        <h2 data-i18n="home.problem.title" data-i18n-html="true">SV2 enables miner autonomy.<br>That autonomy needs guardrails.</h2>
       </div>
       <div class="split fade-up">
         <div class="card">
           <div class="card-icon card-icon-navy">
             <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
           </div>
-          <h3>The SV2 adoption challenge</h3>
-          <p>Stratum V2 lets miners propose their own block templates. Pools gain encrypted transport and reduced bandwidth, but lose visibility into what miners submit. Without verification, a pool has no way to detect malformed templates, fee policy violations, or stale prevhash references before distributing work.</p>
+          <h3 data-i18n="home.problem.sv2_title">The SV2 adoption challenge</h3>
+          <p data-i18n="home.problem.sv2_body">Stratum V2 lets miners propose their own block templates. Pools gain encrypted transport and reduced bandwidth, but lose visibility into what miners submit. Without verification, a pool has no way to detect malformed templates, fee policy violations, or stale prevhash references before distributing work.</p>
         </div>
         <div class="card">
           <div class="card-icon card-icon-green">
             <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
           </div>
-          <h3>The ReserveGrid solution</h3>
-          <p>ReserveGrid OS sits between miners and the pool as a standard job server. It verifies every template against operator policy, switches prevhash references with fail-closed safety, tracks shares through a two-event lifecycle, and emits structured reason codes for every decision.</p>
+          <h3 data-i18n="home.problem.rg_title">The ReserveGrid solution</h3>
+          <p data-i18n="home.problem.rg_body">ReserveGrid OS sits between miners and the pool as a standard job server. It verifies every template against operator policy, switches prevhash references with fail-closed safety, tracks shares through a two-event lifecycle, and emits structured reason codes for every decision.</p>
         </div>
       </div>
     </div>
@@ -174,9 +181,9 @@
   <section class="section">
     <div class="container">
       <div class="section-header">
-        <div class="section-eyebrow">Architecture</div>
-        <h2>End-to-end gateway flow</h2>
-        <p>From miner handshake to upstream share submission, every hop is observable.</p>
+        <div class="section-eyebrow" data-i18n="home.arch.eyebrow">Architecture</div>
+        <h2 data-i18n="home.arch.title">End-to-end gateway flow</h2>
+        <p data-i18n="home.arch.sub">From miner handshake to upstream share submission, every hop is observable.</p>
       </div>
 
       <div class="arch-svg-wrap fade-up">
@@ -252,7 +259,7 @@
         </svg>
       </div>
 
-      <div class="callout callout-blue mt-4 fade-up" style="text-align:center;">
+      <div class="callout callout-blue mt-4 fade-up" style="text-align:center;" data-i18n="home.arch.callout">
         The gateway also forwards valid shares upstream via HTTP POST to the pool backend.
         Shares flow through a bounded queue with configurable backpressure policy.
       </div>
@@ -263,24 +270,24 @@
   <section class="section section-alt">
     <div class="container">
       <div class="section-header">
-        <div class="section-eyebrow">Capabilities</div>
-        <h2>What the gateway handles</h2>
+        <div class="section-eyebrow" data-i18n="home.cap.eyebrow">Capabilities</div>
+        <h2 data-i18n="home.cap.title">What the gateway handles</h2>
       </div>
       <div class="grid-3 fade-up">
         <div class="card">
-          <h3>Three deployment modes</h3>
-          <p>Shadow audits templates without miners. Observe logs verdicts without gating. Inline enforces policy with fail-closed safety. One binary, one config key.</p>
-          <a href="/product/#modes" class="btn btn-outline btn-sm mt-6">See modes</a>
+          <h3 data-i18n="home.cap.modes_title">Three deployment modes</h3>
+          <p data-i18n="home.cap.modes_body">Shadow audits templates without miners. Observe logs verdicts without gating. Inline enforces policy with fail-closed safety. One binary, one config key.</p>
+          <a href="/product/#modes" class="btn btn-outline btn-sm mt-6" data-i18n="home.cap.modes_btn">See modes</a>
         </div>
         <div class="card">
-          <h3>Two-event share lifecycle</h3>
-          <p>Every share produces <code>share_accepted</code> at ACK time and <code>share_forward_result</code> after upstream POST. Joined by <code>share_id</code> with a 1:1 invariant.</p>
-          <a href="/product/#features" class="btn btn-outline btn-sm mt-6">See pipeline</a>
+          <h3 data-i18n="home.cap.share_title">Two-event share lifecycle</h3>
+          <p data-i18n="home.cap.share_body">Every share produces <code>share_accepted</code> at ACK time and <code>share_forward_result</code> after upstream POST. Joined by <code>share_id</code> with a 1:1 invariant.</p>
+          <a href="/product/#features" class="btn btn-outline btn-sm mt-6" data-i18n="home.cap.share_btn">See pipeline</a>
         </div>
         <div class="card">
-          <h3>Fail-closed prevhash</h3>
-          <p>When a new block arrives, miners hold on stale work until the verifier responds. 50ms verdict timeout, 5s stale hold, deterministic disconnect on expiry.</p>
-          <a href="/product/#features" class="btn btn-outline btn-sm mt-6">See timing</a>
+          <h3 data-i18n="home.cap.prevhash_title">Fail-closed prevhash</h3>
+          <p data-i18n="home.cap.prevhash_body">When a new block arrives, miners hold on stale work until the verifier responds. 50ms verdict timeout, 5s stale hold, deterministic disconnect on expiry.</p>
+          <a href="/product/#features" class="btn btn-outline btn-sm mt-6" data-i18n="home.cap.prevhash_btn">See timing</a>
         </div>
       </div>
     </div>
@@ -290,61 +297,61 @@
   <section class="section">
     <div class="container">
       <div class="section-header">
-        <div class="section-eyebrow">Comparison</div>
-        <h2>What changes with ReserveGrid</h2>
+        <div class="section-eyebrow" data-i18n="home.cmp.eyebrow">Comparison</div>
+        <h2 data-i18n="home.cmp.title">What changes with ReserveGrid</h2>
       </div>
       <div class="table-wrap fade-up">
         <table class="comparison-table">
           <thead>
             <tr>
-              <th class="row-label">Capability</th>
-              <th>Traditional pool</th>
-              <th>SV2 without ReserveGrid</th>
-              <th>SV2 + ReserveGrid</th>
+              <th class="row-label" data-i18n="home.cmp.th_cap">Capability</th>
+              <th data-i18n="home.cmp.th_trad">Traditional pool</th>
+              <th data-i18n="home.cmp.th_sv2">SV2 without ReserveGrid</th>
+              <th data-i18n="home.cmp.th_rg">SV2 + ReserveGrid</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td class="row-label">Miner transport encryption</td>
-              <td class="cross">&#x2717; Plaintext</td>
-              <td class="check">&#x2713; Noise NX</td>
-              <td class="check">&#x2713; Noise NX</td>
+              <td class="row-label" data-i18n="home.cmp.r1">Miner transport encryption</td>
+              <td class="cross" data-i18n="home.cmp.r1_trad">&#x2717; Plaintext</td>
+              <td class="check" data-i18n="home.cmp.r1_sv2">&#x2713; Noise NX</td>
+              <td class="check" data-i18n="home.cmp.r1_rg">&#x2713; Noise NX</td>
             </tr>
             <tr>
-              <td class="row-label">Template verification</td>
-              <td class="partial">&#x25CB; Pool-side only</td>
-              <td class="cross">&#x2717; None</td>
-              <td class="check">&#x2713; Policy-driven, 34 reason codes</td>
+              <td class="row-label" data-i18n="home.cmp.r2">Template verification</td>
+              <td class="partial" data-i18n="home.cmp.r2_trad">&#x25CB; Pool-side only</td>
+              <td class="cross" data-i18n="home.cmp.r2_sv2">&#x2717; None</td>
+              <td class="check" data-i18n="home.cmp.r2_rg">&#x2713; Policy-driven, 34 reason codes</td>
             </tr>
             <tr>
-              <td class="row-label">Prevhash safety</td>
-              <td class="partial">&#x25CB; Implicit</td>
-              <td class="cross">&#x2717; No verification gate</td>
-              <td class="check">&#x2713; Fail-closed, 50ms + 5s hold</td>
+              <td class="row-label" data-i18n="home.cmp.r3">Prevhash safety</td>
+              <td class="partial" data-i18n="home.cmp.r3_trad">&#x25CB; Implicit</td>
+              <td class="cross" data-i18n="home.cmp.r3_sv2">&#x2717; No verification gate</td>
+              <td class="check" data-i18n="home.cmp.r3_rg">&#x2713; Fail-closed, 50ms + 5s hold</td>
             </tr>
             <tr>
-              <td class="row-label">Share audit trail</td>
-              <td class="cross">&#x2717; Pool internal</td>
-              <td class="cross">&#x2717; None at gateway</td>
-              <td class="check">&#x2713; Two-event lifecycle with HMAC</td>
+              <td class="row-label" data-i18n="home.cmp.r4">Share audit trail</td>
+              <td class="cross" data-i18n="home.cmp.r4_trad">&#x2717; Pool internal</td>
+              <td class="cross" data-i18n="home.cmp.r4_sv2">&#x2717; None at gateway</td>
+              <td class="check" data-i18n="home.cmp.r4_rg">&#x2713; Two-event lifecycle with HMAC</td>
             </tr>
             <tr>
-              <td class="row-label">Reject traceability</td>
-              <td class="cross">&#x2717; Opaque</td>
-              <td class="cross">&#x2717; SV2 wire codes only</td>
-              <td class="check">&#x2713; reason_code + policy context</td>
+              <td class="row-label" data-i18n="home.cmp.r5">Reject traceability</td>
+              <td class="cross" data-i18n="home.cmp.r5_trad">&#x2717; Opaque</td>
+              <td class="cross" data-i18n="home.cmp.r5_sv2">&#x2717; SV2 wire codes only</td>
+              <td class="check" data-i18n="home.cmp.r5_rg">&#x2713; reason_code + policy context</td>
             </tr>
             <tr>
-              <td class="row-label">Operator config surface</td>
-              <td class="partial">&#x25CB; Varies</td>
-              <td class="cross">&#x2717; Minimal</td>
-              <td class="check">&#x2713; 51 TOML keys + env overrides</td>
+              <td class="row-label" data-i18n="home.cmp.r6">Operator config surface</td>
+              <td class="partial" data-i18n="home.cmp.r6_trad">&#x25CB; Varies</td>
+              <td class="cross" data-i18n="home.cmp.r6_sv2">&#x2717; Minimal</td>
+              <td class="check" data-i18n="home.cmp.r6_rg">&#x2713; 51 TOML keys + env overrides</td>
             </tr>
             <tr>
-              <td class="row-label">Observability</td>
-              <td class="partial">&#x25CB; Custom</td>
-              <td class="cross">&#x2717; Not built in</td>
-              <td class="check">&#x2713; Prometheus + event stream + Grafana</td>
+              <td class="row-label" data-i18n="home.cmp.r7">Observability</td>
+              <td class="partial" data-i18n="home.cmp.r7_trad">&#x25CB; Custom</td>
+              <td class="cross" data-i18n="home.cmp.r7_sv2">&#x2717; Not built in</td>
+              <td class="check" data-i18n="home.cmp.r7_rg">&#x2713; Prometheus + event stream + Grafana</td>
             </tr>
           </tbody>
         </table>
@@ -356,9 +363,9 @@
   <section class="section section-alt">
     <div class="container">
       <div class="section-header">
-        <div class="section-eyebrow">Output</div>
-        <h2>What operators see</h2>
-        <p>Every verdict is structured, machine-readable, and carries the policy context that caused it.</p>
+        <div class="section-eyebrow" data-i18n="home.out.eyebrow">Output</div>
+        <h2 data-i18n="home.out.title">What operators see</h2>
+        <p data-i18n="home.out.sub">Every verdict is structured, machine-readable, and carries the policy context that caused it.</p>
       </div>
       <div class="fade-up" style="max-width:600px;margin:0 auto;">
         <div class="code-panel" data-lang="json">
@@ -374,8 +381,8 @@
 }</pre>
         </div>
         <div class="cta-actions mt-6">
-          <a href="/docs/#reason-codes" class="btn btn-outline btn-sm">34 reason codes</a>
-          <a href="/docs/#config" class="btn btn-outline btn-sm">51 config keys</a>
+          <a href="/docs/#reason-codes" class="btn btn-outline btn-sm" data-i18n="home.out.codes_btn">34 reason codes</a>
+          <a href="/docs/#config" class="btn btn-outline btn-sm" data-i18n="home.out.config_btn">51 config keys</a>
         </div>
       </div>
     </div>
@@ -385,14 +392,14 @@
   <section class="section">
     <div class="container">
       <div class="card-glow fade-up">
-        <div class="section-eyebrow" style="position:relative;z-index:1;">Get started</div>
-        <h2 class="cta-title" style="font-size:32px;font-weight:800;">Ready to deploy SV2 with confidence?</h2>
-        <p class="cta-sub">
+        <div class="section-eyebrow" style="position:relative;z-index:1;" data-i18n="cta.get_started">Get started</div>
+        <h2 class="cta-title" style="font-size:32px;font-weight:800;" data-i18n="cta.ready">Ready to deploy SV2 with confidence?</h2>
+        <p class="cta-sub" data-i18n="cta.sub">
           Shadow mode costs nothing. Observe mode builds trust. Inline mode protects revenue.
         </p>
         <div class="cta-actions">
-          <a href="/product/" class="btn btn-glow">Explore ReserveGrid OS</a>
-          <a href="/docs/" class="btn btn-outline">Read the docs</a>
+          <a href="/product/" class="btn btn-glow" data-i18n="btn.explore">Explore ReserveGrid OS</a>
+          <a href="/docs/" class="btn btn-outline" data-i18n="btn.docs">Read the docs</a>
         </div>
       </div>
     </div>
@@ -404,38 +411,38 @@
       <div class="footer-inner">
         <div class="footer-brand">
           <img src="/assets/brand/veldra-logo.png" alt="Veldra">
-          <p>SV2 mining gateway infrastructure for production pool operators.</p>
+          <p data-i18n="footer.tagline">SV2 mining gateway infrastructure for production pool operators.</p>
         </div>
         <div>
-          <h4>Product</h4>
+          <h4 data-i18n="footer.h_product">Product</h4>
           <div class="footer-links">
-            <a href="/product/">ReserveGrid OS</a>
-            <a href="/product/#demo">Demo</a>
-            <a href="/observe/">Observe Mode</a>
+            <a href="/product/" data-i18n="footer.reservegrid">ReserveGrid OS</a>
+            <a href="/product/#demo" data-i18n="footer.demo">Demo</a>
+            <a href="/observe/" data-i18n="footer.observe_mode">Observe Mode</a>
           </div>
         </div>
         <div>
-          <h4>Resources</h4>
+          <h4 data-i18n="footer.h_resources">Resources</h4>
           <div class="footer-links">
-            <a href="/docs/">Documentation</a>
-            <a href="/docs/#reason-codes">Reason Codes</a>
-            <a href="/docs/#config">Configuration</a>
+            <a href="/docs/" data-i18n="footer.documentation">Documentation</a>
+            <a href="/docs/#reason-codes" data-i18n="footer.reason_codes">Reason Codes</a>
+            <a href="/docs/#config" data-i18n="footer.configuration">Configuration</a>
           </div>
         </div>
         <div>
-          <h4>Company</h4>
+          <h4 data-i18n="footer.h_company">Company</h4>
           <div class="footer-links">
-            <a href="/about/">About</a>
-            <a href="mailto:jarrondeng@veldra.org">Contact</a>
+            <a href="/about/" data-i18n="footer.about">About</a>
+            <a href="mailto:jarrondeng@veldra.org" data-i18n="footer.contact">Contact</a>
           </div>
         </div>
       </div>
       <div class="footer-bottom">
-        <span>&copy; 2026 Veldra, Inc.</span>
+        <span data-i18n="footer.copyright">&copy; 2026 Veldra, Inc.</span>
         <div class="footer-legal">
-          <a href="/privacy/">Privacy</a>
-          <a href="/terms/">Terms</a>
-          <a href="/disclaimer/">Disclaimer</a>
+          <a href="/privacy/" data-i18n="footer.privacy">Privacy</a>
+          <a href="/terms/" data-i18n="footer.terms">Terms</a>
+          <a href="/disclaimer/" data-i18n="footer.disclaimer">Disclaimer</a>
         </div>
       </div>
     </div>

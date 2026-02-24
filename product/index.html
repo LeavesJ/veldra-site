@@ -22,8 +22,10 @@
   <meta property="og:image" content="https://veldra.org/assets/brand/veldra-mark.png">
   <meta name="twitter:card" content="summary_large_image">
 
-  <link rel="stylesheet" href="/assets/style.css?v=14">
-  <script src="/assets/script.js?v=14" defer></script>
+  <link rel="stylesheet" href="/assets/style.css?v=15">
+  <script src="/assets/script.js?v=15" defer></script>
+  <script src="/assets/i18n.js?v=15" defer></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
 </head>
 <body>
 
@@ -34,13 +36,18 @@
           <img src="/assets/brand/veldra-logo.png" alt="Veldra">
         </a>
         <div class="navlinks">
-          <a href="/">Home</a>
-          <a href="/product/" aria-current="page">Product</a>
-          <a href="/docs/">Docs</a>
-          <a href="/about/">About</a>
+          <a href="/" data-i18n="nav.home">Home</a>
+          <a href="/product/" aria-current="page" data-i18n="nav.product">Product</a>
+          <a href="/docs/" data-i18n="nav.docs">Docs</a>
+          <a href="/about/" data-i18n="nav.about">About</a>
         </div>
         <div class="nav-actions">
-          <a href="/observe/" class="btn btn-primary btn-sm">Observe</a>
+          <div class="lang-toggle">
+            <button class="lang-btn active" data-lang="en">EN</button>
+            <button class="lang-btn" data-lang="es">ES</button>
+            <button class="lang-btn" data-lang="zh">中</button>
+          </div>
+          <a href="/observe/" class="btn btn-primary btn-sm" data-i18n="nav.observe">Observe</a>
         </div>
         <button class="nav-toggle" aria-label="Menu" aria-expanded="false">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
@@ -49,27 +56,42 @@
     </div>
   </nav>
 
-  <div class="container"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span class="sep">/</span><span class="current">Product</span></nav></div>
+  <div class="container"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="/" data-i18n="breadcrumb.home">Home</a><span class="sep">/</span><span class="current" data-i18n="breadcrumb.product">Product</span></nav></div>
 
   <!-- ── Hero ──────────────────────────────────── -->
   <section class="hero-dark">
     <div class="hero-grid"></div>
+    <div class="hero-hex">
+      <svg viewBox="0 0 360 360" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M180 30l52 30v60l-52 30-52-30V60z" stroke="rgba(212,148,60,.3)" stroke-width=".5"/>
+        <path d="M284 90l52 30v60l-52 30-52-30V120z" stroke="rgba(212,148,60,.2)" stroke-width=".5"/>
+        <path d="M76 90l52 30v60l-52 30-52-30V120z" stroke="rgba(212,148,60,.2)" stroke-width=".5"/>
+        <path d="M180 150l52 30v60l-52 30-52-30v-60z" stroke="rgba(212,148,60,.35)" stroke-width=".5"/>
+        <path d="M284 210l52 30v60l-52 30-52-30v-60z" stroke="rgba(212,148,60,.15)" stroke-width=".5"/>
+        <path d="M76 210l52 30v60l-52 30-52-30v-60z" stroke="rgba(212,148,60,.15)" stroke-width=".5"/>
+        <path d="M180 270l52 30v60l-52 30-52-30v-60z" stroke="rgba(212,148,60,.2)" stroke-width=".5"/>
+        <line x1="180" y1="120" x2="180" y2="150" stroke="rgba(212,148,60,.25)" stroke-width=".5"/>
+        <line x1="232" y1="90" x2="232" y2="120" stroke="rgba(212,148,60,.15)" stroke-width=".5"/>
+        <line x1="128" y1="90" x2="128" y2="120" stroke="rgba(212,148,60,.15)" stroke-width=".5"/>
+        <line x1="180" y1="240" x2="180" y2="270" stroke="rgba(212,148,60,.2)" stroke-width=".5"/>
+      </svg>
+      <div class="hero-hex-scan"></div>
+      <div class="hero-hex-node"></div>
+      <div class="hero-hex-node"></div>
+      <div class="hero-hex-node"></div>
+      <div class="hero-hex-node"></div>
+    </div>
     <div class="container">
       <div class="hero-inner fade-up">
         <div class="hero-label">
           <span class="hero-label-dot"></span>
-          <span>ReserveGrid OS</span>
+          <span data-i18n="product.hero.label">Product</span>
         </div>
-        <h1 class="hero-title">
-          Miner-facing standard job server for <span class="accent">Stratum V2</span>
-        </h1>
-        <p class="hero-sub">
-          Built in Rust with policy evaluation, share lifecycle tracking, and end-to-end observability.
-          Every rejection carries a machine-readable reason code. Every share follows a two-event pipeline.
-        </p>
+        <h1 class="hero-title" data-i18n="product.hero.title">Confidence through configuration</h1>
+        <p class="hero-sub" data-i18n="product.hero.sub">ReserveGrid OS is a policy-driven SV2 gateway. Configure your requirements, deploy your way, observe the results.</p>
         <div class="hero-actions">
-          <a href="/docs/" class="btn btn-glow">Read the Docs</a>
-          <a href="#demo" class="btn btn-outline">Watch demo</a>
+          <a href="/docs/" class="btn btn-glow" data-i18n="btn.docs">Read the docs</a>
+          <a href="#demo" class="btn btn-outline" data-i18n="product.hero.btn_demo">Watch demo</a>
         </div>
       </div>
     </div>
@@ -81,8 +103,8 @@
   <section class="section">
     <div class="container">
       <div class="section-header">
-        <div class="section-eyebrow">Core capabilities</div>
-        <h2>Built for production SV2 deployment</h2>
+        <div class="section-eyebrow" data-i18n="product.features.eyebrow">Features</div>
+        <h2 data-i18n="product.features.title">Built for operators</h2>
         <p>Six pillars that make ReserveGrid OS production-ready from day one.</p>
       </div>
 
@@ -93,8 +115,8 @@
             <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
           </div>
           <div class="feature-card-text">
-            <h3>Explainable rejects</h3>
-            <p>34 GatewayReason codes across 6 categories. Every rejection includes reason_code + policy_context for full observability.</p>
+            <h3 data-i18n="product.f2.title">34 reason codes</h3>
+            <p data-i18n="product.f2.desc">Every rejection is machine-readable. Operators know why work was rejected and under which policy context.</p>
           </div>
           <div class="feature-card-toggle">
             <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"/></svg>
@@ -139,8 +161,8 @@
             <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
           </div>
           <div class="feature-card-text">
-            <h3>Two-event share lifecycle</h3>
-            <p>share_accepted at ACK time, share_forward_result after upstream POST. Deterministic joins via share_id.</p>
+            <h3 data-i18n="product.f4.title">Two-event lifecycle</h3>
+            <p data-i18n="product.f4.desc">share_accepted at ACK time, share_forward_result after upstream POST. Joined by share_id with 1:1 invariant.</p>
           </div>
           <div class="feature-card-toggle">
             <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"/></svg>
@@ -177,7 +199,7 @@
             <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zm0 8a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zm10 0a1 1 0 011-1h4a1 1 0 011 1v6a1 1 0 01-1 1h-4a1 1 0 01-1-1v-6z"/></svg>
           </div>
           <div class="feature-card-text">
-            <h3>Three deployment modes</h3>
+            <h3 data-i18n="product.modes.title">Three ways to deploy</h3>
             <p>shadow / observe / inline. Start with audit, graduate to enforcement without code changes.</p>
           </div>
           <div class="feature-card-toggle">
@@ -215,8 +237,8 @@
             <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
           </div>
           <div class="feature-card-text">
-            <h3>Prevhash fail-closed</h3>
-            <p>50ms verdict timeout, 5s stale hold, deterministic disconnect on timeout. Both happy and timeout paths are hardened.</p>
+            <h3 data-i18n="product.f3.title">Fail-closed prevhash</h3>
+            <p data-i18n="product.f3.desc">50ms verdict timeout. 5s stale work hold. Miners disconnected deterministically on expiry.</p>
           </div>
           <div class="feature-card-toggle">
             <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"/></svg>
@@ -253,8 +275,8 @@
             <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.573-1.066z"/><circle cx="12" cy="12" r="3"/></svg>
           </div>
           <div class="feature-card-text">
-            <h3>51-key config surface</h3>
-            <p>TOML + environment variable overrides. 6 config sections for fine-grained control over every behavior.</p>
+            <h3 data-i18n="product.config.title">51 TOML keys, zero magic</h3>
+            <p data-i18n="product.config.intro">ReserveGrid OS is configured via TOML with environment variable overrides. No defaults hide pool behavior.</p>
           </div>
           <div class="feature-card-toggle">
             <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"/></svg>
@@ -299,8 +321,8 @@
             <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
           </div>
           <div class="feature-card-text">
-            <h3>Live observability</h3>
-            <p>Prometheus metrics (30+ gauges/counters/histograms), event stream NDJSON, CSV export, Grafana dashboards included.</p>
+            <h3 data-i18n="product.f6.title">Observability</h3>
+            <p data-i18n="product.f6.desc">Prometheus metrics, structured event logs, and Grafana dashboards. See every decision in real time.</p>
           </div>
           <div class="feature-card-toggle">
             <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"/></svg>
@@ -337,13 +359,13 @@
   <section class="section section-alt">
     <div class="container">
       <div class="section-header">
-        <div class="section-eyebrow">Deployment modes</div>
-        <h2>Detailed comparison</h2>
+        <div class="section-eyebrow" data-i18n="product.modes.eyebrow">Deployment modes</div>
+        <h2 data-i18n="product.modes.title">Three ways to deploy</h2>
       </div>
       <div class="grid-3 fade-up">
         <div class="mode-card mode-shadow">
-          <h3>Shadow</h3>
-          <p>Audit template policy without affecting live mining. No miners, no risk, maximum observability.</p>
+          <h3 data-i18n="product.modes.shadow.title">Shadow Mode</h3>
+          <p data-i18n="product.modes.shadow.desc">Audit templates without blocking miners</p>
           <dl class="mode-card-detail">
             <dt>Gates templates</dt>
             <dd>No</dd>
@@ -358,8 +380,8 @@
           </dl>
         </div>
         <div class="mode-card mode-observe">
-          <h3>Observe</h3>
-          <p>Miners receive all jobs. Rejection verdicts logged but never gated. Build confidence before inline.</p>
+          <h3 data-i18n="product.modes.observe.title">Observe Mode</h3>
+          <p data-i18n="product.modes.observe.desc">Log verdicts, forward all shares upstream</p>
           <dl class="mode-card-detail">
             <dt>Gates templates</dt>
             <dd>No</dd>
@@ -374,8 +396,8 @@
           </dl>
         </div>
         <div class="mode-card mode-inline">
-          <h3>Inline</h3>
-          <p>Full enforcement. No invalid template reaches a miner. Prevhash switching is deterministic and fail-closed.</p>
+          <h3 data-i18n="product.modes.inline.title">Inline Mode</h3>
+          <p data-i18n="product.modes.inline.desc">Enforce policy with fail-closed safety</p>
           <dl class="mode-card-detail">
             <dt>Gates templates</dt>
             <dd>Yes</dd>
@@ -397,16 +419,16 @@
   <section class="section">
     <div class="container">
       <div class="section-header">
-        <div class="section-eyebrow">Configuration</div>
-        <h2>Quick reference</h2>
-        <p>All configuration via TOML with optional environment variable overrides (format: RESERVEGRID_SECTION_KEY).</p>
+        <div class="section-eyebrow" data-i18n="product.config.eyebrow">Configuration</div>
+        <h2 data-i18n="product.config.title">51 TOML keys, zero magic</h2>
+        <p data-i18n="product.config.intro">ReserveGrid OS is configured via TOML with environment variable overrides. No defaults hide pool behavior.</p>
       </div>
       <div class="tab-group fade-up">
         <div class="tab-buttons">
-          <button class="tab-btn active" data-tab="config-core">Core</button>
-          <button class="tab-btn" data-tab="config-timing">Timing</button>
-          <button class="tab-btn" data-tab="config-share">Share</button>
-          <button class="tab-btn" data-tab="config-auth">Auth</button>
+          <button class="tab-btn active" data-tab="config-core" data-i18n="product.config.tabs.gateway">Gateway</button>
+          <button class="tab-btn" data-tab="config-timing" data-i18n="product.config.tabs.verifier">Verifier</button>
+          <button class="tab-btn" data-tab="config-share" data-i18n="product.config.tabs.poller">Poller</button>
+          <button class="tab-btn" data-tab="config-auth" data-i18n="product.config.tabs.metrics">Metrics</button>
         </div>
 
         <div class="tab-content active" data-tab="config-core">
@@ -483,36 +505,30 @@ max_workers_per_channel = 1000           # Limit concurrent workers per channel<
   <section class="section section-alt">
     <div class="container">
       <div class="section-header">
-        <div class="section-eyebrow">Scope</div>
-        <h2>What ReserveGrid OS is and isn't</h2>
+        <div class="section-eyebrow" data-i18n="product.security.eyebrow">Security</div>
+        <h2 data-i18n="product.security.title">Operator first</h2>
       </div>
       <div class="grid-3 fade-up">
         <div class="card">
           <div class="card-icon card-icon-green">
             <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
           </div>
-          <h3>What it is</h3>
-          <p><strong>Policy evaluation engine:</strong> Validates templates against operator rules before distribution.</p>
-          <p><strong>Share lifecycle tracker:</strong> Records two deterministic events for every share with full context.</p>
-          <p><strong>Observable gateway:</strong> Exposes metrics, event stream, and config surface for production monitoring.</p>
+          <h3 data-i18n="product.security.c1.title">Encrypted transport</h3>
+          <p data-i18n="product.security.c1.desc">Noise NX with fixed keys. No certificate infrastructure, no external dependencies.</p>
         </div>
         <div class="card">
           <div class="card-icon card-icon-navy">
             <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
           </div>
-          <h3>What it is not</h3>
-          <p><strong>Not a pool:</strong> Does not track payouts or maintain miner accounts. Upstream HTTP API handles accounting.</p>
-          <p><strong>Not a custodian:</strong> Does not hold or sign blocks. Only verifies before forwarding to upstream.</p>
-          <p><strong>Not a payout calculator:</strong> Share credits are determined by upstream pool backend.</p>
+          <h3 data-i18n="product.security.c2.title">Fail-closed logic</h3>
+          <p data-i18n="product.security.c2.desc">Timeouts are deterministic. Stale work is held. Invalid templates trigger rejections with reason codes.</p>
         </div>
         <div class="card">
           <div class="card-icon card-icon-blue">
             <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
           </div>
-          <h3>Operational guidance</h3>
-          <p><strong>Network isolation:</strong> Run on private network or VPN. Use http_api_key for HTTP API authentication.</p>
-          <p><strong>TLS for non-loopback:</strong> Enable TLS if verifier or upstream are remote. Noise NX already encrypts miner traffic.</p>
-          <p><strong>Monitoring:</strong> Expose Prometheus metrics only to internal dashboards. Use event stream for audit logging.</p>
+          <h3 data-i18n="product.security.c3.title">Auditability</h3>
+          <p data-i18n="product.security.c3.desc">Every event is logged with context. Operators can reconstruct decisions offline.</p>
         </div>
       </div>
     </div>
@@ -522,8 +538,8 @@ max_workers_per_channel = 1000           # Limit concurrent workers per channel<
   <section class="section" id="demo">
     <div class="container">
       <div class="section-header">
-        <div class="section-eyebrow">Demo</div>
-        <h2>See it in action</h2>
+        <div class="section-eyebrow" data-i18n="product.demo.eyebrow">Demo</div>
+        <h2 data-i18n="product.demo.title">Try it now</h2>
       </div>
       <div class="video-wrap fade-up">
         <iframe
@@ -537,7 +553,7 @@ max_workers_per_channel = 1000           # Limit concurrent workers per channel<
         </iframe>
       </div>
       <div class="callout callout-blue mt-6 fade-up" style="text-align:center;">
-        <strong>Not ready for inline?</strong> Try observe mode first. It requires the same configuration but logs all verdicts without gating. No production impact, full visibility.
+        <strong data-i18n="product.demo.desc">Experience ReserveGrid OS in observe mode with a live SV2 testnet.</strong> Try observe mode first. It requires the same configuration but logs all verdicts without gating. No production impact, full visibility.
       </div>
     </div>
   </section>
@@ -546,14 +562,12 @@ max_workers_per_channel = 1000           # Limit concurrent workers per channel<
   <section class="section">
     <div class="container">
       <div class="card-glow fade-up">
-        <div class="section-eyebrow" style="position:relative;z-index:1;">Get started</div>
-        <h2 style="color:var(--ink);margin:12px 0 8px;font-size:32px;font-weight:800;position:relative;z-index:1;">Ready to deploy SV2 with confidence?</h2>
-        <p style="color:var(--ink-muted);max-width:540px;margin:0 auto 28px;position:relative;z-index:1;">
-          Shadow mode costs nothing. Observe mode builds trust. Inline mode protects revenue.
-        </p>
+        <div class="section-eyebrow" style="position:relative;z-index:1;" data-i18n="cta.get_started">Get started</div>
+        <h2 style="color:var(--ink);margin:12px 0 8px;font-size:32px;font-weight:800;position:relative;z-index:1;" data-i18n="cta.ready">Ready to deploy SV2 with confidence?</h2>
+        <p style="color:var(--ink-muted);max-width:540px;margin:0 auto 28px;position:relative;z-index:1;" data-i18n="cta.sub">Shadow mode costs nothing. Observe mode builds trust. Inline mode protects revenue.</p>
         <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;position:relative;z-index:1;">
-          <a href="/docs/" class="btn btn-glow">Read the docs</a>
-          <a href="/observe/" class="btn btn-outline">Try observe mode</a>
+          <a href="/docs/" class="btn btn-glow" data-i18n="btn.docs">Read the docs</a>
+          <a href="/observe/" class="btn btn-outline" data-i18n="nav.observe">Observe</a>
         </div>
       </div>
     </div>
@@ -565,38 +579,38 @@ max_workers_per_channel = 1000           # Limit concurrent workers per channel<
       <div class="footer-inner">
         <div class="footer-brand">
           <img src="/assets/brand/veldra-logo.png" alt="Veldra">
-          <p>SV2 mining gateway infrastructure for production pool operators.</p>
+          <p data-i18n="footer.tagline">SV2 mining gateway infrastructure for production pool operators.</p>
         </div>
         <div>
-          <h4>Product</h4>
+          <h4 data-i18n="footer.h_product">Product</h4>
           <div class="footer-links">
-            <a href="/product/">ReserveGrid OS</a>
-            <a href="/product/#demo">Demo</a>
-            <a href="/observe/">Observe Mode</a>
+            <a href="/product/" data-i18n="footer.reservegrid">ReserveGrid OS</a>
+            <a href="/product/#demo" data-i18n="footer.demo">Demo</a>
+            <a href="/observe/" data-i18n="footer.observe_mode">Observe Mode</a>
           </div>
         </div>
         <div>
-          <h4>Resources</h4>
+          <h4 data-i18n="footer.h_resources">Resources</h4>
           <div class="footer-links">
-            <a href="/docs/">Documentation</a>
-            <a href="/docs/#reason-codes">Reason Codes</a>
-            <a href="/docs/#config">Configuration</a>
+            <a href="/docs/" data-i18n="footer.documentation">Documentation</a>
+            <a href="/docs/#reason-codes" data-i18n="footer.reason_codes">Reason Codes</a>
+            <a href="/docs/#config" data-i18n="footer.configuration">Configuration</a>
           </div>
         </div>
         <div>
-          <h4>Company</h4>
+          <h4 data-i18n="footer.h_company">Company</h4>
           <div class="footer-links">
-            <a href="/about/">About</a>
-            <a href="mailto:jarrondeng@veldra.org">Contact</a>
+            <a href="/about/" data-i18n="footer.about">About</a>
+            <a href="mailto:jarrondeng@veldra.org" data-i18n="footer.contact">Contact</a>
           </div>
         </div>
       </div>
       <div class="footer-bottom">
-        <span>&copy; 2026 Veldra, Inc.</span>
+        <span data-i18n="footer.copyright">&copy; 2026 Veldra, Inc.</span>
         <div class="footer-legal">
-          <a href="/privacy/">Privacy</a>
-          <a href="/terms/">Terms</a>
-          <a href="/disclaimer/">Disclaimer</a>
+          <a href="/privacy/" data-i18n="footer.privacy">Privacy</a>
+          <a href="/terms/" data-i18n="footer.terms">Terms</a>
+          <a href="/disclaimer/" data-i18n="footer.disclaimer">Disclaimer</a>
         </div>
       </div>
     </div>

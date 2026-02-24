@@ -21,8 +21,10 @@
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary_large_image">
 
-  <link rel="stylesheet" href="/assets/style.css?v=14">
-  <script src="/assets/script.js?v=14" defer></script>
+  <link rel="stylesheet" href="/assets/style.css?v=15">
+  <script src="/assets/script.js?v=15" defer></script>
+  <script src="/assets/i18n.js?v=15" defer></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
 </head>
 <body>
 
@@ -33,13 +35,18 @@
           <img src="/assets/brand/veldra-logo.png" alt="Veldra">
         </a>
         <div class="navlinks">
-          <a href="/">Home</a>
-          <a href="/product/">Product</a>
-          <a href="/docs/">Docs</a>
-          <a href="/about/">About</a>
+          <a href="/" data-i18n="nav.home">Home</a>
+          <a href="/product/" data-i18n="nav.product">Product</a>
+          <a href="/docs/" data-i18n="nav.docs">Docs</a>
+          <a href="/about/" data-i18n="nav.about">About</a>
         </div>
         <div class="nav-actions">
-          <a href="/observe/" class="btn btn-primary btn-sm">Observe</a>
+          <div class="lang-toggle">
+            <button class="lang-btn active" data-lang="en">EN</button>
+            <button class="lang-btn" data-lang="es">ES</button>
+            <button class="lang-btn" data-lang="zh">中</button>
+          </div>
+          <a href="/observe/" class="btn btn-primary btn-sm" data-i18n="nav.observe">Observe</a>
         </div>
         <button class="nav-toggle" aria-label="Menu" aria-expanded="false">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
@@ -51,16 +58,20 @@
   <section class="hero-light">
     <div class="container">
       <div class="hero-inner">
-        <h1 class="hero-title">Terms of Service</h1>
+        <h1 class="hero-title" data-i18n="legal.terms.title">Terms of Service</h1>
         <p class="legal-updated">Last updated: February 19, 2026</p>
       </div>
     </div>
   </section>
 
+  <div class="translation-banner" data-i18n="legal.translation_banner">
+    This page has been automatically translated. The English version is the legally binding document.
+  </div>
+
   <section class="section">
     <div class="legal-layout">
       <nav class="legal-toc" aria-label="Table of contents">
-        <p class="legal-toc-title">On this page</p>
+        <p class="legal-toc-title" data-i18n="legal.toc_title">On this page</p>
         <a href="#acceptance">Acceptance of terms</a>
         <a href="#description">Description of services</a>
         <a href="#eligibility">Eligibility</a>
@@ -79,49 +90,49 @@
       </nav>
       <div class="legal-body">
 
-        <h2 id="acceptance">1. Acceptance of terms</h2>
+        <h2 id="acceptance" data-i18n="legal.terms.s1.title">1. Acceptance of terms</h2>
         <p>By accessing or using veldra.org, the observe mode dashboard, or any Veldra software (collectively, the "Services"), you agree to be bound by these Terms of Service. If you do not agree, do not use the Services.</p>
 
-        <h2 id="description">2. Description of services</h2>
+        <h2 id="description" data-i18n="legal.terms.s2.title">2. Description of services</h2>
         <p>Veldra provides ReserveGrid OS, a policy-driven verification and observability layer for Bitcoin mining pool block templates. The Services include the public website, the observe mode dashboard, and the open-source software components (pool-verifier, template-manager, rg-protocol, sv2-bridge, rg-auth).</p>
 
-        <h2 id="eligibility">3. Eligibility</h2>
+        <h2 id="eligibility" data-i18n="legal.terms.s3.title">3. Eligibility</h2>
         <p>You must be at least 18 years old to use the Services. By registering for an account, you represent that the information you provide is accurate and complete.</p>
 
-        <h2 id="account">4. Account responsibilities</h2>
+        <h2 id="account" data-i18n="legal.terms.s4.title">4. Account responsibilities</h2>
         <p>You are responsible for maintaining the confidentiality of your account credentials. You agree to notify us promptly at jarrondeng@veldra.org if you become aware of any unauthorized use of your account. Veldra is not liable for losses arising from unauthorized access to your account.</p>
 
-        <h2 id="acceptable-use">5. Acceptable use</h2>
+        <h2 id="acceptable-use" data-i18n="legal.terms.s5.title">5. Acceptable use</h2>
         <p>You agree not to use the Services to violate any applicable law or regulation, attempt to gain unauthorized access to Veldra systems or other users' accounts, interfere with or disrupt the integrity or performance of the Services, reverse engineer or attempt to extract source code from proprietary components, or use the Services to conduct any form of market manipulation or fraudulent activity.</p>
 
-        <h2 id="observe-mode">6. Observe mode access</h2>
+        <h2 id="observe-mode" data-i18n="legal.terms.s6.title">6. Observe mode access</h2>
         <p>Access to the observe mode dashboard requires registration and approval by a Veldra administrator. Approval is at our sole discretion. We reserve the right to revoke access at any time, with or without cause. Observe mode displays operational data from connected ReserveGrid OS instances and is provided for informational and evaluation purposes only.</p>
 
-        <h2 id="license">7. Software license</h2>
+        <h2 id="license" data-i18n="legal.terms.s7.title">7. Software license</h2>
         <p>ReserveGrid OS software components are provided under the terms of their respective licenses as specified in each component's repository. Use of the software is subject to those license terms in addition to these Terms of Service.</p>
 
-        <h2 id="ip">8. Intellectual property</h2>
+        <h2 id="ip" data-i18n="legal.terms.s8.title">8. Intellectual property</h2>
         <p>The Veldra name, logo, and the ReserveGrid OS brand are the property of Veldra, Inc. The website design, content, and documentation are protected by applicable intellectual property laws. You may not use our trademarks without prior written permission.</p>
 
-        <h2 id="liability">9. Limitation of liability</h2>
+        <h2 id="liability" data-i18n="legal.terms.s9.title">9. Limitation of liability</h2>
         <p>To the maximum extent permitted by law, Veldra and its officers, directors, employees, and agents shall not be liable for any indirect, incidental, special, consequential, or punitive damages, including but not limited to loss of profits, data, mining revenue, or business opportunity, arising from your use of or inability to use the Services, regardless of the theory of liability.</p>
 
-        <h2 id="warranties">10. Disclaimer of warranties</h2>
+        <h2 id="warranties" data-i18n="legal.terms.s10.title">10. Disclaimer of warranties</h2>
         <p>The Services are provided "as is" and "as available" without warranties of any kind, whether express or implied. Veldra does not warrant that the Services will be uninterrupted, error-free, or free of harmful components. See our <a href="/disclaimer/">Disclaimer</a> for additional details.</p>
 
-        <h2 id="indemnification">11. Indemnification</h2>
+        <h2 id="indemnification" data-i18n="legal.terms.s11.title">11. Indemnification</h2>
         <p>You agree to indemnify and hold harmless Veldra, Inc. and its affiliates from any claims, damages, losses, or expenses (including reasonable legal fees) arising from your use of the Services or your violation of these Terms.</p>
 
-        <h2 id="termination">12. Termination</h2>
+        <h2 id="termination" data-i18n="legal.terms.s12.title">12. Termination</h2>
         <p>We may suspend or terminate your access to the Services at any time for any reason, including violation of these Terms. Upon termination, your right to use the Services ceases immediately. Provisions that by their nature should survive termination (including limitations of liability and indemnification) shall survive.</p>
 
-        <h2 id="modifications">13. Modifications</h2>
+        <h2 id="modifications" data-i18n="legal.terms.s13.title">13. Modifications</h2>
         <p>We reserve the right to modify these Terms at any time. Changes will be posted on this page with an updated revision date. Continued use of the Services after modifications constitutes acceptance of the revised Terms.</p>
 
-        <h2 id="governing-law">14. Governing law</h2>
+        <h2 id="governing-law" data-i18n="legal.terms.s14.title">14. Governing law</h2>
         <p>These Terms are governed by the laws of the State of Delaware, United States, without regard to conflict of law principles. Any disputes arising from these Terms shall be resolved in the courts located in the State of Delaware.</p>
 
-        <h2 id="contact">15. Contact</h2>
+        <h2 id="contact" data-i18n="legal.terms.s15.title">15. Contact</h2>
         <p>For questions about these Terms, contact us at <a href="mailto:jarrondeng@veldra.org">jarrondeng@veldra.org</a>.</p>
 
       </div>
@@ -133,36 +144,36 @@
       <div class="footer-inner">
         <div class="footer-brand">
           <img src="/assets/brand/veldra-logo.png" alt="Veldra">
-          <p>Infrastructure for Bitcoin mining pool operators.</p>
+          <p data-i18n="footer.tagline">Infrastructure for Bitcoin mining pool operators.</p>
         </div>
         <div>
-          <h4>Product</h4>
+          <h4 data-i18n="footer.h_product">Product</h4>
           <div class="footer-links">
-            <a href="/product/">ReserveGrid OS</a>
-            <a href="/product/#demo">Demo</a>
+            <a href="/product/" data-i18n="footer.reservegrid">ReserveGrid OS</a>
+            <a href="/product/#demo" data-i18n="footer.demo">Demo</a>
           </div>
         </div>
         <div>
-          <h4>Resources</h4>
+          <h4 data-i18n="footer.h_resources">Resources</h4>
           <div class="footer-links">
-            <a href="/docs/">Documentation</a>
+            <a href="/docs/" data-i18n="footer.documentation">Documentation</a>
           </div>
         </div>
         <div>
-          <h4>Company</h4>
+          <h4 data-i18n="footer.h_company">Company</h4>
           <div class="footer-links">
-            <a href="/about/">About</a>
-            <a href="mailto:jarrondeng@veldra.org">Contact</a>
+            <a href="/about/" data-i18n="footer.about">About</a>
+            <a href="mailto:jarrondeng@veldra.org" data-i18n="footer.contact">Contact</a>
           </div>
         </div>
 
       </div>
       <div class="footer-bottom">
-        <span>&copy; 2026 Veldra, Inc.</span>
+        <span data-i18n="footer.copyright">&copy; 2026 Veldra, Inc.</span>
         <div class="footer-legal">
-          <a href="/privacy/">Privacy</a>
-          <a href="/terms/">Terms</a>
-          <a href="/disclaimer/">Disclaimer</a>
+          <a href="/privacy/" data-i18n="footer.privacy">Privacy</a>
+          <a href="/terms/" data-i18n="footer.terms">Terms</a>
+          <a href="/disclaimer/" data-i18n="footer.disclaimer">Disclaimer</a>
         </div>
       </div>
     </div>

@@ -21,8 +21,10 @@
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary_large_image">
 
-  <link rel="stylesheet" href="/assets/style.css?v=14">
-  <script src="/assets/script.js?v=14" defer></script>
+  <link rel="stylesheet" href="/assets/style.css?v=15">
+  <script src="/assets/script.js?v=15" defer></script>
+  <script src="/assets/i18n.js?v=15" defer></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
 </head>
 <body>
 
@@ -33,13 +35,18 @@
           <img src="/assets/brand/veldra-logo.png" alt="Veldra">
         </a>
         <div class="navlinks">
-          <a href="/">Home</a>
-          <a href="/product/">Product</a>
-          <a href="/docs/">Docs</a>
-          <a href="/about/">About</a>
+          <a href="/" data-i18n="nav.home">Home</a>
+          <a href="/product/" data-i18n="nav.product">Product</a>
+          <a href="/docs/" data-i18n="nav.docs">Docs</a>
+          <a href="/about/" data-i18n="nav.about">About</a>
         </div>
         <div class="nav-actions">
-          <a href="/observe/" class="btn btn-primary btn-sm">Observe</a>
+          <div class="lang-toggle">
+            <button class="lang-btn active" data-lang="en">EN</button>
+            <button class="lang-btn" data-lang="es">ES</button>
+            <button class="lang-btn" data-lang="zh">中</button>
+          </div>
+          <a href="/observe/" class="btn btn-primary btn-sm" data-i18n="nav.observe">Observe</a>
         </div>
         <button class="nav-toggle" aria-label="Menu" aria-expanded="false">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
@@ -51,16 +58,20 @@
   <section class="hero-light">
     <div class="container">
       <div class="hero-inner">
-        <h1 class="hero-title">Privacy Policy</h1>
+        <h1 class="hero-title" data-i18n="legal.privacy.title">Privacy Policy</h1>
         <p class="legal-updated">Last updated: February 19, 2026</p>
       </div>
     </div>
   </section>
 
+  <div class="translation-banner" data-i18n="legal.translation_banner">
+    This page has been automatically translated. The English version is the legally binding document.
+  </div>
+
   <section class="section">
     <div class="legal-layout">
       <nav class="legal-toc" aria-label="Table of contents">
-        <p class="legal-toc-title">On this page</p>
+        <p class="legal-toc-title" data-i18n="legal.toc_title">On this page</p>
         <a href="#who-we-are">Who we are</a>
         <a href="#information-we-collect">Information we collect</a>
         <a href="#how-we-use">How we use your information</a>
@@ -74,10 +85,10 @@
       </nav>
       <div class="legal-body">
 
-        <h2 id="who-we-are">1. Who we are</h2>
+        <h2 id="who-we-are" data-i18n="legal.privacy.s1.title">1. Who we are</h2>
         <p>Veldra, Inc. ("Veldra", "we", "us") operates the veldra.org website and the ReserveGrid OS software suite. This policy describes how we collect, use, and protect your information when you interact with our services.</p>
 
-        <h2 id="information-we-collect">2. Information we collect</h2>
+        <h2 id="information-we-collect" data-i18n="legal.privacy.s2.title">2. Information we collect</h2>
         <h3>2.1 Account information</h3>
         <p>When you register for observe mode access, we collect your name, email address, organization name, and a password. Your password is stored as a one-way cryptographic hash using Argon2id. We never store or have access to your plaintext password.</p>
 
@@ -90,28 +101,28 @@
         <h3>2.4 Operational data</h3>
         <p>ReserveGrid OS processes block template data as part of its verification function. Template data (block height, transaction counts, fee totals, and consensus fields) is logged locally on operator infrastructure. Veldra does not transmit, collect, or store operator template data on our servers.</p>
 
-        <h2 id="how-we-use">3. How we use your information</h2>
+        <h2 id="how-we-use" data-i18n="legal.privacy.s3.title">3. How we use your information</h2>
         <p>We use collected information to provide and maintain observe mode access, send email verification and account approval notifications, communicate about service updates or security issues, and improve the website experience through analytics.</p>
 
-        <h2 id="data-sharing">4. Data sharing</h2>
+        <h2 id="data-sharing" data-i18n="legal.privacy.s4.title">4. Data sharing</h2>
         <p>We do not sell your personal information. We may share information with email service providers (for transactional emails such as verification and approval notifications) and analytics providers (for aggregated, non-identifying usage data). We may also disclose information if required by law or to protect the rights and safety of Veldra and its users.</p>
 
-        <h2 id="data-retention">5. Data retention</h2>
+        <h2 id="data-retention" data-i18n="legal.privacy.s5.title">5. Data retention</h2>
         <p>Account data is retained for as long as your account is active. Expired session tokens are automatically cleaned up. You may request account deletion by contacting us at jarrondeng@veldra.org.</p>
 
-        <h2 id="security">6. Security</h2>
+        <h2 id="security" data-i18n="legal.privacy.s6.title">6. Security</h2>
         <p>We use industry-standard security measures including Argon2id password hashing, TLS encryption for data in transit, and access controls on our infrastructure. No system is perfectly secure, and we cannot guarantee absolute security of your data.</p>
 
-        <h2 id="your-rights">7. Your rights</h2>
+        <h2 id="your-rights" data-i18n="legal.privacy.s7.title">7. Your rights</h2>
         <p>You may request access to the personal data we hold about you, request correction of inaccurate data, request deletion of your account and associated data, or opt out of non-essential communications. To exercise these rights, contact us at jarrondeng@veldra.org.</p>
 
-        <h2 id="cookies">8. Cookies</h2>
+        <h2 id="cookies" data-i18n="legal.privacy.s8.title">8. Cookies</h2>
         <p>We use a session cookie for authentication when you log into observe mode. We may use analytics cookies if third-party analytics are enabled. We do not use advertising or tracking cookies.</p>
 
-        <h2 id="changes">9. Changes to this policy</h2>
+        <h2 id="changes" data-i18n="legal.privacy.s9.title">9. Changes to this policy</h2>
         <p>We may update this policy from time to time. Changes will be posted on this page with an updated revision date. Continued use of our services after changes constitutes acceptance of the revised policy.</p>
 
-        <h2 id="contact">10. Contact</h2>
+        <h2 id="contact" data-i18n="legal.privacy.s10.title">10. Contact</h2>
         <p>For privacy-related inquiries, contact us at <a href="mailto:jarrondeng@veldra.org">jarrondeng@veldra.org</a>.</p>
 
       </div>
@@ -124,36 +135,36 @@
       <div class="footer-inner">
         <div class="footer-brand">
           <img src="/assets/brand/veldra-logo.png" alt="Veldra">
-          <p>Infrastructure for Bitcoin mining pool operators.</p>
+          <p data-i18n="footer.tagline">Infrastructure for Bitcoin mining pool operators.</p>
         </div>
         <div>
-          <h4>Product</h4>
+          <h4 data-i18n="footer.h_product">Product</h4>
           <div class="footer-links">
-            <a href="/product/">ReserveGrid OS</a>
-            <a href="/product/#demo">Demo</a>
+            <a href="/product/" data-i18n="footer.reservegrid">ReserveGrid OS</a>
+            <a href="/product/#demo" data-i18n="footer.demo">Demo</a>
           </div>
         </div>
         <div>
-          <h4>Resources</h4>
+          <h4 data-i18n="footer.h_resources">Resources</h4>
           <div class="footer-links">
-            <a href="/docs/">Documentation</a>
+            <a href="/docs/" data-i18n="footer.documentation">Documentation</a>
           </div>
         </div>
         <div>
-          <h4>Company</h4>
+          <h4 data-i18n="footer.h_company">Company</h4>
           <div class="footer-links">
-            <a href="/about/">About</a>
-            <a href="mailto:jarrondeng@veldra.org">Contact</a>
+            <a href="/about/" data-i18n="footer.about">About</a>
+            <a href="mailto:jarrondeng@veldra.org" data-i18n="footer.contact">Contact</a>
           </div>
         </div>
 
       </div>
       <div class="footer-bottom">
-        <span>&copy; 2026 Veldra, Inc.</span>
+        <span data-i18n="footer.copyright">&copy; 2026 Veldra, Inc.</span>
         <div class="footer-legal">
-          <a href="/privacy/">Privacy</a>
-          <a href="/terms/">Terms</a>
-          <a href="/disclaimer/">Disclaimer</a>
+          <a href="/privacy/" data-i18n="footer.privacy">Privacy</a>
+          <a href="/terms/" data-i18n="footer.terms">Terms</a>
+          <a href="/disclaimer/" data-i18n="footer.disclaimer">Disclaimer</a>
         </div>
       </div>
     </div>

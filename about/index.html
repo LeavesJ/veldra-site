@@ -22,8 +22,10 @@
   <meta property="og:image" content="https://veldra.org/assets/brand/veldra-mark.png">
   <meta name="twitter:card" content="summary_large_image">
 
-  <link rel="stylesheet" href="/assets/style.css?v=14">
-  <script src="/assets/script.js?v=14" defer></script>
+  <link rel="stylesheet" href="/assets/style.css?v=15">
+  <script src="/assets/script.js?v=15" defer></script>
+  <script src="/assets/i18n.js?v=15" defer></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
 </head>
 <body>
 
@@ -35,13 +37,18 @@
           <img src="/assets/brand/veldra-logo.png" alt="Veldra">
         </a>
         <div class="navlinks">
-          <a href="/">Home</a>
-          <a href="/product/">Product</a>
-          <a href="/docs/">Docs</a>
-          <a href="/about/" aria-current="page">About</a>
+          <a href="/" data-i18n="nav.home">Home</a>
+          <a href="/product/" data-i18n="nav.product">Product</a>
+          <a href="/docs/" data-i18n="nav.docs">Docs</a>
+          <a href="/about/" aria-current="page" data-i18n="nav.about">About</a>
         </div>
         <div class="nav-actions">
-          <a href="/observe/" class="btn btn-primary btn-sm">Observe</a>
+          <div class="lang-toggle">
+            <button class="lang-btn active" data-lang="en">EN</button>
+            <button class="lang-btn" data-lang="es">ES</button>
+            <button class="lang-btn" data-lang="zh">中</button>
+          </div>
+          <a href="/observe/" class="btn btn-primary btn-sm" data-i18n="nav.observe">Observe</a>
         </div>
         <button class="nav-toggle" aria-label="Menu" aria-expanded="false">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
@@ -50,20 +57,26 @@
     </div>
   </nav>
 
-  <div class="container"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span class="sep">/</span><span class="current">About</span></nav></div>
+  <div class="container"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="/" data-i18n="breadcrumb.home">Home</a><span class="sep">/</span><span class="current" data-i18n="breadcrumb.about">About</span></nav></div>
 
   <!-- ── Hero ────────────────────────────────── -->
   <section class="hero-light">
+    <div class="hero-radial">
+      <div class="hero-radial-ring"></div>
+      <div class="hero-radial-ring"></div>
+      <div class="hero-radial-ring"></div>
+      <div class="hero-radial-center"></div>
+    </div>
     <div class="container">
       <div class="hero-inner fade-up">
         <div class="hero-label">
           <span class="hero-label-dot"></span>
-          <span>Company</span>
+          <span data-i18n="about.hero.label">Company</span>
         </div>
-        <h1 class="hero-title">
+        <h1 class="hero-title" data-i18n="about.hero.title">
           Building the infrastructure layer for SV2 mining
         </h1>
-        <p class="hero-sub">
+        <p class="hero-sub" data-i18n="about.hero.sub">
           Veldra builds verification and observability infrastructure for production pool operators.
           We enable SV2 adoption by providing fail-closed safety, deterministic policy evaluation,
           and structured reason codes for every decision.
@@ -76,17 +89,17 @@
   <section class="section">
     <div class="container">
       <div class="section-header">
-        <div class="section-eyebrow">Who we are</div>
-        <h2>Mission and approach</h2>
+        <div class="section-eyebrow" data-i18n="about.who.eyebrow">Who we are</div>
+        <h2 data-i18n="about.who.title">Mission and approach</h2>
       </div>
       <div class="grid-2 fade-up">
         <div class="card">
-          <h3>Mission</h3>
-          <p>Eliminate template ambiguity in SV2 mining pools. Every rejection must be self-explanatory with a stable reason_code and measured context. No opaque failures.</p>
+          <h3 data-i18n="about.mission.title">Mission</h3>
+          <p data-i18n="about.mission.body">Eliminate template ambiguity in SV2 mining pools. Every rejection must be self-explanatory with a stable reason_code and measured context. No opaque failures.</p>
         </div>
         <div class="card">
-          <h3>Approach</h3>
-          <p>Production-grade Rust (tokio, serde, tracing, clap). Deterministic evaluation. Structured observability from day one. Explicit errors with canonical reason codes. Stable machine-readable interfaces.</p>
+          <h3 data-i18n="about.approach.title">Approach</h3>
+          <p data-i18n="about.approach.body">Production-grade Rust (tokio, serde, tracing, clap). Deterministic evaluation. Structured observability from day one. Explicit errors with canonical reason codes. Stable machine-readable interfaces.</p>
         </div>
       </div>
     </div>
@@ -96,13 +109,13 @@
   <section class="section section-alt">
     <div class="container">
       <div class="section-header">
-        <div class="section-eyebrow">Featured product</div>
-        <h2>ReserveGrid OS</h2>
-        <p>SV2 miner-facing gateway with template verification, fail-closed prevhash switching, and a two-event share lifecycle.</p>
+        <div class="section-eyebrow" data-i18n="about.product.eyebrow">Featured product</div>
+        <h2 data-i18n="about.product.title">ReserveGrid OS</h2>
+        <p data-i18n="about.product.sub">SV2 miner-facing gateway with template verification, fail-closed prevhash switching, and a two-event share lifecycle.</p>
       </div>
       <div class="fade-up cta-actions">
-        <a href="/product/" class="btn btn-glow">Explore the product</a>
-        <a href="/docs/" class="btn btn-outline">Read the docs</a>
+        <a href="/product/" class="btn btn-glow" data-i18n="about.product.explore">Explore the product</a>
+        <a href="/docs/" class="btn btn-outline" data-i18n="about.product.docs">Read the docs</a>
       </div>
     </div>
   </section>
@@ -111,25 +124,25 @@
   <section class="section">
     <div class="container">
       <div class="section-header">
-        <div class="section-eyebrow">Architecture</div>
-        <h2>Technology stack</h2>
+        <div class="section-eyebrow" data-i18n="about.tech.eyebrow">Architecture</div>
+        <h2 data-i18n="about.tech.title">Technology stack</h2>
       </div>
       <div class="grid-4 fade-up">
         <div class="card">
-          <h3>sv2-gateway</h3>
-          <p>Noise NX handshake, SV2 frame decode, channel management, share validation, job distribution.</p>
+          <h3 data-i18n="about.tech.gateway">sv2-gateway</h3>
+          <p data-i18n="about.tech.gateway_desc">Noise NX handshake, SV2 frame decode, channel management, share validation, job distribution.</p>
         </div>
         <div class="card">
-          <h3>pool-verifier</h3>
-          <p>Template evaluation against policy.toml, fee tier selection, consensus safety checks.</p>
+          <h3 data-i18n="about.tech.verifier">pool-verifier</h3>
+          <p data-i18n="about.tech.verifier_desc">Template evaluation against policy.toml, fee tier selection, consensus safety checks.</p>
         </div>
         <div class="card">
-          <h3>template-manager</h3>
-          <p>Upstream template polling, deduplication, TemplatePropose packaging.</p>
+          <h3 data-i18n="about.tech.tmgr">template-manager</h3>
+          <p data-i18n="about.tech.tmgr_desc">Upstream template polling, deduplication, TemplatePropose packaging.</p>
         </div>
         <div class="card">
-          <h3>rg-protocol</h3>
-          <p>Shared types (GatewayReason, ShareAccepted, ShareForwardResult), NDJSON wire format.</p>
+          <h3 data-i18n="about.tech.protocol">rg-protocol</h3>
+          <p data-i18n="about.tech.protocol_desc">Shared types (GatewayReason, ShareAccepted, ShareForwardResult), NDJSON wire format.</p>
         </div>
       </div>
     </div>
@@ -139,33 +152,33 @@
   <section class="section section-alt">
     <div class="container">
       <div class="section-header">
-        <div class="section-eyebrow">Engineering</div>
-        <h2>Design principles</h2>
+        <div class="section-eyebrow" data-i18n="about.eng.eyebrow">Engineering</div>
+        <h2 data-i18n="about.eng.title">Design principles</h2>
       </div>
       <div class="grid-3 fade-up">
         <div class="card">
-          <h3>Deterministic evaluation</h3>
-          <p>Same input, same policy, same verdict. Always.</p>
+          <h3 data-i18n="about.eng.p1_title">Deterministic evaluation</h3>
+          <p data-i18n="about.eng.p1_body">Same input, same policy, same verdict. Always.</p>
         </div>
         <div class="card">
-          <h3>Fail-closed safety</h3>
-          <p>50ms verdict timeout, 5s stale hold, explicit disconnect.</p>
+          <h3 data-i18n="about.eng.p2_title">Fail-closed safety</h3>
+          <p data-i18n="about.eng.p2_body">50ms verdict timeout, 5s stale hold, explicit disconnect.</p>
         </div>
         <div class="card">
-          <h3>Observable by default</h3>
-          <p>Every decision logged with tracing spans, metrics, events.</p>
+          <h3 data-i18n="about.eng.p3_title">Observable by default</h3>
+          <p data-i18n="about.eng.p3_body">Every decision logged with tracing spans, metrics, events.</p>
         </div>
         <div class="card">
-          <h3>Zero silent failures</h3>
-          <p>Every disconnect, every rejection has a machine-readable reason_code.</p>
+          <h3 data-i18n="about.eng.p4_title">Zero silent failures</h3>
+          <p data-i18n="about.eng.p4_body">Every disconnect, every rejection has a machine-readable reason_code.</p>
         </div>
         <div class="card">
-          <h3>Stateless gateway</h3>
-          <p>Reproducible, scalable, auditable. No hidden state accumulation.</p>
+          <h3 data-i18n="about.eng.p5_title">Stateless gateway</h3>
+          <p data-i18n="about.eng.p5_body">Reproducible, scalable, auditable. No hidden state accumulation.</p>
         </div>
         <div class="card">
-          <h3>Miner-aligned</h3>
-          <p>Designed for the SV2 standard job server profile, not centralized control.</p>
+          <h3 data-i18n="about.eng.p6_title">Miner-aligned</h3>
+          <p data-i18n="about.eng.p6_body">Designed for the SV2 standard job server profile, not centralized control.</p>
         </div>
       </div>
     </div>
@@ -175,12 +188,12 @@
   <section class="section">
     <div class="container">
       <div class="section-header">
-        <div class="section-eyebrow">Contact</div>
-        <h2>Get in touch</h2>
+        <div class="section-eyebrow" data-i18n="about.contact.eyebrow">Contact</div>
+        <h2 data-i18n="about.contact.title">Get in touch</h2>
       </div>
       <div class="fade-up mt-8" style="text-align:center;">
         <div class="code-panel" data-lang="text">
-          <button class="copy-btn">Copy</button>
+          <button class="copy-btn" data-i18n="btn.copy">Copy</button>
 <pre>jarrondeng@veldra.org</pre>
         </div>
       </div>
@@ -193,38 +206,38 @@
       <div class="footer-inner">
         <div class="footer-brand">
           <img src="/assets/brand/veldra-logo.png" alt="Veldra">
-          <p>SV2 mining gateway infrastructure for production pool operators.</p>
+          <p data-i18n="footer.tagline">SV2 mining gateway infrastructure for production pool operators.</p>
         </div>
         <div>
-          <h4>Product</h4>
+          <h4 data-i18n="footer.h_product">Product</h4>
           <div class="footer-links">
-            <a href="/product/">ReserveGrid OS</a>
-            <a href="/product/#demo">Demo</a>
-            <a href="/observe/">Observe Mode</a>
+            <a href="/product/" data-i18n="footer.reservegrid">ReserveGrid OS</a>
+            <a href="/product/#demo" data-i18n="footer.demo">Demo</a>
+            <a href="/observe/" data-i18n="footer.observe_mode">Observe Mode</a>
           </div>
         </div>
         <div>
-          <h4>Resources</h4>
+          <h4 data-i18n="footer.h_resources">Resources</h4>
           <div class="footer-links">
-            <a href="/docs/">Documentation</a>
-            <a href="/docs/#reason-codes">Reason Codes</a>
-            <a href="/docs/#config">Configuration</a>
+            <a href="/docs/" data-i18n="footer.documentation">Documentation</a>
+            <a href="/docs/#reason-codes" data-i18n="footer.reason_codes">Reason Codes</a>
+            <a href="/docs/#config" data-i18n="footer.configuration">Configuration</a>
           </div>
         </div>
         <div>
-          <h4>Company</h4>
+          <h4 data-i18n="footer.h_company">Company</h4>
           <div class="footer-links">
-            <a href="/about/">About</a>
-            <a href="mailto:jarrondeng@veldra.org">Contact</a>
+            <a href="/about/" data-i18n="footer.about">About</a>
+            <a href="mailto:jarrondeng@veldra.org" data-i18n="footer.contact">Contact</a>
           </div>
         </div>
       </div>
       <div class="footer-bottom">
-        <span>&copy; 2026 Veldra, Inc.</span>
+        <span data-i18n="footer.copyright">&copy; 2026 Veldra, Inc.</span>
         <div class="footer-legal">
-          <a href="/privacy/">Privacy</a>
-          <a href="/terms/">Terms</a>
-          <a href="/disclaimer/">Disclaimer</a>
+          <a href="/privacy/" data-i18n="footer.privacy">Privacy</a>
+          <a href="/terms/" data-i18n="footer.terms">Terms</a>
+          <a href="/disclaimer/" data-i18n="footer.disclaimer">Disclaimer</a>
         </div>
       </div>
     </div>
