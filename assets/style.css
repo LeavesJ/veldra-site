@@ -164,6 +164,27 @@ ul { list-style: none; }
 .navlinks a[aria-current="page"] {
   color: var(--blue-light);
   background: rgba(212,148,60,.1);
+  box-shadow: 0 0 12px rgba(212,148,60,.12);
+}
+/* Underline sweep on hover */
+.navlinks a {
+  position: relative;
+}
+.navlinks a::after {
+  content: '';
+  position: absolute;
+  bottom: 2px;
+  left: 14px;
+  right: 14px;
+  height: 1.5px;
+  background: var(--amber);
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform .25s ease;
+}
+.navlinks a:hover::after,
+.navlinks a[aria-current="page"]::after {
+  transform: scaleX(1);
 }
 
 .nav-actions {
@@ -972,7 +993,15 @@ ul { list-style: none; }
   vertical-align: top;
 }
 .data-table tr:last-child td { border-bottom: 0; }
-.data-table tr:hover td { background: rgba(212,148,60,.03); }
+.data-table td {
+  transition: background .2s ease, box-shadow .2s ease;
+}
+.data-table tr:hover td {
+  background: rgba(212,148,60,.03);
+}
+.data-table tr:hover td:first-child {
+  box-shadow: inset 3px 0 0 var(--amber);
+}
 
 .table-wrap {
   border: 1px solid var(--border-md);
@@ -1124,10 +1153,27 @@ ul { list-style: none; }
   font-size: 14px;
   color: rgba(226,232,240,.45);
   transition: color .2s;
+  position: relative;
+  display: inline-block;
+}
+.footer-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: var(--amber-dim);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .25s ease;
 }
 .footer-links a:hover {
   color: var(--blue-light);
   text-decoration: none;
+}
+.footer-links a:hover::after {
+  transform: scaleX(1);
 }
 .footer-bottom {
   margin-top: 48px;
@@ -1166,6 +1212,17 @@ ul { list-style: none; }
 .arch-svg-wrap svg text {
   font-family: var(--mono);
 }
+
+/* SVG node breathe glow */
+@keyframes nodeBreath {
+  0%, 100% { filter: url(#node-glow) drop-shadow(0 0 4px rgba(212,148,60,.15)); }
+  50%      { filter: url(#node-glow) drop-shadow(0 0 12px rgba(212,148,60,.3)); }
+}
+.arch-svg-wrap svg .arch-node-gw {
+  animation: nodeBreath 3.5s ease-in-out infinite;
+}
+
+/* SVG data packets use SMIL <animateMotion> in the HTML */
 
 /* ── Flow steps (fallback) ────────────────────── */
 .flow-steps {
@@ -1385,7 +1442,13 @@ ul { list-style: none; }
   background: rgba(212,148,60,.03);
 }
 .comparison-table tr:last-child td { border-bottom: 0; }
+.comparison-table td {
+  transition: background .2s ease, box-shadow .2s ease;
+}
 .comparison-table tr:hover td { background: rgba(226,232,240,.03); }
+.comparison-table tr:hover td:first-child {
+  box-shadow: inset 3px 0 0 var(--amber);
+}
 .comparison-table tr:hover td:last-child { background: rgba(212,148,60,.06); }
 
 .comparison-table .check {
@@ -1568,8 +1631,20 @@ ul { list-style: none; }
   background: rgba(226,232,240,.02);
   border: 1px solid var(--border);
   border-radius: var(--r-md);
-  transition: border-color .2s;
+  transition: border-color .2s, opacity .35s ease, transform .35s ease;
+  opacity: 0;
+  transform: translateY(8px);
 }
+.feature-card.expanded .detail-item {
+  opacity: 1;
+  transform: translateY(0);
+}
+.feature-card.expanded .detail-item:nth-child(1) { transition-delay: .12s; }
+.feature-card.expanded .detail-item:nth-child(2) { transition-delay: .2s; }
+.feature-card.expanded .detail-item:nth-child(3) { transition-delay: .28s; }
+.feature-card.expanded .detail-item:nth-child(4) { transition-delay: .36s; }
+.feature-card.expanded .detail-item:nth-child(5) { transition-delay: .44s; }
+.feature-card.expanded .detail-item:nth-child(6) { transition-delay: .52s; }
 .detail-item:hover {
   border-color: var(--border-bright);
 }
@@ -1833,10 +1908,8 @@ code:not(pre code) {
   .timeline-step { text-align: left; padding: 12px 0 12px 60px; }
   .timeline-dot { position: absolute; left: 0; margin: 0; }
 
-  .navlinks { display: none; }
   .nav-toggle { display: block; }
-  .navlinks.open {
-    display: flex;
+  .navlinks {
     flex-direction: column;
     position: absolute;
     top: 72px;
@@ -1844,8 +1917,18 @@ code:not(pre code) {
     right: 0;
     background: var(--navy);
     border-bottom: 1px solid var(--border);
-    padding: 12px var(--gutter);
+    padding: 0 var(--gutter);
     box-shadow: var(--shadow-md);
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height .35s ease, opacity .25s ease, padding .35s ease;
+  }
+  .navlinks.open {
+    display: flex;
+    max-height: 320px;
+    opacity: 1;
+    padding: 12px var(--gutter);
   }
 
   .hero-inner { padding: 60px 0 48px; }
