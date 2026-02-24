@@ -20,8 +20,8 @@
   <meta property="og:image" content="https://veldra.org/assets/brand/veldra-mark.png">
   <meta name="twitter:card" content="summary_large_image">
 
-  <link rel="stylesheet" href="/assets/style.css?v=10">
-  <script src="/assets/script.js?v=10" defer></script>
+  <link rel="stylesheet" href="/assets/style.css?v=11">
+  <script src="/assets/script.js?v=11" defer></script>
 </head>
 <body>
 
@@ -75,25 +75,51 @@
 
   <hr class="glow-line">
 
-  <!-- ── Key metrics ─────────────────────────── -->
+  <!-- ── Product identity (chip schematic) ───── -->
   <section class="section">
     <div class="container">
-      <div class="stat-grid fade-up">
-        <div class="stat-item">
-          <div class="stat-value">34</div>
-          <div class="stat-label">GatewayReason codes</div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-value">50ms</div>
-          <div class="stat-label">Verdict timeout</div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-value">3</div>
-          <div class="stat-label">Deployment modes</div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-value">2</div>
-          <div class="stat-label">Share lifecycle events</div>
+      <div class="chip-wrap fade-up">
+        <div class="chip">
+          <div class="chip-substrate"></div>
+
+          <!-- Left pins -->
+          <div class="chip-pins-left">
+            <div class="chip-pin">
+              <div>
+                <div class="chip-pin-value">34</div>
+                <div class="chip-pin-label">GatewayReason codes</div>
+              </div>
+            </div>
+            <div class="chip-pin">
+              <div>
+                <div class="chip-pin-value">50<span style="font-size:16px;opacity:.6;">ms</span></div>
+                <div class="chip-pin-label">Verdict timeout</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Central chip body -->
+          <div class="chip-body">
+            <div class="chip-name">ReserveGrid OS</div>
+            <div class="chip-version">v1.0.0 &middot; Stratum V2 Gateway</div>
+          </div>
+
+          <!-- Right pins -->
+          <div class="chip-pins-right">
+            <div class="chip-pin">
+              <div>
+                <div class="chip-pin-value">3</div>
+                <div class="chip-pin-label">Deployment modes</div>
+              </div>
+            </div>
+            <div class="chip-pin">
+              <div>
+                <div class="chip-pin-value">2</div>
+                <div class="chip-pin-label">Share lifecycle events</div>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>
