@@ -28,7 +28,7 @@
     });
   }
 
-  // ── Copy button ──────────────────────────────
+  // ── Copy button with animated checkmark ──────
   document.addEventListener('click', function (e) {
     var btn = e.target.closest('.copy-btn');
     if (!btn) return;
@@ -67,13 +67,13 @@
   }
 
   function flashCopied(btn) {
-    var original = btn.textContent;
-    btn.textContent = 'Copied';
-    btn.style.borderColor = 'rgba(118,185,0,.5)';
+    var original = btn.innerHTML;
+    btn.classList.add('copied');
+    btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="stroke-dasharray:20;stroke-dashoffset:20;"><path d="M20 6L9 17l-5-5"/></svg> Copied';
     setTimeout(function () {
-      btn.textContent = original;
-      btn.style.borderColor = '';
-    }, 1200);
+      btn.classList.remove('copied');
+      btn.innerHTML = original;
+    }, 1800);
   }
 
   // ── Legal TOC active section tracking ────────
@@ -131,7 +131,7 @@
     header.setAttribute('aria-expanded', !isExpanded);
   });
 
-  // ── Tab switcher ─────────────────────────────
+  // ── Tab switcher with crossfade ──────────────
   document.addEventListener('click', function (e) {
     var btn = e.target.closest('.tab-btn');
     if (!btn) return;
@@ -140,15 +140,28 @@
     if (!group) return;
 
     var target = btn.getAttribute('data-tab');
+    var currentActive = group.querySelector('.tab-content.active');
+    var nextContent = group.querySelector('.tab-content[data-tab="' + target + '"]');
+
+    if (currentActive === nextContent) return;
 
     group.querySelectorAll('.tab-btn').forEach(function (b) {
       b.classList.remove('active');
     });
     btn.classList.add('active');
 
-    group.querySelectorAll('.tab-content').forEach(function (content) {
-      content.classList.toggle('active', content.getAttribute('data-tab') === target);
-    });
+    if (currentActive && nextContent) {
+      currentActive.classList.add('fade-out');
+      currentActive.classList.remove('active');
+      setTimeout(function () {
+        currentActive.classList.remove('fade-out');
+        nextContent.classList.add('active');
+      }, 150);
+    } else {
+      group.querySelectorAll('.tab-content').forEach(function (content) {
+        content.classList.toggle('active', content.getAttribute('data-tab') === target);
+      });
+    }
   });
 
   // ── Chip schematic activation ───────────────
@@ -164,6 +177,48 @@
 
     document.querySelectorAll('.chip').forEach(function (chip) {
       chipObserver.observe(chip);
+    });
+  }
+
+  // ── Animated stat counters ──────────────────
+  function animateCounter(el, target, suffix) {
+    var duration = 1200;
+    var start = performance.now();
+    function tick(now) {
+      var elapsed = now - start;
+      var progress = Math.min(elapsed / duration, 1);
+      var eased = 1 - Math.pow(1 - progress, 3);
+      var current = Math.round(eased * target);
+      el.textContent = current;
+      if (progress < 1) requestAnimationFrame(tick);
+      else if (suffix) el.textContent = target;
+    }
+    requestAnimationFrame(tick);
+  }
+
+  if ('IntersectionObserver' in window) {
+    var counterObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          var values = entry.target.querySelectorAll('.chip-pin-value');
+          values.forEach(function (v) {
+            var text = v.textContent.trim();
+            var num = parseInt(text, 10);
+            if (!isNaN(num) && num > 0) {
+              var suffix = v.querySelector('span');
+              v.childNodes[0].textContent = '0';
+              setTimeout(function () {
+                animateCounter(v.childNodes[0], num, suffix);
+              }, 600);
+            }
+          });
+          counterObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.3 });
+
+    document.querySelectorAll('.chip').forEach(function (chip) {
+      counterObserver.observe(chip);
     });
   }
 
@@ -209,6 +264,164 @@
       }
     });
   });
+
+  // ── Scroll-to-top button ─────────────────────
+  var scrollBtn = document.querySelector('.scroll-top');
+  if (scrollBtn) {
+    window.addEventListener('scroll', function () {
+      scrollBtn.classList.toggle('visible', window.scrollY > 500);
+    }, { passive: true });
+
+    scrollBtn.addEventListener('click', function () {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+
+  // ── Active nav section highlight on scroll ───
+  var navLinksAll = document.querySelectorAll('.navlinks a[href^="#"], .navlinks a[href^="/"]');
+  var sections = document.querySelectorAll('section[id]');
+  if (sections.length > 0 && 'IntersectionObserver' in window) {
+    var sectionObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          var id = entry.target.id;
+          navLinksAll.forEach(function (link) {
+            var href = link.getAttribute('href');
+            if (href === '#' + id) {
+              link.classList.add('section-active');
+            } else {
+              link.classList.remove('section-active');
+            }
+          });
+        }
+      });
+    }, { rootMargin: '-80px 0px -50% 0px', threshold: 0 });
+
+    sections.forEach(function (section) {
+      sectionObserver.observe(section);
+    });
+  }
+
+  // ── Docs search (Cmd+K) ─────────────────────
+  var searchOverlay = document.getElementById('search-overlay');
+  var searchInput = document.getElementById('search-input');
+  var searchResults = document.getElementById('search-results');
+  var searchTrigger = document.getElementById('search-trigger');
+  var searchIndex = [];
+
+  if (searchOverlay && searchInput) {
+    // Build index from data tables on docs page
+    document.querySelectorAll('.data-table tbody tr').forEach(function (row) {
+      var cells = row.querySelectorAll('td');
+      if (cells.length >= 2) {
+        var code = (cells[0].textContent || '').trim();
+        var desc = (cells[1].textContent || '').trim();
+        var cat = row.getAttribute('data-category') || '';
+        if (code) {
+          searchIndex.push({ code: code, desc: desc, tag: cat, type: 'reason_code', row: row });
+        }
+      }
+    });
+
+    // Also index config keys from kv-list elements
+    document.querySelectorAll('.kv-list dt').forEach(function (dt) {
+      var dd = dt.nextElementSibling;
+      if (dd && dd.tagName === 'DD') {
+        searchIndex.push({
+          code: dt.textContent.trim(),
+          desc: dd.textContent.trim().substring(0, 120),
+          tag: 'config',
+          type: 'config_key',
+          row: null
+        });
+      }
+    });
+
+    function openSearch() {
+      searchOverlay.classList.add('open');
+      searchInput.value = '';
+      searchResults.innerHTML = '';
+      setTimeout(function () { searchInput.focus(); }, 50);
+    }
+
+    function closeSearch() {
+      searchOverlay.classList.remove('open');
+    }
+
+    function renderResults(query) {
+      if (!query) {
+        searchResults.innerHTML = '';
+        return;
+      }
+      var q = query.toLowerCase();
+      var matches = searchIndex.filter(function (item) {
+        return item.code.toLowerCase().indexOf(q) !== -1 ||
+               item.desc.toLowerCase().indexOf(q) !== -1 ||
+               item.tag.toLowerCase().indexOf(q) !== -1;
+      }).slice(0, 20);
+
+      if (matches.length === 0) {
+        searchResults.innerHTML = '<div class="search-empty">No results for "' + query + '"</div>';
+        return;
+      }
+
+      searchResults.innerHTML = matches.map(function (item) {
+        return '<div class="search-result" data-code="' + item.code + '">' +
+          '<span class="search-result-code">' + item.code + '</span>' +
+          '<span class="search-result-desc">' + item.desc + '</span>' +
+          '<span class="search-result-tag">' + item.tag + '</span>' +
+          '</div>';
+      }).join('');
+    }
+
+    searchInput.addEventListener('input', function () {
+      renderResults(searchInput.value.trim());
+    });
+
+    // Click result to scroll to it
+    searchResults.addEventListener('click', function (e) {
+      var result = e.target.closest('.search-result');
+      if (!result) return;
+      var code = result.getAttribute('data-code');
+      var match = searchIndex.find(function (item) { return item.code === code; });
+      if (match && match.row) {
+        closeSearch();
+        match.row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        match.row.style.background = 'rgba(212,148,60,.1)';
+        setTimeout(function () { match.row.style.background = ''; }, 2000);
+      } else {
+        closeSearch();
+      }
+    });
+
+    // Keyboard shortcuts
+    document.addEventListener('keydown', function (e) {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        if (searchOverlay.classList.contains('open')) {
+          closeSearch();
+        } else {
+          openSearch();
+        }
+      }
+      if (e.key === 'Escape' && searchOverlay.classList.contains('open')) {
+        closeSearch();
+      }
+    });
+
+    // Close on overlay click
+    searchOverlay.addEventListener('click', function (e) {
+      if (e.target === searchOverlay) closeSearch();
+    });
+
+    // Trigger button
+    if (searchTrigger) {
+      searchTrigger.addEventListener('click', function (e) {
+        e.preventDefault();
+        openSearch();
+      });
+    }
+  }
 
   // ── Basic syntax highlighting for code panels ─
   document.querySelectorAll('.code-panel[data-lang]').forEach(function (panel) {
