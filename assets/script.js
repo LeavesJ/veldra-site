@@ -603,11 +603,27 @@
   // ═══════════════════════════════════════════════
   var heroCube = document.getElementById('hero-cube');
   var modeDesc = document.getElementById('hero-mode-desc');
-  var modeDescriptions = {
+  var modeI18nKeys = {
+    shadow: 'home.hero.mode_shadow',
+    observe: 'home.hero.mode_observe',
+    inline: 'home.hero.mode_inline'
+  };
+  var modeDefaults = {
     shadow: 'Audit templates silently. No miner impact. Zero risk.',
     observe: 'Log every verdict and share event. Build confidence before enforcing.',
     inline: 'Enforce policy on every template. Reject violations in real time.'
   };
+
+  function getModeText(mode) {
+    // Try to pull translated string from i18n cache if available
+    var i18n = window.veldraI18n;
+    if (i18n && i18n.getCurrentLang && i18n.getCurrentLang() !== 'en') {
+      // Look for a hidden element with that key to grab the translated string
+      var el = document.querySelector('[data-i18n="' + modeI18nKeys[mode] + '"]');
+      if (el && el.textContent) return el.textContent;
+    }
+    return modeDefaults[mode] || '';
+  }
 
   document.querySelectorAll('.hero-mode-btn').forEach(function (btn) {
     btn.addEventListener('click', function () {
@@ -616,7 +632,10 @@
       document.querySelectorAll('.hero-mode-btn').forEach(function (b) { b.classList.remove('active'); });
       btn.classList.add('active');
       heroCube.setAttribute('data-mode', mode);
-      if (modeDesc) modeDesc.textContent = modeDescriptions[mode] || '';
+      if (modeDesc) {
+        modeDesc.setAttribute('data-i18n', modeI18nKeys[mode]);
+        modeDesc.textContent = getModeText(mode);
+      }
     });
   });
 
