@@ -761,9 +761,11 @@
   // ═══════════════════════════════════════════════
   // 26b. Cube-scroll storytelling controller
   // ═══════════════════════════════════════════════
-  // Hard-locked: one scroll = one panel, no momentum leaks, no position sync.
-  // The wheel handler is the sole authority on which panel is active.
-  document.querySelectorAll('.scroll-lock-section').forEach(function (section) {
+  // Strategy: body overflow:hidden locks the page physically while engaged.
+  // Wheel handler is sole authority. No scroll-position sync. No momentum leaks.
+  (function () {
+    var section = document.querySelector('.scroll-lock-section');
+    if (!section) return;
     var panels = section.querySelectorAll('.scroll-lock-panel');
     var dots = section.querySelectorAll('.scroll-lock-dot');
     if (panels.length === 0) return;
@@ -771,9 +773,11 @@
 
     var panelCount = panels.length;
     var current = 0;
-    var engaged = false;   // true while user is inside the cube
-    var transitioning = false;
-    var TRANSITION_MS = 650;
+    var engaged = false;
+    var busy = false;        // true during a transition, blocks all input
+    var ANIM_MS = 680;       // matches CSS transition
+    var exitCooldown = false; // prevents immediate re-engage after exit
+    var savedScrollY = 0;
 
     panels[0].classList.add('cube-active');
 
@@ -788,98 +792,94 @@
       });
     }
 
-    // Pin the scroll position so native scroll cannot move the page
-    function pinScroll() {
-      var sectionTop = section.getBoundingClientRect().top + window.pageYOffset;
-      // Pin to the middle of the section so sticky stays engaged
-      var target = sectionTop + 10;
-      if (Math.abs(window.pageYOffset - target) > 5) {
-        window.scrollTo(0, target);
+    function lockBody() {
+      savedScrollY = window.pageYOffset;
+      document.body.style.overflow = 'hidden';
+      document.body.style.position = 'fixed';
+      document.body.style.top = '-' + savedScrollY + 'px';
+      document.body.style.width = '100%';
+    }
+
+    function unlockBody() {
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
+      window.scrollTo(0, savedScrollY);
+    }
+
+    function engage(startPanel) {
+      if (engaged || exitCooldown) return;
+      engaged = true;
+      current = startPanel;
+      showPanel(current);
+      lockBody();
+    }
+
+    function disengage(direction) {
+      if (!engaged) return;
+      engaged = false;
+      busy = false;
+      unlockBody();
+
+      // Nudge scroll so the section is out of the trigger zone
+      if (direction > 0) {
+        // Exiting downward: scroll past the section
+        var below = section.offsetTop + section.offsetHeight + 2;
+        window.scrollTo(0, below);
+      } else {
+        // Exiting upward: scroll above the section
+        var above = section.offsetTop - window.innerHeight + 2;
+        if (above < 0) above = 0;
+        window.scrollTo(0, above);
       }
+
+      // Cooldown prevents the observer from re-engaging immediately
+      exitCooldown = true;
+      setTimeout(function () { exitCooldown = false; }, 600);
     }
 
-    // Determine if the sticky section is in view
-    function isStickyActive() {
-      var rect = section.getBoundingClientRect();
-      // Section top is at or above viewport top, and section bottom is below viewport
-      return rect.top <= 5 && rect.bottom > window.innerHeight * 0.5;
-    }
-
-    // Global wheel handler: capture at document level so nothing escapes
-    document.addEventListener('wheel', function (e) {
-      // Check if we should engage
-      if (!engaged) {
-        if (isStickyActive()) {
-          engaged = true;
-          current = 0;
-          showPanel(0);
-        } else {
-          return; // not in the cube section, let page scroll normally
+    // Use IntersectionObserver to detect when the sticky container is in view
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting && !engaged && !exitCooldown) {
+          // Determine entry direction from scroll position
+          var sectionMid = section.offsetTop + section.offsetHeight / 2;
+          var fromBelow = window.pageYOffset > sectionMid;
+          engage(fromBelow ? panelCount - 1 : 0);
         }
-      }
+      });
+    }, { threshold: 0.3 });
 
-      // While engaged, block ALL native scroll
+    observer.observe(section.querySelector('.scroll-lock-sticky') || section);
+
+    // Wheel handler: sole controller of panel state
+    document.addEventListener('wheel', function (e) {
+      if (!engaged) return;
+
+      // Block ALL native scroll while engaged
       e.preventDefault();
+      e.stopPropagation();
 
-      // If mid-transition, swallow completely
-      if (transitioning) return;
+      // If transitioning, swallow completely
+      if (busy) return;
 
       var direction = e.deltaY > 0 ? 1 : -1;
       var next = current + direction;
 
-      // Boundary: trying to scroll before first or after last panel
+      // Boundary: disengage
       if (next < 0 || next >= panelCount) {
-        // Disengage and let the page scroll naturally on the NEXT wheel event
-        engaged = false;
-        if (next < 0) {
-          // Scrolling up past first panel: position just above the section
-          var aboveTarget = section.getBoundingClientRect().top + window.pageYOffset - 20;
-          window.scrollTo(0, aboveTarget);
-        } else {
-          // Scrolling down past last panel: position just below the section
-          var belowTarget = section.getBoundingClientRect().top + window.pageYOffset + section.offsetHeight + 20;
-          window.scrollTo(0, belowTarget);
-        }
+        disengage(direction);
         return;
       }
 
-      // Transition to next panel
-      transitioning = true;
+      // Advance one panel
+      busy = true;
       current = next;
       showPanel(current);
-      pinScroll();
 
-      setTimeout(function () {
-        transitioning = false;
-        pinScroll();
-      }, TRANSITION_MS);
+      setTimeout(function () { busy = false; }, ANIM_MS);
     }, { passive: false });
-
-    // Re-engage when scrolling back into the section from either direction
-    var reengageCheck = throttle(function () {
-      if (engaged) {
-        pinScroll();
-        return;
-      }
-      if (!isStickyActive()) return;
-      // Determine direction of entry
-      var rect = section.getBoundingClientRect();
-      if (rect.top <= 5 && rect.top > -50) {
-        // Entering from above (scrolling down): show first panel
-        engaged = true;
-        current = 0;
-        showPanel(0);
-        pinScroll();
-      } else if (rect.bottom < window.innerHeight + 50 && rect.bottom > window.innerHeight - 5) {
-        // Entering from below (scrolling up): show last panel
-        engaged = true;
-        current = panelCount - 1;
-        showPanel(current);
-        pinScroll();
-      }
-    }, 100);
-
-    window.addEventListener('scroll', reengageCheck, { passive: true });
-  });
+  })();
 
 })();
