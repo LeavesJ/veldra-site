@@ -700,6 +700,10 @@ ul { list-style: none; }
   line-height: 1.0;
   max-width: 800px;
   margin-bottom: 24px;
+  background: linear-gradient(160deg, #f0e6d6 0%, #e2e8f0 40%, #c8b89a 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 .hero-title .accent {
   background: linear-gradient(135deg, var(--amber-light) 0%, var(--amber) 60%, var(--steel) 100%);
@@ -770,6 +774,10 @@ ul { list-style: none; }
   letter-spacing: -.025em;
   margin-bottom: 14px;
   line-height: 1.15;
+  background: linear-gradient(160deg, #f0e6d6 0%, #e2e8f0 40%, #c8b89a 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 .section-header p {
   color: var(--ink-muted);
@@ -786,6 +794,10 @@ ul { list-style: none; }
   font-weight: 800;
   letter-spacing: -.02em;
   margin-bottom: 8px;
+  background: linear-gradient(160deg, #f0e6d6 0%, #e2e8f0 40%, #c8b89a 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 .section-header-left p {
   color: var(--ink-muted);
@@ -864,7 +876,10 @@ ul { list-style: none; }
   font-weight: 700;
   letter-spacing: -.01em;
   margin-bottom: 8px;
-  color: var(--ink);
+  background: linear-gradient(160deg, #f0e6d6 0%, #e2e8f0 50%, #c8b89a 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 .card p {
   color: var(--ink-muted);
@@ -1956,6 +1971,10 @@ ul { list-style: none; }
   font-weight: 700;
   letter-spacing: -.01em;
   margin-bottom: 4px;
+  background: linear-gradient(160deg, #f0e6d6 0%, #e2e8f0 50%, #c8b89a 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   color: var(--ink);
 }
 .feature-card-text p {
@@ -2240,11 +2259,14 @@ code:not(pre code) {
   pointer-events: none;
 }
 .cta-title {
-  color: #fff;
   margin: 0 0 16px;
   font-size: 28px;
   position: relative;
   z-index: 1;
+  background: linear-gradient(160deg, #f0e6d6 0%, #e2e8f0 40%, #c8b89a 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 .cta-sub {
   color: var(--ink-muted);
@@ -2324,25 +2346,32 @@ code:not(pre code) {
   .comparison-table th,
   .comparison-table td { padding: 12px 14px; font-size: 13px; }
 
-  /* Scroll-lock section: collapse to stacked on mobile */
+  /* Cube scroll: collapse to stacked on mobile */
   .scroll-lock-section {
     height: auto;
   }
   .scroll-lock-sticky {
     position: relative;
     height: auto;
+    perspective: none;
+  }
+  .scroll-lock-cube {
+    transform-style: flat;
+    transform: none !important;
+    transition: none;
     display: flex;
     flex-direction: column;
-    gap: 0;
   }
   .scroll-lock-panel {
     position: relative;
     inset: auto;
-    opacity: 1;
-    transform: none;
-    pointer-events: auto;
+    transform: none !important;
+    backface-visibility: visible;
+    opacity: 1 !important;
+    pointer-events: auto !important;
     padding: 56px 0;
     border-bottom: 1px solid var(--border);
+    transition: none;
   }
   .scroll-lock-panel:last-of-type { border-bottom: none; }
   .scroll-lock-dots { display: none; }
@@ -2413,9 +2442,10 @@ code:not(pre code) {
 /* ── Glow line separator ─────────────────────── */
 .glow-line {
   height: 1px;
-  background: linear-gradient(90deg, transparent, var(--blue-glow), transparent);
+  background: linear-gradient(90deg, transparent 5%, rgba(212,148,60,.25) 30%, rgba(212,148,60,.4) 50%, rgba(212,148,60,.25) 70%, transparent 95%);
   margin: 0;
   border: none;
+  box-shadow: 0 0 12px rgba(212,148,60,.1), 0 0 30px rgba(212,148,60,.05);
 }
 
 /* ── Scroll-to-top button ────────────────────── */
@@ -2804,19 +2834,23 @@ code:not(pre code) {
   box-shadow: 0 0 12px rgba(239,68,68,.4);
 }
 
-/* ── Scroll-locked storytelling ────────────── */
+/* ── Cube scroll storytelling ─────────────── */
 .scroll-lock-section {
   position: relative;
-  height: 300vh; /* 3 viewport heights of scroll space */
+  height: 300vh;
 }
 .scroll-lock-sticky {
   position: sticky;
   top: 0;
   height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  perspective: 1200px;
   overflow: hidden;
+}
+.scroll-lock-cube {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
 }
 .scroll-lock-panel {
   position: absolute;
@@ -2824,18 +2858,30 @@ code:not(pre code) {
   display: flex;
   align-items: center;
   justify-content: center;
+  backface-visibility: hidden;
+  background: var(--bg);
   opacity: 0;
-  transform: translateY(40px);
-  transition: opacity .5s ease, transform .5s ease;
+  transition: transform .65s cubic-bezier(.4, 0, .2, 1), opacity .5s ease;
   pointer-events: none;
 }
-.scroll-lock-panel.panel-active {
+
+/* Default: all panels start rotated away below */
+.scroll-lock-panel { transform: rotateX(45deg) scale(.92); }
+
+/* Active panel: front-facing */
+.scroll-lock-panel.cube-active {
   opacity: 1;
-  transform: translateY(0);
+  transform: rotateX(0deg) scale(1);
   pointer-events: auto;
 }
 
-/* Scroll-lock navigation dots */
+/* Exited panel: rotated away above */
+.scroll-lock-panel.cube-exited {
+  opacity: 0;
+  transform: rotateX(-45deg) scale(.92);
+}
+
+/* Navigation dots */
 .scroll-lock-dots {
   position: absolute;
   right: 32px;

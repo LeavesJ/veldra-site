@@ -739,25 +739,41 @@
   }
 
   // ═══════════════════════════════════════════════
-  // 26. Scroll-lock storytelling controller
+  // 26a. Light parallax for section content
+  // ═══════════════════════════════════════════════
+  if (window.innerWidth > 768) {
+    var parallaxEls = document.querySelectorAll('.section .section-header, .chip-wrap, .card-glow');
+    if (parallaxEls.length > 0) {
+      window.addEventListener('scroll', throttle(function () {
+        parallaxEls.forEach(function (el) {
+          var rect = el.getBoundingClientRect();
+          var vh = window.innerHeight;
+          // only apply when element is near viewport
+          if (rect.top > vh * 1.3 || rect.bottom < -100) return;
+          var center = rect.top + rect.height / 2;
+          var offset = (center - vh / 2) / vh;
+          el.style.transform = 'translateY(' + (offset * -18) + 'px)';
+        });
+      }, 16), { passive: true });
+    }
+  }
+
+  // ═══════════════════════════════════════════════
+  // 26b. Cube-scroll storytelling controller
   // ═══════════════════════════════════════════════
   document.querySelectorAll('.scroll-lock-section').forEach(function (section) {
-    var sticky = section.querySelector('.scroll-lock-sticky');
     var panels = section.querySelectorAll('.scroll-lock-panel');
     var dots = section.querySelectorAll('.scroll-lock-dot');
-    if (!sticky || panels.length === 0) return;
+    if (panels.length === 0) return;
 
-    // On mobile, CSS handles stacking; skip scroll-lock JS entirely
-    if (window.innerWidth <= 768) {
-      panels.forEach(function (p) { p.classList.add('panel-active'); });
-      return;
-    }
+    // On mobile, CSS handles stacking; skip cube JS entirely
+    if (window.innerWidth <= 768) { return; }
 
     var lastActive = -1;
-    // Activate first panel by default
-    panels[0].classList.add('panel-active');
+    // Activate first panel
+    panels[0].classList.add('cube-active');
 
-    function updatePanels() {
+    function updateCube() {
       var rect = section.getBoundingClientRect();
       var sectionH = section.offsetHeight;
       var scrolled = -rect.top;
@@ -771,7 +787,13 @@
       if (activeIndex !== lastActive) {
         lastActive = activeIndex;
         panels.forEach(function (p, i) {
-          p.classList.toggle('panel-active', i === activeIndex);
+          p.classList.remove('cube-active', 'cube-exited');
+          if (i === activeIndex) {
+            p.classList.add('cube-active');
+          } else if (i < activeIndex) {
+            p.classList.add('cube-exited');
+          }
+          // panels after activeIndex stay in default state (rotated below)
         });
         dots.forEach(function (d, i) {
           d.classList.toggle('dot-active', i === activeIndex);
@@ -779,9 +801,8 @@
       }
     }
 
-    window.addEventListener('scroll', throttle(updatePanels, 32), { passive: true });
-    updatePanels();
-
+    window.addEventListener('scroll', throttle(updateCube, 32), { passive: true });
+    updateCube();
   });
 
 })();
