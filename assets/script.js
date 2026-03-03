@@ -771,8 +771,10 @@
 
     var currentPanel = 0;
     var locked = false;
-    var COOLDOWN = 700; // ms, matches CSS transition duration
+    var COOLDOWN = 900; // ms, transition + settle time
     var panelCount = panels.length;
+    var lastWheelTime = 0;
+    var IDLE_GAP = 200; // ms of no wheel events before accepting input again
 
     panels[0].classList.add('cube-active');
 
@@ -801,8 +803,10 @@
 
     var sticky = section.querySelector('.scroll-lock-sticky');
 
-    // Capture wheel on the sticky viewport and step one panel at a time
+    // Capture wheel on the sticky viewport and step exactly one panel
     (sticky || section).addEventListener('wheel', function (e) {
+      var now = Date.now();
+
       // Only intercept when the section is in the sticky zone
       var rect = section.getBoundingClientRect();
       var sectionH = section.offsetHeight;
@@ -815,16 +819,40 @@
       // At boundaries, let the page scroll naturally
       if (nextPanel < 0 || nextPanel >= panelCount) return;
 
+      // Always block native scroll while inside the section
       e.preventDefault();
 
-      if (locked) return;
+      // If locked, swallow the event entirely (absorbs momentum)
+      if (locked) {
+        lastWheelTime = now;
+        return;
+      }
+
+      // Require an idle gap since last wheel event to prevent
+      // momentum carryover from triggering the next flip
+      if (now - lastWheelTime < IDLE_GAP && lastWheelTime > 0) {
+        lastWheelTime = now;
+        return;
+      }
+
       locked = true;
+      lastWheelTime = now;
 
       currentPanel = nextPanel;
       showPanel(currentPanel);
       scrollToPanel(currentPanel);
 
-      setTimeout(function () { locked = false; }, COOLDOWN);
+      // Hold the lock for the full cooldown, then wait for
+      // wheel events to stop (idle gap) before unlocking
+      setTimeout(function () {
+        // Keep locked until wheel momentum dies down
+        var checkIdle = setInterval(function () {
+          if (Date.now() - lastWheelTime >= IDLE_GAP) {
+            clearInterval(checkIdle);
+            locked = false;
+          }
+        }, 50);
+      }, COOLDOWN);
     }, { passive: false });
 
     // Keep currentPanel in sync if user scrolls via scrollbar or touch
