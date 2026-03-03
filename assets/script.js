@@ -1,24 +1,61 @@
-// Veldra site v3 — interactions
+// Veldra site v3 — interactions + scroll-driven UX
 
 (function () {
   'use strict';
 
-  // ── Sticky nav shadow on scroll ──────────────
-  var topbar = document.querySelector('.topbar');
-  if (topbar) {
-    window.addEventListener('scroll', function () {
-      topbar.classList.toggle('scrolled', window.scrollY > 8);
-    }, { passive: true });
+  // ── Utility: throttle ─────────────────────────
+  function throttle(fn, ms) {
+    var last = 0;
+    return function () {
+      var now = Date.now();
+      if (now - last >= ms) { last = now; fn.apply(this, arguments); }
+    };
   }
 
-  // ── Mobile nav toggle ────────────────────────
+  // ── Utility: lerp ─────────────────────────────
+  function lerp(a, b, t) { return a + (b - a) * t; }
+
+  // ── Utility: clamp ────────────────────────────
+  function clamp(v, min, max) { return Math.max(min, Math.min(max, v)); }
+
+  // ── Utility: map range ────────────────────────
+  function mapRange(value, inMin, inMax, outMin, outMax) {
+    return clamp(outMin + (value - inMin) * (outMax - outMin) / (inMax - inMin), outMin, outMax);
+  }
+
+  // ═══════════════════════════════════════════════
+  // 1. Scroll progress bar
+  // ═══════════════════════════════════════════════
+  var progressBar = document.createElement('div');
+  progressBar.className = 'scroll-progress';
+  document.body.appendChild(progressBar);
+
+  // ═══════════════════════════════════════════════
+  // 2. Sticky nav shadow on scroll
+  // ═══════════════════════════════════════════════
+  var topbar = document.querySelector('.topbar');
+
+  function onScroll() {
+    // Progress bar
+    var docH = document.documentElement.scrollHeight - window.innerHeight;
+    var pct = docH > 0 ? (window.scrollY / docH) : 0;
+    progressBar.style.transform = 'scaleX(' + pct + ')';
+
+    // Nav shadow
+    if (topbar) topbar.classList.toggle('scrolled', window.scrollY > 8);
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // ═══════════════════════════════════════════════
+  // 3. Mobile nav toggle
+  // ═══════════════════════════════════════════════
   var toggle = document.querySelector('.nav-toggle');
   var navlinks = document.querySelector('.navlinks');
   if (toggle && navlinks) {
     toggle.addEventListener('click', function () {
       navlinks.classList.toggle('open');
-      var expanded = navlinks.classList.contains('open');
-      toggle.setAttribute('aria-expanded', expanded);
+      toggle.setAttribute('aria-expanded', navlinks.classList.contains('open'));
     });
     document.addEventListener('click', function (e) {
       if (!toggle.contains(e.target) && !navlinks.contains(e.target)) {
@@ -28,26 +65,329 @@
     });
   }
 
-  // ── Copy button with animated checkmark ──────
+  // ═══════════════════════════════════════════════
+  // 4. Hero parallax depth layers
+  // ═══════════════════════════════════════════════
+  var heroSection = document.querySelector('.hero-dark');
+  var heroRing = document.querySelector('.hero-ring');
+  var heroGrid = document.querySelector('.hero-grid');
+  var heroInner = document.querySelector('.hero-inner');
+
+  if (heroSection) {
+    window.addEventListener('scroll', throttle(function () {
+      var scrollY = window.scrollY;
+      var heroH = heroSection.offsetHeight;
+      if (scrollY > heroH * 1.5) return; // skip when past hero
+
+      var t = scrollY / heroH;
+      if (heroRing) {
+        heroRing.style.transform = 'translateY(' + (scrollY * 0.3) + 'px) scale(' + (1 + t * 0.08) + ')';
+        heroRing.style.opacity = Math.max(0, 1 - t * 1.2);
+      }
+      if (heroGrid) {
+        heroGrid.style.transform = 'translateY(' + (scrollY * 0.15) + 'px)';
+        heroGrid.style.opacity = Math.max(0, 1 - t * 0.8);
+      }
+      if (heroInner) {
+        heroInner.style.transform = 'translateY(' + (scrollY * 0.08) + 'px)';
+        heroInner.style.opacity = Math.max(0, 1 - t * 1.5);
+      }
+    }, 16), { passive: true });
+
+    // Hex background parallax (product page)
+    var heroHex = document.querySelector('.hero-hex');
+    if (heroHex) {
+      window.addEventListener('scroll', throttle(function () {
+        var scrollY = window.scrollY;
+        var heroH = heroSection.offsetHeight;
+        if (scrollY > heroH * 1.5) return;
+        heroHex.style.transform = 'translate(-50%, -50%) translateY(' + (scrollY * 0.2) + 'px) rotate(' + (scrollY * 0.02) + 'deg)';
+      }, 16), { passive: true });
+    }
+  }
+
+  // ═══════════════════════════════════════════════
+  // 5. 3D chip tilt (mouse-driven gyroscope)
+  // ═══════════════════════════════════════════════
+  var chipWrap = document.querySelector('.chip-wrap');
+  var chip = document.querySelector('.chip');
+
+  if (chipWrap && chip && window.innerWidth > 768) {
+    var chipRect, chipCx, chipCy;
+    var targetRx = 0, targetRy = 0, currentRx = 0, currentRy = 0;
+    var chipRafId = null;
+
+    function updateChipRect() {
+      chipRect = chipWrap.getBoundingClientRect();
+      chipCx = chipRect.left + chipRect.width / 2;
+      chipCy = chipRect.top + chipRect.height / 2;
+    }
+
+    chipWrap.addEventListener('mouseenter', function () {
+      updateChipRect();
+      chipWrap.classList.add('chip-hovering');
+      if (!chipRafId) chipRafLoop();
+    });
+
+    chipWrap.addEventListener('mousemove', function (e) {
+      if (!chipRect) updateChipRect();
+      var dx = (e.clientX - chipCx) / (chipRect.width / 2);
+      var dy = (e.clientY - chipCy) / (chipRect.height / 2);
+      targetRy = dx * 12;  // rotate around Y
+      targetRx = -dy * 8;  // rotate around X
+    });
+
+    chipWrap.addEventListener('mouseleave', function () {
+      targetRx = 0;
+      targetRy = 0;
+      chipWrap.classList.remove('chip-hovering');
+    });
+
+    function chipRafLoop() {
+      currentRx = lerp(currentRx, targetRx, 0.08);
+      currentRy = lerp(currentRy, targetRy, 0.08);
+      chip.style.transform = 'perspective(800px) rotateX(' + currentRx + 'deg) rotateY(' + currentRy + 'deg)';
+
+      if (Math.abs(currentRx - targetRx) > 0.01 || Math.abs(currentRy - targetRy) > 0.01) {
+        chipRafId = requestAnimationFrame(chipRafLoop);
+      } else {
+        chip.style.transform = 'perspective(800px) rotateX(' + targetRx + 'deg) rotateY(' + targetRy + 'deg)';
+        chipRafId = null;
+        // Keep looping if still hovering
+        if (chipWrap.classList.contains('chip-hovering')) {
+          chipRafId = requestAnimationFrame(chipRafLoop);
+        }
+      }
+    }
+  }
+
+  // ═══════════════════════════════════════════════
+  // 6. Magnetic card hover (3D tilt + glow follow)
+  // ═══════════════════════════════════════════════
+  if (window.innerWidth > 768) {
+    document.querySelectorAll('.card, .mode-card, .feature-card').forEach(function (card) {
+      card.addEventListener('mousemove', function (e) {
+        var rect = card.getBoundingClientRect();
+        var x = e.clientX - rect.left;
+        var y = e.clientY - rect.top;
+        var cx = rect.width / 2;
+        var cy = rect.height / 2;
+
+        var ry = ((x - cx) / cx) * 4;
+        var rx = -((y - cy) / cy) * 3;
+
+        card.style.transform = 'perspective(600px) rotateX(' + rx + 'deg) rotateY(' + ry + 'deg) translateZ(4px)';
+        card.style.setProperty('--glow-x', x + 'px');
+        card.style.setProperty('--glow-y', y + 'px');
+      });
+
+      card.addEventListener('mouseleave', function () {
+        card.style.transform = '';
+      });
+    });
+  }
+
+  // ═══════════════════════════════════════════════
+  // 7. Intersection observer for fade-up
+  // ═══════════════════════════════════════════════
+  if ('IntersectionObserver' in window) {
+    var fadeObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.style.animationPlayState = 'running';
+          fadeObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.fade-up').forEach(function (el) {
+      el.style.animationPlayState = 'paused';
+      fadeObserver.observe(el);
+    });
+  }
+
+  // ═══════════════════════════════════════════════
+  // 8. Section reveal with directional entrance
+  // ═══════════════════════════════════════════════
+  if ('IntersectionObserver' in window) {
+    var revealObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('section-visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -60px 0px' });
+
+    document.querySelectorAll('.section').forEach(function (section) {
+      section.classList.add('section-reveal');
+      revealObserver.observe(section);
+    });
+  }
+
+  // ═══════════════════════════════════════════════
+  // 9. Comparison table staggered row reveal
+  // ═══════════════════════════════════════════════
+  if ('IntersectionObserver' in window) {
+    var tableObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          var rows = entry.target.querySelectorAll('tbody tr');
+          rows.forEach(function (row, i) {
+            row.style.transitionDelay = (i * 0.08) + 's';
+            row.classList.add('row-visible');
+          });
+          tableObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+
+    document.querySelectorAll('.comparison-table').forEach(function (table) {
+      table.querySelectorAll('tbody tr').forEach(function (row) {
+        row.classList.add('row-hidden');
+      });
+      tableObserver.observe(table);
+    });
+  }
+
+  // ═══════════════════════════════════════════════
+  // 10. Architecture progressive line draw
+  // ═══════════════════════════════════════════════
+  var archFull = document.querySelector('.arch-full-svg');
+  if (archFull && 'IntersectionObserver' in window) {
+    // Set up stroke-dasharray for connection lines
+    var archLines = archFull.querySelectorAll('line');
+    archLines.forEach(function (line) {
+      var len = Math.sqrt(
+        Math.pow(parseFloat(line.getAttribute('x2')) - parseFloat(line.getAttribute('x1')), 2) +
+        Math.pow(parseFloat(line.getAttribute('y2')) - parseFloat(line.getAttribute('y1')), 2)
+      );
+      line.style.strokeDasharray = len;
+      line.style.strokeDashoffset = len;
+      line.style.transition = 'stroke-dash-offset 0s';
+    });
+
+    var archObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          archFull.classList.add('arch-animate');
+          // Animate lines with stagger
+          archLines.forEach(function (line, i) {
+            line.style.transition = 'stroke-dashoffset 0.8s ease ' + (0.3 + i * 0.12) + 's';
+            line.style.strokeDashoffset = '0';
+          });
+          archObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.2 });
+
+    archObserver.observe(archFull);
+  }
+
+  // ═══════════════════════════════════════════════
+  // 11. Chip schematic activation + counters
+  // ═══════════════════════════════════════════════
+  function animateCounter(el, target, suffix) {
+    var duration = 1200;
+    var start = performance.now();
+    function tick(now) {
+      var elapsed = now - start;
+      var progress = Math.min(elapsed / duration, 1);
+      var eased = 1 - Math.pow(1 - progress, 3);
+      el.textContent = Math.round(eased * target);
+      if (progress < 1) requestAnimationFrame(tick);
+      else if (suffix) el.textContent = target;
+    }
+    requestAnimationFrame(tick);
+  }
+
+  if ('IntersectionObserver' in window) {
+    var chipObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('chip-active');
+          // Animate counter values
+          var values = entry.target.querySelectorAll('.chip-pin-value');
+          values.forEach(function (v) {
+            var text = v.textContent.trim();
+            var num = parseInt(text, 10);
+            if (!isNaN(num) && num > 0) {
+              var suffix = v.querySelector('span');
+              v.childNodes[0].textContent = '0';
+              setTimeout(function () {
+                animateCounter(v.childNodes[0], num, suffix);
+              }, 600);
+            }
+          });
+          chipObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.3 });
+
+    document.querySelectorAll('.chip').forEach(function (c) {
+      chipObserver.observe(c);
+    });
+  }
+
+  // ═══════════════════════════════════════════════
+  // 12. Feature card expand/collapse
+  // ═══════════════════════════════════════════════
+  document.addEventListener('click', function (e) {
+    var header = e.target.closest('.feature-card-header');
+    if (!header) return;
+    var card = header.closest('.feature-card');
+    if (!card) return;
+    var isExpanded = card.classList.contains('expanded');
+    card.classList.toggle('expanded');
+    header.setAttribute('aria-expanded', !isExpanded);
+  });
+
+  // ═══════════════════════════════════════════════
+  // 13. Tab switcher with crossfade
+  // ═══════════════════════════════════════════════
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest('.tab-btn');
+    if (!btn) return;
+    var group = btn.closest('.tab-group');
+    if (!group) return;
+    var target = btn.getAttribute('data-tab');
+    var current = group.querySelector('.tab-content.active');
+    var next = group.querySelector('.tab-content[data-tab="' + target + '"]');
+    if (current === next) return;
+
+    group.querySelectorAll('.tab-btn').forEach(function (b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+
+    if (current && next) {
+      current.classList.add('fade-out');
+      current.classList.remove('active');
+      setTimeout(function () {
+        current.classList.remove('fade-out');
+        next.classList.add('active');
+      }, 150);
+    } else {
+      group.querySelectorAll('.tab-content').forEach(function (c) {
+        c.classList.toggle('active', c.getAttribute('data-tab') === target);
+      });
+    }
+  });
+
+  // ═══════════════════════════════════════════════
+  // 14. Copy button with animated checkmark
+  // ═══════════════════════════════════════════════
   document.addEventListener('click', function (e) {
     var btn = e.target.closest('.copy-btn');
     if (!btn) return;
-
     var panel = btn.closest('.code-panel');
     if (!panel) return;
-
     var pre = panel.querySelector('pre');
     if (!pre) return;
-
     var text = pre.innerText || pre.textContent || '';
     if (!text.trim()) return;
 
     if (navigator.clipboard && window.isSecureContext) {
-      navigator.clipboard.writeText(text).then(function () {
-        flashCopied(btn);
-      }).catch(function () {
-        fallbackCopy(text, btn);
-      });
+      navigator.clipboard.writeText(text).then(function () { flashCopied(btn); })
+        .catch(function () { fallbackCopy(text, btn); });
     } else {
       fallbackCopy(text, btn);
     }
@@ -57,8 +397,7 @@
     var ta = document.createElement('textarea');
     ta.value = text;
     ta.setAttribute('readonly', '');
-    ta.style.position = 'fixed';
-    ta.style.left = '-9999px';
+    ta.style.cssText = 'position:fixed;left:-9999px';
     document.body.appendChild(ta);
     ta.select();
     try { document.execCommand('copy'); } catch (e) { /* noop */ }
@@ -76,15 +415,57 @@
     }, 1800);
   }
 
-  // ── Legal TOC active section tracking ────────
+  // ═══════════════════════════════════════════════
+  // 15. Timeline + Reason code filter
+  // ═══════════════════════════════════════════════
+  if ('IntersectionObserver' in window) {
+    var timelineObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('animated');
+          timelineObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.2 });
+    document.querySelectorAll('.timeline').forEach(function (tl) { timelineObserver.observe(tl); });
+  }
+
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest('.filter-btn');
+    if (!btn) return;
+    var bar = btn.closest('.filter-bar');
+    if (!bar) return;
+    var category = btn.getAttribute('data-filter');
+    var table = bar.parentElement.querySelector('.data-table');
+    if (!table) return;
+
+    bar.querySelectorAll('.filter-btn').forEach(function (b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+
+    table.querySelectorAll('tbody tr').forEach(function (row) {
+      row.style.display = (category === 'all' || row.getAttribute('data-category') === category) ? '' : 'none';
+    });
+  });
+
+  // ═══════════════════════════════════════════════
+  // 16. Scroll-to-top button
+  // ═══════════════════════════════════════════════
+  var scrollBtn = document.querySelector('.scroll-top');
+  if (scrollBtn) {
+    window.addEventListener('scroll', function () {
+      scrollBtn.classList.toggle('visible', window.scrollY > 500);
+    }, { passive: true });
+    scrollBtn.addEventListener('click', function () {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+
+  // ═══════════════════════════════════════════════
+  // 17. Legal TOC active tracking
+  // ═══════════════════════════════════════════════
   var legalToc = document.querySelector('.legal-toc');
   if (legalToc && 'IntersectionObserver' in window) {
     var tocLinks = legalToc.querySelectorAll('a[href^="#"]');
-    var sectionIds = [];
-    tocLinks.forEach(function (link) {
-      sectionIds.push(link.getAttribute('href').slice(1));
-    });
-
     var tocObserver = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
         if (entry.isIntersecting) {
@@ -95,214 +476,15 @@
       });
     }, { rootMargin: '-80px 0px -60% 0px', threshold: 0 });
 
-    sectionIds.forEach(function (id) {
-      var el = document.getElementById(id);
+    tocLinks.forEach(function (link) {
+      var el = document.getElementById(link.getAttribute('href').slice(1));
       if (el) tocObserver.observe(el);
     });
   }
 
-  // ── Intersection observer for fade-up ────────
-  if ('IntersectionObserver' in window) {
-    var observer = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          entry.target.style.animationPlayState = 'running';
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.1 });
-
-    document.querySelectorAll('.fade-up').forEach(function (el) {
-      el.style.animationPlayState = 'paused';
-      observer.observe(el);
-    });
-  }
-
-  // ── Feature card expand/collapse ─────────────
-  document.addEventListener('click', function (e) {
-    var header = e.target.closest('.feature-card-header');
-    if (!header) return;
-
-    var card = header.closest('.feature-card');
-    if (!card) return;
-
-    var isExpanded = card.classList.contains('expanded');
-    card.classList.toggle('expanded');
-    header.setAttribute('aria-expanded', !isExpanded);
-  });
-
-  // ── Tab switcher with crossfade ──────────────
-  document.addEventListener('click', function (e) {
-    var btn = e.target.closest('.tab-btn');
-    if (!btn) return;
-
-    var group = btn.closest('.tab-group');
-    if (!group) return;
-
-    var target = btn.getAttribute('data-tab');
-    var currentActive = group.querySelector('.tab-content.active');
-    var nextContent = group.querySelector('.tab-content[data-tab="' + target + '"]');
-
-    if (currentActive === nextContent) return;
-
-    group.querySelectorAll('.tab-btn').forEach(function (b) {
-      b.classList.remove('active');
-    });
-    btn.classList.add('active');
-
-    if (currentActive && nextContent) {
-      currentActive.classList.add('fade-out');
-      currentActive.classList.remove('active');
-      setTimeout(function () {
-        currentActive.classList.remove('fade-out');
-        nextContent.classList.add('active');
-      }, 150);
-    } else {
-      group.querySelectorAll('.tab-content').forEach(function (content) {
-        content.classList.toggle('active', content.getAttribute('data-tab') === target);
-      });
-    }
-  });
-
-  // ── Chip schematic activation ───────────────
-  if ('IntersectionObserver' in window) {
-    var chipObserver = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('chip-active');
-          chipObserver.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.3 });
-
-    document.querySelectorAll('.chip').forEach(function (chip) {
-      chipObserver.observe(chip);
-    });
-  }
-
-  // ── Animated stat counters ──────────────────
-  function animateCounter(el, target, suffix) {
-    var duration = 1200;
-    var start = performance.now();
-    function tick(now) {
-      var elapsed = now - start;
-      var progress = Math.min(elapsed / duration, 1);
-      var eased = 1 - Math.pow(1 - progress, 3);
-      var current = Math.round(eased * target);
-      el.textContent = current;
-      if (progress < 1) requestAnimationFrame(tick);
-      else if (suffix) el.textContent = target;
-    }
-    requestAnimationFrame(tick);
-  }
-
-  if ('IntersectionObserver' in window) {
-    var counterObserver = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          var values = entry.target.querySelectorAll('.chip-pin-value');
-          values.forEach(function (v) {
-            var text = v.textContent.trim();
-            var num = parseInt(text, 10);
-            if (!isNaN(num) && num > 0) {
-              var suffix = v.querySelector('span');
-              v.childNodes[0].textContent = '0';
-              setTimeout(function () {
-                animateCounter(v.childNodes[0], num, suffix);
-              }, 600);
-            }
-          });
-          counterObserver.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.3 });
-
-    document.querySelectorAll('.chip').forEach(function (chip) {
-      counterObserver.observe(chip);
-    });
-  }
-
-  // ── Timeline scroll animation ────────────────
-  if ('IntersectionObserver' in window) {
-    var timelineObserver = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('animated');
-          timelineObserver.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.2 });
-
-    document.querySelectorAll('.timeline').forEach(function (tl) {
-      timelineObserver.observe(tl);
-    });
-  }
-
-  // ── Reason code filter ───────────────────────
-  document.addEventListener('click', function (e) {
-    var btn = e.target.closest('.filter-btn');
-    if (!btn) return;
-
-    var bar = btn.closest('.filter-bar');
-    if (!bar) return;
-
-    var category = btn.getAttribute('data-filter');
-    var container = bar.parentElement;
-    var table = container.querySelector('.data-table');
-    if (!table) return;
-
-    bar.querySelectorAll('.filter-btn').forEach(function (b) {
-      b.classList.remove('active');
-    });
-    btn.classList.add('active');
-
-    table.querySelectorAll('tbody tr').forEach(function (row) {
-      if (category === 'all') {
-        row.style.display = '';
-      } else {
-        row.style.display = row.getAttribute('data-category') === category ? '' : 'none';
-      }
-    });
-  });
-
-  // ── Scroll-to-top button ─────────────────────
-  var scrollBtn = document.querySelector('.scroll-top');
-  if (scrollBtn) {
-    window.addEventListener('scroll', function () {
-      scrollBtn.classList.toggle('visible', window.scrollY > 500);
-    }, { passive: true });
-
-    scrollBtn.addEventListener('click', function () {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-  }
-
-  // ── Active nav section highlight on scroll ───
-  var navLinksAll = document.querySelectorAll('.navlinks a[href^="#"], .navlinks a[href^="/"]');
-  var sections = document.querySelectorAll('section[id]');
-  if (sections.length > 0 && 'IntersectionObserver' in window) {
-    var sectionObserver = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          var id = entry.target.id;
-          navLinksAll.forEach(function (link) {
-            var href = link.getAttribute('href');
-            if (href === '#' + id) {
-              link.classList.add('section-active');
-            } else {
-              link.classList.remove('section-active');
-            }
-          });
-        }
-      });
-    }, { rootMargin: '-80px 0px -50% 0px', threshold: 0 });
-
-    sections.forEach(function (section) {
-      sectionObserver.observe(section);
-    });
-  }
-
-  // ── Docs search (Cmd+K) ─────────────────────
+  // ═══════════════════════════════════════════════
+  // 18. Docs search (Cmd+K)
+  // ═══════════════════════════════════════════════
   var searchOverlay = document.getElementById('search-overlay');
   var searchInput = document.getElementById('search-input');
   var searchResults = document.getElementById('search-results');
@@ -310,124 +492,63 @@
   var searchIndex = [];
 
   if (searchOverlay && searchInput) {
-    // Build index from data tables on docs page
     document.querySelectorAll('.data-table tbody tr').forEach(function (row) {
       var cells = row.querySelectorAll('td');
       if (cells.length >= 2) {
         var code = (cells[0].textContent || '').trim();
         var desc = (cells[1].textContent || '').trim();
-        var cat = row.getAttribute('data-category') || '';
-        if (code) {
-          searchIndex.push({ code: code, desc: desc, tag: cat, type: 'reason_code', row: row });
-        }
+        if (code) searchIndex.push({ code: code, desc: desc, tag: row.getAttribute('data-category') || '', row: row });
       }
     });
-
-    // Also index config keys from kv-list elements
     document.querySelectorAll('.kv-list dt').forEach(function (dt) {
       var dd = dt.nextElementSibling;
       if (dd && dd.tagName === 'DD') {
-        searchIndex.push({
-          code: dt.textContent.trim(),
-          desc: dd.textContent.trim().substring(0, 120),
-          tag: 'config',
-          type: 'config_key',
-          row: null
-        });
+        searchIndex.push({ code: dt.textContent.trim(), desc: dd.textContent.trim().substring(0, 120), tag: 'config', row: null });
       }
     });
 
-    function openSearch() {
-      searchOverlay.classList.add('open');
-      searchInput.value = '';
-      searchResults.innerHTML = '';
-      setTimeout(function () { searchInput.focus(); }, 50);
-    }
-
-    function closeSearch() {
-      searchOverlay.classList.remove('open');
-    }
-
-    function renderResults(query) {
-      if (!query) {
-        searchResults.innerHTML = '';
-        return;
-      }
-      var q = query.toLowerCase();
-      var matches = searchIndex.filter(function (item) {
-        return item.code.toLowerCase().indexOf(q) !== -1 ||
-               item.desc.toLowerCase().indexOf(q) !== -1 ||
-               item.tag.toLowerCase().indexOf(q) !== -1;
-      }).slice(0, 20);
-
-      if (matches.length === 0) {
-        searchResults.innerHTML = '<div class="search-empty">No results for "' + query + '"</div>';
-        return;
-      }
-
-      searchResults.innerHTML = matches.map(function (item) {
-        return '<div class="search-result" data-code="' + item.code + '">' +
-          '<span class="search-result-code">' + item.code + '</span>' +
-          '<span class="search-result-desc">' + item.desc + '</span>' +
-          '<span class="search-result-tag">' + item.tag + '</span>' +
-          '</div>';
-      }).join('');
-    }
+    function openSearch() { searchOverlay.classList.add('open'); searchInput.value = ''; searchResults.innerHTML = ''; setTimeout(function () { searchInput.focus(); }, 50); }
+    function closeSearch() { searchOverlay.classList.remove('open'); }
 
     searchInput.addEventListener('input', function () {
-      renderResults(searchInput.value.trim());
+      var q = searchInput.value.trim().toLowerCase();
+      if (!q) { searchResults.innerHTML = ''; return; }
+      var matches = searchIndex.filter(function (item) {
+        return item.code.toLowerCase().indexOf(q) !== -1 || item.desc.toLowerCase().indexOf(q) !== -1 || item.tag.toLowerCase().indexOf(q) !== -1;
+      }).slice(0, 20);
+      searchResults.innerHTML = matches.length === 0
+        ? '<div class="search-empty">No results for "' + q + '"</div>'
+        : matches.map(function (m) {
+            return '<div class="search-result" data-code="' + m.code + '"><span class="search-result-code">' + m.code + '</span><span class="search-result-desc">' + m.desc + '</span><span class="search-result-tag">' + m.tag + '</span></div>';
+          }).join('');
     });
 
-    // Click result to scroll to it
     searchResults.addEventListener('click', function (e) {
       var result = e.target.closest('.search-result');
       if (!result) return;
-      var code = result.getAttribute('data-code');
-      var match = searchIndex.find(function (item) { return item.code === code; });
+      var match = searchIndex.find(function (item) { return item.code === result.getAttribute('data-code'); });
+      closeSearch();
       if (match && match.row) {
-        closeSearch();
         match.row.scrollIntoView({ behavior: 'smooth', block: 'center' });
         match.row.style.background = 'rgba(212,148,60,.1)';
         setTimeout(function () { match.row.style.background = ''; }, 2000);
-      } else {
-        closeSearch();
       }
     });
 
-    // Keyboard shortcuts
     document.addEventListener('keydown', function (e) {
-      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-        e.preventDefault();
-        if (searchOverlay.classList.contains('open')) {
-          closeSearch();
-        } else {
-          openSearch();
-        }
-      }
-      if (e.key === 'Escape' && searchOverlay.classList.contains('open')) {
-        closeSearch();
-      }
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') { e.preventDefault(); searchOverlay.classList.contains('open') ? closeSearch() : openSearch(); }
+      if (e.key === 'Escape' && searchOverlay.classList.contains('open')) closeSearch();
     });
-
-    // Close on overlay click
-    searchOverlay.addEventListener('click', function (e) {
-      if (e.target === searchOverlay) closeSearch();
-    });
-
-    // Trigger button
-    if (searchTrigger) {
-      searchTrigger.addEventListener('click', function (e) {
-        e.preventDefault();
-        openSearch();
-      });
-    }
+    searchOverlay.addEventListener('click', function (e) { if (e.target === searchOverlay) closeSearch(); });
+    if (searchTrigger) searchTrigger.addEventListener('click', function (e) { e.preventDefault(); openSearch(); });
   }
 
-  // ── Basic syntax highlighting for code panels ─
+  // ═══════════════════════════════════════════════
+  // 19. Syntax highlighting for code panels
+  // ═══════════════════════════════════════════════
   document.querySelectorAll('.code-panel[data-lang]').forEach(function (panel) {
     var pre = panel.querySelector('pre');
     if (!pre) return;
-
     var lang = panel.getAttribute('data-lang');
     var html = pre.innerHTML;
 
@@ -439,7 +560,6 @@
         .replace(/:\s*(true|false)/g, ': <span class="tok-bool">$1</span>')
         .replace(/:\s*(null)/g, ': <span class="tok-null">$1</span>');
     }
-
     if (lang === 'toml') {
       html = html
         .replace(/^(\s*#.*)$/gm, '<span class="tok-comment">$1</span>')
@@ -449,8 +569,33 @@
         .replace(/=\s*(\d+\.?\d*)/g, '= <span class="tok-num">$1</span>')
         .replace(/=\s*(true|false)/g, '= <span class="tok-bool">$1</span>');
     }
-
     pre.innerHTML = html;
   });
+
+  // ═══════════════════════════════════════════════
+  // 20. Smooth anchor scroll
+  // ═══════════════════════════════════════════════
+  document.addEventListener('click', function (e) {
+    var link = e.target.closest('a[href^="#"]');
+    if (!link) return;
+    var id = link.getAttribute('href').slice(1);
+    var target = document.getElementById(id);
+    if (target) {
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      history.replaceState(null, '', '#' + id);
+    }
+  });
+
+  // ═══════════════════════════════════════════════
+  // 21. Cursor spotlight on hero
+  // ═══════════════════════════════════════════════
+  if (heroSection && window.innerWidth > 768) {
+    heroSection.addEventListener('mousemove', throttle(function (e) {
+      var rect = heroSection.getBoundingClientRect();
+      heroSection.style.setProperty('--cursor-x', (e.clientX - rect.left) + 'px');
+      heroSection.style.setProperty('--cursor-y', (e.clientY - rect.top) + 'px');
+    }, 32));
+  }
 
 })();

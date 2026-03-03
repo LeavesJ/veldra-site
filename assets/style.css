@@ -1542,6 +1542,68 @@ ul { list-style: none; }
 
 /* SVG data packets use SMIL <animateMotion> in the HTML */
 
+/* ── Full architecture diagram (product page) ──── */
+.arch-full {
+  padding: 32px 0 16px;
+  overflow-x: auto;
+  display: flex;
+  justify-content: center;
+}
+.arch-full-svg {
+  width: 100%;
+  max-width: 900px;
+  height: auto;
+}
+.arch-full-svg text {
+  font-family: var(--mono);
+}
+
+/* Staggered fade-in for architecture nodes */
+@keyframes archNodeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.arch-full-svg .arch-node {
+  opacity: 0;
+  animation: archNodeIn .6s ease-out forwards;
+  animation-delay: var(--delay, 0s);
+}
+
+/* Legend bar */
+.arch-legend {
+  display: flex;
+  justify-content: center;
+  gap: 28px;
+  flex-wrap: wrap;
+  padding: 16px 0 0;
+  font-size: 12px;
+  color: var(--ink-muted);
+  font-family: var(--mono);
+}
+.arch-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.arch-legend-line {
+  display: inline-block;
+  width: 24px;
+  height: 2px;
+  border-radius: 1px;
+}
+.arch-legend-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  border: 1px dashed rgba(226,232,240,.25);
+}
+
+@media (max-width: 640px) {
+  .arch-full { padding: 16px 0 8px; }
+  .arch-legend { gap: 16px; font-size: 11px; }
+}
+
 /* ── Flow steps (fallback) ────────────────────── */
 .flow-steps {
   display: grid;
@@ -2347,6 +2409,129 @@ code:not(pre code) {
 .scroll-top:hover {
   border-color: var(--amber);
   box-shadow: 0 0 16px rgba(212,148,60,.25);
+}
+
+/* ── Scroll progress bar ─────────────────────── */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--amber-dim), var(--amber), var(--amber-light));
+  transform-origin: left;
+  transform: scaleX(0);
+  z-index: 1000;
+  pointer-events: none;
+  will-change: transform;
+}
+
+/* ── Hero cursor spotlight ──────────────────── */
+.hero-dark {
+  --cursor-x: 50%;
+  --cursor-y: 50%;
+}
+.hero-dark::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(600px circle at var(--cursor-x) var(--cursor-y), rgba(212,148,60,.04), transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Hero parallax layer setup ──────────────── */
+.hero-ring,
+.hero-grid,
+.hero-hex {
+  will-change: transform, opacity;
+  transition: none;
+}
+.hero-inner {
+  will-change: transform, opacity;
+  position: relative;
+  z-index: 2;
+}
+
+/* ── 3D chip tilt ────────────────────────────── */
+.chip-wrap {
+  perspective: 800px;
+}
+.chip {
+  transition: transform .15s ease-out;
+  will-change: transform;
+  transform-style: preserve-3d;
+}
+.chip-hovering .chip {
+  transition: none;
+}
+
+/* ── Magnetic card hover (3D tilt + glow) ────── */
+.card,
+.mode-card,
+.feature-card {
+  --glow-x: 50%;
+  --glow-y: 50%;
+  transition: transform .2s ease, border-color .3s ease, box-shadow .3s ease;
+  will-change: transform;
+}
+@media (min-width: 769px) {
+  .card:hover,
+  .mode-card:hover,
+  .feature-card:hover {
+    border-color: rgba(212,148,60,.2);
+    box-shadow:
+      0 0 20px rgba(212,148,60,.06),
+      0 2px 12px rgba(0,0,0,.15);
+  }
+  .card::before,
+  .mode-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(400px circle at var(--glow-x) var(--glow-y), rgba(212,148,60,.06), transparent 50%);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity .3s ease;
+    z-index: 0;
+  }
+  .card:hover::before,
+  .mode-card:hover::before {
+    opacity: 1;
+  }
+  .card { position: relative; overflow: hidden; }
+  .mode-card { position: relative; overflow: hidden; }
+}
+
+/* ── Section reveal animations ──────────────── */
+.section-reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity .7s ease, transform .7s ease;
+}
+.section-reveal.section-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Comparison table staggered row reveal ──── */
+.comparison-table tbody tr.row-hidden {
+  opacity: 0;
+  transform: translateX(-20px);
+  transition: opacity .4s ease, transform .4s ease;
+}
+.comparison-table tbody tr.row-visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ── Architecture line draw animation ─────── */
+.arch-full-svg line {
+  will-change: stroke-dashoffset;
+}
+.arch-full-svg .arch-node {
+  will-change: opacity, transform;
 }
 
 /* ── Focus-visible states ────────────────────── */
