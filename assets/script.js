@@ -761,132 +761,102 @@
   // ═══════════════════════════════════════════════
   // 26b. Cube-scroll storytelling controller
   // ═══════════════════════════════════════════════
-  // Simple approach: scroll position drives panel index via the 400vh section.
-  // Wheel events on the sticky are intercepted and converted to exact scroll
-  // jumps of one panel-height each, with a busy flag to block momentum.
+  // Document-level wheel capture. No scroll-position sync.
+  // The wheel handler is the only thing that changes panels.
   (function () {
     var section = document.querySelector('.scroll-lock-section');
     if (!section) return;
     var panels = section.querySelectorAll('.scroll-lock-panel');
     var dots = section.querySelectorAll('.scroll-lock-dot');
-    if (panels.length === 0) return;
-    if (window.innerWidth <= 768) return;
+    if (panels.length === 0 || window.innerWidth <= 768) return;
 
-    var panelCount = panels.length;
-    var current = 0;
+    var N = panels.length;
+    var cur = 0;
     var busy = false;
-    var ANIM_MS = 700;
-    var boundaryCount = 0;
-    var lastBoundaryTime = 0;
-    var BOUNDARY_THRESHOLD = 3;  // wheel events at boundary before releasing
-    var BOUNDARY_RESET = 300;    // ms of no boundary hits to reset counter
+    var LOCK_MS = 750;
 
     panels[0].classList.add('cube-active');
 
-    function showPanel(idx) {
-      panels.forEach(function (p, i) {
-        p.classList.remove('cube-active', 'cube-exited');
-        if (i === idx) p.classList.add('cube-active');
-        else if (i < idx) p.classList.add('cube-exited');
-      });
-      dots.forEach(function (d, i) {
-        d.classList.toggle('dot-active', i === idx);
-      });
+    function show(idx) {
+      for (var i = 0; i < N; i++) {
+        panels[i].classList.remove('cube-active', 'cube-exited');
+        if (i === idx) panels[i].classList.add('cube-active');
+        else if (i < idx) panels[i].classList.add('cube-exited');
+      }
+      for (var j = 0; j < dots.length; j++) {
+        dots[j].classList.toggle('dot-active', j === idx);
+      }
     }
 
-    function isInSection() {
-      var rect = section.getBoundingClientRect();
-      return rect.top < 10 && rect.bottom > window.innerHeight;
+    function stickyActive() {
+      var r = section.getBoundingClientRect();
+      return r.top <= 5 && r.bottom >= window.innerHeight;
     }
 
-    function panelHeight() {
-      return section.offsetHeight / panelCount;
-    }
-
-    // Jump scroll to land on a specific panel zone
-    function scrollToPanel(idx) {
-      var target = section.offsetTop + idx * panelHeight() + 1;
+    function pin() {
+      // Keep scroll pinned so sticky stays engaged and position cannot drift
+      var ph = section.offsetHeight / N;
+      var target = section.offsetTop + cur * ph + 1;
       window.scrollTo(0, target);
     }
 
-    // Wheel capture on the sticky element
-    var sticky = section.querySelector('.scroll-lock-sticky');
-    (sticky || section).addEventListener('wheel', function (e) {
-      if (!isInSection()) return;
+    // Document-level wheel: catches events regardless of cursor position
+    document.addEventListener('wheel', function (e) {
+      if (!stickyActive()) return;
 
-      // Always block native scroll while the sticky is active
+      // Block all native scroll while in the section
       e.preventDefault();
 
+      // Swallow everything while transitioning
       if (busy) return;
 
       var dir = e.deltaY > 0 ? 1 : -1;
-      var next = current + dir;
+      var next = cur + dir;
 
-      // At boundaries: count separate scroll gestures, release after threshold
-      if (next < 0 || next >= panelCount) {
-        var now = Date.now();
-        // Reset counter if enough time passed (new gesture)
-        if (now - lastBoundaryTime > BOUNDARY_RESET) {
-          boundaryCount = 0;
+      // Boundary: scroll past the section to exit
+      if (next < 0 || next >= N) {
+        busy = true;
+        var target;
+        if (next >= N) {
+          target = section.offsetTop + section.offsetHeight + 5;
+        } else {
+          target = section.offsetTop - window.innerHeight + 5;
+          if (target < 0) target = 0;
         }
-        boundaryCount++;
-        lastBoundaryTime = now;
-
-        if (boundaryCount >= BOUNDARY_THRESHOLD) {
-          // Release: scroll past the section
-          boundaryCount = 0;
-          busy = true;
-          var exitTarget;
-          if (next >= panelCount) {
-            exitTarget = section.offsetTop + section.offsetHeight + 2;
-          } else {
-            exitTarget = section.offsetTop - window.innerHeight;
-            if (exitTarget < 0) exitTarget = 0;
-          }
-          window.scrollTo(0, exitTarget);
-          setTimeout(function () { busy = false; }, ANIM_MS);
-        }
+        window.scrollTo(0, target);
+        setTimeout(function () { busy = false; }, LOCK_MS);
         return;
       }
 
-      // Reset boundary counter when moving between panels
-      boundaryCount = 0;
-
+      // Step one panel
       busy = true;
-      current = next;
-      showPanel(current);
-      scrollToPanel(current);
+      cur = next;
+      show(cur);
+      pin();
 
       setTimeout(function () {
-        // Re-pin to current panel to correct any drift before unlocking
-        scrollToPanel(current);
+        pin(); // re-pin to correct any drift
         busy = false;
-      }, ANIM_MS);
+      }, LOCK_MS);
     }, { passive: false });
 
-    // On initial scroll into the section (via scrollbar/keyboard),
-    // snap to the nearest panel so the wheel handler can take over
-    var entryHandled = false;
-    window.addEventListener('scroll', throttle(function () {
+    // When scrolling into the section naturally (scrollbar, keyboard),
+    // snap to panel 0 or last panel depending on direction
+    var wasInView = false;
+    window.addEventListener('scroll', function () {
       if (busy) return;
-      var rect = section.getBoundingClientRect();
-      var inView = rect.top < 10 && rect.bottom > window.innerHeight;
-
-      if (inView && !entryHandled) {
-        entryHandled = true;
-        // Snap to nearest panel based on scroll position
-        var scrolled = -rect.top;
-        var ph = panelHeight();
-        var idx = Math.round(scrolled / ph);
-        if (idx < 0) idx = 0;
-        if (idx >= panelCount) idx = panelCount - 1;
-        current = idx;
-        showPanel(current);
-        scrollToPanel(current);
-      } else if (!inView) {
-        entryHandled = false;
+      var inView = stickyActive();
+      if (inView && !wasInView) {
+        // Just entered the section
+        var r = section.getBoundingClientRect();
+        var scrolled = -r.top;
+        // If near the top, panel 0; if near the bottom, last panel
+        cur = scrolled < section.offsetHeight / 2 ? 0 : N - 1;
+        show(cur);
+        pin();
       }
-    }, 200), { passive: true });
+      wasInView = inView;
+    }, { passive: true });
   })();
 
 })();
