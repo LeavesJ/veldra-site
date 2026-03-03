@@ -598,4 +598,181 @@
     }, 32));
   }
 
+  // ═══════════════════════════════════════════════
+  // 22. Isometric hero: mode toggle
+  // ═══════════════════════════════════════════════
+  var heroCube = document.getElementById('hero-cube');
+  var modeDesc = document.getElementById('hero-mode-desc');
+  var modeDescriptions = {
+    shadow: 'Audit templates silently. No miner impact. Zero risk.',
+    observe: 'Log every verdict and share event. Build confidence before enforcing.',
+    inline: 'Enforce policy on every template. Reject violations in real time.'
+  };
+
+  document.querySelectorAll('.hero-mode-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var mode = btn.getAttribute('data-mode');
+      if (!mode || !heroCube) return;
+      document.querySelectorAll('.hero-mode-btn').forEach(function (b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      heroCube.setAttribute('data-mode', mode);
+      if (modeDesc) modeDesc.textContent = modeDescriptions[mode] || '';
+    });
+  });
+
+  // ═══════════════════════════════════════════════
+  // 23. Isometric hero: mouse-driven subtle tilt
+  // ═══════════════════════════════════════════════
+  var heroStackScene = document.querySelector('.hero-stack-scene');
+  if (heroStackScene && heroCube && window.innerWidth > 768) {
+    var cubeTargetRx = 0, cubeTargetRy = 0, cubeCurRx = 0, cubeCurRy = 0;
+    var cubeRafId = null;
+
+    heroStackScene.addEventListener('mousemove', function (e) {
+      var rect = heroStackScene.getBoundingClientRect();
+      var cx = rect.left + rect.width / 2;
+      var cy = rect.top + rect.height / 2;
+      cubeTargetRy = ((e.clientX - cx) / (rect.width / 2)) * 6;
+      cubeTargetRx = -((e.clientY - cy) / (rect.height / 2)) * 4;
+      if (!cubeRafId) cubeRafId = requestAnimationFrame(cubeTiltLoop);
+    });
+
+    heroStackScene.addEventListener('mouseleave', function () {
+      cubeTargetRx = 0;
+      cubeTargetRy = 0;
+    });
+
+    function cubeTiltLoop() {
+      cubeCurRx = lerp(cubeCurRx, cubeTargetRx, 0.06);
+      cubeCurRy = lerp(cubeCurRy, cubeTargetRy, 0.06);
+      heroCube.style.transform =
+        'rotateX(' + (-25 + cubeCurRx) + 'deg) rotateY(' + (35 + cubeCurRy) + 'deg)';
+
+      if (Math.abs(cubeCurRx - cubeTargetRx) > 0.05 || Math.abs(cubeCurRy - cubeTargetRy) > 0.05) {
+        cubeRafId = requestAnimationFrame(cubeTiltLoop);
+      } else {
+        cubeRafId = null;
+      }
+    }
+  }
+
+  // ═══════════════════════════════════════════════
+  // 24. Isometric hero: reason code chip spawner
+  // ═══════════════════════════════════════════════
+  var reasonStream = document.getElementById('reason-stream');
+  var reasonCodes = [
+    'avg_fee_below_minimum', 'tx_count_exceeded', 'coinbase_mismatch',
+    'version_bits_invalid', 'sigops_exceeded', 'duplicate_tx',
+    'prevhash_stale', 'weight_exceeded', 'locktime_invalid',
+    'witness_mismatch', 'fee_variance_high', 'merkle_root_invalid',
+    'template_timeout', 'nonce_range_exhausted'
+  ];
+
+  if (reasonStream && window.innerWidth > 768) {
+    var chipCount = 0;
+    var maxChips = 6;
+
+    setInterval(function () {
+      if (!heroCube || heroCube.getAttribute('data-mode') === 'shadow') return;
+      var chip = document.createElement('span');
+      chip.className = 'iso-reason-chip';
+      chip.textContent = reasonCodes[chipCount % reasonCodes.length];
+      reasonStream.appendChild(chip);
+      chipCount++;
+
+      // Remove oldest when over limit
+      while (reasonStream.children.length > maxChips) {
+        reasonStream.removeChild(reasonStream.firstChild);
+      }
+    }, 2400);
+  }
+
+  // ═══════════════════════════════════════════════
+  // 25. Isometric hero: NDJSON ticker
+  // ═══════════════════════════════════════════════
+  var tickerTrack = document.getElementById('ticker-track');
+  if (tickerTrack) {
+    var verdicts = [
+      { accepted: true,  reason_code: 'ok', share_id: 'a7c3…e1' },
+      { accepted: false, reason_code: 'avg_fee_below_minimum', share_id: 'b2d1…f4' },
+      { accepted: true,  reason_code: 'ok', share_id: 'c9e7…a2' },
+      { accepted: false, reason_code: 'tx_count_exceeded', share_id: 'd4f0…b8' },
+      { accepted: true,  reason_code: 'ok', share_id: 'e1a5…c6' },
+      { accepted: false, reason_code: 'prevhash_stale', share_id: 'f8b3…d9' },
+      { accepted: true,  reason_code: 'ok', share_id: 'g6c2…e0' },
+      { accepted: false, reason_code: 'sigops_exceeded', share_id: 'h3d8…a1' },
+      { accepted: true,  reason_code: 'ok', share_id: 'i0f4…b7' },
+      { accepted: false, reason_code: 'weight_exceeded', share_id: 'j5e9…c3' },
+      { accepted: true,  reason_code: 'ok', share_id: 'k2a6…d5' },
+      { accepted: false, reason_code: 'coinbase_mismatch', share_id: 'l7b1…e8' }
+    ];
+    // Double to fill ticker width for seamless loop
+    var tickerHtml = '';
+    for (var t = 0; t < 2; t++) {
+      verdicts.forEach(function (v) {
+        var cls = v.accepted ? 'ticker-ok' : 'ticker-reject';
+        tickerHtml += '<span class="' + cls + '">'
+          + JSON.stringify(v)
+          + '</span>';
+      });
+    }
+    tickerTrack.innerHTML = tickerHtml;
+  }
+
+  // ═══════════════════════════════════════════════
+  // 26. Scroll-lock storytelling controller
+  // ═══════════════════════════════════════════════
+  document.querySelectorAll('.scroll-lock-section').forEach(function (section) {
+    var sticky = section.querySelector('.scroll-lock-sticky');
+    var panels = section.querySelectorAll('.scroll-lock-panel');
+    var dots = section.querySelectorAll('.scroll-lock-dot');
+    if (!sticky || panels.length === 0) return;
+
+    var lastActive = -1;
+    // Activate first panel by default
+    panels[0].classList.add('panel-active');
+
+    function updatePanels() {
+      var rect = section.getBoundingClientRect();
+      var sectionH = section.offsetHeight;
+      var scrolled = -rect.top;
+      if (scrolled < 0) scrolled = 0;
+      if (scrolled > sectionH) scrolled = sectionH;
+
+      var panelHeight = sectionH / panels.length;
+      var activeIndex = Math.min(Math.floor(scrolled / panelHeight), panels.length - 1);
+      if (activeIndex < 0) activeIndex = 0;
+
+      if (activeIndex !== lastActive) {
+        lastActive = activeIndex;
+        panels.forEach(function (p, i) {
+          p.classList.toggle('panel-active', i === activeIndex);
+        });
+        dots.forEach(function (d, i) {
+          d.classList.toggle('dot-active', i === activeIndex);
+        });
+      }
+    }
+
+    window.addEventListener('scroll', throttle(updatePanels, 32), { passive: true });
+    updatePanels();
+
+    // On mobile, disable scroll-lock and stack panels normally
+    if (window.innerWidth <= 768) {
+      section.style.height = 'auto';
+      sticky.style.position = 'static';
+      sticky.style.height = 'auto';
+      panels.forEach(function (p) {
+        p.style.position = 'static';
+        p.style.opacity = '1';
+        p.style.transform = 'none';
+        p.style.pointerEvents = 'auto';
+        p.style.padding = '60px 0';
+      });
+      if (dots.length > 0) {
+        dots[0].parentElement.style.display = 'none';
+      }
+    }
+  });
+
 })();
