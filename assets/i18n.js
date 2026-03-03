@@ -19,7 +19,7 @@
   function fetchLocale(lang, cb) {
     if (CACHE[lang]) return cb(CACHE[lang]);
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', '/assets/i18n/' + lang + '.json?v=3', true);
+    xhr.open('GET', '/assets/i18n/' + lang + '.json?v=4', true);
     xhr.onload = function () {
       if (xhr.status === 200) {
         try {
