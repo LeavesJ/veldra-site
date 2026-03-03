@@ -761,138 +761,125 @@
   // ═══════════════════════════════════════════════
   // 26b. Cube-scroll storytelling controller
   // ═══════════════════════════════════════════════
+  // Hard-locked: one scroll = one panel, no momentum leaks, no position sync.
+  // The wheel handler is the sole authority on which panel is active.
   document.querySelectorAll('.scroll-lock-section').forEach(function (section) {
     var panels = section.querySelectorAll('.scroll-lock-panel');
     var dots = section.querySelectorAll('.scroll-lock-dot');
     if (panels.length === 0) return;
+    if (window.innerWidth <= 768) return;
 
-    // On mobile, CSS handles stacking; skip cube JS entirely
-    if (window.innerWidth <= 768) { return; }
-
-    var currentPanel = 0;
-    var locked = false;
-    var COOLDOWN = 550; // ms, just under CSS transition (650ms)
     var panelCount = panels.length;
-    var lastWheelTime = 0;
-    var IDLE_GAP = 120; // ms of no wheel events before accepting input again
-    var boundaryHits = 0;       // deliberate scroll gestures at boundary
-    var boundaryLastWheel = 0;  // timestamp of last wheel at boundary
-    var BOUNDARY_IDLE = 250;    // ms gap to count as a new gesture
-    var BOUNDARY_REQUIRED = 2;  // gestures needed to exit
+    var current = 0;
+    var engaged = false;   // true while user is inside the cube
+    var transitioning = false;
+    var TRANSITION_MS = 650;
 
     panels[0].classList.add('cube-active');
 
-    function showPanel(index) {
+    function showPanel(idx) {
       panels.forEach(function (p, i) {
         p.classList.remove('cube-active', 'cube-exited');
-        if (i === index) {
-          p.classList.add('cube-active');
-        } else if (i < index) {
-          p.classList.add('cube-exited');
-        }
+        if (i === idx) p.classList.add('cube-active');
+        else if (i < idx) p.classList.add('cube-exited');
       });
       dots.forEach(function (d, i) {
-        d.classList.toggle('dot-active', i === index);
+        d.classList.toggle('dot-active', i === idx);
       });
     }
 
-    // Scroll the section so the correct panel zone is in view
-    function scrollToPanel(index) {
-      var sectionTop = section.offsetTop;
-      var sectionH = section.offsetHeight;
-      var panelH = sectionH / panelCount;
-      var target = sectionTop + (index * panelH) + (panelH * 0.25);
-      window.scrollTo({ top: target, behavior: 'smooth' });
+    // Pin the scroll position so native scroll cannot move the page
+    function pinScroll() {
+      var sectionTop = section.getBoundingClientRect().top + window.pageYOffset;
+      // Pin to the middle of the section so sticky stays engaged
+      var target = sectionTop + 10;
+      if (Math.abs(window.pageYOffset - target) > 5) {
+        window.scrollTo(0, target);
+      }
     }
 
-    var sticky = section.querySelector('.scroll-lock-sticky');
-
-    // Capture wheel on the sticky viewport and step exactly one panel
-    (sticky || section).addEventListener('wheel', function (e) {
-      var now = Date.now();
-
-      // Only intercept when the section is in the sticky zone
+    // Determine if the sticky section is in view
+    function isStickyActive() {
       var rect = section.getBoundingClientRect();
-      var sectionH = section.offsetHeight;
-      var scrolled = -rect.top;
-      if (scrolled < -10 || scrolled > sectionH + 10) return;
+      // Section top is at or above viewport top, and section bottom is below viewport
+      return rect.top <= 5 && rect.bottom > window.innerHeight * 0.5;
+    }
 
-      var direction = e.deltaY > 0 ? 1 : -1;
-      var nextPanel = currentPanel + direction;
-
-      // At boundaries: require multiple deliberate scroll gestures to exit
-      if (nextPanel < 0 || nextPanel >= panelCount) {
-        // A new gesture is a wheel event after an idle gap
-        if (now - boundaryLastWheel > BOUNDARY_IDLE) {
-          boundaryHits++;
+    // Global wheel handler: capture at document level so nothing escapes
+    document.addEventListener('wheel', function (e) {
+      // Check if we should engage
+      if (!engaged) {
+        if (isStickyActive()) {
+          engaged = true;
+          current = 0;
+          showPanel(0);
+        } else {
+          return; // not in the cube section, let page scroll normally
         }
-        boundaryLastWheel = now;
-
-        // Release to page only after enough separate gestures
-        if (boundaryHits >= BOUNDARY_REQUIRED) {
-          boundaryHits = 0;
-          return; // let native scroll happen
-        }
-        e.preventDefault();
-        return;
       }
 
-      // Reset boundary counter when moving between inner panels
-      boundaryHits = 0;
-
-      // Always block native scroll while inside the section
+      // While engaged, block ALL native scroll
       e.preventDefault();
 
-      // If locked, swallow the event entirely (absorbs momentum)
-      if (locked) {
-        lastWheelTime = now;
+      // If mid-transition, swallow completely
+      if (transitioning) return;
+
+      var direction = e.deltaY > 0 ? 1 : -1;
+      var next = current + direction;
+
+      // Boundary: trying to scroll before first or after last panel
+      if (next < 0 || next >= panelCount) {
+        // Disengage and let the page scroll naturally on the NEXT wheel event
+        engaged = false;
+        if (next < 0) {
+          // Scrolling up past first panel: position just above the section
+          var aboveTarget = section.getBoundingClientRect().top + window.pageYOffset - 20;
+          window.scrollTo(0, aboveTarget);
+        } else {
+          // Scrolling down past last panel: position just below the section
+          var belowTarget = section.getBoundingClientRect().top + window.pageYOffset + section.offsetHeight + 20;
+          window.scrollTo(0, belowTarget);
+        }
         return;
       }
 
-      // Require an idle gap since last wheel event to prevent
-      // momentum carryover from triggering the next flip
-      if (now - lastWheelTime < IDLE_GAP && lastWheelTime > 0) {
-        lastWheelTime = now;
-        return;
-      }
+      // Transition to next panel
+      transitioning = true;
+      current = next;
+      showPanel(current);
+      pinScroll();
 
-      locked = true;
-      lastWheelTime = now;
-
-      currentPanel = nextPanel;
-      showPanel(currentPanel);
-      scrollToPanel(currentPanel);
-
-      // Hold the lock for the full cooldown, then wait for
-      // wheel events to stop (idle gap) before unlocking
       setTimeout(function () {
-        // Keep locked until wheel momentum dies down
-        var checkIdle = setInterval(function () {
-          if (Date.now() - lastWheelTime >= IDLE_GAP) {
-            clearInterval(checkIdle);
-            locked = false;
-          }
-        }, 50);
-      }, COOLDOWN);
+        transitioning = false;
+        pinScroll();
+      }, TRANSITION_MS);
     }, { passive: false });
 
-    // Keep currentPanel in sync if user scrolls via scrollbar or touch
-    window.addEventListener('scroll', throttle(function () {
-      var rect = section.getBoundingClientRect();
-      var sectionH = section.offsetHeight;
-      var scrolled = -rect.top;
-      if (scrolled < 0) scrolled = 0;
-      if (scrolled > sectionH) scrolled = sectionH;
-
-      var panelH = sectionH / panelCount;
-      var index = Math.min(Math.floor(scrolled / panelH), panelCount - 1);
-      if (index < 0) index = 0;
-
-      if (index !== currentPanel && !locked) {
-        currentPanel = index;
-        showPanel(currentPanel);
+    // Re-engage when scrolling back into the section from either direction
+    var reengageCheck = throttle(function () {
+      if (engaged) {
+        pinScroll();
+        return;
       }
-    }, 50), { passive: true });
+      if (!isStickyActive()) return;
+      // Determine direction of entry
+      var rect = section.getBoundingClientRect();
+      if (rect.top <= 5 && rect.top > -50) {
+        // Entering from above (scrolling down): show first panel
+        engaged = true;
+        current = 0;
+        showPanel(0);
+        pinScroll();
+      } else if (rect.bottom < window.innerHeight + 50 && rect.bottom > window.innerHeight - 5) {
+        // Entering from below (scrolling up): show last panel
+        engaged = true;
+        current = panelCount - 1;
+        showPanel(current);
+        pinScroll();
+      }
+    }, 100);
+
+    window.addEventListener('scroll', reengageCheck, { passive: true });
   });
 
 })();
