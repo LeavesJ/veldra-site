@@ -857,27 +857,36 @@
       showPanel(current);
       scrollToPanel(current);
 
-      setTimeout(function () { busy = false; }, ANIM_MS);
+      setTimeout(function () {
+        // Re-pin to current panel to correct any drift before unlocking
+        scrollToPanel(current);
+        busy = false;
+      }, ANIM_MS);
     }, { passive: false });
 
-    // Sync panel from scroll position (for scrollbar drag, keyboard, etc.)
-    // Throttled and only runs when not busy to avoid fighting wheel handler
+    // On initial scroll into the section (via scrollbar/keyboard),
+    // snap to the nearest panel so the wheel handler can take over
+    var entryHandled = false;
     window.addEventListener('scroll', throttle(function () {
       if (busy) return;
       var rect = section.getBoundingClientRect();
-      if (rect.top > 10 || rect.bottom < window.innerHeight) return;
+      var inView = rect.top < 10 && rect.bottom > window.innerHeight;
 
-      var scrolled = -rect.top;
-      var ph = panelHeight();
-      var idx = Math.floor(scrolled / ph);
-      if (idx < 0) idx = 0;
-      if (idx >= panelCount) idx = panelCount - 1;
-
-      if (idx !== current) {
+      if (inView && !entryHandled) {
+        entryHandled = true;
+        // Snap to nearest panel based on scroll position
+        var scrolled = -rect.top;
+        var ph = panelHeight();
+        var idx = Math.round(scrolled / ph);
+        if (idx < 0) idx = 0;
+        if (idx >= panelCount) idx = panelCount - 1;
         current = idx;
         showPanel(current);
+        scrollToPanel(current);
+      } else if (!inView) {
+        entryHandled = false;
       }
-    }, 100), { passive: true });
+    }, 200), { passive: true });
   })();
 
 })();
