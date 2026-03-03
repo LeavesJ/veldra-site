@@ -761,8 +761,8 @@
   // ═══════════════════════════════════════════════
   // 26b. Cube-scroll storytelling controller
   // ═══════════════════════════════════════════════
-  // Document-level wheel capture. No scroll-position sync.
-  // The wheel handler is the only thing that changes panels.
+  // Section is 100vh with overflow:hidden. No scroll position dependency.
+  // Panels swap via CSS classes only. Wheel captured at document level.
   (function () {
     var section = document.querySelector('.scroll-lock-section');
     if (!section) return;
@@ -772,8 +772,10 @@
 
     var N = panels.length;
     var cur = 0;
+    var engaged = false;
     var busy = false;
-    var LOCK_MS = 750;
+    var exiting = false;
+    var LOCK_MS = 700;
 
     panels[0].classList.add('cube-active');
 
@@ -788,75 +790,62 @@
       }
     }
 
-    function stickyActive() {
+    // Check if section center is within the viewport
+    function sectionVisible() {
       var r = section.getBoundingClientRect();
-      return r.top <= 5 && r.bottom >= window.innerHeight;
+      return r.top < window.innerHeight * 0.7 && r.bottom > window.innerHeight * 0.3;
     }
 
-    function pin() {
-      // Keep scroll pinned so sticky stays engaged and position cannot drift
-      var ph = section.offsetHeight / N;
-      var target = section.offsetTop + cur * ph + 1;
-      window.scrollTo(0, target);
-    }
-
-    // Document-level wheel: catches events regardless of cursor position
+    // Document-level wheel handler
     document.addEventListener('wheel', function (e) {
-      if (!stickyActive()) return;
+      // During exit cooldown, let everything through
+      if (exiting) return;
 
-      // Block all native scroll while in the section
+      // Engage check
+      if (!engaged) {
+        if (!sectionVisible()) return;
+        // Section is visible, engage on next scroll into it
+        engaged = true;
+        cur = e.deltaY > 0 ? 0 : N - 1;
+        show(cur);
+        e.preventDefault();
+        // Set busy so this first event doesn't also advance
+        busy = true;
+        setTimeout(function () { busy = false; }, LOCK_MS);
+        return;
+      }
+
+      // Still engaged but section scrolled out of view? Disengage.
+      if (!sectionVisible()) {
+        engaged = false;
+        return;
+      }
+
+      // Engaged: block native scroll
       e.preventDefault();
 
-      // Swallow everything while transitioning
+      // Absorb during transition
       if (busy) return;
 
       var dir = e.deltaY > 0 ? 1 : -1;
       var next = cur + dir;
 
-      // Boundary: scroll past the section to exit
+      // Boundary: exit the section
       if (next < 0 || next >= N) {
-        busy = true;
-        var target;
-        if (next >= N) {
-          target = section.offsetTop + section.offsetHeight + 5;
-        } else {
-          target = section.offsetTop - window.innerHeight + 5;
-          if (target < 0) target = 0;
-        }
-        window.scrollTo(0, target);
-        setTimeout(function () { busy = false; }, LOCK_MS);
+        engaged = false;
+        exiting = true;
+        // Kick page past the section
+        window.scrollBy(0, dir * Math.round(window.innerHeight * 0.8));
+        setTimeout(function () { exiting = false; }, 1000);
         return;
       }
 
-      // Step one panel
+      // Advance one panel
       busy = true;
       cur = next;
       show(cur);
-      pin();
-
-      setTimeout(function () {
-        pin(); // re-pin to correct any drift
-        busy = false;
-      }, LOCK_MS);
+      setTimeout(function () { busy = false; }, LOCK_MS);
     }, { passive: false });
-
-    // When scrolling into the section naturally (scrollbar, keyboard),
-    // snap to panel 0 or last panel depending on direction
-    var wasInView = false;
-    window.addEventListener('scroll', function () {
-      if (busy) return;
-      var inView = stickyActive();
-      if (inView && !wasInView) {
-        // Just entered the section
-        var r = section.getBoundingClientRect();
-        var scrolled = -r.top;
-        // If near the top, panel 0; if near the bottom, last panel
-        cur = scrolled < section.offsetHeight / 2 ? 0 : N - 1;
-        show(cur);
-        pin();
-      }
-      wasInView = inView;
-    }, { passive: true });
   })();
 
 })();

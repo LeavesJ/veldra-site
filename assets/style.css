@@ -2837,12 +2837,12 @@ code:not(pre code) {
 /* ── Cube scroll storytelling ─────────────── */
 .scroll-lock-section {
   position: relative;
-  height: 400vh; /* 4 panels worth of scroll space */
+  height: 100vh;
+  overflow: hidden;
 }
 .scroll-lock-sticky {
-  position: sticky;
-  top: 0;
-  height: 100vh;
+  position: relative;
+  height: 100%;
   perspective: 1200px;
   overflow: hidden;
 }
