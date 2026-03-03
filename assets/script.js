@@ -761,8 +761,9 @@
   // ═══════════════════════════════════════════════
   // 26b. Cube-scroll storytelling controller
   // ═══════════════════════════════════════════════
-  // Section is 100vh with overflow:hidden. No scroll position dependency.
-  // Panels swap via CSS classes only. Wheel captured at document level.
+  // Pure scroll-position approach. No wheel capture, no preventDefault.
+  // Section is 800vh (200vh per panel). The sticky child stays visible.
+  // Scroll position maps directly to the active panel index.
   (function () {
     var section = document.querySelector('.scroll-lock-section');
     if (!section) return;
@@ -771,81 +772,39 @@
     if (panels.length === 0 || window.innerWidth <= 768) return;
 
     var N = panels.length;
-    var cur = 0;
-    var engaged = false;
-    var busy = false;
-    var exiting = false;
-    var LOCK_MS = 700;
+    var last = -1;
 
     panels[0].classList.add('cube-active');
 
-    function show(idx) {
-      for (var i = 0; i < N; i++) {
-        panels[i].classList.remove('cube-active', 'cube-exited');
-        if (i === idx) panels[i].classList.add('cube-active');
-        else if (i < idx) panels[i].classList.add('cube-exited');
-      }
-      for (var j = 0; j < dots.length; j++) {
-        dots[j].classList.toggle('dot-active', j === idx);
+    function update() {
+      var rect = section.getBoundingClientRect();
+      var scrolled = -rect.top;
+      if (scrolled < 0) scrolled = 0;
+      var sectionH = section.offsetHeight;
+      if (scrolled > sectionH) scrolled = sectionH;
+
+      var zone = sectionH / N;
+      var idx = Math.min(Math.floor(scrolled / zone), N - 1);
+      if (idx < 0) idx = 0;
+
+      if (idx !== last) {
+        last = idx;
+        for (var i = 0; i < N; i++) {
+          panels[i].classList.remove('cube-active', 'cube-exited');
+          if (i === idx) panels[i].classList.add('cube-active');
+          else if (i < idx) panels[i].classList.add('cube-exited');
+        }
+        for (var j = 0; j < dots.length; j++) {
+          dots[j].classList.toggle('dot-active', j === idx);
+        }
       }
     }
 
-    // Check if section center is within the viewport
-    function sectionVisible() {
-      var r = section.getBoundingClientRect();
-      return r.top < window.innerHeight * 0.7 && r.bottom > window.innerHeight * 0.3;
-    }
+    window.addEventListener('scroll', function () {
+      requestAnimationFrame(update);
+    }, { passive: true });
 
-    // Document-level wheel handler
-    document.addEventListener('wheel', function (e) {
-      // During exit cooldown, let everything through
-      if (exiting) return;
-
-      // Engage check
-      if (!engaged) {
-        if (!sectionVisible()) return;
-        // Section is visible, engage on next scroll into it
-        engaged = true;
-        cur = e.deltaY > 0 ? 0 : N - 1;
-        show(cur);
-        e.preventDefault();
-        // Set busy so this first event doesn't also advance
-        busy = true;
-        setTimeout(function () { busy = false; }, LOCK_MS);
-        return;
-      }
-
-      // Still engaged but section scrolled out of view? Disengage.
-      if (!sectionVisible()) {
-        engaged = false;
-        return;
-      }
-
-      // Engaged: block native scroll
-      e.preventDefault();
-
-      // Absorb during transition
-      if (busy) return;
-
-      var dir = e.deltaY > 0 ? 1 : -1;
-      var next = cur + dir;
-
-      // Boundary: exit the section
-      if (next < 0 || next >= N) {
-        engaged = false;
-        exiting = true;
-        // Kick page past the section
-        window.scrollBy(0, dir * Math.round(window.innerHeight * 0.8));
-        setTimeout(function () { exiting = false; }, 1000);
-        return;
-      }
-
-      // Advance one panel
-      busy = true;
-      cur = next;
-      show(cur);
-      setTimeout(function () { busy = false; }, LOCK_MS);
-    }, { passive: false });
+    update();
   })();
 
 })();
