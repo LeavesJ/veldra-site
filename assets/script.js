@@ -747,6 +747,12 @@
     var dots = section.querySelectorAll('.scroll-lock-dot');
     if (!sticky || panels.length === 0) return;
 
+    // On mobile, CSS handles stacking; skip scroll-lock JS entirely
+    if (window.innerWidth <= 768) {
+      panels.forEach(function (p) { p.classList.add('panel-active'); });
+      return;
+    }
+
     var lastActive = -1;
     // Activate first panel by default
     panels[0].classList.add('panel-active');
@@ -776,22 +782,6 @@
     window.addEventListener('scroll', throttle(updatePanels, 32), { passive: true });
     updatePanels();
 
-    // On mobile, disable scroll-lock and stack panels normally
-    if (window.innerWidth <= 768) {
-      section.style.height = 'auto';
-      sticky.style.position = 'static';
-      sticky.style.height = 'auto';
-      panels.forEach(function (p) {
-        p.style.position = 'static';
-        p.style.opacity = '1';
-        p.style.transform = 'none';
-        p.style.pointerEvents = 'auto';
-        p.style.padding = '60px 0';
-      });
-      if (dots.length > 0) {
-        dots[0].parentElement.style.display = 'none';
-      }
-    }
   });
 
 })();
