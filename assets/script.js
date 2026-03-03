@@ -771,10 +771,12 @@
 
     var currentPanel = 0;
     var locked = false;
-    var COOLDOWN = 900; // ms, transition + settle time
+    var COOLDOWN = 550; // ms, just under CSS transition (650ms)
     var panelCount = panels.length;
     var lastWheelTime = 0;
-    var IDLE_GAP = 200; // ms of no wheel events before accepting input again
+    var IDLE_GAP = 120; // ms of no wheel events before accepting input again
+    var boundaryLocked = false; // gate for exiting the section
+    var boundaryTime = 0;
 
     panels[0].classList.add('cube-active');
 
@@ -816,8 +818,26 @@
       var direction = e.deltaY > 0 ? 1 : -1;
       var nextPanel = currentPanel + direction;
 
-      // At boundaries, let the page scroll naturally
-      if (nextPanel < 0 || nextPanel >= panelCount) return;
+      // At boundaries: hold with cooldown before releasing to page
+      if (nextPanel < 0 || nextPanel >= panelCount) {
+        // First hit on the boundary starts the gate timer
+        if (!boundaryLocked) {
+          boundaryLocked = true;
+          boundaryTime = now;
+        }
+        // Block scroll until cooldown elapses with no wheel input
+        if (now - boundaryTime < COOLDOWN) {
+          e.preventDefault();
+          boundaryTime = now; // reset on continued scrolling
+          return;
+        }
+        // Cooldown passed and user is still scrolling same direction: release
+        boundaryLocked = false;
+        return;
+      }
+
+      // Reset boundary gate when moving between inner panels
+      boundaryLocked = false;
 
       // Always block native scroll while inside the section
       e.preventDefault();
