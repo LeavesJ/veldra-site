@@ -2443,13 +2443,14 @@ code:not(pre code) {
 /* ── Isometric Gateway Stack Hero ────────────── */
 .hero-stack-section {
   position: relative;
-  min-height: 100vh;
+  min-height: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-top: 64px;
-  padding-bottom: 48px;
+  padding-top: 100px;
+  padding-bottom: 64px;
   overflow: hidden;
+  box-sizing: border-box;
 }
 .hero-stack-layout {
   display: grid;
