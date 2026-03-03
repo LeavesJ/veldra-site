@@ -775,8 +775,10 @@
     var panelCount = panels.length;
     var lastWheelTime = 0;
     var IDLE_GAP = 120; // ms of no wheel events before accepting input again
-    var boundaryLocked = false; // gate for exiting the section
-    var boundaryTime = 0;
+    var boundaryHits = 0;       // deliberate scroll gestures at boundary
+    var boundaryLastWheel = 0;  // timestamp of last wheel at boundary
+    var BOUNDARY_IDLE = 250;    // ms gap to count as a new gesture
+    var BOUNDARY_REQUIRED = 2;  // gestures needed to exit
 
     panels[0].classList.add('cube-active');
 
@@ -818,26 +820,25 @@
       var direction = e.deltaY > 0 ? 1 : -1;
       var nextPanel = currentPanel + direction;
 
-      // At boundaries: hold with cooldown before releasing to page
+      // At boundaries: require multiple deliberate scroll gestures to exit
       if (nextPanel < 0 || nextPanel >= panelCount) {
-        // First hit on the boundary starts the gate timer
-        if (!boundaryLocked) {
-          boundaryLocked = true;
-          boundaryTime = now;
+        // A new gesture is a wheel event after an idle gap
+        if (now - boundaryLastWheel > BOUNDARY_IDLE) {
+          boundaryHits++;
         }
-        // Block scroll until cooldown elapses with no wheel input
-        if (now - boundaryTime < COOLDOWN) {
-          e.preventDefault();
-          boundaryTime = now; // reset on continued scrolling
-          return;
+        boundaryLastWheel = now;
+
+        // Release to page only after enough separate gestures
+        if (boundaryHits >= BOUNDARY_REQUIRED) {
+          boundaryHits = 0;
+          return; // let native scroll happen
         }
-        // Cooldown passed and user is still scrolling same direction: release
-        boundaryLocked = false;
+        e.preventDefault();
         return;
       }
 
-      // Reset boundary gate when moving between inner panels
-      boundaryLocked = false;
+      // Reset boundary counter when moving between inner panels
+      boundaryHits = 0;
 
       // Always block native scroll while inside the section
       e.preventDefault();
