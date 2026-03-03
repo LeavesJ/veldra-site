@@ -761,8 +761,9 @@
   // ═══════════════════════════════════════════════
   // 26b. Cube-scroll storytelling controller
   // ═══════════════════════════════════════════════
-  // Strategy: body overflow:hidden locks the page physically while engaged.
-  // Wheel handler is sole authority. No scroll-position sync. No momentum leaks.
+  // Simple approach: scroll position drives panel index via the 400vh section.
+  // Wheel events on the sticky are intercepted and converted to exact scroll
+  // jumps of one panel-height each, with a busy flag to block momentum.
   (function () {
     var section = document.querySelector('.scroll-lock-section');
     if (!section) return;
@@ -773,11 +774,12 @@
 
     var panelCount = panels.length;
     var current = 0;
-    var engaged = false;
-    var busy = false;        // true during a transition, blocks all input
-    var ANIM_MS = 680;       // matches CSS transition
-    var exitCooldown = false; // prevents immediate re-engage after exit
-    var savedScrollY = 0;
+    var busy = false;
+    var ANIM_MS = 700;
+    var boundaryCount = 0;
+    var lastBoundaryTime = 0;
+    var BOUNDARY_THRESHOLD = 3;  // wheel events at boundary before releasing
+    var BOUNDARY_RESET = 300;    // ms of no boundary hits to reset counter
 
     panels[0].classList.add('cube-active');
 
@@ -792,94 +794,90 @@
       });
     }
 
-    function lockBody() {
-      savedScrollY = window.pageYOffset;
-      document.body.style.overflow = 'hidden';
-      document.body.style.position = 'fixed';
-      document.body.style.top = '-' + savedScrollY + 'px';
-      document.body.style.width = '100%';
+    function isInSection() {
+      var rect = section.getBoundingClientRect();
+      return rect.top < 10 && rect.bottom > window.innerHeight;
     }
 
-    function unlockBody() {
-      document.body.style.overflow = '';
-      document.body.style.position = '';
-      document.body.style.top = '';
-      document.body.style.width = '';
-      window.scrollTo(0, savedScrollY);
+    function panelHeight() {
+      return section.offsetHeight / panelCount;
     }
 
-    function engage(startPanel) {
-      if (engaged || exitCooldown) return;
-      engaged = true;
-      current = startPanel;
-      showPanel(current);
-      lockBody();
+    // Jump scroll to land on a specific panel zone
+    function scrollToPanel(idx) {
+      var target = section.offsetTop + idx * panelHeight() + 1;
+      window.scrollTo(0, target);
     }
 
-    function disengage(direction) {
-      if (!engaged) return;
-      engaged = false;
-      busy = false;
-      unlockBody();
+    // Wheel capture on the sticky element
+    var sticky = section.querySelector('.scroll-lock-sticky');
+    (sticky || section).addEventListener('wheel', function (e) {
+      if (!isInSection()) return;
 
-      // Nudge scroll so the section is out of the trigger zone
-      if (direction > 0) {
-        // Exiting downward: scroll past the section
-        var below = section.offsetTop + section.offsetHeight + 2;
-        window.scrollTo(0, below);
-      } else {
-        // Exiting upward: scroll above the section
-        var above = section.offsetTop - window.innerHeight + 2;
-        if (above < 0) above = 0;
-        window.scrollTo(0, above);
-      }
-
-      // Cooldown prevents the observer from re-engaging immediately
-      exitCooldown = true;
-      setTimeout(function () { exitCooldown = false; }, 600);
-    }
-
-    // Use IntersectionObserver to detect when the sticky container is in view
-    var observer = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting && !engaged && !exitCooldown) {
-          // Determine entry direction from scroll position
-          var sectionMid = section.offsetTop + section.offsetHeight / 2;
-          var fromBelow = window.pageYOffset > sectionMid;
-          engage(fromBelow ? panelCount - 1 : 0);
-        }
-      });
-    }, { threshold: 0.3 });
-
-    observer.observe(section.querySelector('.scroll-lock-sticky') || section);
-
-    // Wheel handler: sole controller of panel state
-    document.addEventListener('wheel', function (e) {
-      if (!engaged) return;
-
-      // Block ALL native scroll while engaged
+      // Always block native scroll while the sticky is active
       e.preventDefault();
-      e.stopPropagation();
 
-      // If transitioning, swallow completely
       if (busy) return;
 
-      var direction = e.deltaY > 0 ? 1 : -1;
-      var next = current + direction;
+      var dir = e.deltaY > 0 ? 1 : -1;
+      var next = current + dir;
 
-      // Boundary: disengage
+      // At boundaries: count separate scroll gestures, release after threshold
       if (next < 0 || next >= panelCount) {
-        disengage(direction);
+        var now = Date.now();
+        // Reset counter if enough time passed (new gesture)
+        if (now - lastBoundaryTime > BOUNDARY_RESET) {
+          boundaryCount = 0;
+        }
+        boundaryCount++;
+        lastBoundaryTime = now;
+
+        if (boundaryCount >= BOUNDARY_THRESHOLD) {
+          // Release: scroll past the section
+          boundaryCount = 0;
+          busy = true;
+          var exitTarget;
+          if (next >= panelCount) {
+            exitTarget = section.offsetTop + section.offsetHeight + 2;
+          } else {
+            exitTarget = section.offsetTop - window.innerHeight;
+            if (exitTarget < 0) exitTarget = 0;
+          }
+          window.scrollTo(0, exitTarget);
+          setTimeout(function () { busy = false; }, ANIM_MS);
+        }
         return;
       }
 
-      // Advance one panel
+      // Reset boundary counter when moving between panels
+      boundaryCount = 0;
+
       busy = true;
       current = next;
       showPanel(current);
+      scrollToPanel(current);
 
       setTimeout(function () { busy = false; }, ANIM_MS);
     }, { passive: false });
+
+    // Sync panel from scroll position (for scrollbar drag, keyboard, etc.)
+    // Throttled and only runs when not busy to avoid fighting wheel handler
+    window.addEventListener('scroll', throttle(function () {
+      if (busy) return;
+      var rect = section.getBoundingClientRect();
+      if (rect.top > 10 || rect.bottom < window.innerHeight) return;
+
+      var scrolled = -rect.top;
+      var ph = panelHeight();
+      var idx = Math.floor(scrolled / ph);
+      if (idx < 0) idx = 0;
+      if (idx >= panelCount) idx = panelCount - 1;
+
+      if (idx !== current) {
+        current = idx;
+        showPanel(current);
+      }
+    }, 100), { passive: true });
   })();
 
 })();
