@@ -769,40 +769,81 @@
     // On mobile, CSS handles stacking; skip cube JS entirely
     if (window.innerWidth <= 768) { return; }
 
-    var lastActive = -1;
-    // Activate first panel
+    var currentPanel = 0;
+    var locked = false;
+    var COOLDOWN = 700; // ms, matches CSS transition duration
+    var panelCount = panels.length;
+
     panels[0].classList.add('cube-active');
 
-    function updateCube() {
+    function showPanel(index) {
+      panels.forEach(function (p, i) {
+        p.classList.remove('cube-active', 'cube-exited');
+        if (i === index) {
+          p.classList.add('cube-active');
+        } else if (i < index) {
+          p.classList.add('cube-exited');
+        }
+      });
+      dots.forEach(function (d, i) {
+        d.classList.toggle('dot-active', i === index);
+      });
+    }
+
+    // Scroll the section so the correct panel zone is in view
+    function scrollToPanel(index) {
+      var sectionTop = section.offsetTop;
+      var sectionH = section.offsetHeight;
+      var panelH = sectionH / panelCount;
+      var target = sectionTop + (index * panelH) + (panelH * 0.25);
+      window.scrollTo({ top: target, behavior: 'smooth' });
+    }
+
+    var sticky = section.querySelector('.scroll-lock-sticky');
+
+    // Capture wheel on the sticky viewport and step one panel at a time
+    (sticky || section).addEventListener('wheel', function (e) {
+      // Only intercept when the section is in the sticky zone
+      var rect = section.getBoundingClientRect();
+      var sectionH = section.offsetHeight;
+      var scrolled = -rect.top;
+      if (scrolled < -10 || scrolled > sectionH + 10) return;
+
+      var direction = e.deltaY > 0 ? 1 : -1;
+      var nextPanel = currentPanel + direction;
+
+      // At boundaries, let the page scroll naturally
+      if (nextPanel < 0 || nextPanel >= panelCount) return;
+
+      e.preventDefault();
+
+      if (locked) return;
+      locked = true;
+
+      currentPanel = nextPanel;
+      showPanel(currentPanel);
+      scrollToPanel(currentPanel);
+
+      setTimeout(function () { locked = false; }, COOLDOWN);
+    }, { passive: false });
+
+    // Keep currentPanel in sync if user scrolls via scrollbar or touch
+    window.addEventListener('scroll', throttle(function () {
       var rect = section.getBoundingClientRect();
       var sectionH = section.offsetHeight;
       var scrolled = -rect.top;
       if (scrolled < 0) scrolled = 0;
       if (scrolled > sectionH) scrolled = sectionH;
 
-      var panelHeight = sectionH / panels.length;
-      var activeIndex = Math.min(Math.floor(scrolled / panelHeight), panels.length - 1);
-      if (activeIndex < 0) activeIndex = 0;
+      var panelH = sectionH / panelCount;
+      var index = Math.min(Math.floor(scrolled / panelH), panelCount - 1);
+      if (index < 0) index = 0;
 
-      if (activeIndex !== lastActive) {
-        lastActive = activeIndex;
-        panels.forEach(function (p, i) {
-          p.classList.remove('cube-active', 'cube-exited');
-          if (i === activeIndex) {
-            p.classList.add('cube-active');
-          } else if (i < activeIndex) {
-            p.classList.add('cube-exited');
-          }
-          // panels after activeIndex stay in default state (rotated below)
-        });
-        dots.forEach(function (d, i) {
-          d.classList.toggle('dot-active', i === activeIndex);
-        });
+      if (index !== currentPanel && !locked) {
+        currentPanel = index;
+        showPanel(currentPanel);
       }
-    }
-
-    window.addEventListener('scroll', throttle(updateCube, 32), { passive: true });
-    updateCube();
+    }, 50), { passive: true });
   });
 
 })();
