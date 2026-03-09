@@ -2344,35 +2344,7 @@ code:not(pre code) {
   .comparison-table th,
   .comparison-table td { padding: 12px 14px; font-size: 13px; }
 
-  /* Cube scroll: collapse to stacked on mobile */
-  .scroll-lock-section {
-    height: auto;
-  }
-  .scroll-lock-sticky {
-    position: relative;
-    height: auto;
-    perspective: none;
-  }
-  .scroll-lock-cube {
-    transform-style: flat;
-    transform: none !important;
-    transition: none;
-    display: flex;
-    flex-direction: column;
-  }
-  .scroll-lock-panel {
-    position: relative;
-    inset: auto;
-    transform: none !important;
-    backface-visibility: visible;
-    opacity: 1 !important;
-    pointer-events: auto !important;
-    padding: 56px 0;
-    border-bottom: 1px solid var(--border);
-    transition: none;
-  }
-  .scroll-lock-panel:last-of-type { border-bottom: none; }
-  .scroll-lock-dots { display: none; }
+  /* Cube scroll mobile overrides moved after desktop definitions (line ~2942) */
 
   /* Hero stack adjustments */
   .hero-stack-section { padding-top: 80px; padding-bottom: 40px; }
@@ -2939,6 +2911,43 @@ code:not(pre code) {
   .iso-right { width: 90px; }
   .iso-reason-stream { display: none; }
   .hero-ticker { display: none; }
+}
+
+/* ── Cube scroll: collapse to stacked on mobile ── */
+/* MUST appear after the desktop .scroll-lock-* rules above so the
+   cascade order wins at ≤768px.  Previously these lived in an earlier
+   media-query block and were silently overridden by the later
+   un-wrapped desktop definitions. */
+@media (max-width: 768px) {
+  .scroll-lock-section {
+    height: auto;
+  }
+  .scroll-lock-sticky {
+    position: relative;
+    height: auto;
+    overflow: visible;
+    perspective: none;
+  }
+  .scroll-lock-cube {
+    transform-style: flat;
+    transform: none !important;
+    transition: none;
+    display: flex;
+    flex-direction: column;
+  }
+  .scroll-lock-panel {
+    position: relative;
+    inset: auto;
+    transform: none !important;
+    backface-visibility: visible;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    padding: 56px 0;
+    border-bottom: 1px solid var(--border);
+    transition: none;
+  }
+  .scroll-lock-panel:last-of-type { border-bottom: none; }
+  .scroll-lock-dots { display: none; }
 }
 
 /* ── Hero parallax layer setup ──────────────── */
