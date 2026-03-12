@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Register — Veldra</title>
+  <meta name="description" content="Request access to ReserveGrid OS. Registration requires admin approval.">
+  <meta name="theme-color" content="#080e1a">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="canonical" href="https://veldra.org/register/">
+  <link rel="icon" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/brand/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/brand/favicon-16.png">
+  <link rel="apple-touch-icon" href="/assets/brand/apple-touch-icon.png">
+
+  <link rel="stylesheet" href="/assets/style.css?v=31">
+  <script src="/assets/auth.js?v=1" defer></script>
+  <script src="/assets/script.js?v=33" defer></script>
+  <script src="/assets/i18n.js?v=21" defer></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
+</head>
+<body class="auth-page">
+
+  <!-- ── Navigation ──────────────────────────── -->
+  <nav class="topbar">
+    <div class="container">
+      <div class="nav">
+        <a class="brand" href="/" aria-label="Veldra home">
+          <img src="/assets/brand/veldra-logo.png" alt="Veldra">
+        </a>
+        <div class="navlinks">
+          <a href="/">Home</a>
+          <a href="/product/">Product</a>
+          <a href="/docs/">Docs</a>
+          <a href="/about/">About</a>
+        </div>
+        <div class="nav-actions">
+          <div class="lang-toggle">
+            <button class="lang-btn active" data-lang="en">EN</button>
+            <button class="lang-btn" data-lang="es">ES</button>
+            <button class="lang-btn" data-lang="zh">中</button>
+          </div>
+          <a href="/login/" class="btn btn-primary btn-sm">Sign In</a>
+        </div>
+        <button class="nav-toggle" aria-label="Menu" aria-expanded="false">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ── Main Content ──────────────────────── -->
+  <div class="container" style="min-height: calc(100vh - 200px); display: flex; align-items: center; justify-content: center; padding: 2rem 0;">
+    <div class="auth-card">
+      <h1 style="margin-top: 0;">Register</h1>
+      <p style="color: #888; margin-bottom: 1.5rem; font-size: 0.95rem;">Request access to ReserveGrid OS. Registration requires admin approval.</p>
+      <div class="auth-msg" id="authMsg" style="display: none;"></div>
+
+      <form id="registerForm">
+        <div class="auth-field">
+          <label for="name">Full Name</label>
+          <input type="text" id="name" name="name" required>
+        </div>
+        <div class="auth-field">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required>
+        </div>
+        <div class="auth-field">
+          <label for="org">Organization</label>
+          <input type="text" id="org" name="org" required>
+        </div>
+        <div class="auth-field">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" required>
+        </div>
+        <div class="auth-field">
+          <label for="confirmPassword">Confirm Password</label>
+          <input type="password" id="confirmPassword" name="confirmPassword" required>
+        </div>
+        <button type="submit" class="auth-btn">Create Account</button>
+      </form>
+
+      <div class="auth-links">
+        Already have an account?
+        <span class="sep">•</span>
+        <a href="/login/">Sign in</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Footer ──────────────────────────────── -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <img src="/assets/brand/veldra-logo.png" alt="Veldra">
+          <p>SV2 mining gateway infrastructure for production pool operators.</p>
+        </div>
+        <div>
+          <h4>Product</h4>
+          <div class="footer-links">
+            <a href="/product/">ReserveGrid OS</a>
+            <a href="/product/#architecture">Architecture</a>
+          </div>
+        </div>
+        <div>
+          <h4>Resources</h4>
+          <div class="footer-links">
+            <a href="/docs/">Documentation</a>
+            <a href="/docs/#reason-codes">Reason Codes</a>
+            <a href="/docs/#config">Configuration</a>
+          </div>
+        </div>
+        <div>
+          <h4>Company</h4>
+          <div class="footer-links">
+            <a href="/about/">About</a>
+            <a href="mailto:jarrondeng@veldra.org">Contact</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2026 Veldra, Inc.</span>
+        <div class="footer-legal">
+          <a href="/privacy/">Privacy</a>
+          <a href="/terms/">Terms</a>
+          <a href="/disclaimer/">Disclaimer</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <button class="scroll-top" aria-label="Scroll to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 15l-6-6-6 6"/></svg>
+  </button>
+
+  <script>
+  (function() {
+    'use strict';
+
+    var form = document.getElementById('registerForm');
+    var msgEl = document.getElementById('authMsg');
+    var nameInput = document.getElementById('name');
+    var emailInput = document.getElementById('email');
+    var orgInput = document.getElementById('org');
+    var passwordInput = document.getElementById('password');
+    var confirmPasswordInput = document.getElementById('confirmPassword');
+
+    function showMsg(text, type) {
+      msgEl.textContent = text;
+      msgEl.className = 'auth-msg ' + type;
+      msgEl.style.display = 'block';
+    }
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      var name = nameInput.value.trim();
+      var email = emailInput.value.trim();
+      var org = orgInput.value.trim();
+      var password = passwordInput.value;
+      var confirmPassword = confirmPasswordInput.value;
+
+      if (!name || !email || !org || !password || !confirmPassword) {
+        showMsg('Please fill in all fields.', 'error');
+        return;
+      }
+
+      if (password !== confirmPassword) {
+        showMsg('Passwords do not match.', 'error');
+        return;
+      }
+
+      if (password.length < 8) {
+        showMsg('Password must be at least 8 characters long.', 'error');
+        return;
+      }
+
+      showMsg('Creating account...', '');
+
+      VeldraAuth.register(email, name, org, password).then(function(result) {
+        if (result.ok) {
+          showMsg('Account created. ' + (result.message || 'Check your email to verify.'), 'success');
+          form.style.display = 'none';
+        } else {
+          showMsg(result.error || 'Registration failed.', 'error');
+        }
+      }).catch(function(err) {
+        showMsg('An error occurred. Please try again.', 'error');
+      });
+    });
+  })();
+  </script>
+</body>
+</html>
