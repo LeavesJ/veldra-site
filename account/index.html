@@ -117,7 +117,7 @@
   </button>
 
   <script>
-  (function() {
+  document.addEventListener('DOMContentLoaded', function() {
     'use strict';
 
     var token = VeldraAuth.getToken();
@@ -142,7 +142,7 @@
         window.location.href = '/';
       });
     });
-  })();
+  });
   </script>
 </body>
 </html>
