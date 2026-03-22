@@ -1440,11 +1440,12 @@ ul { list-style: none; }
 
 /* ── Auth forms ────────────────────────────────── */
 .auth-page {
-  min-height: calc(100vh - 72px - 200px);
+  min-height: 100vh;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 48px 0;
+  flex-direction: column;
+}
+.auth-page .footer {
+  margin-top: auto;
 }
 .auth-card {
   width: min(420px, calc(100% - 48px));
