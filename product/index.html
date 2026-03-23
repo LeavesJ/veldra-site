@@ -365,68 +365,31 @@
         <p style="color:var(--ink-muted);max-width:560px;margin:12px auto 0;">Shadow and observe are parallel entry points. Both lead to inline enforcement when you are ready.</p>
       </div>
 
-      <!-- Entry points: shadow and observe side by side -->
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px;" class="fade-up modes-entry-grid">
-        <div class="mode-card mode-shadow">
-          <div class="section-eyebrow" style="font-size:11px;margin-bottom:8px;color:var(--steel);">Entry point — free</div>
-          <h3 data-i18n="product.modes.shadow.title">Shadow Mode</h3>
-          <p data-i18n="product.modes.shadow.desc">Evaluate the verifier without touching miners</p>
-          <dl class="mode-card-detail">
-            <dt>Miners connected</dt>
-            <dd>No</dd>
-            <dt>Share forwarding</dt>
-            <dd>No</dd>
-            <dt>Template source</dt>
-            <dd>Demo feed or own bitcoind</dd>
-            <dt>Config required</dt>
-            <dd>verifier_addr, policy context</dd>
-            <dt>Risk</dt>
-            <dd>Zero (no miner impact)</dd>
-            <dt>Best for</dt>
-            <dd>Evaluating policy rules before committing infrastructure</dd>
-          </dl>
-        </div>
-        <div class="mode-card mode-observe">
-          <div class="section-eyebrow" style="font-size:11px;margin-bottom:8px;color:var(--amber);">Entry point — paid</div>
-          <h3 data-i18n="product.modes.observe.title">Observe Mode</h3>
-          <p data-i18n="product.modes.observe.desc">Monitor real traffic, log verdicts, forward all shares</p>
-          <dl class="mode-card-detail">
-            <dt>Miners connected</dt>
-            <dd>Yes (SV2)</dd>
-            <dt>Share forwarding</dt>
-            <dd>Yes</dd>
-            <dt>Template source</dt>
-            <dd>Mainnet feed or own bitcoind</dd>
-            <dt>Config required</dt>
-            <dd>listen_addr, upstream_url, share_upstream_url, verifier_addr</dd>
-            <dt>Risk</dt>
-            <dd>Low (verdicts logged, not enforced)</dd>
-            <dt>Best for</dt>
-            <dd>Validating verdicts against real production data before enforcing</dd>
-          </dl>
-        </div>
-      </div>
+      <!-- Isometric layer stack: shadow + observe side-by-side, inline below -->
+      <div class="modes-stack-wrapper fade-up">
+        <div class="modes-stack">
+          <div class="mode-layer shadow">
+            <div class="layer-eyebrow">Entry point · free</div>
+            <div class="layer-title" data-i18n="product.modes.shadow.title">Shadow Mode</div>
+            <div class="layer-desc" data-i18n="product.modes.shadow.desc">Evaluate the verifier without touching miners</div>
+            <span class="layer-badge">mode = "shadow"</span>
+          </div>
 
-      <!-- Destination: inline -->
-      <div class="fade-up">
-        <div class="mode-card mode-inline" style="border-color:rgba(212,148,60,.25);">
-          <div class="section-eyebrow" style="font-size:11px;margin-bottom:8px;color:var(--amber-light);">Destination — both paths lead here</div>
-          <h3 data-i18n="product.modes.inline.title">Inline Mode</h3>
-          <p data-i18n="product.modes.inline.desc">Enforce policy with fail-closed safety</p>
-          <dl class="mode-card-detail">
-            <dt>Miners connected</dt>
-            <dd>Yes (SV2)</dd>
-            <dt>Gates templates</dt>
-            <dd>Yes</dd>
-            <dt>Prevhash fail-closed</dt>
-            <dd>Yes (50ms timeout + 5s hold)</dd>
-            <dt>Share forwarding</dt>
-            <dd>Yes</dd>
-            <dt>Config required</dt>
-            <dd>All keys, especially timing, gates, and disconnect policy</dd>
-            <dt>Risk</dt>
-            <dd>Production (fail-closed protects integrity)</dd>
-          </dl>
+          <div class="modes-or">or</div>
+
+          <div class="mode-layer observe">
+            <div class="layer-eyebrow">Entry point · paid</div>
+            <div class="layer-title" data-i18n="product.modes.observe.title">Observe Mode</div>
+            <div class="layer-desc" data-i18n="product.modes.observe.desc">Monitor real traffic, log verdicts, forward all shares</div>
+            <span class="layer-badge">mode = "observe"</span>
+          </div>
+
+          <div class="mode-layer inline">
+            <div class="layer-eyebrow">Destination · both paths</div>
+            <div class="layer-title" data-i18n="product.modes.inline.title">Inline Mode</div>
+            <div class="layer-desc" data-i18n="product.modes.inline.desc">Enforce policy with fail-closed safety</div>
+            <span class="layer-badge">mode = "inline"</span>
+          </div>
         </div>
       </div>
     </div>
