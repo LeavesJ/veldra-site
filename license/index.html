@@ -55,39 +55,52 @@
   <div class="container" style="flex: 1; display: flex; align-items: center; justify-content: center; padding: 2rem 0;">
     <div class="auth-card" style="max-width: 520px;">
       <h1 style="margin-top: 0;">License Key</h1>
+      <p style="color: #888; margin-bottom: 1.5rem; font-size: 0.9rem;">Your license key authenticates the ReserveGrid OS binary. The tier attached to your key determines which deployment modes are available.</p>
 
+      <!-- Authenticated: show key details -->
       <div id="licenseAuth" style="display: none;">
-        <div style="margin: 1.5rem 0; padding: 1rem; background: #0a1118; border-radius: 8px; border: 1px solid #1f3a5f;">
-          <p style="margin: 0; color: #888; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px;">Your Key</p>
-          <p style="margin: 0.5rem 0 0 0; font-family: 'IBM Plex Mono', monospace; font-size: 0.9rem; word-break: break-all;" id="licenseKey">—</p>
+        <div style="margin: 0 0 1rem; padding: 1rem; background: #0a1118; border-radius: 8px; border: 1px solid #1f3a5f;">
+          <p style="margin: 0; color: #888; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px;">License Key</p>
+          <p style="margin: 0.5rem 0 0 0; font-family: 'IBM Plex Mono', monospace; font-size: 0.85rem; word-break: break-all;" id="licenseKey">—</p>
         </div>
 
-        <div style="margin: 1.5rem 0; padding: 1rem; background: #0a1118; border-radius: 8px; border: 1px solid #1f3a5f;">
-          <p style="margin: 0; color: #888; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px;">Tier</p>
-          <p style="margin: 0.5rem 0 0 0;" id="licenseTier">—</p>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 1rem;">
+          <div style="padding: 1rem; background: #0a1118; border-radius: 8px; border: 1px solid #1f3a5f;">
+            <p style="margin: 0; color: #888; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px;">Tier</p>
+            <p style="margin: 0.4rem 0 0 0; font-size: 0.95rem;" id="licenseTier">—</p>
+          </div>
+          <div style="padding: 1rem; background: #0a1118; border-radius: 8px; border: 1px solid #1f3a5f;">
+            <p style="margin: 0; color: #888; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px;">Status</p>
+            <p style="margin: 0.4rem 0 0 0; font-size: 0.95rem;" id="licenseStatus">—</p>
+          </div>
         </div>
 
-        <div style="margin: 1.5rem 0; padding: 1rem; background: #0a1118; border-radius: 8px; border: 1px solid #1f3a5f;">
-          <p style="margin: 0; color: #888; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px;">Status</p>
-          <p style="margin: 0.5rem 0 0 0;" id="licenseStatus">—</p>
+        <div style="margin-bottom: 1rem; padding: 0.75rem 1rem; background: #0a1118; border-radius: 8px; border: 1px solid #1f3a5f;">
+          <p style="margin: 0 0 6px; color: #888; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px;">Add to reservegrid.toml</p>
+          <code style="font-family: 'IBM Plex Mono', monospace; font-size: 0.8rem; color: var(--amber-light);">license_key = "<span id="licenseKeyInline">…</span>"</code>
         </div>
 
-        <p style="color: #888; font-size: 0.85rem; margin-top: 1.5rem;">
-          Add this key to your <code style="background:rgba(212,148,60,.08);padding:2px 6px;border-radius:3px;font-family:'IBM Plex Mono',monospace;font-size:0.8rem;">reservegrid.toml</code>:
-        </p>
-        <div style="margin: 0.5rem 0 1.5rem; padding: 0.75rem 1rem; background: #0a1118; border-radius: 8px; border: 1px solid #1f3a5f; font-family: 'IBM Plex Mono', monospace; font-size: 0.8rem; color: var(--ink-muted);">
-          license_key = "<span id="licenseKeyInline">…</span>"
+        <div style="padding: 0.75rem 1rem; background: rgba(212,148,60,.04); border-radius: 8px; border: 1px solid rgba(212,148,60,.12); font-size: 0.8rem; color: var(--ink-muted);">
+          <strong style="color: var(--ink); font-size: 0.8rem;">Tier access:</strong>
+          Shadow (free) allows shadow mode only.
+          Observe (paid) unlocks shadow and observe.
+          Inline (paid) unlocks all three modes.
         </div>
       </div>
 
+      <!-- Not signed in -->
       <div id="licenseNoAuth">
         <p style="color: #888; margin: 1.5rem 0;">Sign in to view your license key.</p>
         <a href="/login/" class="auth-btn" style="display: block; text-align: center; text-decoration: none;">Sign In</a>
       </div>
 
+      <!-- Signed in but key not yet provisioned -->
       <div id="licenseNoKey" style="display: none;">
-        <p style="color: #888; margin: 1.5rem 0;">License keys will be available when observe mode launches. You will receive an email notification when your key is ready.</p>
-        <p style="color: #888; font-size: 0.85rem;">Shadow mode does not require a license key.</p>
+        <p style="color: #888; margin: 1rem 0;">Your license key has not been provisioned yet. You will receive an email when it is ready.</p>
+        <div style="padding: 0.75rem 1rem; background: rgba(212,148,60,.04); border-radius: 8px; border: 1px solid rgba(212,148,60,.12); font-size: 0.8rem; color: var(--ink-muted);">
+          <strong style="color: var(--ink); font-size: 0.8rem;">What to expect:</strong>
+          Every account receives a license key. The tier (shadow, observe, or inline) determines which modes the binary will accept at startup.
+        </div>
       </div>
 
       <div style="margin-top: 2rem; padding-top: 1rem; border-top: 1px solid rgba(226,232,240,.07);">
