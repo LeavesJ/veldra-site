@@ -352,7 +352,7 @@
     if (!group) return;
     var target = btn.getAttribute('data-tab');
     var current = group.querySelector('.tab-content.active');
-    var next = group.querySelector('.tab-content[data-tab="' + target + '"]');
+    var next = group.querySelector('.tab-content#' + target);
     if (current === next) return;
 
     group.querySelectorAll('.tab-btn').forEach(function (b) { b.classList.remove('active'); });
@@ -367,7 +367,7 @@
       }, 150);
     } else {
       group.querySelectorAll('.tab-content').forEach(function (c) {
-        c.classList.toggle('active', c.getAttribute('data-tab') === target);
+        c.classList.toggle('active', c.id === target);
       });
     }
   });
@@ -814,13 +814,13 @@
         var email = getUserEmail() || 'Account';
         html += '<div class="user-menu-email">' + email + '</div>';
         html += '<a href="/account/">' + iconAccount + ' Account</a>';
-        html += '<a href="/account/#license">' + iconKey + ' License Key</a>';
+        html += '<a href="/license/">' + iconKey + ' License Key</a>';
         html += '<a href="https://github.com/LeavesJ/veldra/releases">' + iconDownload + ' Downloads</a>';
         html += '<div class="user-menu-sep"></div>';
         html += '<button class="menu-signout" data-action="signout">' + iconSignOut + ' Sign Out</button>';
       } else {
         html += '<a href="/login/">' + iconSignIn + ' Sign In</a>';
-        html += '<a href="/login/#register">' + iconRegister + ' Register</a>';
+        html += '<a href="/register/">' + iconRegister + ' Register</a>';
       }
       dropdown.innerHTML = html;
     }

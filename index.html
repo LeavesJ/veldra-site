@@ -220,27 +220,73 @@
     <div class="scroll-lock-sticky">
       <div class="scroll-lock-cube" id="story-cube" data-face="0">
 
-      <!-- Panel 1: The Problem -->
+      <!-- Panel 1: The Problem — Before / After split -->
       <div class="scroll-lock-panel" data-panel="problem">
         <div class="container">
           <div class="section-header">
             <div class="section-eyebrow" data-i18n="home.problem.eyebrow">The problem</div>
             <h2 data-i18n="home.problem.title" data-i18n-html="true">SV2 enables miner autonomy.<br>That autonomy needs guardrails.</h2>
           </div>
-          <div class="split fade-up">
-            <div class="card">
-              <div class="card-icon card-icon-navy">
-                <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
+          <div class="problem-split fade-up">
+            <div class="problem-side before">
+              <h3>Without ReserveGrid</h3>
+              <div class="problem-row">
+                <div class="problem-icon">
+                  <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M18.36 5.64a9 9 0 11-12.73 0"/><line x1="12" y1="2" x2="12" y2="12"/></svg>
+                </div>
+                <div class="problem-text">
+                  <strong>Blind template acceptance</strong>
+                  <span>Miners propose templates the pool cannot inspect. Malformed transactions, fee violations, and duplicate inputs pass through unchecked.</span>
+                </div>
               </div>
-              <h3 data-i18n="home.problem.sv2_title">The SV2 adoption challenge</h3>
-              <p data-i18n="home.problem.sv2_body">Stratum V2 lets miners propose their own block templates. Pools gain encrypted transport and reduced bandwidth, but lose visibility into what miners submit. Without verification, a pool has no way to detect malformed templates, fee policy violations, or stale prevhash references before distributing work.</p>
+              <div class="problem-row">
+                <div class="problem-icon">
+                  <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 9v4m0 4h.01"/></svg>
+                </div>
+                <div class="problem-text">
+                  <strong>Stale prevhash exposure</strong>
+                  <span>When a new block arrives, miners keep working on stale references until they notice. No fail-closed cutoff.</span>
+                </div>
+              </div>
+              <div class="problem-row">
+                <div class="problem-icon">
+                  <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                </div>
+                <div class="problem-text">
+                  <strong>No audit trail</strong>
+                  <span>Rejections happen silently. No structured reason codes, no metrics, no way to debug why shares fail.</span>
+                </div>
+              </div>
             </div>
-            <div class="card">
-              <div class="card-icon card-icon-green">
-                <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+            <div class="problem-side after">
+              <h3>With ReserveGrid</h3>
+              <div class="problem-row">
+                <div class="problem-icon">
+                  <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8.5 12.5l2.5 2.5 4.5-5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+                <div class="problem-text">
+                  <strong>Policy-driven verification</strong>
+                  <span>Every template checked against 51 configurable TOML keys. Fee thresholds, sigops limits, transaction counts, weight bounds.</span>
+                </div>
               </div>
-              <h3 data-i18n="home.problem.rg_title">The ReserveGrid solution</h3>
-              <p data-i18n="home.problem.rg_body">ReserveGrid OS sits between miners and the pool as a standard job server. It verifies every template against operator policy, switches prevhash references with fail-closed safety, tracks shares through a two-event lifecycle, and emits structured reason codes for every decision.</p>
+              <div class="problem-row">
+                <div class="problem-icon">
+                  <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8.5 12.5l2.5 2.5 4.5-5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+                <div class="problem-text">
+                  <strong>Fail-closed prevhash</strong>
+                  <span>50ms verdict timeout, 5s stale hold. Deterministic disconnect on expiry. No silent fallback.</span>
+                </div>
+              </div>
+              <div class="problem-row">
+                <div class="problem-icon">
+                  <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8.5 12.5l2.5 2.5 4.5-5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+                <div class="problem-text">
+                  <strong>100% traceable decisions</strong>
+                  <span>Every rejection carries a machine-readable reason_code, policy context, and share_id. Dashboards key off the same codes.</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -325,28 +371,34 @@
         </div>
       </div>
 
-      <!-- Panel 3: Capabilities -->
+      <!-- Panel 3: Capabilities — Vertical pipeline -->
       <div class="scroll-lock-panel" data-panel="capabilities">
         <div class="container">
           <div class="section-header">
             <div class="section-eyebrow" data-i18n="home.cap.eyebrow">Capabilities</div>
             <h2 data-i18n="home.cap.title">What the gateway handles</h2>
           </div>
-          <div class="grid-3 fade-up">
-            <div class="card">
+          <div class="pipeline fade-up">
+            <div class="pipeline-node">
+              <div class="pipeline-dot"></div>
               <h3 data-i18n="home.cap.modes_title">Two paths to enforcement</h3>
               <p data-i18n="home.cap.modes_body">Shadow evaluates policy without miners. Observe monitors real traffic without gating. Both lead to inline enforcement. One binary, one config key.</p>
-              <a href="/product/#modes" class="btn btn-outline btn-sm mt-6" data-i18n="home.cap.modes_btn">See modes</a>
+              <span class="pipeline-tag">mode = "shadow" | "observe" | "inline"</span>
+              <a href="/product/#modes" class="pipeline-link" data-i18n="home.cap.modes_btn">See modes <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
             </div>
-            <div class="card">
+            <div class="pipeline-node">
+              <div class="pipeline-dot"></div>
               <h3 data-i18n="home.cap.share_title">Two-event share lifecycle</h3>
-              <p data-i18n="home.cap.share_body">Every share produces <code>share_accepted</code> at ACK time and <code>share_forward_result</code> after upstream POST. Joined by <code>share_id</code> with a 1:1 invariant.</p>
-              <a href="/product/#features" class="btn btn-outline btn-sm mt-6" data-i18n="home.cap.share_btn">See pipeline</a>
+              <p data-i18n="home.cap.share_body">Every share produces <code style="background:rgba(212,148,60,.08);padding:1px 5px;border-radius:3px;font-family:var(--mono);font-size:11px;">share_accepted</code> at ACK and <code style="background:rgba(212,148,60,.08);padding:1px 5px;border-radius:3px;font-family:var(--mono);font-size:11px;">share_forward_result</code> after upstream POST. Joined by share_id with a 1:1 invariant.</p>
+              <span class="pipeline-tag">share_id: a7c3…e1</span>
+              <a href="/product/#features" class="pipeline-link" data-i18n="home.cap.share_btn">See pipeline <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
             </div>
-            <div class="card">
+            <div class="pipeline-node">
+              <div class="pipeline-dot"></div>
               <h3 data-i18n="home.cap.prevhash_title">Fail-closed prevhash</h3>
               <p data-i18n="home.cap.prevhash_body">When a new block arrives, miners hold on stale work until the verifier responds. 50ms verdict timeout, 5s stale hold, deterministic disconnect on expiry.</p>
-              <a href="/product/#features" class="btn btn-outline btn-sm mt-6" data-i18n="home.cap.prevhash_btn">See timing</a>
+              <span class="pipeline-tag">prevhash_timeout_ms = 50</span>
+              <a href="/product/#features" class="pipeline-link" data-i18n="home.cap.prevhash_btn">See timing <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
             </div>
           </div>
         </div>

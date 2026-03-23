@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>License Key — Veldra</title>
+  <meta name="description" content="Manage your ReserveGrid OS license key.">
+  <meta name="theme-color" content="#080e1a">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="canonical" href="https://veldra.org/license/">
+  <link rel="icon" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/brand/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/brand/favicon-16.png">
+  <link rel="apple-touch-icon" href="/assets/brand/apple-touch-icon.png">
+
+  <link rel="stylesheet" href="/assets/style.css?v=32">
+  <script src="/assets/auth.js?v=1" defer></script>
+  <script src="/assets/script.js?v=33" defer></script>
+  <script src="/assets/i18n.js?v=21" defer></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
+</head>
+<body class="auth-page">
+
+  <!-- ── Navigation ──────────────────────────── -->
+  <nav class="topbar">
+    <div class="container">
+      <div class="nav">
+        <a class="brand" href="/" aria-label="Veldra home">
+          <img src="/assets/brand/veldra-logo.png" alt="Veldra">
+        </a>
+        <div class="navlinks">
+          <a href="/">Home</a>
+          <a href="/product/">Product</a>
+          <a href="/docs/">Docs</a>
+          <a href="/about/">About</a>
+        </div>
+        <div class="nav-actions">
+          <div class="lang-toggle">
+            <button class="lang-btn active" data-lang="en">EN</button>
+            <button class="lang-btn" data-lang="es">ES</button>
+            <button class="lang-btn" data-lang="zh">中</button>
+          </div>
+          <a href="/login/" class="btn btn-primary btn-sm">Sign In</a>
+        </div>
+        <button class="nav-toggle" aria-label="Menu" aria-expanded="false">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ── Main Content ──────────────────────── -->
+  <div class="container" style="flex: 1; display: flex; align-items: center; justify-content: center; padding: 2rem 0;">
+    <div class="auth-card" style="max-width: 520px;">
+      <h1 style="margin-top: 0;">License Key</h1>
+
+      <div id="licenseAuth" style="display: none;">
+        <div style="margin: 1.5rem 0; padding: 1rem; background: #0a1118; border-radius: 8px; border: 1px solid #1f3a5f;">
+          <p style="margin: 0; color: #888; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px;">Your Key</p>
+          <p style="margin: 0.5rem 0 0 0; font-family: 'IBM Plex Mono', monospace; font-size: 0.9rem; word-break: break-all;" id="licenseKey">—</p>
+        </div>
+
+        <div style="margin: 1.5rem 0; padding: 1rem; background: #0a1118; border-radius: 8px; border: 1px solid #1f3a5f;">
+          <p style="margin: 0; color: #888; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px;">Tier</p>
+          <p style="margin: 0.5rem 0 0 0;" id="licenseTier">—</p>
+        </div>
+
+        <div style="margin: 1.5rem 0; padding: 1rem; background: #0a1118; border-radius: 8px; border: 1px solid #1f3a5f;">
+          <p style="margin: 0; color: #888; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px;">Status</p>
+          <p style="margin: 0.5rem 0 0 0;" id="licenseStatus">—</p>
+        </div>
+
+        <p style="color: #888; font-size: 0.85rem; margin-top: 1.5rem;">
+          Add this key to your <code style="background:rgba(212,148,60,.08);padding:2px 6px;border-radius:3px;font-family:'IBM Plex Mono',monospace;font-size:0.8rem;">reservegrid.toml</code>:
+        </p>
+        <div style="margin: 0.5rem 0 1.5rem; padding: 0.75rem 1rem; background: #0a1118; border-radius: 8px; border: 1px solid #1f3a5f; font-family: 'IBM Plex Mono', monospace; font-size: 0.8rem; color: var(--ink-muted);">
+          license_key = "<span id="licenseKeyInline">…</span>"
+        </div>
+      </div>
+
+      <div id="licenseNoAuth">
+        <p style="color: #888; margin: 1.5rem 0;">Sign in to view your license key.</p>
+        <a href="/login/" class="auth-btn" style="display: block; text-align: center; text-decoration: none;">Sign In</a>
+      </div>
+
+      <div id="licenseNoKey" style="display: none;">
+        <p style="color: #888; margin: 1.5rem 0;">License keys will be available when observe mode launches. You will receive an email notification when your key is ready.</p>
+        <p style="color: #888; font-size: 0.85rem;">Shadow mode does not require a license key.</p>
+      </div>
+
+      <div style="margin-top: 2rem; padding-top: 1rem; border-top: 1px solid rgba(226,232,240,.07);">
+        <a href="/account/" style="color: var(--amber-light); font-size: 0.9rem;">← Back to account</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Footer ──────────────────────────────── -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <img src="/assets/brand/veldra-logo.png" alt="Veldra">
+          <p>SV2 mining gateway infrastructure for production pool operators.</p>
+        </div>
+        <div>
+          <h4>Product</h4>
+          <div class="footer-links">
+            <a href="/product/">ReserveGrid OS</a>
+            <a href="/product/#architecture">Architecture</a>
+          </div>
+        </div>
+        <div>
+          <h4>Resources</h4>
+          <div class="footer-links">
+            <a href="/docs/">Documentation</a>
+            <a href="/docs/#reason-codes">Reason Codes</a>
+            <a href="/docs/#config">Configuration</a>
+          </div>
+        </div>
+        <div>
+          <h4>Company</h4>
+          <div class="footer-links">
+            <a href="/about/">About</a>
+            <a href="mailto:jarrondeng@veldra.org">Contact</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2026 Veldra, Inc.</span>
+        <div class="footer-legal">
+          <a href="/privacy/">Privacy</a>
+          <a href="/terms/">Terms</a>
+          <a href="/disclaimer/">Disclaimer</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <button class="scroll-top" aria-label="Scroll to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 15l-6-6-6 6"/></svg>
+  </button>
+
+  <script>
+  (function() {
+    'use strict';
+    var authPanel = document.getElementById('licenseAuth');
+    var noAuthPanel = document.getElementById('licenseNoAuth');
+    var noKeyPanel = document.getElementById('licenseNoKey');
+    var keyEl = document.getElementById('licenseKey');
+    var keyInlineEl = document.getElementById('licenseKeyInline');
+    var tierEl = document.getElementById('licenseTier');
+    var statusEl = document.getElementById('licenseStatus');
+
+    function init() {
+      var authed = window.VeldraAuth && window.VeldraAuth.getToken();
+      if (!authed) {
+        noAuthPanel.style.display = 'block';
+        authPanel.style.display = 'none';
+        noKeyPanel.style.display = 'none';
+        return;
+      }
+      noAuthPanel.style.display = 'none';
+
+      // TODO: fetch license from Supabase when backend is ready
+      // For now, show the "no key yet" state
+      var hasKey = false;
+      if (hasKey) {
+        authPanel.style.display = 'block';
+        noKeyPanel.style.display = 'none';
+        // keyEl.textContent = licenseData.key;
+        // keyInlineEl.textContent = licenseData.key;
+        // tierEl.textContent = licenseData.tier;
+        // statusEl.textContent = licenseData.status;
+      } else {
+        authPanel.style.display = 'none';
+        noKeyPanel.style.display = 'block';
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', function() { setTimeout(init, 100); });
+    } else {
+      setTimeout(init, 100);
+    }
+  })();
+  </script>
+</body>
+</html>
