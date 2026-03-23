@@ -23,6 +23,7 @@
   <meta name="twitter:card" content="summary_large_image">
 
   <link rel="stylesheet" href="/assets/style.css?v=31">
+  <script src="/assets/auth.js?v=1" defer></script>
   <script src="/assets/script.js?v=33" defer></script>
   <script src="/assets/i18n.js?v=21" defer></script>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
@@ -200,7 +201,7 @@
           </div>
           <div class="feature-card-text">
             <h3 data-i18n="product.modes.title">Three ways to deploy</h3>
-            <p>shadow / observe / inline. Start with audit, graduate to enforcement without code changes.</p>
+            <p>observe / shadow / inline. Start with monitoring, graduate to enforcement without code changes.</p>
           </div>
           <div class="feature-card-toggle">
             <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"/></svg>
@@ -210,12 +211,12 @@
           <div class="feature-card-content">
             <div class="detail-grid">
               <dl class="detail-item">
-                <dt>Shadow</dt>
-                <dd>Templates verified internally, results logged, no miner impact. Zero risk audit mode.</dd>
-              </dl>
-              <dl class="detail-item">
                 <dt>Observe</dt>
                 <dd>Miners connected, all templates pass, rejections logged but not enforced. Full share lifecycle active.</dd>
+              </dl>
+              <dl class="detail-item">
+                <dt>Shadow</dt>
+                <dd>Templates verified internally, results logged, no miner impact. Zero risk audit mode.</dd>
               </dl>
               <dl class="detail-item">
                 <dt>Inline</dt>
@@ -363,22 +364,6 @@
         <h2 data-i18n="product.modes.title">Three ways to deploy</h2>
       </div>
       <div class="grid-3 fade-up">
-        <div class="mode-card mode-shadow">
-          <h3 data-i18n="product.modes.shadow.title">Shadow Mode</h3>
-          <p data-i18n="product.modes.shadow.desc">Audit templates without blocking miners</p>
-          <dl class="mode-card-detail">
-            <dt>Gates templates</dt>
-            <dd>No</dd>
-            <dt>Prevhash fail-closed</dt>
-            <dd>N/A</dd>
-            <dt>Share forwarding</dt>
-            <dd>No</dd>
-            <dt>Config required</dt>
-            <dd>verifier_addr, policy context</dd>
-            <dt>Risk</dt>
-            <dd>Zero (no miner impact)</dd>
-          </dl>
-        </div>
         <div class="mode-card mode-observe">
           <h3 data-i18n="product.modes.observe.title">Observe Mode</h3>
           <p data-i18n="product.modes.observe.desc">Log verdicts, forward all shares upstream</p>
@@ -393,6 +378,22 @@
             <dd>listen_addr, upstream_url, share_upstream_url, verifier_addr</dd>
             <dt>Risk</dt>
             <dd>Low (unverified templates may reach miners)</dd>
+          </dl>
+        </div>
+        <div class="mode-card mode-shadow">
+          <h3 data-i18n="product.modes.shadow.title">Shadow Mode</h3>
+          <p data-i18n="product.modes.shadow.desc">Audit templates without blocking miners</p>
+          <dl class="mode-card-detail">
+            <dt>Gates templates</dt>
+            <dd>No</dd>
+            <dt>Prevhash fail-closed</dt>
+            <dd>N/A</dd>
+            <dt>Share forwarding</dt>
+            <dd>No</dd>
+            <dt>Config required</dt>
+            <dd>verifier_addr, policy context</dd>
+            <dt>Risk</dt>
+            <dd>Zero (no miner impact)</dd>
           </dl>
         </div>
         <div class="mode-card mode-inline">
@@ -435,7 +436,7 @@
           <div class="code-panel" data-lang="toml">
             <button class="copy-btn">Copy</button>
 <pre>[gateway]
-mode = "inline"                          # shadow, observe, or inline
+mode = "inline"                          # observe, shadow, or inline
 listen_addr = "0.0.0.0:3333"             # Miner connection address
 verifier_addr = "127.0.0.1:5001"         # pool-verifier TCP address
 upstream_url = "http://bitcoind:8332"    # Block template source
@@ -734,7 +735,7 @@ max_workers_per_channel = 1000           # Limit concurrent workers per channel<
       <div class="card-glow fade-up">
         <div class="section-eyebrow" style="position:relative;z-index:1;" data-i18n="cta.get_started">Get started</div>
         <h2 style="color:var(--ink);margin:12px 0 8px;font-size:32px;font-weight:800;position:relative;z-index:1;" data-i18n="cta.ready">Ready to deploy SV2 with confidence?</h2>
-        <p style="color:var(--ink-muted);max-width:540px;margin:0 auto 28px;position:relative;z-index:1;" data-i18n="cta.sub">Shadow mode costs nothing. Observe mode builds trust. Inline mode protects revenue.</p>
+        <p style="color:var(--ink-muted);max-width:540px;margin:0 auto 28px;position:relative;z-index:1;" data-i18n="cta.sub">Observe mode costs nothing. Shadow mode builds confidence. Inline mode protects revenue.</p>
         <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;position:relative;z-index:1;">
           <a href="/docs/" class="btn btn-glow" data-i18n="btn.docs">Read the docs</a>
           <a href="#architecture" class="btn btn-outline">See architecture</a>
