@@ -3606,4 +3606,7 @@ code:not(pre code) {
     right: -8px;
     min-width: 180px;
   }
+  .modes-entry-grid {
+    grid-template-columns: 1fr !important;
+  }
 }

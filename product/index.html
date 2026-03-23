@@ -200,8 +200,8 @@
             <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zm0 8a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zm10 0a1 1 0 011-1h4a1 1 0 011 1v6a1 1 0 01-1 1h-4a1 1 0 01-1-1v-6z"/></svg>
           </div>
           <div class="feature-card-text">
-            <h3 data-i18n="product.modes.title">Three ways to deploy</h3>
-            <p>observe / shadow / inline. Start with monitoring, graduate to enforcement without code changes.</p>
+            <h3 data-i18n="product.modes.title">Two paths to production</h3>
+            <p>Shadow or observe as your entry point, inline when ready. Switch modes with one config key.</p>
           </div>
           <div class="feature-card-toggle">
             <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"/></svg>
@@ -211,16 +211,16 @@
           <div class="feature-card-content">
             <div class="detail-grid">
               <dl class="detail-item">
-                <dt>Observe</dt>
-                <dd>Miners connected, all templates pass, rejections logged but not enforced. Full share lifecycle active.</dd>
+                <dt>Shadow (free, no miners)</dt>
+                <dd>Evaluate the verifier without touching miner infrastructure. Templates checked against policy, verdicts logged. Zero production risk.</dd>
               </dl>
               <dl class="detail-item">
-                <dt>Shadow</dt>
-                <dd>Templates verified internally, results logged, no miner impact. Zero risk audit mode.</dd>
+                <dt>Observe (paid, real traffic)</dt>
+                <dd>Miners connected via SV2, shares forwarded upstream, verdicts logged but not enforced. Full data plane visibility on production traffic.</dd>
               </dl>
               <dl class="detail-item">
-                <dt>Inline</dt>
-                <dd>Full enforcement. No unverified job reaches a miner. Prevhash switching is fail-closed.</dd>
+                <dt>Inline (enforcement)</dt>
+                <dd>Full policy enforcement. No unverified job reaches a miner. Prevhash switching is fail-closed. Where both paths lead.</dd>
               </dl>
               <dl class="detail-item">
                 <dt>Migration</dt>
@@ -361,45 +361,61 @@
     <div class="container">
       <div class="section-header">
         <div class="section-eyebrow" data-i18n="product.modes.eyebrow">Deployment modes</div>
-        <h2 data-i18n="product.modes.title">Three ways to deploy</h2>
+        <h2 data-i18n="product.modes.title">Two paths to production</h2>
+        <p style="color:var(--ink-muted);max-width:560px;margin:12px auto 0;">Shadow and observe are parallel entry points. Both lead to inline enforcement when you are ready.</p>
       </div>
-      <div class="grid-3 fade-up">
-        <div class="mode-card mode-observe">
-          <h3 data-i18n="product.modes.observe.title">Observe Mode</h3>
-          <p data-i18n="product.modes.observe.desc">Log verdicts, forward all shares upstream</p>
-          <dl class="mode-card-detail">
-            <dt>Gates templates</dt>
-            <dd>No</dd>
-            <dt>Prevhash fail-closed</dt>
-            <dd>N/A</dd>
-            <dt>Share forwarding</dt>
-            <dd>Yes</dd>
-            <dt>Config required</dt>
-            <dd>listen_addr, upstream_url, share_upstream_url, verifier_addr</dd>
-            <dt>Risk</dt>
-            <dd>Low (unverified templates may reach miners)</dd>
-          </dl>
-        </div>
+
+      <!-- Entry points: shadow and observe side by side -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px;" class="fade-up modes-entry-grid">
         <div class="mode-card mode-shadow">
+          <div class="section-eyebrow" style="font-size:11px;margin-bottom:8px;color:var(--steel);">Entry point — free</div>
           <h3 data-i18n="product.modes.shadow.title">Shadow Mode</h3>
-          <p data-i18n="product.modes.shadow.desc">Audit templates without blocking miners</p>
+          <p data-i18n="product.modes.shadow.desc">Evaluate the verifier without touching miners</p>
           <dl class="mode-card-detail">
-            <dt>Gates templates</dt>
+            <dt>Miners connected</dt>
             <dd>No</dd>
-            <dt>Prevhash fail-closed</dt>
-            <dd>N/A</dd>
             <dt>Share forwarding</dt>
             <dd>No</dd>
+            <dt>Template source</dt>
+            <dd>Demo feed or own bitcoind</dd>
             <dt>Config required</dt>
             <dd>verifier_addr, policy context</dd>
             <dt>Risk</dt>
             <dd>Zero (no miner impact)</dd>
+            <dt>Best for</dt>
+            <dd>Evaluating policy rules before committing infrastructure</dd>
           </dl>
         </div>
-        <div class="mode-card mode-inline">
+        <div class="mode-card mode-observe">
+          <div class="section-eyebrow" style="font-size:11px;margin-bottom:8px;color:var(--amber);">Entry point — paid</div>
+          <h3 data-i18n="product.modes.observe.title">Observe Mode</h3>
+          <p data-i18n="product.modes.observe.desc">Monitor real traffic, log verdicts, forward all shares</p>
+          <dl class="mode-card-detail">
+            <dt>Miners connected</dt>
+            <dd>Yes (SV2)</dd>
+            <dt>Share forwarding</dt>
+            <dd>Yes</dd>
+            <dt>Template source</dt>
+            <dd>Mainnet feed or own bitcoind</dd>
+            <dt>Config required</dt>
+            <dd>listen_addr, upstream_url, share_upstream_url, verifier_addr</dd>
+            <dt>Risk</dt>
+            <dd>Low (verdicts logged, not enforced)</dd>
+            <dt>Best for</dt>
+            <dd>Validating verdicts against real production data before enforcing</dd>
+          </dl>
+        </div>
+      </div>
+
+      <!-- Destination: inline -->
+      <div class="fade-up">
+        <div class="mode-card mode-inline" style="border-color:rgba(212,148,60,.25);">
+          <div class="section-eyebrow" style="font-size:11px;margin-bottom:8px;color:var(--amber-light);">Destination — both paths lead here</div>
           <h3 data-i18n="product.modes.inline.title">Inline Mode</h3>
           <p data-i18n="product.modes.inline.desc">Enforce policy with fail-closed safety</p>
           <dl class="mode-card-detail">
+            <dt>Miners connected</dt>
+            <dd>Yes (SV2)</dd>
             <dt>Gates templates</dt>
             <dd>Yes</dd>
             <dt>Prevhash fail-closed</dt>
@@ -436,7 +452,7 @@
           <div class="code-panel" data-lang="toml">
             <button class="copy-btn">Copy</button>
 <pre>[gateway]
-mode = "inline"                          # observe, shadow, or inline
+mode = "inline"                          # shadow, observe, or inline
 listen_addr = "0.0.0.0:3333"             # Miner connection address
 verifier_addr = "127.0.0.1:5001"         # pool-verifier TCP address
 upstream_url = "http://bitcoind:8332"    # Block template source
@@ -735,7 +751,7 @@ max_workers_per_channel = 1000           # Limit concurrent workers per channel<
       <div class="card-glow fade-up">
         <div class="section-eyebrow" style="position:relative;z-index:1;" data-i18n="cta.get_started">Get started</div>
         <h2 style="color:var(--ink);margin:12px 0 8px;font-size:32px;font-weight:800;position:relative;z-index:1;" data-i18n="cta.ready">Ready to deploy SV2 with confidence?</h2>
-        <p style="color:var(--ink-muted);max-width:540px;margin:0 auto 28px;position:relative;z-index:1;" data-i18n="cta.sub">Observe mode costs nothing. Shadow mode builds confidence. Inline mode protects revenue.</p>
+        <p style="color:var(--ink-muted);max-width:540px;margin:0 auto 28px;position:relative;z-index:1;" data-i18n="cta.sub">Start with shadow or observe. Enforce with inline when ready.</p>
         <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;position:relative;z-index:1;">
           <a href="/docs/" class="btn btn-glow" data-i18n="btn.docs">Read the docs</a>
           <a href="#architecture" class="btn btn-outline">See architecture</a>
