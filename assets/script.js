@@ -759,6 +759,116 @@
   }
 
   // ═══════════════════════════════════════════════
+  // 26a-2. User menu (person icon dropdown)
+  // ═══════════════════════════════════════════════
+  (function () {
+    var navActions = document.querySelector('.nav-actions');
+    if (!navActions) return;
+
+    // Find the existing "Sign In" link and remove it. The user menu replaces it.
+    var signInLink = navActions.querySelector('a[href*="login"]');
+    if (signInLink) signInLink.remove();
+
+    // SVG icons (inline to avoid external deps)
+    var iconPerson = '<svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>';
+    var iconAccount = '<svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>';
+    var iconKey = '<svg viewBox="0 0 24 24"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>';
+    var iconDownload = '<svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>';
+    var iconSignIn = '<svg viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>';
+    var iconRegister = '<svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>';
+    var iconSignOut = '<svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>';
+
+    // Build container
+    var menu = document.createElement('div');
+    menu.className = 'user-menu';
+
+    var trigger = document.createElement('button');
+    trigger.className = 'user-menu-trigger';
+    trigger.setAttribute('aria-label', 'User menu');
+    trigger.innerHTML = iconPerson;
+
+    var dropdown = document.createElement('div');
+    dropdown.className = 'user-menu-dropdown';
+
+    menu.appendChild(trigger);
+    menu.appendChild(dropdown);
+    navActions.appendChild(menu);
+
+    function isAuthenticated() {
+      if (!window.VeldraAuth) return false;
+      return !!window.VeldraAuth.getToken();
+    }
+
+    function getUserEmail() {
+      if (!window.VeldraAuth) return null;
+      var user = window.VeldraAuth.getUser();
+      return user ? (user.email || null) : null;
+    }
+
+    function renderDropdown() {
+      var authed = isAuthenticated();
+      trigger.classList.toggle('authenticated', authed);
+      var html = '';
+
+      if (authed) {
+        var email = getUserEmail() || 'Account';
+        html += '<div class="user-menu-email">' + email + '</div>';
+        html += '<a href="/account/">' + iconAccount + ' Account</a>';
+        html += '<a href="/account/#license">' + iconKey + ' License Key</a>';
+        html += '<a href="https://github.com/LeavesJ/veldra/releases">' + iconDownload + ' Downloads</a>';
+        html += '<div class="user-menu-sep"></div>';
+        html += '<button class="menu-signout" data-action="signout">' + iconSignOut + ' Sign Out</button>';
+      } else {
+        html += '<a href="/login/">' + iconSignIn + ' Sign In</a>';
+        html += '<a href="/login/#register">' + iconRegister + ' Register</a>';
+      }
+      dropdown.innerHTML = html;
+    }
+
+    renderDropdown();
+
+    // Toggle dropdown
+    trigger.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var wasOpen = menu.classList.contains('open');
+      menu.classList.toggle('open');
+      if (!wasOpen) renderDropdown(); // refresh auth state on open
+    });
+
+    // Close on outside click
+    document.addEventListener('click', function (e) {
+      if (!menu.contains(e.target)) {
+        menu.classList.remove('open');
+      }
+    });
+
+    // Close on Escape
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') menu.classList.remove('open');
+    });
+
+    // Sign out handler
+    dropdown.addEventListener('click', function (e) {
+      var btn = e.target.closest('[data-action="signout"]');
+      if (!btn) return;
+      e.preventDefault();
+      menu.classList.remove('open');
+      if (window.VeldraAuth && window.VeldraAuth.logout) {
+        window.VeldraAuth.logout().then(function () {
+          renderDropdown();
+        });
+      } else {
+        // Fallback: clear localStorage directly
+        try {
+          localStorage.removeItem('veldra_auth_token');
+          localStorage.removeItem('veldra_auth_user');
+        } catch (_) { /* noop */ }
+        renderDropdown();
+      }
+    });
+  })();
+
+  // ═══════════════════════════════════════════════
   // 26b. Cube-scroll storytelling controller
   // ═══════════════════════════════════════════════
   // Pure scroll-position approach. No wheel capture, no preventDefault.
