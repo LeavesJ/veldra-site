@@ -352,24 +352,19 @@
     if (!group) return;
     var target = btn.getAttribute('data-tab');
     var current = group.querySelector('.tab-content.active');
-    var next = group.querySelector('.tab-content#' + target);
-    if (current === next) return;
+    var next = group.querySelector('.tab-content[data-tab="' + target + '"]')
+              || group.querySelector('.tab-content#' + target);
+    if (!next || current === next) return;
 
     group.querySelectorAll('.tab-btn').forEach(function (b) { b.classList.remove('active'); });
     btn.classList.add('active');
 
-    if (current && next) {
-      current.classList.add('fade-out');
-      current.classList.remove('active');
-      setTimeout(function () {
-        current.classList.remove('fade-out');
-        next.classList.add('active');
-      }, 150);
-    } else {
-      group.querySelectorAll('.tab-content').forEach(function (c) {
-        c.classList.toggle('active', c.id === target);
-      });
-    }
+    current.classList.add('fade-out');
+    current.classList.remove('active');
+    setTimeout(function () {
+      current.classList.remove('fade-out');
+      next.classList.add('active');
+    }, 150);
   });
 
   // ═══════════════════════════════════════════════
