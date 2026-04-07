@@ -79,6 +79,53 @@
     });
   }
 
+  function getAuthJson(path) {
+    var token = getToken();
+    if (!token) return Promise.resolve({ status: 401, ok: false, body: null, text: 'No token' });
+    var ctrl = new AbortController();
+    var timer = setTimeout(function () { ctrl.abort(); }, 15000);
+    return fetch(AUTH_BASE + path, {
+      headers: { 'Authorization': 'Bearer ' + token },
+      signal: ctrl.signal,
+    }).then(function (resp) {
+      clearTimeout(timer);
+      return resp.text().then(function (text) {
+        var json = null;
+        try { json = JSON.parse(text); } catch (_) { /* text body */ }
+        return { status: resp.status, ok: resp.ok, body: json, text: text };
+      });
+    }).catch(function () {
+      clearTimeout(timer);
+      return { status: 0, ok: false, body: null, text: 'Network error' };
+    });
+  }
+
+  function postAuthJson(path, body) {
+    var token = getToken();
+    if (!token) return Promise.resolve({ status: 401, ok: false, body: null, text: 'No token' });
+    var ctrl = new AbortController();
+    var timer = setTimeout(function () { ctrl.abort(); }, 15000);
+    return fetch(AUTH_BASE + path, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token,
+      },
+      body: JSON.stringify(body),
+      signal: ctrl.signal,
+    }).then(function (resp) {
+      clearTimeout(timer);
+      return resp.text().then(function (text) {
+        var json = null;
+        try { json = JSON.parse(text); } catch (_) { /* text body */ }
+        return { status: resp.status, ok: resp.ok, body: json, text: text };
+      });
+    }).catch(function () {
+      clearTimeout(timer);
+      return { status: 0, ok: false, body: null, text: 'Network error' };
+    });
+  }
+
   /* ── Public API ── */
 
   window.VeldraAuth = {
@@ -94,8 +141,8 @@
           setUser(r.body.user || { email: email });
           return { ok: true, user: r.body.user };
         }
-        var code = r.body ? r.body.code : null;
-        var detail = r.body ? (r.body.detail || r.body.error || r.body.message) : null;
+        var code = r.body ? (r.body.error || r.body.code) : null;
+        var detail = r.body ? (r.body.detail || r.body.message) : null;
         if (code === 'email_not_verified') return { ok: false, error: 'Please verify your email first.' };
         if (code === 'pending_approval')  return { ok: false, error: 'Your account is pending admin approval.' };
         if (code === 'access_denied')     return { ok: false, error: 'Your access request was denied.' };
@@ -148,6 +195,44 @@
         if (r.ok && r.body && r.body.ok) return { ok: true, message: r.body.message || 'Password reset successful.' };
         var detail = r.body ? (r.body.detail || r.body.message) : null;
         return { ok: false, message: detail || 'Reset failed.' };
+      });
+    },
+
+    /** GET /auth/session → { valid, user: { id, name, email, org, tier } } */
+    sessionCheck: function () {
+      return getAuthJson('/auth/session').then(function (r) {
+        if (r.ok && r.body && r.body.valid) {
+          setUser(r.body.user);
+          return { ok: true, user: r.body.user };
+        }
+        clearSession();
+        return { ok: false };
+      });
+    },
+
+    /** GET /auth/keys → { keys: [{ id, key_prefix, label, status, created_at, revoked_at }] } */
+    listKeys: function () {
+      return getAuthJson('/auth/keys').then(function (r) {
+        if (r.ok && r.body && r.body.keys) return { ok: true, keys: r.body.keys };
+        return { ok: false, error: (r.body && r.body.detail) || 'Failed to load keys' };
+      });
+    },
+
+    /** POST /auth/keys/generate → { ok, key: { id, key_value, label, status } } */
+    generateKey: function (label) {
+      return postAuthJson('/auth/keys/generate', { label: label || '' }).then(function (r) {
+        if (r.ok && r.body && r.body.ok) return { ok: true, key: r.body.key };
+        var detail = r.body ? (r.body.detail || r.body.error) : null;
+        return { ok: false, error: detail || 'Failed to generate key' };
+      });
+    },
+
+    /** POST /auth/keys/revoke → { ok } */
+    revokeKey: function (keyId) {
+      return postAuthJson('/auth/keys/revoke', { key_id: keyId }).then(function (r) {
+        if (r.ok && r.body && r.body.ok) return { ok: true };
+        var detail = r.body ? (r.body.detail || r.body.error) : null;
+        return { ok: false, error: detail || 'Failed to revoke key' };
       });
     },
   };

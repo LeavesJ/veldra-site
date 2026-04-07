@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Veldra — SV2 Mining Gateway for Production Pools</title>
-  <meta name="description" content="ReserveGrid OS is a Stratum V2 miner-facing gateway with Noise NX transport, prevhash fail-closed switching, two-event share lifecycle, and 34 machine-readable reason codes.">
+  <meta name="description" content="ReserveGrid OS is a Stratum V2 miner-facing gateway with Noise NX transport, prevhash fail-closed switching, two-event share lifecycle, and 73 machine-readable reason codes.">
   <meta name="theme-color" content="#080e1a">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -49,7 +49,7 @@
             <button class="lang-btn" data-lang="es">ES</button>
             <button class="lang-btn" data-lang="zh">中</button>
           </div>
-          <a href="/login/" class="btn btn-primary btn-sm">Sign In</a>
+          <a href="/login/" class="btn btn-primary btn-sm" data-i18n="btn.sign_in">Sign In</a>
         </div>
         <button class="nav-toggle" aria-label="Menu" aria-expanded="false">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
@@ -164,7 +164,7 @@
           <div class="chip-pins-left">
             <div class="chip-pin">
               <div>
-                <div class="chip-pin-value">34</div>
+                <div class="chip-pin-value">73</div>
                 <div class="chip-pin-label" data-i18n="home.chip.codes">GatewayReason codes</div>
               </div>
               <div class="chip-trace"></div>
@@ -181,7 +181,7 @@
           <!-- Central chip body -->
           <div class="chip-body">
             <div class="chip-name">ReserveGrid OS</div>
-            <div class="chip-version">v1.0.0 &middot; Stratum V2 Gateway</div>
+            <div class="chip-version">v1.0.2 &middot; Stratum V2 Gateway</div>
           </div>
 
           <!-- Right pins -->
@@ -221,14 +221,14 @@
           </div>
           <div class="problem-split fade-up">
             <div class="problem-side before">
-              <h3>Without ReserveGrid</h3>
+              <h3 data-i18n="home.problem.without_title">Without ReserveGrid</h3>
               <div class="problem-row">
                 <div class="problem-icon">
                   <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M18.36 5.64a9 9 0 11-12.73 0"/><line x1="12" y1="2" x2="12" y2="12"/></svg>
                 </div>
                 <div class="problem-text">
-                  <strong>Blind template acceptance</strong>
-                  <span>Miners propose templates the pool cannot inspect. Malformed transactions, fee violations, and duplicate inputs pass through unchecked.</span>
+                  <strong data-i18n="home.problem.blind_title">Blind template acceptance</strong>
+                  <span data-i18n="home.problem.blind_body">Miners propose templates the pool cannot inspect. Malformed transactions, fee violations, and duplicate inputs pass through unchecked.</span>
                 </div>
               </div>
               <div class="problem-row">
@@ -236,8 +236,8 @@
                   <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 9v4m0 4h.01"/></svg>
                 </div>
                 <div class="problem-text">
-                  <strong>Stale prevhash exposure</strong>
-                  <span>When a new block arrives, miners keep working on stale references until they notice. No fail-closed cutoff.</span>
+                  <strong data-i18n="home.problem.stale_title">Stale prevhash exposure</strong>
+                  <span data-i18n="home.problem.stale_body">When a new block arrives, miners keep working on stale references until they notice. No fail-closed cutoff.</span>
                 </div>
               </div>
               <div class="problem-row">
@@ -245,20 +245,20 @@
                   <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                 </div>
                 <div class="problem-text">
-                  <strong>No audit trail</strong>
-                  <span>Rejections happen silently. No structured reason codes, no metrics, no way to debug why shares fail.</span>
+                  <strong data-i18n="home.problem.audit_title">No audit trail</strong>
+                  <span data-i18n="home.problem.audit_body">Rejections happen silently. No structured reason codes, no metrics, no way to debug why shares fail.</span>
                 </div>
               </div>
             </div>
             <div class="problem-side after">
-              <h3>With ReserveGrid</h3>
+              <h3 data-i18n="home.problem.with_title">With ReserveGrid</h3>
               <div class="problem-row">
                 <div class="problem-icon">
                   <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8.5 12.5l2.5 2.5 4.5-5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </div>
                 <div class="problem-text">
-                  <strong>Policy-driven verification</strong>
-                  <span>Every template checked against 51 configurable TOML keys. Fee thresholds, sigops limits, transaction counts, weight bounds.</span>
+                  <strong data-i18n="home.problem.policy_title">Policy-driven verification</strong>
+                  <span data-i18n="home.problem.policy_body">Every template checked against 51 configurable TOML keys. Fee thresholds, sigops limits, transaction counts, weight bounds.</span>
                 </div>
               </div>
               <div class="problem-row">
@@ -266,8 +266,8 @@
                   <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8.5 12.5l2.5 2.5 4.5-5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </div>
                 <div class="problem-text">
-                  <strong>Fail-closed prevhash</strong>
-                  <span>50ms verdict timeout, 5s stale hold. Deterministic disconnect on expiry. No silent fallback.</span>
+                  <strong data-i18n="home.problem.prevhash_title">Fail-closed prevhash with dual buffering</strong>
+                  <span data-i18n="home.problem.prevhash_body">Two pending templates held simultaneously during block transitions. 50ms verdict timeout, 5s stale hold. No gap in coverage, no silent fallback.</span>
                 </div>
               </div>
               <div class="problem-row">
@@ -275,8 +275,8 @@
                   <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8.5 12.5l2.5 2.5 4.5-5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </div>
                 <div class="problem-text">
-                  <strong>100% traceable decisions</strong>
-                  <span>Every rejection carries a machine-readable reason_code, policy context, and share_id. Dashboards key off the same codes.</span>
+                  <strong data-i18n="home.problem.trace_title">100% traceable decisions</strong>
+                  <span data-i18n="home.problem.trace_body">Every rejection carries a machine-readable reason_code, policy context, and share_id. Dashboards key off the same codes.</span>
                 </div>
               </div>
             </div>
@@ -332,13 +332,13 @@
               <text x="740" y="78" fill="#8899ad" font-size="10" text-anchor="middle" opacity=".7">RPC</text>
 
               <rect x="30" y="55" width="125" height="70" rx="12" fill="#0f172a" stroke="rgba(226,232,240,0.12)" stroke-width="1"/>
-              <text x="92" y="85" fill="#e2e8f0" font-size="13" font-weight="600" text-anchor="middle">Miner</text>
-              <text x="92" y="105" fill="rgba(226,232,240,0.4)" font-size="10" text-anchor="middle">SV2 client</text>
+              <text x="92" y="85" fill="#e2e8f0" font-size="13" font-weight="600" text-anchor="middle" data-i18n="home.arch.miner">Miner</text>
+              <text x="92" y="105" fill="rgba(226,232,240,0.4)" font-size="10" text-anchor="middle" data-i18n="home.arch.sv2_client">SV2 client</text>
 
               <rect class="arch-node-gw" x="245" y="50" width="170" height="80" rx="12" fill="rgba(212,148,60,0.06)" stroke="#d4943c" stroke-width="1.5" filter="url(#node-glow)"/>
               <rect x="245" y="50" width="170" height="3" rx="1" fill="url(#glow-line-grad)"/>
               <text x="330" y="82" fill="#e8b060" font-size="14" font-weight="700" text-anchor="middle">sv2-gateway</text>
-              <text x="330" y="102" fill="rgba(226,232,240,0.5)" font-size="10" text-anchor="middle">ReserveGrid OS</text>
+              <text x="330" y="102" fill="rgba(226,232,240,0.5)" font-size="10" text-anchor="middle" data-i18n="home.arch.rg_os">ReserveGrid OS</text>
 
               <line x1="330" y1="130" x2="330" y2="165" stroke="#8899ad" stroke-width="1.5" stroke-dasharray="4 3" opacity=".5"/>
               <rect x="270" y="165" width="120" height="30" rx="6" fill="#0f1520" stroke="rgba(226,232,240,0.08)" stroke-width="1"/>
@@ -346,13 +346,13 @@
 
               <rect x="505" y="55" width="190" height="70" rx="12" fill="#0f172a" stroke="rgba(226,232,240,0.12)" stroke-width="1"/>
               <text x="600" y="85" fill="#e2e8f0" font-size="13" font-weight="600" text-anchor="middle">template-manager</text>
-              <text x="600" y="105" fill="rgba(226,232,240,0.4)" font-size="10" text-anchor="middle">Upstream poller</text>
+              <text x="600" y="105" fill="rgba(226,232,240,0.4)" font-size="10" text-anchor="middle" data-i18n="home.arch.poller">Upstream poller</text>
 
               <rect x="785" y="55" width="140" height="70" rx="12" fill="#0f172a" stroke="rgba(226,232,240,0.12)" stroke-width="1"/>
               <text x="855" y="85" fill="#e2e8f0" font-size="13" font-weight="600" text-anchor="middle">bitcoind</text>
-              <text x="855" y="105" fill="rgba(226,232,240,0.4)" font-size="10" text-anchor="middle">Block templates</text>
+              <text x="855" y="105" fill="rgba(226,232,240,0.4)" font-size="10" text-anchor="middle" data-i18n="home.arch.templates">Block templates</text>
 
-              <text x="330" y="40" fill="rgba(226,232,240,0.3)" font-size="9" text-anchor="middle">shares → pool backend (HTTP POST)</text>
+              <text x="330" y="40" fill="rgba(226,232,240,0.3)" font-size="9" text-anchor="middle" data-i18n="home.arch.shares_label">shares → pool backend (HTTP POST)</text>
             </svg>
           </div>
 
@@ -373,7 +373,7 @@
           <div class="pipeline fade-up">
             <div class="pipeline-node">
               <div class="pipeline-dot"></div>
-              <h3 data-i18n="home.cap.modes_title">Two paths to enforcement</h3>
+              <h3 data-i18n="home.cap.modes_title">Progressive deployment</h3>
               <p data-i18n="home.cap.modes_body">Shadow evaluates policy without miners. Observe monitors real traffic without gating. Both lead to inline enforcement. One binary, one config key.</p>
               <span class="pipeline-tag">mode = "shadow" | "observe" | "inline"</span>
               <a href="/product/#modes" class="pipeline-link" data-i18n="home.cap.modes_btn">See modes <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
@@ -453,7 +453,7 @@
               <td class="row-label" data-i18n="home.cmp.r2">Template verification</td>
               <td class="partial" data-i18n="home.cmp.r2_trad">&#x25CB; Pool-side only</td>
               <td class="cross" data-i18n="home.cmp.r2_sv2">&#x2717; None</td>
-              <td class="check" data-i18n="home.cmp.r2_rg">&#x2713; Policy-driven, 34 reason codes</td>
+              <td class="check" data-i18n="home.cmp.r2_rg">&#x2713; Policy-driven, 73 reason codes</td>
             </tr>
             <tr>
               <td class="row-label" data-i18n="home.cmp.r3">Prevhash safety</td>
@@ -503,7 +503,7 @@
       </div>
       <div class="fade-up" style="max-width:600px;margin:0 auto;">
         <div class="code-panel" data-lang="json">
-          <button class="copy-btn">Copy</button>
+          <button class="copy-btn" data-i18n="btn.copy">Copy</button>
 <pre>{
   "accepted": false,
   "reason_code": "avg_fee_below_minimum",
@@ -515,7 +515,7 @@
 }</pre>
         </div>
         <div class="cta-actions mt-6">
-          <a href="/docs/#reason-codes" class="btn btn-outline btn-sm" data-i18n="home.out.codes_btn">34 reason codes</a>
+          <a href="/docs/#reason-codes" class="btn btn-outline btn-sm" data-i18n="home.out.codes_btn">73 reason codes</a>
           <a href="/docs/#config" class="btn btn-outline btn-sm" data-i18n="home.out.config_btn">51 config keys</a>
         </div>
       </div>
@@ -553,7 +553,7 @@
           <h4 data-i18n="footer.h_product">Product</h4>
           <div class="footer-links">
             <a href="/product/" data-i18n="footer.reservegrid">ReserveGrid OS</a>
-            <a href="/product/#architecture">Architecture</a>
+            <a href="/product/#architecture" data-i18n="footer.architecture">Architecture</a>
           </div>
         </div>
         <div>

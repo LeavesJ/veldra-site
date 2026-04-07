@@ -42,7 +42,7 @@
             <button class="lang-btn" data-lang="es">ES</button>
             <button class="lang-btn" data-lang="zh">中</button>
           </div>
-          <a href="/login/" class="btn btn-primary btn-sm">Sign In</a>
+          <a href="/login/" class="btn btn-primary btn-sm" data-i18n="btn.sign_in">Sign In</a>
         </div>
         <button class="nav-toggle" aria-label="Menu" aria-expanded="false">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
@@ -60,7 +60,10 @@
       <!-- Authenticated: show key details -->
       <div id="licenseAuth" style="display: none;">
         <div style="margin: 0 0 1rem; padding: 1rem; background: #0a1118; border-radius: 8px; border: 1px solid #1f3a5f;">
-          <p style="margin: 0; color: #888; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px;">License Key</p>
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <p style="margin: 0; color: #888; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px;">License Key</p>
+            <button id="copyKeyBtn" style="background: none; border: 1px solid rgba(212,148,60,.25); border-radius: 4px; color: var(--amber-light); font-size: 0.75rem; padding: 3px 10px; cursor: pointer; transition: border-color .15s;" title="Copy full key to clipboard">Copy</button>
+          </div>
           <p style="margin: 0.5rem 0 0 0; font-family: 'IBM Plex Mono', monospace; font-size: 0.85rem; word-break: break-all;" id="licenseKey">—</p>
         </div>
 
@@ -121,7 +124,7 @@
           <h4>Product</h4>
           <div class="footer-links">
             <a href="/product/">ReserveGrid OS</a>
-            <a href="/product/#architecture">Architecture</a>
+            <a href="/product/#architecture" data-i18n="footer.architecture">Architecture</a>
           </div>
         </div>
         <div>
@@ -165,31 +168,85 @@
     var keyInlineEl = document.getElementById('licenseKeyInline');
     var tierEl = document.getElementById('licenseTier');
     var statusEl = document.getElementById('licenseStatus');
+    var copyBtn = document.getElementById('copyKeyBtn');
+    var fullKeyValue = '';
+
+    function showPanel(which) {
+      authPanel.style.display = which === 'auth' ? 'block' : 'none';
+      noAuthPanel.style.display = which === 'noauth' ? 'block' : 'none';
+      noKeyPanel.style.display = which === 'nokey' ? 'block' : 'none';
+    }
+
+    function tierLabel(tier) {
+      if (tier === 'inline_licensed') return 'Inline';
+      if (tier === 'observe_paid') return 'Observe';
+      return 'Shadow';
+    }
+
+    function copyToClipboard(text) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        return navigator.clipboard.writeText(text);
+      }
+      var ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      return Promise.resolve();
+    }
+
+    copyBtn.addEventListener('click', function () {
+      if (!fullKeyValue) return;
+      copyToClipboard(fullKeyValue).then(function () {
+        var orig = copyBtn.textContent;
+        copyBtn.textContent = 'Copied';
+        copyBtn.style.borderColor = '#4ade80';
+        copyBtn.style.color = '#4ade80';
+        setTimeout(function () {
+          copyBtn.textContent = orig;
+          copyBtn.style.borderColor = '';
+          copyBtn.style.color = '';
+        }, 1500);
+      });
+    });
 
     function init() {
       var authed = window.VeldraAuth && window.VeldraAuth.getToken();
-      if (!authed) {
-        noAuthPanel.style.display = 'block';
-        authPanel.style.display = 'none';
-        noKeyPanel.style.display = 'none';
-        return;
-      }
-      noAuthPanel.style.display = 'none';
+      if (!authed) { showPanel('noauth'); return; }
 
-      // TODO: fetch license from Supabase when backend is ready
-      // For now, show the "no key yet" state
-      var hasKey = false;
-      if (hasKey) {
-        authPanel.style.display = 'block';
-        noKeyPanel.style.display = 'none';
-        // keyEl.textContent = licenseData.key;
-        // keyInlineEl.textContent = licenseData.key;
-        // tierEl.textContent = licenseData.tier;
-        // statusEl.textContent = licenseData.status;
-      } else {
-        authPanel.style.display = 'none';
-        noKeyPanel.style.display = 'block';
-      }
+      VeldraAuth.sessionCheck().then(function (sess) {
+        if (!sess.ok) { showPanel('noauth'); return; }
+
+        var userTier = sess.user ? tierLabel(sess.user.tier) : 'Shadow';
+
+        VeldraAuth.listKeys().then(function (res) {
+          if (!res.ok || !res.keys || res.keys.length === 0) {
+            showPanel('nokey');
+            return;
+          }
+
+          var activeKey = null;
+          for (var i = 0; i < res.keys.length; i++) {
+            if (res.keys[i].status === 'active') { activeKey = res.keys[i]; break; }
+          }
+          if (!activeKey) activeKey = res.keys[0];
+
+          fullKeyValue = activeKey.key_value || '';
+          keyEl.textContent = activeKey.key_prefix;
+          keyInlineEl.textContent = fullKeyValue || activeKey.key_prefix;
+          tierEl.textContent = userTier;
+          statusEl.textContent = activeKey.status === 'active' ? 'Active' : 'Revoked';
+          statusEl.style.color = activeKey.status === 'active' ? '#4ade80' : '#f87171';
+          showPanel('auth');
+        }).catch(function () {
+          showPanel('nokey');
+        });
+      }).catch(function () {
+        showPanel('noauth');
+      });
     }
 
     if (document.readyState === 'loading') {
