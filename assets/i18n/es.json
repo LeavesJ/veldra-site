@@ -659,7 +659,7 @@
   "docs.cfg.timing.upstream_stale_max_ms": "Edad máxima de plantilla antes de marcar upstream como no disponible",
   "docs.cfg.timing.upstream_stale_max_ms.default": "30000",
   "docs.cfg.timing.prevhash_verdict_timeout_ms": "Milisegundos para esperar veredicto del verificador en cambio de prevhash",
-  "docs.cfg.timing.prevhash_verdict_timeout_ms.default": "50",
+  "docs.cfg.timing.prevhash_verdict_timeout_ms.default": "2000",
   "docs.cfg.timing.prevhash_stale_hold_ms": "Milisegundos para retener trabajo stale antes de desconectar en timeout de prevhash",
   "docs.cfg.timing.prevhash_stale_hold_ms.default": "5000",
   "docs.cfg.timing.health_probe_interval_ms": "Milisegundos entre sondeos de salud del verificador",

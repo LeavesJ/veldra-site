@@ -659,7 +659,7 @@
   "docs.cfg.timing.upstream_stale_max_ms": "将上游标记为不可用之前的模板最大年龄",
   "docs.cfg.timing.upstream_stale_max_ms.default": "30000",
   "docs.cfg.timing.prevhash_verdict_timeout_ms": "等待 verifier 在 prevhash 变化时的 verdict 的毫秒数",
-  "docs.cfg.timing.prevhash_verdict_timeout_ms.default": "50",
+  "docs.cfg.timing.prevhash_verdict_timeout_ms.default": "2000",
   "docs.cfg.timing.prevhash_stale_hold_ms": "在 prevhash 超时时断开连接前保持 stale job 的毫秒数",
   "docs.cfg.timing.prevhash_stale_hold_ms.default": "5000",
   "docs.cfg.timing.health_probe_interval_ms": "Verifier 健康探测之间的毫秒数",
