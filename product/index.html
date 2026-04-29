@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>ReserveGrid OS — SV2 Mining Gateway</title>
-  <meta name="description" content="Miner-facing Stratum V2 gateway with Noise NX, template verification, prevhash fail-closed switching, and two-event share lifecycle. 73 reason codes, 51 config keys, 3 deployment modes.">
+  <meta name="description" content="Miner-facing Stratum V2 gateway with Noise NX, template verification, prevhash fail-closed switching, and two-event share lifecycle. 91 reason codes, 61 config keys, 3 deployment modes.">
   <meta name="theme-color" content="#080e1a">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -117,7 +117,7 @@
             <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
           </div>
           <div class="feature-card-text">
-            <h3 data-i18n="product.f2.title">73 reason codes</h3>
+            <h3 data-i18n="product.f2.title">91 reason codes</h3>
             <p data-i18n="product.f2.desc">Every rejection is machine-readable. Operators know why work was rejected and under which policy context.</p>
           </div>
           <div class="feature-card-toggle">
@@ -240,7 +240,7 @@
           </div>
           <div class="feature-card-text">
             <h3 data-i18n="product.f3.title">Fail-closed prevhash</h3>
-            <p data-i18n="product.f3.desc">50ms verdict timeout. 5s stale work hold. Miners disconnected deterministically on expiry.</p>
+            <p data-i18n="product.f3.desc">2000ms verdict timeout. 5s stale work hold. Miners disconnected deterministically on expiry.</p>
           </div>
           <div class="feature-card-toggle">
             <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"/></svg>
@@ -255,11 +255,11 @@
               </dl>
               <dl class="detail-item">
                 <dt>Happy path</dt>
-                <dd>Verdict arrives within 50ms. New prevhash + job broadcast immediately. Target: p50 &lt; 50ms, p95 &lt; 150ms, p99 &lt; 300ms.</dd>
+                <dd>Verdict arrives within 2000ms. New prevhash + job broadcast immediately. Target: p50 &lt; 50ms, p95 &lt; 150ms, p99 &lt; 300ms.</dd>
               </dl>
               <dl class="detail-item">
                 <dt>Timeout path</dt>
-                <dd>No verdict within 50ms. Miners hold stale job for up to 5s. After 5s, deterministic disconnect with prevhash_switch_timeout.</dd>
+                <dd>No verdict within 2000ms. Miners hold stale job for up to 5s. After 5s, deterministic disconnect with prevhash_switch_timeout.</dd>
               </dl>
               <dl class="detail-item">
                 <dt>Risk model</dt>
@@ -281,7 +281,7 @@
             <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.573-1.066z"/><circle cx="12" cy="12" r="3"/></svg>
           </div>
           <div class="feature-card-text">
-            <h3 data-i18n="product.config.title">51 TOML keys, zero magic</h3>
+            <h3 data-i18n="product.config.title">61 TOML keys, zero magic</h3>
             <p data-i18n="product.config.intro">ReserveGrid OS is configured via TOML with environment variable overrides. No defaults hide pool behavior.</p>
           </div>
           <div class="feature-card-toggle">
@@ -405,7 +405,7 @@
     <div class="container">
       <div class="section-header">
         <div class="section-eyebrow" data-i18n="product.config.eyebrow">Configuration</div>
-        <h2 data-i18n="product.config.title">51 TOML keys, zero magic</h2>
+        <h2 data-i18n="product.config.title">61 TOML keys, zero magic</h2>
         <p data-i18n="product.config.intro">ReserveGrid OS is configured via TOML with environment variable overrides. No defaults hide pool behavior.</p>
       </div>
       <div class="tab-group fade-up">

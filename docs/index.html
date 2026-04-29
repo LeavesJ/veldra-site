@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Documentation — Veldra</title>
-  <meta name="description" content="Technical reference for ReserveGrid OS: 59 GatewayReason codes, 15 VerdictReason codes, share event schema, 51 configuration keys, and security boundaries.">
+  <meta name="description" content="Technical reference for ReserveGrid OS: 59 GatewayReason codes, 33 VerdictReason codes, share event schema, 61 configuration keys, and security boundaries.">
   <meta name="theme-color" content="#080e1a">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,7 +16,7 @@
   <link rel="apple-touch-icon" href="/assets/brand/apple-touch-icon.png">
 
   <meta property="og:title" content="Documentation — Veldra">
-  <meta property="og:description" content="Technical reference for ReserveGrid OS: 59 GatewayReason codes, 15 VerdictReason codes, share event schema, 51 configuration keys, and security boundaries.">
+  <meta property="og:description" content="Technical reference for ReserveGrid OS: 59 GatewayReason codes, 33 VerdictReason codes, share event schema, 61 configuration keys, and security boundaries.">
   <meta property="og:url" content="https://veldra.org/docs/">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary_large_image">
@@ -104,7 +104,7 @@
     <div class="container">
       <div class="section-header">
         <h2 data-i18n="docs.section.rc_title">Gateway Reason Codes</h2>
-        <p data-i18n="docs.section.rc_sub">73 machine-readable codes for every gateway decision. Filter by category below.</p>
+        <p data-i18n="docs.section.rc_sub">59 machine-readable codes for every gateway decision. Filter by category below.</p>
       </div>
 
       <!-- Filter bar -->
@@ -322,7 +322,7 @@
     <div class="container">
       <div class="section-header">
         <h2 data-i18n="docs.section.verdict_title">Verdict Reason Codes</h2>
-        <p data-i18n="docs.section.verdict_sub">15 verdicts emitted by the template verifier. Used in template_verdict events and gateway disconnects.</p>
+        <p data-i18n="docs.section.verdict_sub">33 verdicts emitted by the template verifier. Used in template_verdict events and gateway disconnects.</p>
       </div>
 
       <div class="table-wrap fade-up">
@@ -579,7 +579,7 @@
     <div class="container">
       <div class="section-header">
         <h2 data-i18n="docs.section.config_title">Configuration Reference</h2>
-        <p data-i18n="docs.section.config_sub">51 TOML configuration keys across six categories. All values can be overridden by environment variables.</p>
+        <p data-i18n="docs.section.config_sub">61 TOML configuration keys across six categories. All values can be overridden by environment variables.</p>
       </div>
 
       <div class="tab-group fade-up">
@@ -915,7 +915,7 @@
           <ul style="list-style-position:inside;color:rgba(255,255,255,.65);line-height:1.7;">
             <li data-i18n="docs.sec.is.1">A miner-facing gateway that verifies templates in real-time</li>
             <li data-i18n="docs.sec.is.2">Noise NX encrypted transport with certificate binding</li>
-            <li data-i18n="docs.sec.is.3">Deterministic fail-closed prevhash switching with 50ms timeout</li>
+            <li data-i18n="docs.sec.is.3">Deterministic fail-closed prevhash switching with 2000ms timeout</li>
             <li data-i18n="docs.sec.is.4">Machine-readable reason codes for every decision</li>
             <li data-i18n="docs.sec.is.5">Two-event share lifecycle with HMAC-SHA256 signing</li>
           </ul>

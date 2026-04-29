@@ -268,7 +268,7 @@
                 </div>
                 <div class="problem-text">
                   <strong data-i18n="home.problem.prevhash_title">Fail-closed prevhash with dual buffering</strong>
-                  <span data-i18n="home.problem.prevhash_body">Two pending templates held simultaneously during block transitions. 50ms verdict timeout, 5s stale hold. No gap in coverage, no silent fallback.</span>
+                  <span data-i18n="home.problem.prevhash_body">Two pending templates held simultaneously during block transitions. 2000ms verdict timeout, 5s stale hold. No gap in coverage, no silent fallback.</span>
                 </div>
               </div>
               <div class="problem-row">
@@ -389,7 +389,7 @@
             <div class="pipeline-node">
               <div class="pipeline-dot"></div>
               <h3 data-i18n="home.cap.prevhash_title">Fail-closed prevhash</h3>
-              <p data-i18n="home.cap.prevhash_body">When a new block arrives, miners hold on stale work until the verifier responds. 50ms verdict timeout, 5s stale hold, deterministic disconnect on expiry.</p>
+              <p data-i18n="home.cap.prevhash_body">When a new block arrives, miners hold on stale work until the verifier responds. 2000ms verdict timeout, 5s stale hold, deterministic disconnect on expiry.</p>
               <span class="pipeline-tag">prevhash_timeout_ms = 50</span>
               <a href="/product/#features" class="pipeline-link" data-i18n="home.cap.prevhash_btn">See timing <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
             </div>
@@ -460,7 +460,7 @@
               <td class="row-label" data-i18n="home.cmp.r3">Prevhash safety</td>
               <td class="partial" data-i18n="home.cmp.r3_trad">&#x25CB; Implicit</td>
               <td class="cross" data-i18n="home.cmp.r3_sv2">&#x2717; No verification gate</td>
-              <td class="check" data-i18n="home.cmp.r3_rg">&#x2713; Fail-closed, 50ms + 5s hold</td>
+              <td class="check" data-i18n="home.cmp.r3_rg">&#x2713; Fail-closed, 2000ms + 5s hold</td>
             </tr>
             <tr>
               <td class="row-label" data-i18n="home.cmp.r4">Share audit trail</td>
@@ -478,7 +478,7 @@
               <td class="row-label" data-i18n="home.cmp.r6">Operator config surface</td>
               <td class="partial" data-i18n="home.cmp.r6_trad">&#x25CB; Varies</td>
               <td class="cross" data-i18n="home.cmp.r6_sv2">&#x2717; Minimal</td>
-              <td class="check" data-i18n="home.cmp.r6_rg">&#x2713; 51 TOML keys + env overrides</td>
+              <td class="check" data-i18n="home.cmp.r6_rg">&#x2713; 61 TOML keys + env overrides</td>
             </tr>
             <tr>
               <td class="row-label" data-i18n="home.cmp.r7">Observability</td>
