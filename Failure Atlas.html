@@ -17,6 +17,7 @@
     background: var(--bg, #07101a);
     color: var(--fg, #f4f4f4);
     font-family: var(--sans, "Inter Tight", system-ui, sans-serif);
+    overflow-x: hidden;
   }
 </style>
 
@@ -63,8 +64,10 @@ const App = () => {
            dangerouslySetInnerHTML={{ __html: t("atlas.page.lede.html") }} />
       </section>
 
-      {/* Locked Mortuary view */}
-      <section style={{ padding: "0 80px 96px", maxWidth: 1320, margin: "0 auto" }}>
+      {/* Locked Mortuary view — mortuary manages its own internal centering
+          on each section (maxWidth 1320 + margin auto), so the outer wrap
+          stays full-bleed and does not re-pad or re-cap. */}
+      <section style={{ padding: "0 0 96px" }}>
         <AtlasMortuary/>
       </section>
 

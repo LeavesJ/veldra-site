@@ -214,7 +214,7 @@ const ProductTiers = () => {
 /* ---- 6. CTA pair (Sign In for license key + docs) ---- */
 const ProductCTA = () => (
   <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-    <a href="#" className="btn btn-primary">{t("prod.cta.signin")}</a>
+    <a href="/login/" className="btn btn-primary">{t("prod.cta.signin")}</a>
     <a href="Architecture.html" className="btn btn-ghost">{t("prod.cta.arch")}</a>
   </div>
 );
