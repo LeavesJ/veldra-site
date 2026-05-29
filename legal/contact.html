@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Request Access · Veldra</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="Request access to ReserveGrid OS. Contact Veldra by email or via GitHub to discuss observe-mode evaluation, licensing, or audit." />
+
+<link rel="icon" href="../assets/brand/favicon-32.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Fraunces:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="../styles/shared.css" />
+
+<style>
+  html, body { margin: 0; background: var(--bg, #07101a); color: var(--fg, #f4f4f4); font-family: var(--sans, "Inter Tight", system-ui, sans-serif); }
+
+  /* Big channel cards — deliberately not a "form", deliberately legible */
+  .ch-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+    margin: 24px 0 40px;
+  }
+  @media (max-width: 800px) { .ch-grid { grid-template-columns: 1fr; } }
+  .ch-card {
+    border: 1px solid var(--line);
+    background: var(--bg-2);
+    padding: 28px 28px 24px;
+    border-radius: 4px;
+    display: flex; flex-direction: column;
+    transition: border-color 0.15s, transform 0.15s;
+  }
+  .ch-card:hover { border-color: var(--accent); }
+  .ch-card .tag {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em;
+    color: var(--fg-dim); text-transform: uppercase; margin-bottom: 12px;
+  }
+  .ch-card h3 {
+    font-family: var(--grotesk); font-size: 22px; font-weight: 500;
+    margin: 0 0 6px; letter-spacing: -0.01em;
+  }
+  .ch-card .lede {
+    font-size: 14px; color: var(--fg-dim); line-height: 1.55;
+    margin: 0 0 20px;
+  }
+  .ch-card .target {
+    font-family: var(--mono); font-size: 14px; color: var(--fg);
+    word-break: break-all; margin: 0 0 6px;
+  }
+  .ch-card .target a {
+    color: var(--accent); text-decoration: none;
+    border-bottom: 1px solid color-mix(in oklch, var(--accent) 40%, transparent);
+  }
+  .ch-card .target a:hover { border-bottom-color: var(--accent); }
+  .ch-card .hint {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em;
+    color: var(--fg-dim); text-transform: uppercase; margin-top: auto;
+    padding-top: 12px;
+  }
+
+  .include-list {
+    border-left: 2px solid var(--accent);
+    padding: 4px 0 4px 20px;
+    margin: 16px 0 8px;
+    list-style: none;
+  }
+  .include-list li {
+    font-size: 14.5px; color: var(--fg-dim); line-height: 1.6;
+    margin-bottom: 8px; padding: 0;
+  }
+  .include-list li strong { color: var(--fg); font-weight: 500; }
+
+  .turnaround {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+    margin: 16px 0 24px;
+  }
+  @media (max-width: 700px) { .turnaround { grid-template-columns: 1fr; } }
+  .turnaround .pill {
+    border: 1px solid var(--line); padding: 14px 16px; border-radius: 4px;
+    background: var(--bg);
+  }
+  .turnaround .pill .k {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em;
+    color: var(--fg-dim); text-transform: uppercase; margin-bottom: 6px;
+  }
+  .turnaround .pill .v {
+    font-family: var(--grotesk); font-size: 16px; color: var(--fg);
+  }
+</style>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body data-variant="layers">
+<div id="root"></div>
+
+<script src="../shared/i18n.js"></script>
+<script type="text/babel" src="_shell.jsx"></script>
+
+<script type="text/babel" data-presets="env,react">
+const TOC = [
+  ["how",       "How to reach us"],
+  ["include",   "What to include"],
+  ["turnaround","Turnaround"],
+  ["scope",     "What this is for"],
+];
+
+const ContactPage = () => (
+  <LegalShell
+    eyebrow="contact"
+    title="Request access"
+    updated="February 19, 2026"
+    toc={TOC}
+  >
+    <p style={{ fontSize: 17, color: "var(--fg-dim)", lineHeight: 1.65, marginTop: 0 }}>
+      ReserveGrid OS is source-available with paid tiers gated by license key (see <a href="license.html">License</a>). Access to observe mode and inline deployment is granted by request — not self-serve. Two ways to reach us, both go to the same person.
+    </p>
+
+    <h2 id="how">How to reach us</h2>
+
+    <div className="ch-grid">
+      <div className="ch-card">
+        <div className="tag">▸ Email</div>
+        <h3>Direct line</h3>
+        <p className="lede">Best for licensing questions, evaluation requests, escrow terms, audit inquiries, or anything that touches your operation's specifics.</p>
+        <p className="target"><a href="mailto:jarrondeng@veldra.org?subject=ReserveGrid%20OS%20%E2%80%94%20access%20request">jarrondeng@veldra.org</a></p>
+        <div className="hint">▸ Reaches a human, not a queue</div>
+      </div>
+
+      <div className="ch-card">
+        <div className="tag">▸ GitHub</div>
+        <h3>Open issue</h3>
+        <p className="lede">Best for technical questions, reproducible bugs, documentation gaps, or claims you want us to substantiate publicly. Auditor lens is first-class here.</p>
+        <p className="target"><a href="https://github.com/LeavesJ/veldra" target="_blank" rel="noreferrer">github.com/LeavesJ/veldra</a></p>
+        <div className="hint">▸ Public by default · use email for confidential</div>
+      </div>
+    </div>
+
+    <h2 id="include">What to include</h2>
+    <p>To make the first reply useful instead of a triage round-trip:</p>
+    <ul className="include-list">
+      <li><strong>Who you are</strong> — operator, pool, auditor, researcher, press. We respond to all five, just differently.</li>
+      <li><strong>Your mining context</strong> (if applicable) — pool you operate or work with, approximate hashrate scale, current SV2 deployment status.</li>
+      <li><strong>What you'd like to do</strong> — evaluate against fixtures (shadow tier, no license needed), run observe in parallel with production, plan toward inline enforcement, audit the source, or cite the work.</li>
+      <li><strong>Specific questions or claims to substantiate.</strong> The shorter and more concrete, the faster we can answer with code or numbers.</li>
+    </ul>
+
+    <h2 id="turnaround">Turnaround</h2>
+    <p>We are a small team. We answer real mail.</p>
+    <div className="turnaround">
+      <div className="pill"><div className="k">Email · routine</div><div className="v">Within 2 business days</div></div>
+      <div className="pill"><div className="k">Email · urgent</div><div className="v">Same day, mark subject [URGENT]</div></div>
+      <div className="pill"><div className="k">GitHub issue</div><div className="v">Best-effort, public thread</div></div>
+    </div>
+    <p style={{ fontSize: 13, color: "var(--fg-dim)", margin: 0 }}>
+      For security-sensitive disclosures, prefer email and we will move you to an encrypted channel before any specifics are exchanged.
+    </p>
+
+    <h2 id="scope">What this is for</h2>
+    <p>This is the only page on the site that publishes the contact email. Other pages link here. We do this so the email surfaces in one auditable place — easy to find, easy to verify, hard to scrape into noise.</p>
+    <p>If you're trying to do any of the following, you are in the right place:</p>
+    <ul>
+      <li>Evaluate ReserveGrid OS in shadow mode against curated fixtures</li>
+      <li>Discuss observe-mode access on real traffic</li>
+      <li>Plan a path to inline enforcement</li>
+      <li>License the binary for production deployment</li>
+      <li>Audit the source on behalf of an operator or counterparty</li>
+      <li>Reference the <a href="../Failure Atlas.html">Failure Atlas</a> or our reason-code surface in writing</li>
+    </ul>
+    <p>If your question is "does this work yet" — read <a href="../Architecture.html">Architecture</a> and <a href="../questions.html">Q&amp;A</a> first; most first-pass answers are there.</p>
+  </LegalShell>
+);
+
+ReactDOM.createRoot(document.getElementById("root")).render(<ContactPage/>);
+</script>
+</body>
+</html>

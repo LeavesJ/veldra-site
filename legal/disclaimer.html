@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Disclaimer · Veldra</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="Veldra disclaimer: software warranty limitations, mining risk acknowledgment, and liability boundaries." />
+
+<link rel="icon" href="../assets/brand/favicon-32.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Fraunces:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="../styles/shared.css" />
+
+<style>
+  html, body { margin: 0; background: var(--bg, #07101a); color: var(--fg, #f4f4f4); font-family: var(--sans, "Inter Tight", system-ui, sans-serif); }
+</style>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body data-variant="layers">
+<div id="root"></div>
+
+<script src="../shared/i18n.js"></script>
+<script type="text/babel" src="_shell.jsx"></script>
+
+<script type="text/babel" data-presets="env,react">
+const TOC = [
+  ["as-is",       "Software provided \"as is\""],
+  ["not-advice",  "Not financial advice"],
+  ["mining-risk", "Mining risk"],
+  ["correctness", "No guarantee of correctness"],
+  ["consensus",   "Consensus safety boundary"],
+  ["liability",   "Limitation of liability"],
+  ["operator",    "Operator responsibility"],
+  ["third-party", "Third-party dependencies"],
+  ["observe-data","Observe-mode data"],
+  ["changes",     "Changes"],
+  ["contact",     "Contact"],
+];
+
+const DisclaimerPage = () => (
+  <LegalShell eyebrow="disclaimer" title="Disclaimer" updated="February 19, 2026" toc={TOC}>
+    <h2 id="as-is" data-i18n="legal.disclaimer.s1.title">Software provided "as is"</h2>
+    <p data-i18n="legal.disclaimer.s1.body">ReserveGrid OS and all associated software components are provided "as is" and "as available" without warranty of any kind, whether express, implied, or statutory. Veldra, Inc. specifically disclaims all implied warranties of merchantability, fitness for a particular purpose, and non-infringement.</p>
+
+    <h2 id="not-advice" data-i18n="legal.disclaimer.s2.title">Not financial or investment advice</h2>
+    <p data-i18n="legal.disclaimer.s2.body">ReserveGrid OS is a technical verification tool for block-template policy and invariant evaluation. Nothing in the software, documentation, website, or observe-mode dashboard constitutes financial advice, investment advice, trading advice, or any other form of professional financial guidance. Template verdicts (accept / reject) reflect operator-configured policy rules and consensus-grounded invariants applied to technical block data. They are not recommendations to mine, not mine, buy, sell, or hold any asset.</p>
+
+    <h2 id="mining-risk" data-i18n="legal.disclaimer.s3.title">Mining risk acknowledgment</h2>
+    <p data-i18n="legal.disclaimer.s3.body">Bitcoin mining involves inherent technical and financial risks. By using ReserveGrid OS, you acknowledge that template verification is one component of a mining operation and does not guarantee profitability, block production, or revenue. Rejected templates may result in miners receiving no work assignments, which reduces hash utilization. Accepted templates may still produce blocks that the Bitcoin network rejects for reasons outside the scope of policy and invariant evaluation (network forks, competing blocks, consensus rule changes).</p>
+
+    <h2 id="correctness" data-i18n="legal.disclaimer.s4.title">No guarantee of correctness</h2>
+    <p data-i18n="legal.disclaimer.s4.body">While ReserveGrid OS is designed for deterministic, reproducible evaluation, Veldra does not guarantee that the software is free from bugs, errors, or vulnerabilities. Policy configuration errors, software defects, or unexpected interactions with upstream systems (bitcoind, Stratum V2 servers, mempool data sources) may cause incorrect verdicts. Operators are responsible for testing their policy configuration and monitoring verdict outcomes.</p>
+
+    <h2 id="consensus" data-i18n="legal.disclaimer.s5.title">Consensus safety boundary</h2>
+    <p data-i18n="legal.disclaimer.s5.body">The Invariant Shield re-derives consensus quantities (coinbase value, merkle root, witness commitment, weight, sigops, transaction count) using the same kernel that would validate the block, and cross-checks the template's transaction set against an independent bitcoind mempool. These checks raise the floor on what reaches a miner, but do not replace full consensus validation performed by the Bitcoin network. A template that passes every invariant may still be invalid under Bitcoin consensus rules. The Shield also cannot detect a compromise of the operator's own bitcoind — that boundary is named, not hidden.</p>
+
+    <h2 id="liability" data-i18n="legal.disclaimer.s6.title">Limitation of liability</h2>
+    <p data-i18n="legal.disclaimer.s6.body">To the maximum extent permitted by applicable law, Veldra, Inc. and its officers, directors, employees, and agents shall not be liable for any direct, indirect, incidental, special, consequential, or punitive damages arising from the use of or inability to use the software, including but not limited to lost mining revenue, missed blocks, orphaned blocks, incorrect template verdicts, policy misconfiguration, data loss, or service interruption.</p>
+
+    <h2 id="operator" data-i18n="legal.disclaimer.s7.title">Operator responsibility</h2>
+    <p data-i18n="legal.disclaimer.s7.body">Operators deploying ReserveGrid OS in production are solely responsible for securing the deployment environment (network access, TLS, authentication), configuring policy rules appropriate for their operation, monitoring verdict logs and system health, maintaining backups and disaster-recovery procedures, and complying with all applicable laws and regulations in their jurisdiction.</p>
+
+    <h2 id="third-party" data-i18n="legal.disclaimer.s8.title">Third-party dependencies</h2>
+    <p data-i18n="legal.disclaimer.s8.body">ReserveGrid OS depends on third-party software components (Rust crates, operating-system libraries, Bitcoin Core via the rg-consensus facade). Veldra does not guarantee the security, availability, or correctness of third-party dependencies. Operators should review dependency licenses and security advisories independently.</p>
+
+    <h2 id="observe-data" data-i18n="legal.disclaimer.s9.title">Observe-mode data</h2>
+    <p data-i18n="legal.disclaimer.s9.body">Data displayed in the observe-mode dashboard is provided for informational and evaluation purposes only. Dashboard metrics, charts, and verdicts reflect real-time or simulated data depending on the connection state. Veldra makes no representation about the accuracy, completeness, or timeliness of data displayed in observe mode.</p>
+
+    <h2 id="changes" data-i18n="legal.disclaimer.s10.title">Changes to this disclaimer</h2>
+    <p data-i18n="legal.disclaimer.s10.body">We may update this disclaimer from time to time. Changes will be posted on this page with an updated revision date. Continued use of the software or Services after changes constitutes acceptance of the revised disclaimer.</p>
+
+    <h2 id="contact" data-i18n="legal.disclaimer.s11.title">Contact</h2>
+    <p data-i18n="legal.disclaimer.s11.body">For questions about this disclaimer, please <a href="contact.html">contact us</a>.</p>
+  </LegalShell>
+);
+
+ReactDOM.createRoot(document.getElementById("root")).render(<DisclaimerPage/>);
+</script>
+</body>
+</html>

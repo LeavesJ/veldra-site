@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Privacy Policy · Veldra</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="Veldra privacy policy: what data we collect, how we use it, and your rights." />
+
+<link rel="icon" href="../assets/brand/favicon-32.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Fraunces:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="../styles/shared.css" />
+
+<style>
+  html, body {
+    margin: 0;
+    background: var(--bg, #07101a);
+    color: var(--fg, #f4f4f4);
+    font-family: var(--sans, "Inter Tight", system-ui, sans-serif);
+  }
+</style>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body data-variant="layers">
+<div id="root"></div>
+
+<script src="../shared/i18n.js"></script>
+<script type="text/babel" src="_shell.jsx"></script>
+
+<script type="text/babel" data-presets="env,react">
+const TOC = [
+  ["who-we-are",            "Who we are"],
+  ["info-we-collect",       "Information we collect"],
+  ["how-we-use",            "How we use your information"],
+  ["data-sharing",          "Data sharing"],
+  ["data-retention",        "Data retention"],
+  ["security",              "Security"],
+  ["your-rights",           "Your rights"],
+  ["cookies",               "Cookies"],
+  ["changes",               "Changes to this policy"],
+  ["contact",               "Contact"],
+];
+
+const PrivacyPage = () => (
+  <LegalShell
+    eyebrow="privacy"
+    title="Privacy Policy"
+    updated="February 19, 2026"
+    toc={TOC}
+  >
+    <h2 id="who-we-are" data-i18n="legal.privacy.s1.title">1. Who we are</h2>
+    <p data-i18n="legal.privacy.s1.body">
+      Veldra, Inc. ("Veldra", "we", "us") operates the veldra.org website and the
+      ReserveGrid OS software suite. This policy describes how we collect, use, and
+      protect your information when you interact with our services.
+    </p>
+
+    <h2 id="info-we-collect" data-i18n="legal.privacy.s2.title">2. Information we collect</h2>
+
+    <h3 data-i18n="legal.privacy.s2_1.title">2.1 Account information</h3>
+    <p data-i18n="legal.privacy.s2_1.body">
+      When you register for observe-mode access, we collect your name, email address,
+      organization name, and a password. Your password is stored as a one-way
+      cryptographic hash using Argon2id. We never store or have access to your plaintext
+      password.
+    </p>
+
+    <h3 data-i18n="legal.privacy.s2_2.title">2.2 Session data</h3>
+    <p data-i18n="legal.privacy.s2_2.body">
+      When you log in, we create a session token stored in your browser. Session tokens
+      expire after 7 days by default. We store session metadata (creation time, last
+      activity) to manage active sessions.
+    </p>
+
+    <h3 data-i18n="legal.privacy.s2_3.title">2.3 Analytics</h3>
+    <p data-i18n="legal.privacy.s2_3.body">
+      We may use third-party analytics services to understand how visitors use our
+      website. These services may collect standard web analytics data including page
+      views, referrer URLs, browser type, and approximate geographic location derived
+      from IP address. We do not sell or share analytics data with third parties for
+      advertising purposes.
+    </p>
+
+    <h3 data-i18n="legal.privacy.s2_4.title">2.4 Operational data</h3>
+    <p data-i18n="legal.privacy.s2_4.body">
+      ReserveGrid OS processes block-template data as part of its verification function.
+      Template data (block height, transaction counts, fee totals, declared fields, and
+      reason-code emissions) is logged locally on operator infrastructure. Veldra does
+      not transmit, collect, or store operator template data on our servers.
+    </p>
+
+    <h2 id="how-we-use" data-i18n="legal.privacy.s3.title">3. How we use your information</h2>
+    <p data-i18n="legal.privacy.s3.body">
+      We use collected information to provide and maintain observe-mode access, send
+      email verification and account-approval notifications, communicate about service
+      updates or security issues, and improve the website experience through analytics.
+    </p>
+
+    <h2 id="data-sharing" data-i18n="legal.privacy.s4.title">4. Data sharing</h2>
+    <p data-i18n="legal.privacy.s4.body">
+      We do not sell your personal information. We may share information with email
+      service providers (for transactional emails such as verification and approval
+      notifications) and analytics providers (for aggregated, non-identifying usage
+      data). We may also disclose information if required by law or to protect the
+      rights and safety of Veldra and its users.
+    </p>
+
+    <h2 id="data-retention" data-i18n="legal.privacy.s5.title">5. Data retention</h2>
+    <p data-i18n="legal.privacy.s5.body">
+      Account data is retained for as long as your account is active. Expired session
+      tokens are automatically cleaned up. You may request account deletion by
+      contacting us via the <a href="contact.html">Request access</a> page.
+    </p>
+
+    <h2 id="security" data-i18n="legal.privacy.s6.title">6. Security</h2>
+    <p data-i18n="legal.privacy.s6.body">
+      We use industry-standard security measures including Argon2id password hashing,
+      TLS encryption for data in transit, and access controls on our infrastructure. No
+      system is perfectly secure, and we cannot guarantee absolute security of your
+      data.
+    </p>
+
+    <h2 id="your-rights" data-i18n="legal.privacy.s7.title">7. Your rights</h2>
+    <p data-i18n="legal.privacy.s7.body">
+      You may request access to the personal data we hold about you, request correction
+      of inaccurate data, request deletion of your account and associated data, or opt
+      out of non-essential communications. To exercise these rights, please
+      <a href="contact.html">contact us</a>.
+    </p>
+
+    <h2 id="cookies" data-i18n="legal.privacy.s8.title">8. Cookies</h2>
+    <p data-i18n="legal.privacy.s8.body">
+      We use a session cookie for authentication when you log into observe mode. We may
+      use analytics cookies if third-party analytics are enabled. We do not use
+      advertising or tracking cookies.
+    </p>
+
+    <h2 id="changes" data-i18n="legal.privacy.s9.title">9. Changes to this policy</h2>
+    <p data-i18n="legal.privacy.s9.body">
+      We may update this policy from time to time. Changes will be posted on this page
+      with an updated revision date. Continued use of our services after changes
+      constitutes acceptance of the revised policy.
+    </p>
+
+    <h2 id="contact" data-i18n="legal.privacy.s10.title">10. Contact</h2>
+    <p data-i18n="legal.privacy.s10.body">
+      For privacy-related inquiries, please <a href="contact.html">contact us</a>.
+    </p>
+  </LegalShell>
+);
+
+ReactDOM.createRoot(document.getElementById("root")).render(<PrivacyPage/>);
+</script>
+</body>
+</html>

@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Veldra · Q&amp;A</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Fraunces:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="styles/shared.css" />
+
+<style>
+  /* Page-level baseline — uses the layers (Variant C) tokens project-wide */
+  html, body {
+    margin: 0;
+    background: var(--bg, #07101a);
+    color: var(--fg, #f4f4f4);
+    font-family: var(--sans, "Inter Tight", system-ui, sans-serif);
+  }
+  /* The data-variant attr below cascades the CSS-var palette through everything. */
+
+  /* Q&A body strings inline highlight (em → accent color, not italic) */
+  #root em {
+    font-style: normal;
+    color: var(--accent);
+  }
+</style>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+</head>
+<body data-variant="layers">
+<div id="root"></div>
+
+<script src="shared/i18n.js"></script>
+<script type="text/babel" src="shared/components.jsx"></script>
+<script type="text/babel" src="shared/page-shell.jsx"></script>
+<script src="product-variants/_content.js"></script>
+<script type="text/babel" src="product-variants/_blocks.jsx"></script>
+
+<script type="text/babel" data-presets="env,react">
+const { useState } = React;
+
+/* ────────────────────────────────────────────────────────────────────────
+   Q&A page · promoted from product-variants/by-question.jsx
+   Six blunt operator questions in order. License claim corrected to
+   "Source-available with escrow continuity" (PDF-grounded).
+   ──────────────────────────────────────────────────────────────────────── */
+const QSection = ({ q, children }) => (
+  <section id={q.id} style={{
+    padding: "72px 80px",
+    maxWidth: 1320, margin: "0 auto",
+    borderTop: "1px solid var(--line)",
+  }}>
+    <div style={{ display: "grid", gridTemplateColumns: "120px 1fr", gap: 32, marginBottom: 40 }}>
+      <div className="mono tabular" style={{
+        fontSize: 44, color: "var(--accent)", letterSpacing: "0.04em",
+        lineHeight: 1, paddingTop: 8, fontWeight: 500,
+      }}>{q.n}</div>
+      <div>
+        <h2 style={{
+          fontFamily: "var(--grotesk)", fontSize: 48, fontWeight: 500,
+          letterSpacing: "-0.025em", margin: "0 0 18px", lineHeight: 1.08, textWrap: "balance",
+        }}>{q.q}</h2>
+        <p style={{ fontSize: 17, color: "var(--fg-dim)", lineHeight: 1.55, maxWidth: 880, margin: 0 }}>{q.sub}</p>
+      </div>
+    </div>
+    <div style={{ marginLeft: 152 }}>
+      {children}
+    </div>
+  </section>
+);
+
+const Card = ({ eyebrow, accent, title, children }) => (
+  <div style={{ padding: "20px 24px", background: "var(--bg-2)", border: "1px solid var(--line)", borderLeft: `3px solid ${accent}` }}>
+    <div className="mono" style={{ fontSize: 10, letterSpacing: "0.16em", color: accent, marginBottom: 8 }}>{eyebrow}</div>
+    <div style={{ fontFamily: "var(--grotesk)", fontSize: 20, fontWeight: 500, marginBottom: 10 }}>{title}</div>
+    <div style={{ fontSize: 13.5, color: "var(--fg-dim)", lineHeight: 1.6 }}>{children}</div>
+  </div>
+);
+
+const QA = () => {
+  // Re-render on lang change so all t() reads update
+  const [, setTick] = useState(0);
+  React.useEffect(() => {
+    const onLang = () => setTick(x => x + 1);
+    window.addEventListener("__lang_changed", onLang);
+    return () => window.removeEventListener("__lang_changed", onLang);
+  }, []);
+
+  const QS = [
+    { id: "q1", n: "Q1", q: t("qa.q1.q"), sub: t("qa.q1.sub") },
+    { id: "q2", n: "Q2", q: t("qa.q2.q"), sub: t("qa.q2.sub") },
+    { id: "q3", n: "Q3", q: t("qa.q3.q"), sub: t("qa.q3.sub") },
+    { id: "q4", n: "Q4", q: t("qa.q4.q"), sub: t("qa.q4.sub") },
+    { id: "q5", n: "Q5", q: t("qa.q5.q"), sub: t("qa.q5.sub") },
+    { id: "q6", n: "Q6", q: t("qa.q6.q"), sub: t("qa.q6.sub") },
+  ];
+
+  return (
+    <main>
+      {/* ===== HEADER ===== */}
+      <section style={{ padding: "96px 80px 64px", maxWidth: 1320, margin: "0 auto" }}>
+        <div className="eyebrow">{t("qa.eyebrow")}</div>
+        <h1 style={{
+          fontFamily: "var(--grotesk)", fontSize: 84, fontWeight: 500,
+          lineHeight: 1.0, letterSpacing: "-0.035em",
+          margin: "16px 0 24px", maxWidth: 1100, textWrap: "balance",
+        }}>
+          {t("qa.h1")}
+        </h1>
+        <p style={{ fontSize: 19, color: "var(--fg-dim)", lineHeight: 1.55, maxWidth: 760, margin: "0 0 56px" }}>
+          {t("qa.lede")}
+        </p>
+
+        {/* Question index */}
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 12 }}>
+          {QS.map(q => (
+            <a key={q.id} href={`#${q.id}`} style={{
+              display: "block", padding: "20px 24px",
+              background: "var(--bg-2)", border: "1px solid var(--line)",
+              borderLeft: "3px solid var(--accent)",
+              textDecoration: "none", color: "var(--fg)",
+              transition: "background 0.15s",
+            }}>
+              <div className="mono tabular" style={{ fontSize: 11, letterSpacing: "0.16em", color: "var(--accent)", marginBottom: 8 }}>{q.n}</div>
+              <div style={{ fontFamily: "var(--grotesk)", fontSize: 17, fontWeight: 500, lineHeight: 1.25 }}>{q.q}</div>
+            </a>
+          ))}
+        </div>
+      </section>
+
+      {/* ===== Q1 ===== */}
+      <QSection q={QS[0]}>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 32 }}>
+          <Card eyebrow={t("qa.cards.l1.eyebrow")} accent="var(--accent)" title={t("qa.cards.l1.title")}>
+            <span dangerouslySetInnerHTML={{__html: t("qa.cards.l1.body")}}/>
+          </Card>
+          <Card eyebrow={t("qa.cards.l2.eyebrow")} accent="var(--accent-2)" title={t("qa.cards.l2.title")}>
+            <span dangerouslySetInnerHTML={{__html: t("qa.cards.l2.body")}}/>
+            <span style={{ display: "inline-block", marginLeft: 6 }}><WiredBadge variant="inline"/></span>
+          </Card>
+        </div>
+        <div className="mono" style={{ fontSize: 10, letterSpacing: "0.16em", color: "var(--fg-dim)", marginBottom: 10 }}>{t("qa.cards.summary.eyebrow")}</div>
+        <div style={{ padding: "20px 28px", background: "var(--bg-2)", border: "1px solid var(--line)", fontFamily: "var(--grotesk)", fontSize: 24, lineHeight: 1.35, fontWeight: 400 }}
+             dangerouslySetInnerHTML={{__html: t("qa.cards.summary.body")}}/>
+      </QSection>
+
+      {/* ===== Q2 ===== */}
+      <QSection q={QS[1]}>
+        <ProductReasonCodes/>
+      </QSection>
+
+      {/* ===== Q3 ===== */}
+      <QSection q={QS[2]}>
+        <ProductTOML/>
+      </QSection>
+
+      {/* ===== Q4 ===== */}
+      <QSection q={QS[3]}>
+        <ProductTiers/>
+        <div style={{ marginTop: 24, padding: "20px 24px", background: "var(--bg-2)", border: "1px solid var(--line)", borderLeft: "3px solid var(--accent-2)" }}>
+          <div className="mono" style={{ fontSize: 10, letterSpacing: "0.16em", color: "var(--accent-2)", marginBottom: 8 }}>{t("qa.cards.license.eyebrow")}</div>
+          <div style={{ fontFamily: "var(--grotesk)", fontSize: 18, fontWeight: 500, marginBottom: 8 }}>{t("qa.cards.license.title")}</div>
+          <div style={{ fontSize: 13, color: "var(--fg-dim)", lineHeight: 1.6, maxWidth: 720 }}
+               dangerouslySetInnerHTML={{__html: t("qa.cards.license.body")}}/>
+        </div>
+      </QSection>
+
+      {/* ===== Q5 ===== */}
+      <QSection q={QS[4]}>
+        <ProductCompare/>
+      </QSection>
+
+      {/* ===== Q6 ===== */}
+      <QSection q={QS[5]}>
+        <ProductRoadmap/>
+        <div style={{ marginTop: 40 }}>
+          <div className="mono" style={{ fontSize: 10, letterSpacing: "0.16em", color: "var(--fg-dim)", marginBottom: 14 }}>{t("qa.cta.eyebrow")}</div>
+          <ProductCTA/>
+        </div>
+      </QSection>
+    </main>
+  );
+};
+
+/* ===== App ===== */
+const App = () => (
+  <>
+    <TopNav active="qa"/>
+    <QA/>
+    <SiteFooter/>
+  </>
+);
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+
+<!-- Scroll-driven reveal effects (section-reveal + fade-up) -->
+<script src="shared/scroll-effects.js" defer></script>
+</body>
+</html>

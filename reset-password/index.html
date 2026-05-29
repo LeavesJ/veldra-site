@@ -1,189 +1,175 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Reset Password — Veldra</title>
-  <meta name="description" content="Reset your Veldra account password.">
-  <meta name="theme-color" content="#080e1a">
+<meta charset="utf-8" />
+<title>Reset password · Veldra</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="Choose a new password for your Veldra account using a one-time reset link.">
+<link rel="icon" href="../favicon.ico">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="canonical" href="https://veldra.org/reset-password/">
-  <link rel="icon" href="/favicon.ico">
-  <link rel="icon" type="image/png" sizes="32x32" href="/assets/brand/favicon-32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/assets/brand/favicon-16.png">
-  <link rel="apple-touch-icon" href="/assets/brand/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Fraunces:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet" />
 
-  <link rel="stylesheet" href="/assets/style.css?v=32">
-  <script src="/assets/auth.js?v=1" defer></script>
-  <script src="/assets/script.js?v=33" defer></script>
-  <script src="/assets/i18n.js?v=21" defer></script>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="../styles/shared.css" />
+
+<style>
+  html, body {
+    margin: 0; background: var(--bg, #07101a); color: var(--fg, #f4f4f4);
+    font-family: var(--sans, "Inter Tight", system-ui, sans-serif);
+  }
+</style>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 </head>
-<body class="auth-page">
+<body data-variant="layers">
+<div id="root"></div>
 
-  <!-- ── Navigation ──────────────────────────── -->
-  <nav class="topbar">
-    <div class="container">
-      <div class="nav">
-        <a class="brand" href="/" aria-label="Veldra home">
-          <img src="/assets/brand/veldra-logo.png" alt="Veldra">
-        </a>
-        <div class="navlinks">
-          <a href="/">Home</a>
-          <a href="/product/">Product</a>
-          <a href="/docs/">Docs</a>
-          <a href="/about/">About</a>
-        </div>
-        <div class="nav-actions">
-          <div class="lang-toggle">
-            <button class="lang-btn active" data-lang="en">EN</button>
-            <button class="lang-btn" data-lang="es">ES</button>
-            <button class="lang-btn" data-lang="zh">中</button>
-          </div>
-          <a href="https://github.com/LeavesJ/veldra" class="btn btn-outline btn-sm" target="_blank" rel="noreferrer" data-i18n="btn.github">GitHub</a>
-          <a href="/login/" class="btn btn-primary btn-sm" data-i18n="btn.sign_in">Sign In</a>
-        </div>
-        <button class="nav-toggle" aria-label="Menu" aria-expanded="false">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
-        </button>
-      </div>
-    </div>
-  </nav>
+<script src="../shared/i18n.js"></script>
+<script src="../shared/auth.js"></script>
+<script type="text/babel" src="../shared/components.jsx"></script>
+<script type="text/babel" src="../shared/page-shell.jsx"></script>
+<script type="text/babel" src="../shared/auth-shell.jsx"></script>
 
-  <!-- ── Main Content ──────────────────────── -->
-  <div class="container" style="flex: 1; display: flex; align-items: center; justify-content: center; padding: 2rem 0;">
-    <div class="auth-card">
-      <h1 style="margin-top: 0;">Reset Password</h1>
-      <div class="auth-msg" id="authMsg" style="display: none;"></div>
-      <form id="resetForm" style="display: none;">
-        <div class="auth-field">
-          <label for="password">New Password</label>
-          <input type="password" id="password" name="password" required>
-        </div>
-        <div class="auth-field">
-          <label for="confirmPassword">Confirm Password</label>
-          <input type="password" id="confirmPassword" name="confirmPassword" required>
-        </div>
-        <button type="submit" class="auth-btn">Reset Password</button>
-      </form>
-    </div>
-  </div>
+<script type="text/babel" data-presets="env,react">
+const { useState, useEffect } = React;
 
-  <!-- ── Footer ──────────────────────────────── -->
-  <footer class="footer">
-    <div class="container">
-      <div class="footer-inner">
-        <div class="footer-brand">
-          <img src="/assets/brand/veldra-logo.png" alt="Veldra">
-          <p>SV2 mining gateway infrastructure for production pool operators.</p>
-        </div>
-        <div>
-          <h4>Product</h4>
-          <div class="footer-links">
-            <a href="/product/">ReserveGrid OS</a>
-            <a href="/product/#architecture" data-i18n="footer.architecture">Architecture</a>
-          </div>
-        </div>
-        <div>
-          <h4>Resources</h4>
-          <div class="footer-links">
-            <a href="/docs/">Documentation</a>
-            <a href="/docs/#reason-codes">Reason Codes</a>
-            <a href="/docs/#config">Configuration</a>
-          </div>
-        </div>
-        <div>
-          <h4>Company</h4>
-          <div class="footer-links">
-            <a href="/about/">About</a>
-            <a href="mailto:jarrondeng@veldra.org">Contact</a>
-          </div>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <span>&copy; 2026 Veldra, Inc.</span>
-        <div class="footer-legal">
-          <a href="/privacy/">Privacy</a>
-          <a href="/terms/">Terms</a>
-          <a href="/disclaimer/">Disclaimer</a>
-        </div>
-      </div>
-    </div>
-  </footer>
+function syncDocTags() {
+  if (typeof window.t !== "function") return;
+  document.title = window.t("reset.page.title");
+  const meta = document.querySelector('meta[name="description"]');
+  if (meta) meta.setAttribute("content", window.t("reset.page.meta"));
+}
 
-  <button class="scroll-top" aria-label="Scroll to top">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 15l-6-6-6 6"/></svg>
-  </button>
+const ResetCard = () => {
+  const [token, setToken] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirm, setConfirm] = useState("");
+  const [msg, setMsg] = useState(null);
+  const [busy, setBusy] = useState(false);
+  const [done, setDone] = useState(false);
 
-  <script>
-  (function() {
-    'use strict';
-
-    var msgEl = document.getElementById('authMsg');
-    var form = document.getElementById('resetForm');
-    var passwordInput = document.getElementById('password');
-    var confirmPasswordInput = document.getElementById('confirmPassword');
-
-    function showMsg(text, type) {
-      msgEl.textContent = text;
-      msgEl.className = 'auth-msg ' + type;
-      msgEl.style.display = 'block';
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const raw = params.get("token");
+    // Defensive: same hex-only sanitization as the verify page. Copy-paste
+    // from a tracing log can include trailing escaped newlines and adjacent
+    // text; strip everything after the leading hex run so the token always
+    // hits rg-auth in canonical form.
+    const match = raw ? raw.match(/^[0-9a-fA-F]+/) : null;
+    const cleanToken = match ? match[0] : "";
+    if (!cleanToken) {
+      setMsg({ text: t("reset.msg.no_token"), kind: "error" });
+    } else {
+      setToken(cleanToken);
+      // Rewrite the address bar to the canonical clean URL so the visible
+      // URL matches the token actually held in state. replaceState avoids
+      // adding a history entry, so back-button behavior is unchanged.
+      if (raw !== cleanToken) {
+        try {
+          window.history.replaceState(null, "", "/reset-password/?token=" + cleanToken);
+        } catch (_) { /* ignore */ }
+      }
     }
+  }, []);
 
-    function getQueryParam(name) {
-      var url = new URL(window.location.href);
-      return url.searchParams.get(name);
-    }
-
-    var token = getQueryParam('token');
+  const onSubmit = (e) => {
+    e.preventDefault();
     if (!token) {
-      showMsg('No reset token provided. Please use the link from your email.', 'error');
+      setMsg({ text: t("reset.msg.no_token_short"), kind: "error" });
       return;
     }
-
-    form.style.display = 'block';
-
-    form.addEventListener('submit', function(e) {
-      e.preventDefault();
-      var password = passwordInput.value;
-      var confirmPassword = confirmPasswordInput.value;
-
-      if (!password || !confirmPassword) {
-        showMsg('Please fill in all fields.', 'error');
-        return;
+    if (!password || password.length < 8) {
+      setMsg({ text: t("reset.msg.pw_short"), kind: "error" });
+      return;
+    }
+    if (password !== confirm) {
+      setMsg({ text: t("reset.msg.pw_mismatch"), kind: "error" });
+      return;
+    }
+    setBusy(true);
+    setMsg({ text: t("reset.msg.resetting"), kind: "" });
+    window.VeldraAuth.resetPassword(token, password).then((r) => {
+      if (r.ok) {
+        setDone(true);
+      } else {
+        setMsg({ text: r.message || t("reset.msg.failed"), kind: "error" });
+        setBusy(false);
       }
-
-      if (password !== confirmPassword) {
-        showMsg('Passwords do not match.', 'error');
-        return;
-      }
-
-      if (password.length < 8) {
-        showMsg('Password must be at least 8 characters long.', 'error');
-        return;
-      }
-
-      showMsg('Resetting password...', '');
-
-      VeldraAuth.resetPassword(token, password).then(function(result) {
-        if (result.ok) {
-          showMsg(result.message || 'Password reset successful.', 'success');
-          form.style.display = 'none';
-          var linkEl = document.createElement('div');
-          linkEl.className = 'auth-links';
-          linkEl.style.marginTop = '1.5rem';
-          linkEl.innerHTML = '<a href="/login/">Return to login</a>';
-          msgEl.parentElement.appendChild(linkEl);
-        } else {
-          showMsg(result.message || 'Reset failed.', 'error');
-        }
-      }).catch(function(err) {
-        showMsg('An error occurred. Please try again.', 'error');
-      });
+    }).catch(() => {
+      setMsg({ text: t("auth.msg.network_error"), kind: "error" });
+      setBusy(false);
     });
-  })();
-  </script>
+  };
+
+  if (done) {
+    return (
+      <div className="auth-card">
+        <h1>{t("reset.done.h1")}</h1>
+        <p className="auth-lede">{t("reset.done.body")}</p>
+        <a className="auth-btn" href="/login/" style={{ display: "block", textAlign: "center", textDecoration: "none" }}>
+          {t("reset.done.btn")}
+        </a>
+      </div>
+    );
+  }
+
+  return (
+    <div className="auth-card">
+      <h1>{t("reset.h1")}</h1>
+      <p className="auth-lede">{t("reset.lede")}</p>
+
+      {msg && <div className={"auth-msg " + msg.kind}>{msg.text}</div>}
+
+      <form onSubmit={onSubmit}>
+        <div className="auth-field">
+          <label htmlFor="password">{t("auth.field.password_new")}</label>
+          <input id="password" type="password" autoComplete="new-password" required minLength="8"
+                 value={password} onChange={(e) => setPassword(e.target.value)} />
+        </div>
+        <div className="auth-field">
+          <label htmlFor="confirm">{t("auth.field.password_confirm_new")}</label>
+          <input id="confirm" type="password" autoComplete="new-password" required
+                 value={confirm} onChange={(e) => setConfirm(e.target.value)} />
+        </div>
+        <button className="auth-btn" type="submit" disabled={busy || !token}>
+          {busy ? t("reset.btn.busy") : t("reset.btn")}
+        </button>
+      </form>
+
+      <div className="auth-links">
+        <a href="/login/">{t("auth.link.back_to_signin")}</a>
+        <span className="sep">·</span>
+        <a href="/forgot-password/">{t("reset.link.request_new")}</a>
+      </div>
+    </div>
+  );
+};
+
+const App = () => {
+  const [, setLangTick] = useState(0);
+  useEffect(() => {
+    syncDocTags();
+    const onLang = () => { syncDocTags(); setLangTick(x => x + 1); };
+    window.addEventListener("__lang_changed", onLang);
+    return () => window.removeEventListener("__lang_changed", onLang);
+  }, []);
+  return (
+    <>
+      <AuthNav active="" />
+      <main style={{ minHeight: "60vh", display: "flex", alignItems: "center" }}>
+        <ResetCard />
+      </main>
+      <AuthFooter />
+    </>
+  );
+};
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+
+<script src="../shared/scroll-effects.js" defer></script>
 </body>
 </html>

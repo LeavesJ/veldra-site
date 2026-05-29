@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Veldra · Validation Status</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="Live status of ReserveGrid OS v2.0 Invariant Shield staged mainnet validation: Setup A shadow soak progression, Setup B and C gating, and Phase 1.5 Tier 3 wiring.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Fraunces:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="styles/shared.css" />
+
+<style>
+  html, body {
+    margin: 0;
+    background: var(--bg, #07101a);
+    color: var(--fg, #f4f4f4);
+    font-family: var(--sans, "Inter Tight", system-ui, sans-serif);
+  }
+
+  /* Status badges (mono caps, color-coded by state) */
+  .stat-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border: 1px solid var(--line);
+    border-radius: 2px;
+  }
+  .stat-badge.pass    { color: #7ed4a8; border-color: color-mix(in oklab, #7ed4a8 40%, transparent); }
+  .stat-badge.running { color: var(--accent); border-color: color-mix(in oklab, var(--accent) 50%, transparent); }
+  .stat-badge.gated   { color: var(--fg-dim); }
+
+  /* Milestone row layout (date | label | status) */
+  .ms-row {
+    display: grid;
+    grid-template-columns: 200px 1fr auto;
+    gap: 16px;
+    align-items: center;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .ms-row:last-child { border-bottom: none; }
+  .ms-date {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--fg-dim);
+    letter-spacing: 0.08em;
+  }
+  .ms-label { font-size: 14.5px; }
+
+  /* Card shell for each Setup */
+  .setup-card {
+    border: 1px solid var(--line);
+    background: var(--bg-2);
+    padding: 36px 40px;
+    margin-bottom: 28px;
+    border-left: 3px solid var(--accent);
+  }
+  .setup-card.gated  { border-left-color: var(--fg-dim); }
+  .setup-card .h2 {
+    font-family: var(--grotesk);
+    font-size: 28px;
+    font-weight: 500;
+    margin: 0 0 6px;
+    letter-spacing: -0.015em;
+  }
+  .setup-card .sub {
+    font-size: 14px;
+    color: var(--fg-dim);
+    margin: 0 0 24px;
+    line-height: 1.55;
+  }
+  .kv-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    padding: 18px 0;
+    border-top: 1px solid var(--line);
+  }
+  .kv-grid .k {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--fg-dim);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .kv-grid .v {
+    font-family: var(--grotesk);
+    font-size: 22px;
+    font-weight: 500;
+  }
+</style>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body data-variant="layers">
+<div id="root"></div>
+
+<script src="shared/i18n.js"></script>
+<script type="text/babel" src="shared/components.jsx"></script>
+<script type="text/babel" src="shared/page-shell.jsx"></script>
+
+<script type="text/babel" data-presets="env,react">
+const { useState, useEffect } = React;
+
+/* ──────────────────────────────────────────────────────────────────────
+   Validation Status (standalone /status surface).
+
+   Single source of truth for what stage the v2.0 Invariant Shield
+   mainnet validation is in. Data lives in `/status-data.json` so this
+   page stays evergreen: bumping checkpoints touches one JSON file
+   instead of editing inline JSX. The constants below are the
+   fallback the page renders when the fetch fails (offline preview,
+   first-paint flash before fetch resolves, or host-side misconfig).
+
+   To update after a spot check:
+     1. Edit `Veldra Site/status-data.json` (bump classMChecks, asOf,
+        flip the relevant milestone state from "running" to "pass",
+        update nextCheckpoint label).
+     2. No code change required.
+   ────────────────────────────────────────────────────────────────────── */
+
+const STATUS_FALLBACK = {
+  asOf: "2026-05-05",
+
+  setupA: {
+    status: "running",          // running | pass | gated
+    startedISO: "2026-05-02",
+    classMChecks: 10031,
+    rejected: 0,
+    nextCheckpoint: "T+5 · 2026-05-07",
+    wrap: "T+7 · 2026-05-09",
+    milestones: [
+      { date: "2026-05-02", label: "T+0 declared, baseline captured",          state: "pass" },
+      { date: "2026-05-03", label: "T+1 spot check",                            state: "pass" },
+      { date: "2026-05-05", label: "T+3 spot check",                            state: "pass" },
+      { date: "2026-05-07", label: "T+5 spot check",                            state: "running" },
+      { date: "2026-05-09", label: "T+7 wrap and PASS condition assessment",   state: "running" },
+    ],
+  },
+
+  setupB: {
+    status: "gated",
+    title: "Setup B · Real-bitcoind soak",
+    blurb: "Class S and Class D check chain against a real mainnet bitcoind under live template flow. Shadow soak has cleared the Class M rejection criterion against a synthetic feed; Setup B is the next evidence layer.",
+    blockedOn: "Mainnet bitcoind subscription or design-partner stack access.",
+  },
+
+  setupC: {
+    status: "gated",
+    title: "Setup C · Pool-side design partner soak",
+    blurb: "Live template stream from a participating Stratum V2 pool, mirrored into the verifier in shadow mode. Treats the pool as the source of truth and the verifier as a second pair of eyes; the only path to evidence on real-world template traffic.",
+    blockedOn: "Design partner. Pool operator interest required.",
+  },
+
+  phase15: {
+    status: "gated",
+    title: "Phase 1.5 · Tier 3 invariant wiring",
+    blurb: "Seven Tier 3 invariants are reserved in the canonical reason code set (coinbase_script_length, coinbase_output_count, weight_exceeds_max, sigops_exceed_max, nontcb_null_prevout, header_version_low, duplicate_tx) but not yet wired into Phase 1 enforcement. Wiring proceeds after Setup B or C produces a clean week of evidence.",
+    blockedOn: "Setup B or C clean week.",
+  },
+};
+
+const StatusBadge = ({ state, label }) => (
+  <span className={"stat-badge " + state}>
+    {state === "pass" && "● "}
+    {state === "running" && "▶ "}
+    {state === "gated" && "○ "}
+    {label || state}
+  </span>
+);
+
+const SetupAPanel = ({ data }) => {
+  const a = data;
+  // Map the JSON status into the badge state/label pair so the panel
+  // header reflects pass / running / gated without a code change.
+  const headerBadge =
+    a.status === "pass"   ? { state: "pass",    label: t("status.badge.pass") } :
+    a.status === "gated"  ? { state: "gated",   label: t("status.badge.pending") } :
+                            { state: "running", label: t("status.badge.running") };
+  return (
+    <div className="setup-card section-reveal">
+      <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 4 }}>
+        <h2 className="h2">{t("status.setupA.h2")}</h2>
+        <StatusBadge state={headerBadge.state} label={headerBadge.label} />
+      </div>
+      <p className="sub" dangerouslySetInnerHTML={{ __html: t("status.setupA.lede.html") }} />
+
+      <div>
+        {a.milestones.map((m, i) => (
+          <div key={i} className="ms-row">
+            <div className="ms-date">{m.date}</div>
+            <div className="ms-label">{m.label}</div>
+            <StatusBadge state={m.state} />
+          </div>
+        ))}
+      </div>
+
+      <div className="kv-grid">
+        <div>
+          <div className="k">{t("status.kv.checks")}</div>
+          <div className="v">{a.classMChecks.toLocaleString()}</div>
+        </div>
+        <div>
+          <div className="k">{t("status.kv.rejected")}</div>
+          <div className="v" style={{ color: "#7ed4a8" }}>{a.rejected}</div>
+        </div>
+        <div>
+          <div className="k">{t("status.kv.next_checkpoint")}</div>
+          <div className="v" style={{ fontSize: 16 }}>{a.nextCheckpoint}</div>
+        </div>
+        <div>
+          <div className="k">{t("status.kv.wrap")}</div>
+          <div className="v" style={{ fontSize: 16 }}>{a.wrap}</div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const GatedPanel = ({ data }) => (
+  <div className="setup-card gated section-reveal">
+    <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 4 }}>
+      <h2 className="h2">{data.title}</h2>
+      <StatusBadge state="gated" label={t("status.badge.pending")} />
+    </div>
+    <p className="sub">{data.blurb}</p>
+    <div className="kv-grid">
+      <div style={{ gridColumn: "1 / -1" }}>
+        <div className="k">{t("status.gated.blocked_on")}</div>
+        <div className="v" style={{ fontSize: 14, color: "var(--fg-dim)", fontFamily: "var(--sans)" }}>
+          {data.blockedOn}
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
+function syncDocTags() {
+  if (typeof window.t !== "function") return;
+  document.title = window.t("status.page.title");
+  const meta = document.querySelector('meta[name="description"]');
+  if (meta) meta.setAttribute("content", window.t("status.page.meta"));
+}
+
+const App = () => {
+  const [status, setStatus] = useState(STATUS_FALLBACK);
+  const [, setLangTick] = useState(0);
+
+  // Fetch fresh status from the standalone JSON file. Falls back to the
+  // inline STATUS_FALLBACK constant on network error, malformed JSON, or
+  // missing file. Cache-busting query string forces revalidation against
+  // the host so a fresh checkpoint update is visible without a manual
+  // reload of the CDN cache.
+  useEffect(() => {
+    let cancelled = false;
+    fetch("status-data.json?_=" + Date.now(), { cache: "no-store" })
+      .then((r) => r.ok ? r.json() : Promise.reject(new Error("status fetch " + r.status)))
+      .then((data) => { if (!cancelled && data && data.setupA) setStatus(data); })
+      .catch(() => { /* keep STATUS_FALLBACK */ });
+    return () => { cancelled = true; };
+  }, []);
+
+  useEffect(() => {
+    syncDocTags();
+    const onLang = () => { syncDocTags(); setLangTick(x => x + 1); };
+    window.addEventListener("__lang_changed", onLang);
+    return () => window.removeEventListener("__lang_changed", onLang);
+  }, []);
+
+  return (
+    <>
+      <TopNav active="status" />
+      <main>
+        {/* Page header */}
+        <section style={{ padding: "96px 80px 48px", maxWidth: 1320, margin: "0 auto" }}>
+          <div className="eyebrow">{t("status.eyebrow")}</div>
+          <h1 style={{
+            fontFamily: "var(--grotesk)", fontSize: 84, fontWeight: 500,
+            lineHeight: 1.0, letterSpacing: "-0.035em",
+            margin: "16px 0 24px", maxWidth: 1100, textWrap: "balance",
+          }}>
+            {t("status.h1")}
+          </h1>
+          <p style={{ fontSize: 19, color: "var(--fg-dim)", lineHeight: 1.55, maxWidth: 820, margin: 0 }}>
+            {t("status.lede")}
+          </p>
+          <div style={{ marginTop: 32, fontFamily: "var(--mono)", fontSize: 11, color: "var(--fg-dim)", letterSpacing: "0.12em" }}>
+            {t("status.as_of")} · {status.asOf}
+          </div>
+        </section>
+
+        {/* Status panels */}
+        <section style={{ padding: "0 80px 48px", maxWidth: 1320, margin: "0 auto" }}>
+          <SetupAPanel data={status.setupA} />
+          <GatedPanel data={status.setupB} />
+          <GatedPanel data={status.setupC} />
+          <GatedPanel data={status.phase15} />
+        </section>
+
+        {/* Design partner CTA */}
+        <section style={{
+          padding: "56px 80px",
+          maxWidth: 1320, margin: "0 auto",
+          borderTop: "1px solid var(--line)",
+        }}>
+          <div className="mono" style={{ fontSize: 10, letterSpacing: "0.18em", color: "var(--fg-dim)", marginBottom: 24 }}>
+            {t("status.partner.eyebrow")}
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "1.5fr 1fr", gap: 48, alignItems: "start" }}>
+            <div>
+              <h2 style={{ fontFamily: "var(--grotesk)", fontSize: 32, fontWeight: 500, margin: "0 0 16px", letterSpacing: "-0.02em" }}>
+                {t("status.partner.h2")}
+              </h2>
+              <p style={{ fontSize: 15, color: "var(--fg-dim)", lineHeight: 1.65, margin: 0, maxWidth: 640 }}>
+                {t("status.partner.body")}
+              </p>
+            </div>
+            <div style={{
+              border: "1px solid var(--line)",
+              padding: "24px 28px",
+              background: "var(--bg-2)",
+              borderLeft: "3px solid var(--accent)",
+            }}>
+              <div className="mono" style={{ fontSize: 10, letterSpacing: "0.18em", color: "var(--fg-dim)", marginBottom: 12 }}>
+                {t("status.partner.next_step")}
+              </div>
+              <a href="legal/contact.html" style={{
+                fontFamily: "var(--grotesk)", fontSize: 18, fontWeight: 500,
+                color: "var(--fg)", textDecoration: "none",
+                borderBottom: "1px solid var(--accent)",
+                paddingBottom: 2,
+              }}>
+                {t("status.partner.cta")}
+              </a>
+              <p style={{ fontSize: 13, color: "var(--fg-dim)", lineHeight: 1.6, margin: "12px 0 0" }}>
+                {t("status.partner.note")}
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Sources / cross-links */}
+        <section style={{
+          padding: "48px 80px 80px",
+          maxWidth: 1320, margin: "0 auto",
+          borderTop: "1px solid var(--line)",
+        }}>
+          <div className="mono" style={{ fontSize: 10, letterSpacing: "0.18em", color: "var(--fg-dim)", marginBottom: 24 }}>
+            {t("status.sources.eyebrow")}
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 20 }}>
+            {[
+              [t("status.sources.release_notes"), "https://github.com/LeavesJ/veldra/releases/tag/v2.0.0-rc1"],
+              [t("status.sources.architecture"),  "Architecture.html"],
+              [t("status.sources.atlas"),         "Failure Atlas.html"],
+              [t("status.sources.repo"),          "https://github.com/LeavesJ/veldra"],
+            ].map(([label, h]) => (
+              <a key={h} href={h} target={h.startsWith("http") ? "_blank" : "_self"} rel="noreferrer" style={{
+                display: "block",
+                padding: "16px 20px",
+                background: "var(--bg-2)",
+                border: "1px solid var(--line)",
+                color: "var(--fg)",
+                textDecoration: "none",
+                fontSize: 14,
+              }}>
+                {label} →
+              </a>
+            ))}
+          </div>
+        </section>
+      </main>
+      <SiteFooter />
+    </>
+  );
+};
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+
+<!-- Scroll-driven reveal effects (section-reveal + fade-up) -->
+<script src="shared/scroll-effects.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Veldra · Failure Atlas</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Fraunces:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="styles/shared.css" />
+
+<style>
+  html, body {
+    margin: 0;
+    background: var(--bg, #07101a);
+    color: var(--fg, #f4f4f4);
+    font-family: var(--sans, "Inter Tight", system-ui, sans-serif);
+  }
+</style>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body data-variant="layers">
+<div id="root"></div>
+
+<script src="shared/i18n.js"></script>
+<script type="text/babel" src="shared/components.jsx"></script>
+<script type="text/babel" src="shared/page-shell.jsx"></script>
+
+<!-- Failure Atlas content + locked design (Variant C — Mortuary). -->
+<script src="atlas-variants/_content.js"></script>
+<script type="text/babel" src="atlas-variants/mortuary.jsx"></script>
+
+<script type="text/babel" data-presets="env,react">
+const App = () => {
+  // Re-render on language change so the outer page header strings flip.
+  const [, setLangTick] = React.useState(0);
+  React.useEffect(() => {
+    const onLang = () => setLangTick(x => x + 1);
+    window.addEventListener("__lang_changed", onLang);
+    return () => window.removeEventListener("__lang_changed", onLang);
+  }, []);
+
+  return (
+  <>
+    <TopNav active="atlas" />
+    <main>
+      {/* Page header */}
+      <section style={{ padding: "96px 80px 48px", maxWidth: 1320, margin: "0 auto" }}>
+        <div className="eyebrow">{t("atlas.page.eyebrow")}</div>
+        <h1 style={{
+          fontFamily: "var(--grotesk)", fontSize: 84, fontWeight: 500,
+          lineHeight: 1.0, letterSpacing: "-0.035em",
+          margin: "16px 0 24px", maxWidth: 1100, textWrap: "balance",
+        }}>
+          {t("atlas.page.h1")}
+        </h1>
+        <p style={{ fontSize: 19, color: "var(--fg-dim)", lineHeight: 1.55, maxWidth: 820, margin: 0 }}
+           dangerouslySetInnerHTML={{ __html: t("atlas.page.lede.html") }} />
+      </section>
+
+      {/* Locked Mortuary view */}
+      <section style={{ padding: "0 80px 96px", maxWidth: 1320, margin: "0 auto" }}>
+        <AtlasMortuary/>
+      </section>
+
+      {/* Pointer band */}
+      <section style={{
+        padding: "56px 80px",
+        maxWidth: 1320, margin: "0 auto",
+        borderTop: "1px solid var(--line)",
+      }}>
+        <div className="mono" style={{ fontSize: 10, letterSpacing: "0.18em", color: "var(--fg-dim)", marginBottom: 24 }}>
+          {t("atlas.page.next.eyebrow")}
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }}>
+          {[
+            [t("atlas.page.next.arch.t"), t("atlas.page.next.arch.sub"), "Architecture.html"],
+            [t("atlas.page.next.qa.t"),   t("atlas.page.next.qa.sub"),   "questions.html"],
+            [t("atlas.page.next.prod.t"), t("atlas.page.next.prod.sub"), "Product.html"],
+          ].map(([title, sub, h]) => (
+            <a key={h} href={h} style={{
+              display: "block", padding: "20px 24px",
+              background: "var(--bg-2)", border: "1px solid var(--line)",
+              borderLeft: "3px solid var(--accent-2)",
+              textDecoration: "none", color: "var(--fg)",
+            }}>
+              <div style={{ fontFamily: "var(--grotesk)", fontSize: 18, fontWeight: 500, marginBottom: 8 }}>{title} →</div>
+              <div style={{ fontSize: 13, color: "var(--fg-dim)", lineHeight: 1.55 }}>{sub}</div>
+            </a>
+          ))}
+        </div>
+      </section>
+    </main>
+    <SiteFooter/>
+  </>
+  );
+};
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+
+<!-- Scroll-driven reveal effects (section-reveal + fade-up) -->
+<script src="shared/scroll-effects.js" defer></script>
+</body>
+</html>

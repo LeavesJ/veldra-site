@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Terms of Service · Veldra</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="Veldra terms of service governing use of veldra.org and ReserveGrid OS." />
+
+<link rel="icon" href="../assets/brand/favicon-32.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Fraunces:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="../styles/shared.css" />
+
+<style>
+  html, body { margin: 0; background: var(--bg, #07101a); color: var(--fg, #f4f4f4); font-family: var(--sans, "Inter Tight", system-ui, sans-serif); }
+</style>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body data-variant="layers">
+<div id="root"></div>
+
+<script src="../shared/i18n.js"></script>
+<script type="text/babel" src="_shell.jsx"></script>
+
+<script type="text/babel" data-presets="env,react">
+const TOC = [
+  ["acceptance",      "Acceptance of terms"],
+  ["description",     "Description of services"],
+  ["eligibility",     "Eligibility"],
+  ["account",         "Account responsibilities"],
+  ["acceptable-use",  "Acceptable use"],
+  ["observe-mode",    "Observe mode access"],
+  ["license",         "Software license"],
+  ["ip",              "Intellectual property"],
+  ["liability",       "Limitation of liability"],
+  ["warranties",      "Disclaimer of warranties"],
+  ["indemnification", "Indemnification"],
+  ["termination",     "Termination"],
+  ["modifications",   "Modifications"],
+  ["governing-law",   "Governing law"],
+  ["contact",         "Contact"],
+];
+
+const TermsPage = () => (
+  <LegalShell eyebrow="terms" title="Terms of Service" updated="February 19, 2026" toc={TOC}>
+    <h2 id="acceptance" data-i18n="legal.terms.s1.title">1. Acceptance of terms</h2>
+    <p data-i18n="legal.terms.s1.body">By accessing or using veldra.org, the observe-mode dashboard, or any Veldra software (collectively, the "Services"), you agree to be bound by these Terms of Service. If you do not agree, do not use the Services.</p>
+
+    <h2 id="description" data-i18n="legal.terms.s2.title">2. Description of services</h2>
+    <p data-i18n="legal.terms.s2.body">Veldra provides ReserveGrid OS, an operator-grade safety, verification, and audit layer for miner-built work. The Services include the public website, the observe-mode dashboard, and the open-source software components that compose the Operational Gateway and the Invariant Shield.</p>
+
+    <h2 id="eligibility" data-i18n="legal.terms.s3.title">3. Eligibility</h2>
+    <p data-i18n="legal.terms.s3.body">You must be at least 18 years old to use the Services. By registering for an account, you represent that the information you provide is accurate and complete.</p>
+
+    <h2 id="account" data-i18n="legal.terms.s4.title">4. Account responsibilities</h2>
+    <p data-i18n="legal.terms.s4.body">You are responsible for maintaining the confidentiality of your account credentials. You agree to <a href="contact.html">notify us</a> promptly if you become aware of any unauthorized use of your account. Veldra is not liable for losses arising from unauthorized access to your account.</p>
+
+    <h2 id="acceptable-use" data-i18n="legal.terms.s5.title">5. Acceptable use</h2>
+    <p data-i18n="legal.terms.s5.body">You agree not to use the Services to violate any applicable law or regulation, attempt to gain unauthorized access to Veldra systems or other users' accounts, interfere with or disrupt the integrity or performance of the Services, reverse engineer or attempt to extract source code from proprietary components, or use the Services to conduct any form of market manipulation or fraudulent activity.</p>
+
+    <h2 id="observe-mode" data-i18n="legal.terms.s6.title">6. Observe mode access</h2>
+    <p data-i18n="legal.terms.s6.body">Access to the observe-mode dashboard requires registration and approval by a Veldra administrator. Approval is at our sole discretion. We reserve the right to revoke access at any time, with or without cause. Observe mode displays operational data from connected ReserveGrid OS instances and is provided for informational and evaluation purposes only.</p>
+
+    <h2 id="license" data-i18n="legal.terms.s7.title">7. Software license</h2>
+    <p data-i18n="legal.terms.s7.body">ReserveGrid OS is source-available with escrow continuity: every line is auditable, commercial deployment requires a license, and if Veldra ceases operations the full source releases under a permissive license so your deployment, configuration, and data stay yours. Use of the software is subject to those license terms in addition to these Terms of Service.</p>
+
+    <h2 id="ip" data-i18n="legal.terms.s8.title">8. Intellectual property</h2>
+    <p data-i18n="legal.terms.s8.body">The Veldra name, logo, and the ReserveGrid OS brand are the property of Veldra, Inc. The website design, content, and documentation are protected by applicable intellectual property laws. You may not use our trademarks without prior written permission.</p>
+
+    <h2 id="liability" data-i18n="legal.terms.s9.title">9. Limitation of liability</h2>
+    <p data-i18n="legal.terms.s9.body">To the maximum extent permitted by law, Veldra and its officers, directors, employees, and agents shall not be liable for any indirect, incidental, special, consequential, or punitive damages, including but not limited to loss of profits, data, mining revenue, or business opportunity, arising from your use of or inability to use the Services, regardless of the theory of liability.</p>
+
+    <h2 id="warranties" data-i18n="legal.terms.s10.title">10. Disclaimer of warranties</h2>
+    <p data-i18n="legal.terms.s10.body">The Services are provided "as is" and "as available" without warranties of any kind, whether express or implied. Veldra does not warrant that the Services will be uninterrupted, error-free, or free of harmful components. See our <a href="disclaimer.html">Disclaimer</a> for additional details.</p>
+
+    <h2 id="indemnification" data-i18n="legal.terms.s11.title">11. Indemnification</h2>
+    <p data-i18n="legal.terms.s11.body">You agree to indemnify and hold harmless Veldra, Inc. and its affiliates from any claims, damages, losses, or expenses (including reasonable legal fees) arising from your use of the Services or your violation of these Terms.</p>
+
+    <h2 id="termination" data-i18n="legal.terms.s12.title">12. Termination</h2>
+    <p data-i18n="legal.terms.s12.body">We may suspend or terminate your access to the Services at any time for any reason, including violation of these Terms. Upon termination, your right to use the Services ceases immediately. Provisions that by their nature should survive termination (including limitations of liability and indemnification) shall survive.</p>
+
+    <h2 id="modifications" data-i18n="legal.terms.s13.title">13. Modifications</h2>
+    <p data-i18n="legal.terms.s13.body">We reserve the right to modify these Terms at any time. Changes will be posted on this page with an updated revision date. Continued use of the Services after modifications constitutes acceptance of the revised Terms.</p>
+
+    <h2 id="governing-law" data-i18n="legal.terms.s14.title">14. Governing law</h2>
+    <p data-i18n="legal.terms.s14.body">These Terms are governed by the laws of the State of Delaware, United States, without regard to conflict of law principles. Any disputes arising from these Terms shall be resolved in the courts located in the State of Delaware.</p>
+
+    <h2 id="contact" data-i18n="legal.terms.s15.title">15. Contact</h2>
+    <p data-i18n="legal.terms.s15.body">For questions about these Terms, please <a href="contact.html">contact us</a>.</p>
+  </LegalShell>
+);
+
+ReactDOM.createRoot(document.getElementById("root")).render(<TermsPage/>);
+</script>
+</body>
+</html>

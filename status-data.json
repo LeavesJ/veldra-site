@@ -1,0 +1,37 @@
+{
+  "asOf": "2026-05-27",
+  "setupA": {
+    "status": "pass",
+    "startedISO": "2026-05-02",
+    "classMChecks": 103889,
+    "rejected": 0,
+    "nextCheckpoint": "Wrapped 2026-05-27",
+    "wrap": "PASS · 25-day cumulative",
+    "milestones": [
+      { "date": "2026-05-02", "label": "T+0 declared, baseline captured",                 "state": "pass" },
+      { "date": "2026-05-03", "label": "T+1 spot check",                                    "state": "pass" },
+      { "date": "2026-05-05", "label": "T+3 spot check",                                    "state": "pass" },
+      { "date": "2026-05-07", "label": "T+5 (subsumed by cumulative window)",               "state": "pass" },
+      { "date": "2026-05-09", "label": "T+7 (subsumed by cumulative window)",               "state": "pass" },
+      { "date": "2026-05-27", "label": "T+25 cumulative wrap, 103889 checks, 0 rejected",    "state": "pass" }
+    ]
+  },
+  "setupB": {
+    "status": "gated",
+    "title": "Setup B · Real-bitcoind soak",
+    "blurb": "Class S and Class D check chain against a real mainnet bitcoind under live template flow. Shadow soak has cleared the Class M rejection criterion against a synthetic feed across more than 100,000 templates; Setup B is the next evidence layer.",
+    "blockedOn": "Mainnet bitcoind subscription or design-partner stack access."
+  },
+  "setupC": {
+    "status": "gated",
+    "title": "Setup C · Pool-side design partner soak",
+    "blurb": "Live template stream from a participating Stratum V2 pool, mirrored into the verifier in shadow mode. Treats the pool as the source of truth and the verifier as a second pair of eyes; the only path to evidence on real-world template traffic.",
+    "blockedOn": "Design partner. Pool operator interest required."
+  },
+  "phase15": {
+    "status": "gated",
+    "title": "Phase 1.5 · Tier 3 invariant wiring",
+    "blurb": "Seven Tier 3 invariants are reserved in the canonical reason code set (coinbase_script_length, coinbase_output_count, weight_exceeds_max, sigops_exceed_max, nontcb_null_prevout, header_version_low, duplicate_tx) but not yet wired into Phase 1 enforcement. Wiring proceeds after Setup B or C produces a clean week of evidence.",
+    "blockedOn": "Setup B or C clean week."
+  }
+}

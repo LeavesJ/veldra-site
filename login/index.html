@@ -1,170 +1,132 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Sign In — Veldra</title>
-  <meta name="description" content="Sign in to your Veldra account to access ReserveGrid OS.">
-  <meta name="theme-color" content="#080e1a">
+<meta charset="utf-8" />
+<title>Sign In · Veldra</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="Sign in to your Veldra account to manage ReserveGrid OS access and API keys.">
+<link rel="icon" href="../favicon.ico">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="canonical" href="https://veldra.org/login/">
-  <link rel="icon" href="/favicon.ico">
-  <link rel="icon" type="image/png" sizes="32x32" href="/assets/brand/favicon-32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/assets/brand/favicon-16.png">
-  <link rel="apple-touch-icon" href="/assets/brand/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Fraunces:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet" />
 
-  <link rel="stylesheet" href="/assets/style.css?v=32">
-  <script src="/assets/auth.js?v=1" defer></script>
-  <script src="/assets/script.js?v=33" defer></script>
-  <script src="/assets/i18n.js?v=21" defer></script>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="../styles/shared.css" />
+
+<style>
+  html, body {
+    margin: 0; background: var(--bg, #07101a); color: var(--fg, #f4f4f4);
+    font-family: var(--sans, "Inter Tight", system-ui, sans-serif);
+  }
+</style>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 </head>
-<body class="auth-page">
+<body data-variant="layers">
+<div id="root"></div>
 
-  <!-- ── Navigation ──────────────────────────── -->
-  <nav class="topbar">
-    <div class="container">
-      <div class="nav">
-        <a class="brand" href="/" aria-label="Veldra home">
-          <img src="/assets/brand/veldra-logo.png" alt="Veldra">
-        </a>
-        <div class="navlinks">
-          <a href="/">Home</a>
-          <a href="/product/">Product</a>
-          <a href="/docs/">Docs</a>
-          <a href="/about/">About</a>
+<script src="../shared/i18n.js"></script>
+<script src="../shared/auth.js"></script>
+<script type="text/babel" src="../shared/components.jsx"></script>
+<script type="text/babel" src="../shared/page-shell.jsx"></script>
+<script type="text/babel" src="../shared/auth-shell.jsx"></script>
+
+<script type="text/babel" data-presets="env,react">
+const { useState, useEffect } = React;
+
+// Page-level document.title / meta description swap whenever language toggles.
+// Body strings re-render via the existing setLangTick listener.
+function syncDocTags() {
+  if (typeof window.t !== "function") return;
+  document.title = window.t("login.page.title");
+  const meta = document.querySelector('meta[name="description"]');
+  if (meta) meta.setAttribute("content", window.t("login.page.meta"));
+}
+
+const LoginCard = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [msg, setMsg] = useState(null);
+  const [busy, setBusy] = useState(false);
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    if (!email || !password) {
+      setMsg({ text: t("login.msg.required"), kind: "error" });
+      return;
+    }
+    setBusy(true);
+    setMsg({ text: t("login.msg.signing_in"), kind: "" });
+    window.VeldraAuth.login(email, password).then((result) => {
+      if (result.ok) {
+        setMsg({ text: t("login.msg.success"), kind: "success" });
+        setTimeout(() => { window.location.href = "/account/"; }, 1000);
+      } else {
+        setMsg({ text: result.error || t("login.msg.failed"), kind: "error" });
+        setBusy(false);
+      }
+    }).catch(() => {
+      setMsg({ text: t("auth.msg.network_error"), kind: "error" });
+      setBusy(false);
+    });
+  };
+
+  return (
+    <div className="auth-card">
+      <h1>{t("login.h1")}</h1>
+      <p className="auth-lede">{t("login.lede")}</p>
+
+      {msg && <div className={"auth-msg " + msg.kind}>{msg.text}</div>}
+
+      <form onSubmit={onSubmit}>
+        <div className="auth-field">
+          <label htmlFor="email">{t("auth.field.email")}</label>
+          <input id="email" type="email" autoComplete="email" required
+                 value={email} onChange={(e) => setEmail(e.target.value)} />
         </div>
-        <div class="nav-actions">
-          <div class="lang-toggle">
-            <button class="lang-btn active" data-lang="en">EN</button>
-            <button class="lang-btn" data-lang="es">ES</button>
-            <button class="lang-btn" data-lang="zh">中</button>
-          </div>
-          <a href="https://github.com/LeavesJ/veldra" class="btn btn-outline btn-sm" target="_blank" rel="noreferrer" data-i18n="btn.github">GitHub</a>
-          <a href="/login/" class="btn btn-primary btn-sm" data-i18n="btn.sign_in">Sign In</a>
+        <div className="auth-field">
+          <label htmlFor="password">{t("auth.field.password")}</label>
+          <input id="password" type="password" autoComplete="current-password" required
+                 value={password} onChange={(e) => setPassword(e.target.value)} />
         </div>
-        <button class="nav-toggle" aria-label="Menu" aria-expanded="false">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+        <button className="auth-btn" type="submit" disabled={busy}>
+          {busy ? t("login.btn.busy") : t("login.btn")}
         </button>
-      </div>
-    </div>
-  </nav>
-
-  <!-- ── Main Content ──────────────────────── -->
-  <div class="container" style="flex: 1; display: flex; align-items: center; justify-content: center; padding: 2rem 0;">
-    <div class="auth-card">
-      <h1 style="margin-top: 0;">Sign In</h1>
-      <div class="auth-msg" id="authMsg" style="display: none;"></div>
-
-      <form id="loginForm">
-        <div class="auth-field">
-          <label for="email">Email</label>
-          <input type="email" id="email" name="email" required>
-        </div>
-        <div class="auth-field">
-          <label for="password">Password</label>
-          <input type="password" id="password" name="password" required>
-        </div>
-        <button type="submit" class="auth-btn">Sign In</button>
       </form>
 
-      <div class="auth-links">
-        <a href="/forgot-password/">Forgot password?</a>
-        <span class="sep">•</span>
-        <a href="/register/">Create account</a>
+      <div className="auth-links">
+        <a href="/forgot-password/">{t("login.link.forgot")}</a>
+        <span className="sep">·</span>
+        <a href="/register/">{t("login.link.register")}</a>
       </div>
     </div>
-  </div>
+  );
+};
 
-  <!-- ── Footer ──────────────────────────────── -->
-  <footer class="footer">
-    <div class="container">
-      <div class="footer-inner">
-        <div class="footer-brand">
-          <img src="/assets/brand/veldra-logo.png" alt="Veldra">
-          <p>SV2 mining gateway infrastructure for production pool operators.</p>
-        </div>
-        <div>
-          <h4>Product</h4>
-          <div class="footer-links">
-            <a href="/product/">ReserveGrid OS</a>
-            <a href="/product/#architecture" data-i18n="footer.architecture">Architecture</a>
-          </div>
-        </div>
-        <div>
-          <h4>Resources</h4>
-          <div class="footer-links">
-            <a href="/docs/">Documentation</a>
-            <a href="/docs/#reason-codes">Reason Codes</a>
-            <a href="/docs/#config">Configuration</a>
-          </div>
-        </div>
-        <div>
-          <h4>Company</h4>
-          <div class="footer-links">
-            <a href="/about/">About</a>
-            <a href="mailto:jarrondeng@veldra.org">Contact</a>
-          </div>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <span>&copy; 2026 Veldra, Inc.</span>
-        <div class="footer-legal">
-          <a href="/privacy/">Privacy</a>
-          <a href="/terms/">Terms</a>
-          <a href="/disclaimer/">Disclaimer</a>
-        </div>
-      </div>
-    </div>
-  </footer>
+const App = () => {
+  const [, setLangTick] = useState(0);
+  useEffect(() => {
+    syncDocTags();
+    const onLang = () => { syncDocTags(); setLangTick(x => x + 1); };
+    window.addEventListener("__lang_changed", onLang);
+    return () => window.removeEventListener("__lang_changed", onLang);
+  }, []);
+  return (
+    <>
+      <AuthNav active="" />
+      <main style={{ minHeight: "60vh", display: "flex", alignItems: "center" }}>
+        <LoginCard />
+      </main>
+      <AuthFooter />
+    </>
+  );
+};
 
-  <button class="scroll-top" aria-label="Scroll to top">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 15l-6-6-6 6"/></svg>
-  </button>
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
 
-  <script>
-  (function() {
-    'use strict';
-
-    var form = document.getElementById('loginForm');
-    var msgEl = document.getElementById('authMsg');
-    var emailInput = document.getElementById('email');
-    var passwordInput = document.getElementById('password');
-
-    function showMsg(text, type) {
-      msgEl.textContent = text;
-      msgEl.className = 'auth-msg ' + type;
-      msgEl.style.display = 'block';
-    }
-
-    form.addEventListener('submit', function(e) {
-      e.preventDefault();
-      var email = emailInput.value.trim();
-      var password = passwordInput.value;
-
-      if (!email || !password) {
-        showMsg('Please fill in all fields.', 'error');
-        return;
-      }
-
-      showMsg('Signing in...', '');
-
-      VeldraAuth.login(email, password).then(function(result) {
-        if (result.ok) {
-          showMsg('Signed in. Redirecting...', 'success');
-          setTimeout(function() {
-            window.location.href = '/account/';
-          }, 1200);
-        } else {
-          showMsg(result.error || 'Login failed.', 'error');
-        }
-      }).catch(function(err) {
-        showMsg('An error occurred. Please try again.', 'error');
-      });
-    });
-  })();
-  </script>
+<script src="../shared/scroll-effects.js" defer></script>
 </body>
 </html>

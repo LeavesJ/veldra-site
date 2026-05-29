@@ -1,0 +1,471 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Veldra · Product</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Fraunces:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="styles/shared.css" />
+
+<style>
+  html, body {
+    margin: 0;
+    background: var(--bg, #07101a);
+    color: var(--fg, #f4f4f4);
+    font-family: var(--sans, "Inter Tight", system-ui, sans-serif);
+  }
+  /* Sticky section index inside the product page */
+  .prod-toc {
+    position: sticky; top: 78px; align-self: start;
+    border: 1px solid var(--line);
+    background: var(--bg-2);
+    padding: 16px 18px;
+    border-radius: 4px;
+  }
+  .prod-toc a {
+    display: block;
+    color: var(--fg-dim);
+    text-decoration: none;
+    font-size: 12.5px;
+    padding: 6px 0;
+    border-bottom: 1px solid transparent;
+    transition: color .15s, border-color .15s;
+  }
+  .prod-toc a:hover { color: var(--fg); }
+  .prod-toc a.active {
+    color: var(--accent);
+  }
+  .prod-toc .toc-num {
+    display: inline-block; width: 22px;
+    font-family: var(--mono); font-size: 10px;
+    color: var(--fg-dim); letter-spacing: 0.08em;
+  }
+</style>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body data-variant="layers">
+<div id="root" data-screen-label="Product"></div>
+
+<script src="shared/i18n.js"></script>
+<script type="text/babel" src="shared/components.jsx"></script>
+<script type="text/babel" src="shared/page-shell.jsx"></script>
+<script src="product-variants/_content.js"></script>
+<script type="text/babel" src="product-variants/_blocks.jsx"></script>
+
+<script type="text/babel" data-presets="env,react">
+const { useState, useEffect, useRef } = React;
+
+/* ────────────────────────────────────────────────────────────────────────
+   Local components for surfaces _blocks.jsx doesn't yet expose:
+     - FacadeBlock           (PDF #2 — rg-consensus public API)
+     - FailStaleFSMBlock     (PDF #6 — Fresh / Stale / Degraded)
+     - PhilosophyCallout     (PDF #29-#31 + #40 — why-not-DIY, license,
+                              escrow continuity, honest scoping)
+   All consume window.PRODUCT_CONTENT — no new content added.
+   ──────────────────────────────────────────────────────────────────────── */
+
+const FacadeBlock = () => {
+  const C = window.PRODUCT_CONTENT.rg_consensus_facade;
+  return (
+    <div>
+      <p style={{ fontSize: 14.5, color: "var(--fg-dim)", lineHeight: 1.6, maxWidth: 760, margin: "0 0 18px" }}>
+        {t("prod.facade.blurb")}
+      </p>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+        <div style={{
+          padding: "18px 22px", background: "var(--bg-2)", border: "1px solid var(--line)",
+          borderLeft: "3px solid var(--accent)", borderRadius: "0 4px 4px 0",
+        }}>
+          <div className="mono" style={{ fontSize: 10, letterSpacing: "0.16em", color: "var(--accent)", marginBottom: 10 }}>
+            {t("prod.facade.rederive_label")} · ×{C.re_derivation_fns.length}
+          </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+            {C.re_derivation_fns.map(fn => (
+              <code key={fn} style={{
+                fontFamily: "var(--mono)", fontSize: 12, color: "var(--fg)",
+                padding: "5px 9px", background: "var(--bg-3)", borderRadius: 2,
+                width: "fit-content",
+              }}>{fn}()</code>
+            ))}
+          </div>
+        </div>
+        <div style={{
+          padding: "18px 22px", background: "var(--bg-2)", border: "1px solid var(--line)",
+          borderLeft: "3px solid var(--accent-2)", borderRadius: "0 4px 4px 0",
+        }}>
+          <div className="mono" style={{ fontSize: 10, letterSpacing: "0.16em", color: "var(--accent-2)", marginBottom: 10 }}>
+            {t("prod.facade.accessors_label")} · ×{C.class_accessors.length}
+          </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+            {C.class_accessors.map(a => (
+              <code key={a} style={{
+                fontFamily: "var(--mono)", fontSize: 12, color: "var(--fg)",
+                padding: "5px 9px", background: "var(--bg-3)", borderRadius: 2,
+                width: "fit-content",
+              }}>{a}</code>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const FailStaleFSMBlock = () => {
+  const colors = { Fresh: "var(--accent)", Stale: "var(--accent-2)", Degraded: "var(--fg-dim)" };
+  const states = [
+    { id: "Fresh",    enter: t("prod.fsm.fresh.enter"),    behavior: t("prod.fsm.fresh.behavior") },
+    { id: "Stale",    enter: t("prod.fsm.stale.enter"),    behavior: t("prod.fsm.stale.behavior") },
+    { id: "Degraded", enter: t("prod.fsm.degraded.enter"), behavior: t("prod.fsm.degraded.behavior") },
+  ];
+  return (
+    <div>
+      <p style={{ fontSize: 14.5, color: "var(--fg-dim)", lineHeight: 1.6, maxWidth: 760, margin: "0 0 20px" }}>
+        {t("prod.fsm.blurb")}
+      </p>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 12, marginBottom: 12 }}>
+        {states.map((s, i) => (
+          <div key={s.id} style={{
+            position: "relative",
+            padding: "20px 22px", background: "var(--bg-2)", border: "1px solid var(--line)",
+            borderTop: `3px solid ${colors[s.id]}`,
+          }}>
+            <div className="mono" style={{ fontSize: 10, letterSpacing: "0.18em", color: "var(--fg-dim)", marginBottom: 6 }}>
+              {t("prod.fsm.state_label")} {i + 1}
+            </div>
+            <div style={{
+              fontFamily: "var(--grotesk)", fontSize: 22, fontWeight: 500,
+              color: colors[s.id], marginBottom: 12, letterSpacing: "0.02em",
+            }}>{s.id}</div>
+            <div style={{ marginBottom: 10 }}>
+              <div className="mono" style={{ fontSize: 9.5, letterSpacing: "0.16em", color: "var(--fg-dim)", marginBottom: 4 }}>{t("prod.fsm.enters")}</div>
+              <div style={{ fontSize: 12.5, color: "var(--fg)", lineHeight: 1.5 }}>{s.enter}</div>
+            </div>
+            <div>
+              <div className="mono" style={{ fontSize: 9.5, letterSpacing: "0.16em", color: "var(--fg-dim)", marginBottom: 4 }}>{t("prod.fsm.does")}</div>
+              <div style={{ fontSize: 12.5, color: "var(--fg-dim)", lineHeight: 1.5 }}>{s.behavior}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+      <div style={{ padding: "12px 18px", background: "var(--bg-2)", border: "1px solid var(--line)" }}>
+        <div className="mono" style={{ fontSize: 10, letterSpacing: "0.18em", color: "var(--fg-dim)", marginBottom: 6 }}>{t("prod.fsm.defaults_label")}</div>
+        <code style={{ fontFamily: "var(--mono)", fontSize: 12, color: "var(--fg)" }}>
+          max_stale_secs = 60 &nbsp;·&nbsp;
+          sample_unknown_cap = 10
+        </code>
+      </div>
+    </div>
+  );
+};
+
+const ThreatsCeilingsBlock = () => {
+  const ceilings = [
+    { layer: "L1", cant: t("prod.ceilings.l1") },
+    { layer: "L2", cant: t("prod.ceilings.l2") },
+    { layer: "L3", cant: t("prod.ceilings.l3") },
+  ];
+  const caveats = [t("prod.caveats.1"), t("prod.caveats.2"), t("prod.caveats.3")];
+  return (
+    <div>
+      <ProductThreats/>
+      <p style={{ fontSize: 12.5, color: "var(--fg-dim)", lineHeight: 1.6, margin: "14px 0 24px", fontStyle: "italic", maxWidth: 820 }}>
+        {t("prod.threats.boundary")}
+      </p>
+
+      <div className="mono" style={{ fontSize: 10, letterSpacing: "0.18em", color: "var(--fg-dim)", marginBottom: 12 }}>
+        {t("prod.ceilings.eyebrow")}
+      </div>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 12, marginBottom: 24 }}>
+        {ceilings.map(c => (
+          <div key={c.layer} style={{
+            padding: "16px 20px", background: "var(--bg-2)", border: "1px solid var(--line)",
+            borderLeft: "3px solid var(--accent-2)",
+          }}>
+            <div className="mono" style={{ fontSize: 11, color: "var(--accent-2)", fontWeight: 600, letterSpacing: "0.1em", marginBottom: 8 }}>
+              {c.layer} · {t("prod.ceilings.cant")}
+            </div>
+            <p style={{ fontSize: 12.5, color: "var(--fg-dim)", lineHeight: 1.55, margin: 0 }}>
+              {c.cant}
+            </p>
+          </div>
+        ))}
+      </div>
+
+      <div className="mono" style={{ fontSize: 10, letterSpacing: "0.18em", color: "var(--fg-dim)", marginBottom: 12 }}>
+        {t("prod.caveats.eyebrow")}
+      </div>
+      <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "grid", gap: 8 }}>
+        {caveats.map((cav, i) => (
+          <li key={i} style={{
+            padding: "12px 18px", background: "var(--bg-2)", border: "1px solid var(--line)",
+            display: "grid", gridTemplateColumns: "32px 1fr", alignItems: "baseline",
+          }}>
+            <span className="mono" style={{ fontSize: 11, color: "var(--fg-dim)", letterSpacing: "0.08em" }}>
+              {String(i + 1).padStart(2, "0")}
+            </span>
+            <span style={{ fontSize: 13, color: "var(--fg-dim)", lineHeight: 1.55 }}>{cav}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+const HonestScopingBlock = () => {
+  return (
+    <div style={{
+      padding: "28px 32px", background: "var(--bg-2)",
+      border: "1px solid var(--line)", borderLeft: "3px solid var(--accent-2)",
+    }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14 }}>
+        <span className="mono" style={{
+          fontSize: 10, letterSpacing: "0.18em", fontWeight: 600,
+          color: "var(--accent-2)",
+        }}>{t("prod.honest.label")}</span>
+        <StatusPill status="wired"/>
+        <span style={{ fontSize: 11, color: "var(--fg-dim)" }}>{t("prod.honest.vs")}</span>
+        <StatusPill status="observing"/>
+      </div>
+      <p style={{ fontSize: 14.5, color: "var(--fg)", lineHeight: 1.65, margin: 0, maxWidth: 920 }}>
+        {t("prod.honest.body")}
+      </p>
+    </div>
+  );
+};
+
+/* ────────────────────────────────────────────────────────────────────────
+   Section primitive — title + sticky-friendly id
+   ──────────────────────────────────────────────────────────────────────── */
+const Section = ({ id, n, title, lede, children }) => (
+  <section id={id} style={{
+    padding: "72px 0",
+    borderTop: "1px solid var(--line)",
+    scrollMarginTop: 80,
+  }}>
+    <div style={{ display: "grid", gridTemplateColumns: "100px 1fr", gap: 28, marginBottom: 32 }}>
+      <div className="mono tabular" style={{
+        fontSize: 36, color: "var(--accent)", letterSpacing: "0.04em",
+        lineHeight: 1, paddingTop: 6, fontWeight: 500,
+      }}>{n}</div>
+      <div>
+        <h2 style={{
+          fontFamily: "var(--grotesk)", fontSize: 40, fontWeight: 500,
+          letterSpacing: "-0.025em", margin: "0 0 12px", lineHeight: 1.1, textWrap: "balance",
+        }}>{title}</h2>
+        {lede && <p style={{ fontSize: 16, color: "var(--fg-dim)", lineHeight: 1.55, maxWidth: 820, margin: 0 }}>{lede}</p>}
+      </div>
+    </div>
+    <div style={{ marginLeft: 128 }}>
+      {children}
+    </div>
+  </section>
+);
+
+/* ────────────────────────────────────────────────────────────────────────
+   Product page
+   ──────────────────────────────────────────────────────────────────────── */
+const SECTION_IDS = [
+  { n: "01", id: "reason-codes", k: "prod.s01" },
+  { n: "02", id: "config",       k: "prod.s02" },
+  { n: "03", id: "telemetry",    k: "prod.s03" },
+  { n: "04", id: "facade",       k: "prod.s04" },
+  { n: "05", id: "fsm",          k: "prod.s05" },
+  { n: "06", id: "threats",      k: "prod.s06" },
+  { n: "07", id: "adoption",     k: "prod.s07" },
+  { n: "08", id: "compare",      k: "prod.s08" },
+  { n: "09", id: "roadmap",      k: "prod.s09" },
+];
+const getSections = () => SECTION_IDS.map(s => ({
+  n: s.n, id: s.id,
+  title: t(s.k + ".title"),
+  lede:  t(s.k + ".lede"),
+}));
+
+const ProductPage = () => {
+  const SECTIONS = getSections();
+
+  /* Sticky-TOC active-section tracking */
+  const [active, setActive] = useState(SECTION_IDS[0].id);
+  useEffect(() => {
+    const obs = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter(e => e.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+        if (visible[0]) setActive(visible[0].target.id);
+      },
+      { rootMargin: "-20% 0px -60% 0px", threshold: [0, 0.25, 0.5, 0.75, 1] }
+    );
+    SECTION_IDS.forEach(s => {
+      const el = document.getElementById(s.id);
+      if (el) obs.observe(el);
+    });
+    return () => obs.disconnect();
+  }, []);
+
+  return (
+    <main>
+      {/* ===== HERO ===== */}
+      <section style={{ padding: "96px 80px 64px", maxWidth: 1320, margin: "0 auto" }}>
+        <div className="eyebrow">{t("prod.framing.eyebrow")}</div>
+        <h1 style={{
+          fontFamily: "var(--grotesk)", fontSize: 84, fontWeight: 500,
+          lineHeight: 1.0, letterSpacing: "-0.035em",
+          margin: "16px 0 24px", maxWidth: 1100, textWrap: "balance",
+        }}>
+          {t("prod.framing.title")}
+        </h1>
+        <p style={{ fontSize: 19, color: "var(--fg-dim)", lineHeight: 1.55, maxWidth: 820, margin: "0 0 40px" }}>
+          {t("prod.framing.lede")}
+        </p>
+
+        <div style={{ marginBottom: 48 }}>
+          <HonestScopingBlock/>
+        </div>
+
+        {/* Section index — flat, navigable, no decoration */}
+        <div className="mono" style={{ fontSize: 10, letterSpacing: "0.18em", color: "var(--fg-dim)", marginBottom: 14 }}>
+          {t("prod.sections.eyebrow")}
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 8 }}>
+          {SECTIONS.map(s => (
+            <a key={s.id} href={`#${s.id}`} style={{
+              display: "grid", gridTemplateColumns: "32px 1fr", alignItems: "baseline",
+              padding: "12px 16px",
+              background: "var(--bg-2)", border: "1px solid var(--line)",
+              textDecoration: "none", color: "var(--fg)", gap: 8,
+            }}>
+              <span className="mono tabular" style={{ fontSize: 11, color: "var(--accent)", letterSpacing: "0.08em" }}>{s.n}</span>
+              <span style={{ fontFamily: "var(--grotesk)", fontSize: 14, fontWeight: 500, lineHeight: 1.25 }}>{s.title}</span>
+            </a>
+          ))}
+        </div>
+      </section>
+
+      {/* ===== BODY ===== two-column with sticky TOC ===== */}
+      <div style={{
+        maxWidth: 1320, margin: "0 auto",
+        padding: "0 80px",
+        display: "grid", gridTemplateColumns: "200px 1fr", gap: 48,
+      }}>
+        {/* Sticky TOC */}
+        <aside>
+          <nav className="prod-toc">
+            <div className="mono" style={{ fontSize: 10, letterSpacing: "0.18em", color: "var(--fg-dim)", marginBottom: 10 }}>
+              {t("prod.toc.label")}
+            </div>
+            {SECTIONS.map(s => (
+              <a key={s.id} href={`#${s.id}`} className={active === s.id ? "active" : ""}>
+                <span className="toc-num">{s.n}</span>{s.title}
+              </a>
+            ))}
+          </nav>
+        </aside>
+
+        {/* Sections */}
+        <div>
+          <Section {...SECTIONS[0]}>
+            <ProductReasonCodes/>
+          </Section>
+
+          <Section {...SECTIONS[1]}>
+            <ProductTOML/>
+          </Section>
+
+          <Section {...SECTIONS[2]}>
+            <ProductTelemetry/>
+          </Section>
+
+          <Section {...SECTIONS[3]}>
+            <FacadeBlock/>
+          </Section>
+
+          <Section {...SECTIONS[4]}>
+            <FailStaleFSMBlock/>
+          </Section>
+
+          <Section {...SECTIONS[5]}>
+            <ThreatsCeilingsBlock/>
+          </Section>
+
+          <Section {...SECTIONS[6]}>
+            <ProductTiers/>
+            <div style={{ marginTop: 20 }}>
+              <ProductInstallPointer/>
+            </div>
+          </Section>
+
+          <Section {...SECTIONS[7]}>
+            <ProductCompare/>
+          </Section>
+
+          <Section {...SECTIONS[8]}>
+            <ProductRoadmap/>
+            <div style={{ marginTop: 32 }}>
+              <ProductCTA/>
+            </div>
+          </Section>
+        </div>
+      </div>
+
+      {/* Pointer band */}
+      <section style={{
+        padding: "72px 80px 24px",
+        maxWidth: 1320, margin: "0 auto",
+      }}>
+        <div className="mono" style={{ fontSize: 10, letterSpacing: "0.18em", color: "var(--fg-dim)", marginBottom: 24 }}>
+          {t("prod.next.eyebrow")}
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }}>
+          {[
+            [t("prod.next.arch.t"),   t("prod.next.arch.sub"),   "Architecture.html"],
+            [t("prod.next.atlas.t"),  t("prod.next.atlas.sub"),  "Failure Atlas.html"],
+            [t("prod.next.qa.t"),     t("prod.next.qa.sub"),     "questions.html"],
+          ].map(([title, sub, h]) => (
+            <a key={h} href={h} style={{
+              display: "block", padding: "20px 24px",
+              background: "var(--bg-2)", border: "1px solid var(--line)",
+              borderLeft: "3px solid var(--accent)",
+              textDecoration: "none", color: "var(--fg)",
+            }}>
+              <div style={{ fontFamily: "var(--grotesk)", fontSize: 18, fontWeight: 500, marginBottom: 8 }}>{title} →</div>
+              <div style={{ fontSize: 13, color: "var(--fg-dim)", lineHeight: 1.55 }}>{sub}</div>
+            </a>
+          ))}
+        </div>
+      </section>
+    </main>
+  );
+};
+
+const App = () => {
+  const [, force] = useState(0);
+  useEffect(() => {
+    const h = () => force(x => x + 1);
+    window.addEventListener("__lang_changed", h);
+    return () => window.removeEventListener("__lang_changed", h);
+  }, []);
+  return (
+    <>
+      <TopNav active="product" />
+      <ProductPage/>
+      <SiteFooter/>
+    </>
+  );
+};
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+
+<!-- Scroll-driven reveal effects (section-reveal + fade-up) -->
+<script src="shared/scroll-effects.js" defer></script>
+</body>
+</html>

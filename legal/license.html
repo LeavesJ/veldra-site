@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>License · Veldra</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="ReserveGrid OS license — source-available with escrow continuity." />
+
+<link rel="icon" href="../assets/brand/favicon-32.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Fraunces:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="../styles/shared.css" />
+
+<style>
+  html, body { margin: 0; background: var(--bg, #07101a); color: var(--fg, #f4f4f4); font-family: var(--sans, "Inter Tight", system-ui, sans-serif); }
+</style>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body data-variant="layers">
+<div id="root"></div>
+
+<script src="../shared/i18n.js"></script>
+<script type="text/babel" src="_shell.jsx"></script>
+
+<script type="text/babel" data-presets="env,react">
+const TOC = [
+  ["model",       "License model"],
+  ["tiers",       "Adoption tiers"],
+  ["escrow",      "Escrow continuity"],
+  ["audit",       "Source audit"],
+  ["binary-key",  "Binary license key"],
+  ["contact",     "Contact"],
+];
+
+const Tile = ({ tag, title, body, accent }) => (
+  <div style={{
+    padding: "20px 24px", background: "var(--bg-2)", border: "1px solid var(--line)",
+    borderLeft: `3px solid ${accent}`, borderRadius: 4,
+  }}>
+    <div className="mono" style={{ fontSize: 10, letterSpacing: "0.16em", color: accent, marginBottom: 8 }}>{tag}</div>
+    <div style={{ fontFamily: "var(--grotesk)", fontSize: 20, fontWeight: 500, marginBottom: 8 }}>{title}</div>
+    <div style={{ fontSize: 13.5, color: "var(--fg-dim)", lineHeight: 1.6 }}>{body}</div>
+  </div>
+);
+
+const LicensePage = () => (
+  <LegalShell eyebrow="license" title="License" updated="February 19, 2026" toc={TOC}>
+    <h2 id="model" data-i18n="legal.license.s1.title">License model</h2>
+    <p data-i18n="legal.license.s1.body">ReserveGrid OS is <strong>source-available with escrow continuity</strong>. Every line of code that ships in the binary is published in the repository and auditable by anyone. Commercial deployment requires a license — we do not offer free production use of the inline-enforcement path. The license terms keep the source open for inspection while reserving distribution and modification rights to Veldra, Inc.</p>
+
+    <h2 id="tiers" data-i18n="legal.license.s2.title">Adoption tiers</h2>
+    <p data-i18n="legal.license.s2.body">The binary's runtime mode is gated by the tier attached to your license key:</p>
+
+    <div style={{ display: "grid", gap: 10, marginTop: 16, marginBottom: 32 }}>
+      <Tile tag="FREE · NO LICENSE REQUIRED" title="Shadow" accent="var(--accent)"
+        body="Run against curated fixtures or in parallel with production traffic. The verifier emits verdicts to logs and metrics; nothing reaches miners. Use this to evaluate fit, tune policy, and replay incidents." />
+      <Tile tag="PAID · OBSERVE TIER" title="Observe" accent="var(--accent-2)"
+        body="Run against real traffic. Every verdict is logged with a reason code; no template is rejected on Veldra's say-so. Use this to build operator confidence before flipping enforcement." />
+      <Tile tag="PAID · INLINE TIER" title="Inline" accent="var(--accent-3)"
+        body="Fail-closed enforcement. Templates that violate policy or fail an invariant never reach a miner. The path your operations team commits to once observe has accrued the evidence." />
+    </div>
+
+    <h2 id="escrow" data-i18n="legal.license.s3.title">Escrow continuity</h2>
+    <p data-i18n="legal.license.s3.body">If Veldra ceases operations, the full source releases under a permissive license through the escrow trigger written into the license terms. Your deployment, your configuration, your verdicts, and your data stay yours. There is no kill switch, no phone-home requirement for inline operation, and no proprietary blob in the verdict path.</p>
+
+    <h2 id="audit" data-i18n="legal.license.s4.title">Source audit</h2>
+    <p data-i18n="legal.license.s4.body">The full repository is published at <a href="https://github.com/LeavesJ/veldra" target="_blank" rel="noreferrer">github.com/LeavesJ/veldra</a>. Audit the verdict path. Inspect the reason-code emissions. Run the test fixtures locally. We treat the auditor lens as a first-class user.</p>
+
+    <h2 id="binary-key" data-i18n="legal.license.s5.title">Binary license key</h2>
+    <p data-i18n="legal.license.s5.body">Paid tiers are activated by a license key that ships with your account. The key authenticates the ReserveGrid OS binary at startup; the tier attached to the key determines which deployment modes the binary will accept. Add the key to <code>reservegrid.toml</code> as <code>license_key = "…"</code>. Manage your key from the account dashboard once provisioned.</p>
+
+    <h2 id="contact" data-i18n="legal.license.s6.title">Contact</h2>
+    <p data-i18n="legal.license.s6.body">For licensing questions or escrow terms, see the <a href="contact.html">Request access</a> page.</p>
+  </LegalShell>
+);
+
+ReactDOM.createRoot(document.getElementById("root")).render(<LicensePage/>);
+</script>
+</body>
+</html>

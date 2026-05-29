@@ -1,0 +1,729 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Veldra · Docs</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Fraunces:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="styles/shared.css" />
+
+<style>
+  html, body {
+    margin: 0;
+    background: var(--bg, #07101a);
+    color: var(--fg, #f4f4f4);
+    font-family: var(--sans, "Inter Tight", system-ui, sans-serif);
+  }
+
+  /* Sticky in-page sub-nav under the global TopNav */
+  .docs-subnav {
+    position: sticky; top: 73px; z-index: 40;
+    display: flex; gap: 0; padding: 0 64px;
+    background: color-mix(in oklab, var(--bg) 92%, transparent);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+    overflow-x: auto;
+  }
+  .docs-subnav a {
+    flex-shrink: 0;
+    padding: 14px 18px;
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--fg-dim); text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: color 120ms, border-color 120ms;
+  }
+  .docs-subnav a:hover { color: var(--fg); }
+  .docs-subnav a.is-active { color: var(--fg); border-bottom-color: var(--accent); }
+
+  /* Reason-code grid */
+  .rc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 0;
+    border-top: 1px solid var(--line);
+    border-left: 1px solid var(--line);
+  }
+  .rc-cell {
+    padding: 16px 18px;
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    background: var(--bg-2);
+    transition: background 120ms;
+  }
+  .rc-cell:hover { background: color-mix(in oklab, var(--bg-2) 80%, var(--accent) 8%); }
+  .rc-code {
+    font-family: var(--mono); font-size: 12px; font-weight: 600;
+    color: var(--fg); word-break: break-all; line-height: 1.35;
+    margin-bottom: 6px;
+  }
+  .rc-gloss { font-size: 12.5px; color: var(--fg-dim); line-height: 1.5; }
+
+  /* Filter bar */
+  .filter-bar {
+    display: flex; gap: 8px; flex-wrap: wrap; align-items: center;
+    padding: 16px 0;
+  }
+  .filter-pill {
+    padding: 6px 12px;
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em;
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--fg-dim);
+    cursor: pointer;
+    transition: all 120ms;
+  }
+  .filter-pill:hover { color: var(--fg); border-color: var(--fg-dim); }
+  .filter-pill.is-on { color: var(--bg); background: var(--fg); border-color: var(--fg); }
+
+  .search-input {
+    flex: 1; min-width: 200px;
+    padding: 8px 12px;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    color: var(--fg);
+    font-family: var(--mono); font-size: 12px;
+  }
+  .search-input:focus { outline: none; border-color: var(--accent); }
+
+  /* Section headers */
+  .section { padding: 80px 64px; border-top: 1px solid var(--line); }
+  .section-eyebrow {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 16px;
+  }
+  .section-h {
+    font-family: var(--grotesk); font-size: 48px; font-weight: 500;
+    letter-spacing: -0.025em; margin: 0 0 16px; line-height: 1.08;
+  }
+  .section-sub {
+    font-size: 16px; color: var(--fg-dim); line-height: 1.6;
+    max-width: 720px; margin: 0 0 40px;
+  }
+
+  /* Config table */
+  .cfg-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12.5px;
+  }
+  .cfg-table thead th {
+    text-align: left;
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--fg-dim); font-weight: 500;
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--line);
+    background: var(--bg-2);
+  }
+  .cfg-table tbody td {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+  .cfg-table tbody tr:hover { background: color-mix(in oklab, var(--bg-2) 50%, transparent); }
+  .cfg-key { font-family: var(--mono); font-weight: 600; color: var(--fg); white-space: nowrap; }
+  .cfg-section { font-family: var(--mono); font-size: 10px; color: var(--accent); letter-spacing: 0.08em; }
+  .cfg-default { font-family: var(--mono); color: var(--fg-dim); }
+  .cfg-doc { color: var(--fg-dim); line-height: 1.5; }
+
+  /* Section-row banner — switches palette mid-page */
+  .row-banner {
+    padding: 28px 64px;
+    background: var(--bg-2);
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    display: flex; gap: 24px; align-items: baseline; flex-wrap: wrap;
+  }
+  .row-banner .label {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--fg-dim);
+  }
+  .row-banner .count {
+    font-family: var(--mono); font-size: 32px; font-weight: 500;
+    letter-spacing: -0.01em; color: var(--accent); line-height: 1;
+  }
+
+  /* Share-event field schemas */
+  .schema {
+    background: var(--bg-2);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--accent);
+    padding: 24px 28px;
+    margin-bottom: 24px;
+  }
+  .schema-h {
+    font-family: var(--grotesk); font-size: 22px; font-weight: 500;
+    margin: 0 0 6px;
+  }
+  .schema-meta {
+    font-family: var(--mono); font-size: 11px; color: var(--fg-dim);
+    letter-spacing: 0.08em; margin-bottom: 18px;
+  }
+  .schema-fields {
+    display: grid;
+    grid-template-columns: minmax(180px, auto) auto 1fr;
+    gap: 0 18px;
+    font-size: 12.5px;
+  }
+  .schema-fields > div {
+    padding: 8px 0;
+    border-bottom: 1px solid color-mix(in oklab, var(--line) 70%, transparent);
+  }
+  .schema-fields > div:nth-last-child(-n+3) { border-bottom: none; }
+  .schema-name { font-family: var(--mono); font-weight: 600; color: var(--fg); }
+  .schema-type { font-family: var(--mono); color: var(--accent); font-size: 11px; }
+  .schema-doc { color: var(--fg-dim); line-height: 1.5; }
+
+  /* Boundary diagram cells */
+  .boundary-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 0;
+    border: 1px solid var(--line);
+  }
+  .boundary {
+    padding: 28px 32px;
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+  .boundary:nth-child(2n) { border-right: none; }
+  .boundary:nth-last-child(-n+2) { border-bottom: none; }
+  .boundary h4 {
+    font-family: var(--grotesk); font-size: 18px; font-weight: 500;
+    margin: 0 0 6px;
+  }
+  .boundary .b-meta {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 14px;
+  }
+  .boundary p {
+    font-size: 13px; color: var(--fg-dim); line-height: 1.6; margin: 0 0 8px;
+  }
+  .boundary ul { margin: 8px 0 0; padding-left: 18px; font-size: 12.5px; color: var(--fg-dim); line-height: 1.7; }
+
+  /* Result count */
+  .result-count {
+    font-family: var(--mono); font-size: 11px; color: var(--fg-dim);
+    letter-spacing: 0.1em; padding: 12px 0;
+  }
+
+  /* Anchor offset for sticky subnav */
+  :target { scroll-margin-top: 140px; }
+
+  @media (max-width: 900px) {
+    .section { padding: 56px 28px; }
+    .docs-subnav { padding: 0 16px; }
+    .row-banner { padding: 24px 28px; }
+    .boundary-grid { grid-template-columns: 1fr; }
+    .boundary { border-right: none; }
+  }
+</style>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+</head>
+<body data-variant="layers">
+<div id="root"></div>
+
+<script src="shared/i18n.js"></script>
+<script type="text/babel" src="shared/components.jsx"></script>
+<script type="text/babel" src="shared/page-shell.jsx"></script>
+<script src="shared/_docs-data.js"></script>
+
+<script type="text/babel" data-presets="env,react">
+const { useState, useMemo, useEffect } = React;
+
+/* ────────────────────────────────────────────────────────────────────────
+   Veldra · Docs
+   Reference page. NOT a tutorial. Operators land here from the footer or
+   from "see all reason codes" links scattered through Product/Atlas.
+   Surfaces:
+     · Hero (counts at a glance)
+     · 95 reason codes — searchable + category-filterable grid
+     · 59 config keys — table grouped by section
+     · Share events — accept/forward result schemas
+     · Security boundaries — what each layer trusts
+   ──────────────────────────────────────────────────────────────────────── */
+
+const D = window.DOCS_DATA;
+
+/* ────────────────────────────────  HERO  ──────────────────────────────── */
+const Hero = () => (
+  <section style={{ padding: "96px 64px 80px", maxWidth: 1440, margin: "0 auto" }}>
+    <div className="mono" style={{ fontSize: 11, letterSpacing: "0.18em", color: "var(--accent)", marginBottom: 20 }}>
+      {t("docs.hero.eyebrow")}
+    </div>
+    <h1 style={{
+      fontFamily: "var(--grotesk)", fontSize: 88, fontWeight: 500,
+      letterSpacing: "-0.035em", lineHeight: 0.95, margin: "0 0 32px", textWrap: "balance",
+    }}>
+      {t("docs.hero.h1")}
+    </h1>
+    <p style={{ fontSize: 19, color: "var(--fg-dim)", lineHeight: 1.55, maxWidth: 760, margin: "0 0 56px" }}
+       dangerouslySetInnerHTML={{ __html: t("docs.hero.lede.html") }} />
+
+    <div style={{
+      display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 0,
+      borderTop: "1px solid var(--line)", borderBottom: "1px solid var(--line)",
+    }}>
+      {[
+        { n: D.totals.reason_codes, l: t("docs.hero.stat.reason_codes"), s: `${D.totals.phase1_codes} Phase 1 · ${D.totals.phase2_codes} Phase 2` },
+        { n: D.totals.config_keys,  l: t("docs.hero.stat.config_keys"),  s: "policy.toml + gateway.toml" },
+        { n: 13,                    l: t("docs.hero.stat.categories"),   s: "verifier · gateway · share · …" },
+        { n: 2,                     l: t("docs.hero.stat.share_events"), s: "share_accepted · forward_result" },
+      ].map((s, i) => (
+        <div key={i} style={{
+          padding: "32px 28px",
+          borderRight: i < 3 ? "1px solid var(--line)" : "none",
+        }}>
+          <div className="mono tabular" style={{
+            fontSize: 56, fontWeight: 500, color: "var(--fg)",
+            letterSpacing: "-0.02em", lineHeight: 1, marginBottom: 12,
+          }}>{s.n}</div>
+          <div style={{ fontSize: 14, color: "var(--fg)", marginBottom: 4 }}>{s.l}</div>
+          <div className="mono" style={{ fontSize: 11, color: "var(--fg-dim)", letterSpacing: "0.06em" }}>{s.s}</div>
+        </div>
+      ))}
+    </div>
+  </section>
+);
+
+/* ───────────────────────────  IN-PAGE SUBNAV  ────────────────────────── */
+const SubNav = () => {
+  const [active, setActive] = useState("reason-codes");
+  useEffect(() => {
+    const ids = ["reason-codes", "config", "events", "boundaries"];
+    const onScroll = () => {
+      const top = window.scrollY + 200;
+      let cur = ids[0];
+      for (const id of ids) {
+        const el = document.getElementById(id);
+        if (el && el.offsetTop <= top) cur = id;
+      }
+      setActive(cur);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+  const items = [
+    ["reason-codes", t("docs.subnav.reason_codes")],
+    ["config",       t("docs.subnav.config")],
+    ["events",       t("docs.subnav.events")],
+    ["boundaries",   t("docs.subnav.boundaries")],
+  ];
+  return (
+    <div className="docs-subnav">
+      {items.map(([id, label]) => (
+        <a key={id} href={"#" + id} className={active === id ? "is-active" : ""}>{label}</a>
+      ))}
+    </div>
+  );
+};
+
+/* ───────────────────────────  REASON CODES  ──────────────────────────── */
+const ReasonCodes = () => {
+  const [filter, setFilter] = useState("all");
+  const [search, setSearch] = useState("");
+
+  const filtered = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    return D.codes.filter(c =>
+      (filter === "all" || c.cat === filter) &&
+      (q === "" || c.code.includes(q) || c.gloss.toLowerCase().includes(q))
+    );
+  }, [filter, search]);
+
+  return (
+    <section id="reason-codes" className="section">
+      <div className="section-eyebrow">{t("docs.rc.eyebrow")}</div>
+      <h2 className="section-h">{t("docs.rc.h2")}</h2>
+      <p className="section-sub" dangerouslySetInnerHTML={{ __html: t("docs.rc.sub.html") }} />
+
+      <div className="filter-bar">
+        <button
+          className={"filter-pill " + (filter === "all" ? "is-on" : "")}
+          onClick={() => setFilter("all")}
+        >{t("docs.rc.filter.all")} · {D.codes.length}</button>
+        {D.categories.map(cat => {
+          const catLabel = t("docs.cat." + cat.id);
+          return (
+            <button key={cat.id}
+              className={"filter-pill " + (filter === cat.id ? "is-on" : "")}
+              onClick={() => setFilter(cat.id)}
+              style={filter === cat.id ? { background: cat.accent, borderColor: cat.accent, color: "#0b0b0b" } : {}}
+            >{catLabel.replace(/^.*· /, "").toUpperCase()} · {cat.count}</button>
+          );
+        })}
+        <input
+          className="search-input"
+          type="search"
+          placeholder={t("docs.rc.search.placeholder")}
+          value={search}
+          onChange={e => setSearch(e.target.value)}
+        />
+      </div>
+
+      <div className="result-count">
+        {filtered.length === D.codes.length
+          ? window.tWith("docs.rc.count.all", { n: filtered.length })
+          : window.tWith("docs.rc.count.filtered", { n: filtered.length, total: D.codes.length })}
+      </div>
+
+      <div className="rc-grid">
+        {filtered.map(c => {
+          const cat = D.categories.find(x => x.id === c.cat);
+          const catLabel = t("docs.cat." + cat.id);
+          return (
+            <div key={c.code} className="rc-cell" style={{ borderLeft: `2px solid ${cat.accent}` }}>
+              <div className="rc-code">{c.code}</div>
+              <div className="rc-gloss">{c.gloss}</div>
+              <div className="mono" style={{
+                fontSize: 9.5, letterSpacing: "0.14em", textTransform: "uppercase",
+                color: cat.accent, marginTop: 10, opacity: 0.9,
+              }}>{catLabel.replace(/^.*· /, "")}</div>
+            </div>
+          );
+        })}
+      </div>
+
+      {filtered.length === 0 && (
+        <div style={{
+          padding: 64, textAlign: "center",
+          color: "var(--fg-dim)", fontSize: 14, fontFamily: "var(--mono)",
+          border: "1px solid var(--line)", borderTop: "none",
+        }}>{t("docs.rc.empty")}</div>
+      )}
+    </section>
+  );
+};
+
+/* ─────────────────────────────  CONFIG  ──────────────────────────────── */
+
+/* Authoritative config keys. Sourced from policy.toml + gateway.toml schema.
+   Counts: 51 Phase-1 keys (gateway + verifier + transport + share + invariant)
+         + 8  Phase-2 [policy.mempool] keys = 59. */
+const CONFIG = [
+  // ─── policy.toml — verifier ───
+  ["policy.toml", "[policy]", "max_tx_count", "u32", "100000", "Maximum non-coinbase transactions per template."],
+  ["policy.toml", "[policy]", "min_total_fees_sat", "u64", "0", "Minimum sum of fees in template (sats)."],
+  ["policy.toml", "[policy]", "min_avg_fee_per_vb", "f64", "0.0", "Minimum average fee per vByte."],
+  ["policy.toml", "[policy]", "max_template_age_ms", "u64", "60000", "Reject templates older than this."],
+  ["policy.toml", "[policy]", "max_weight_ratio", "f64", "1.0", "Reject templates whose weight exceeds this fraction of 4M."],
+  ["policy.toml", "[policy]", "min_coinbase_value", "u64", "0", "Minimum coinbase output value in sats."],
+  ["policy.toml", "[policy]", "sigops_warn_ratio", "f64", "0.85", "Emit warning when sigops/MAX exceed this ratio."],
+  ["policy.toml", "[policy]", "max_protocol_version", "u32", "2", "Highest protocol_version accepted."],
+  ["policy.toml", "[policy]", "reject_empty_templates", "bool", "true", "Reject templates with zero non-coinbase txs."],
+  ["policy.toml", "[policy]", "reject_zero_value_coinbase", "bool", "true", "Reject coinbase output value == 0."],
+
+  // ─── policy.toml — invariant shield Phase 1 ───
+  ["policy.toml", "[invariant]", "enabled", "bool", "true", "Master switch for re-derivation pass."],
+  ["policy.toml", "[invariant]", "fail_closed", "bool", "true", "If false, log mismatches but still forward."],
+  ["policy.toml", "[invariant]", "check_merkle_root", "bool", "true", "Re-derive merkle root from txids."],
+  ["policy.toml", "[invariant]", "check_witness_commitment", "bool", "true", "Re-derive witness commitment OP_RETURN."],
+  ["policy.toml", "[invariant]", "check_sigops", "bool", "true", "Re-count total + coinbase sigops."],
+  ["policy.toml", "[invariant]", "check_coinbase_value", "bool", "true", "Re-sum coinbase outputs."],
+  ["policy.toml", "[invariant]", "check_template_weight", "bool", "true", "Re-derive total template weight."],
+  ["policy.toml", "[invariant]", "check_bip34_height", "bool", "true", "Verify BIP-34 height push in coinbase script."],
+  ["policy.toml", "[invariant]", "check_duplicate_txids", "bool", "true", "Reject templates containing dupe txids."],
+
+  // ─── policy.toml — Phase 2 mempool (8 keys) ───
+  ["policy.toml", "[policy.mempool]", "enabled", "bool", "false", "Master switch for Phase 2 cross-check."],
+  ["policy.toml", "[policy.mempool]", "rpc_url", "string", "—", "bitcoind RPC URL (http://user:pass@host:port)."],
+  ["policy.toml", "[policy.mempool]", "tolerance_pct", "f64", "1.0", "Max % of template txs allowed to be unknown to mempool."],
+  ["policy.toml", "[policy.mempool]", "max_stale_secs", "u64", "10", "Refuse mempool snapshots older than this."],
+  ["policy.toml", "[policy.mempool]", "rpc_timeout_ms", "u64", "2000", "Per-RPC-call timeout."],
+  ["policy.toml", "[policy.mempool]", "fail_closed_on_unavailable", "bool", "false", "If true, reject when bitcoind RPC is unreachable."],
+  ["policy.toml", "[policy.mempool]", "snapshot_refresh_ms", "u64", "5000", "Background refresh interval for mempool view."],
+  ["policy.toml", "[policy.mempool]", "max_unknown_log_per_min", "u32", "60", "Cap structured log lines for unknown-tx events."],
+
+  // ─── gateway.toml — listener / transport ───
+  ["gateway.toml", "[listen]", "sv2_addr", "string", "0.0.0.0:34255", "SV2 inbound listener bind address."],
+  ["gateway.toml", "[listen]", "http_admin_addr", "string", "127.0.0.1:9090", "HTTP admin + health endpoint."],
+  ["gateway.toml", "[listen]", "max_connections", "u32", "10000", "Concurrent SV2 connections cap."],
+  ["gateway.toml", "[transport]", "handshake_timeout_ms", "u64", "5000", "Noise NX handshake timeout."],
+  ["gateway.toml", "[transport]", "max_frame_bytes", "u32", "1048576", "Maximum SV2 frame size."],
+  ["gateway.toml", "[transport]", "rate_limit_messages_per_sec", "u32", "1000", "Per-peer message rate."],
+  ["gateway.toml", "[transport]", "rate_limit_bytes_per_sec", "u32", "8388608", "Per-peer bandwidth cap."],
+  ["gateway.toml", "[transport]", "connection_rate_per_ip_per_min", "u32", "60", "Inbound connection rate per source IP."],
+
+  // ─── gateway.toml — channel / job ───
+  ["gateway.toml", "[channel]", "max_channels_per_connection", "u32", "32", "Per-connection channel cap."],
+  ["gateway.toml", "[channel]", "channel_open_timeout_ms", "u64", "10000", "Time to first OpenMiningChannel after handshake."],
+  ["gateway.toml", "[channel]", "max_worker_id_bytes", "u32", "64", "Reject worker identities longer than this."],
+  ["gateway.toml", "[job]", "prevhash_verdict_timeout_ms", "u64", "1500", "Max wait for prevhash verdict from upstream."],
+  ["gateway.toml", "[job]", "template_cache_size", "u32", "1024", "Number of recent templates kept in memory."],
+  ["gateway.toml", "[job]", "stale_share_grace_ms", "u64", "5000", "Accept shares from prior epoch up to this lag."],
+
+  // ─── gateway.toml — share path ───
+  ["gateway.toml", "[share]", "min_difficulty", "f64", "1.0", "Reject shares below this difficulty."],
+  ["gateway.toml", "[share]", "dedup_window_ms", "u64", "60000", "Replay-detection window for share event_id."],
+  ["gateway.toml", "[share]", "outbound_queue_capacity", "u32", "8192", "Max in-flight share forwards."],
+  ["gateway.toml", "[share]", "outbound_backpressure", "string", "\"drop_oldest\"", "drop_oldest | drop_newest | block."],
+  ["gateway.toml", "[share]", "forward_url", "string", "—", "Upstream share-receiver endpoint."],
+  ["gateway.toml", "[share]", "forward_timeout_ms", "u64", "5000", "Per-attempt forward timeout."],
+  ["gateway.toml", "[share]", "forward_max_retries", "u32", "3", "Retry budget per share."],
+  ["gateway.toml", "[share]", "pool_account_rate_limit", "u32", "0", "Per-account share rate cap (0 = off)."],
+
+  // ─── gateway.toml — auth / hmac ───
+  ["gateway.toml", "[auth]", "miner_whitelist_path", "string", "—", "Path to miner credential file."],
+  ["gateway.toml", "[auth]", "request_signature_skew_ms", "u64", "30000", "Replay window for signed admin requests."],
+  ["gateway.toml", "[hmac]", "share_signing_key_path", "string", "—", "Path to outbound share HMAC key."],
+  ["gateway.toml", "[hmac]", "rotate_grace_ms", "u64", "300000", "Accept previous key during rotation window."],
+
+  // ─── gateway.toml — handler / payload ───
+  ["gateway.toml", "[handler]", "handler_timeout_ms", "u64", "10000", "Generic handler ceiling."],
+  ["gateway.toml", "[handler]", "max_payload_bytes", "u32", "262144", "Max admin POST body size."],
+  ["gateway.toml", "[handler]", "max_json_nesting", "u32", "32", "Strict JSON nesting limit."],
+
+  // ─── gateway.toml — health / shutdown ───
+  ["gateway.toml", "[health]", "drain_timeout_ms", "u64", "30000", "Graceful shutdown drain ceiling."],
+  ["gateway.toml", "[health]", "startup_grace_ms", "u64", "5000", "Reject probes as 'pending' until ready."],
+
+  // ─── wal / storage ───
+  ["gateway.toml", "[wal]", "path", "string", "/var/lib/veldra/wal", "Write-ahead log directory."],
+  ["gateway.toml", "[wal]", "fsync_every", "u32", "1", "fsync cadence (in entries)."],
+];
+
+const Configuration = () => {
+  const [grouped, setGrouped] = useState(true);
+
+  const groups = useMemo(() => {
+    const out = {};
+    for (const row of CONFIG) {
+      const key = row[0] + " · " + row[1];
+      if (!out[key]) out[key] = [];
+      out[key].push(row);
+    }
+    return out;
+  }, []);
+
+  return (
+    <section id="config" className="section">
+      <div className="section-eyebrow">{t("docs.cfg.eyebrow")}</div>
+      <h2 className="section-h" dangerouslySetInnerHTML={{ __html: t("docs.cfg.h2.html") }} />
+      <p className="section-sub" dangerouslySetInnerHTML={{ __html: t("docs.cfg.sub.html") }} />
+
+      {Object.entries(groups).map(([groupKey, rows]) => (
+        <div key={groupKey} style={{ marginBottom: 40 }}>
+          <div className="mono" style={{
+            fontSize: 11, letterSpacing: "0.16em", color: "var(--accent)",
+            textTransform: "uppercase", marginBottom: 12, marginTop: 24,
+          }}>{groupKey} · {rows.length}</div>
+          <table className="cfg-table">
+            <thead>
+              <tr>
+                <th style={{ width: "32%" }}>{t("docs.cfg.col.key")}</th>
+                <th style={{ width: "12%" }}>{t("docs.cfg.col.type")}</th>
+                <th style={{ width: "14%" }}>{t("docs.cfg.col.default")}</th>
+                <th>{t("docs.cfg.col.description")}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {rows.map((r, i) => (
+                <tr key={i}>
+                  <td className="cfg-key">{r[2]}</td>
+                  <td className="cfg-default">{r[3]}</td>
+                  <td className="cfg-default">{r[4]}</td>
+                  <td className="cfg-doc">{r[5]}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ))}
+    </section>
+  );
+};
+
+/* ──────────────────────────  SHARE EVENTS  ───────────────────────────── */
+const Schema = ({ name, version, when, fields }) => (
+  <div className="schema">
+    <h3 className="schema-h">{name}</h3>
+    <div className="schema-meta">{version} · {t("docs.events.schema.emitted")} {when}</div>
+    <div className="schema-fields">
+      <div className="mono" style={{ fontSize: 10, letterSpacing: "0.14em", color: "var(--fg-dim)", textTransform: "uppercase" }}>{t("docs.events.schema.field")}</div>
+      <div className="mono" style={{ fontSize: 10, letterSpacing: "0.14em", color: "var(--fg-dim)", textTransform: "uppercase" }}>{t("docs.events.schema.type")}</div>
+      <div className="mono" style={{ fontSize: 10, letterSpacing: "0.14em", color: "var(--fg-dim)", textTransform: "uppercase" }}>{t("docs.events.schema.description")}</div>
+      {fields.map((f, i) => (
+        <React.Fragment key={i}>
+          <div className="schema-name">{f[0]}</div>
+          <div className="schema-type">{f[1]}</div>
+          <div className="schema-doc">{f[2]}</div>
+        </React.Fragment>
+      ))}
+    </div>
+  </div>
+);
+
+const ShareEvents = () => (
+  <section id="events" className="section">
+    <div className="section-eyebrow">{t("docs.events.eyebrow")}</div>
+    <h2 className="section-h">{t("docs.events.h2")}</h2>
+    <p className="section-sub" dangerouslySetInnerHTML={{ __html: t("docs.events.sub.html") }} />
+    <Schema
+      name="share_accepted"
+      version="v1"
+      when="locally after share passes nonce + difficulty + version-bits + ntime checks"
+      fields={[
+        ["event_id", "string · v7 ULID", "Stable identifier for dedup. Time-ordered."],
+        ["account_id", "string", "Pool-side miner account."],
+        ["worker_id", "string", "Sub-identity (e.g. rig name) ≤ max_worker_id_bytes."],
+        ["channel_id", "u32", "SV2 channel ID this share arrived on."],
+        ["job_id", "u32", "Template ID this share targets."],
+        ["nonce", "u32", "Header nonce as submitted."],
+        ["ntime", "u32", "Header ntime as submitted."],
+        ["version_bits", "u32", "BIP-320 version-rolling bits."],
+        ["share_difficulty", "f64", "Difficulty the share met."],
+        ["template_difficulty", "f64", "Difficulty the underlying template targets."],
+        ["block_solution", "bool", "True if this share also solves the block."],
+        ["accepted_at", "u64 · ms epoch", "Gateway-side timestamp at validation."],
+        ["template_height", "u32", "Block height of the template."],
+        ["prev_hash", "string · 64 hex", "Header prev_hash; ties share to a chain epoch."],
+      ]}
+    />
+
+    <Schema
+      name="share_forward_result"
+      version="v1"
+      when="after upstream accept/reject — or synthetically after crash recovery (process_crash_recovery)"
+      fields={[
+        ["event_id", "string · v7 ULID", "Same ULID as the original share_accepted."],
+        ["forwarded_at", "u64 · ms epoch", "When the forward attempt completed."],
+        ["status", "enum", "accepted | rejected | dropped | recovered"],
+        ["upstream_status_code", "u16 · null", "HTTP status from pool/template-manager."],
+        ["upstream_reason", "string · null", "Pool-supplied reason (e.g. duplicate, low_diff)."],
+        ["reason_code", "string · null", "Veldra reason code if status ∈ {dropped, recovered}."],
+        ["attempt_count", "u8", "Number of upstream attempts (1..=forward_max_retries+1)."],
+        ["queue_age_ms", "u64", "Time the share spent in the outbound queue."],
+        ["latency_ms", "u64", "Round-trip to upstream on the successful attempt."],
+      ]}
+    />
+
+    <div style={{
+      marginTop: 24, padding: "20px 24px",
+      background: "var(--bg-2)", border: "1px solid var(--line)",
+    }}>
+      <div className="mono" style={{ fontSize: 10, letterSpacing: "0.14em", color: "var(--accent)", marginBottom: 8 }}>
+        {t("docs.events.transport.label")}
+      </div>
+      <div style={{ fontSize: 13.5, color: "var(--fg-dim)", lineHeight: 1.6 }}>
+        Both events are POSTed as NDJSON over HTTPS to the configured <span className="mono" style={{ color: "var(--fg)" }}>[share].forward_url</span>,
+        with an HMAC-SHA256 signature in <span className="mono" style={{ color: "var(--fg)" }}>X-Veldra-Signature</span> derived from the
+        signing key at <span className="mono" style={{ color: "var(--fg)" }}>[hmac].share_signing_key_path</span>. Missing or
+        malformed signatures are rejected upstream with <span className="mono" style={{ color: "var(--fg)" }}>missing_gateway_signature</span> /
+        <span className="mono" style={{ color: "var(--fg)" }}> invalid_gateway_signature</span>.
+      </div>
+    </div>
+  </section>
+);
+
+/* ────────────────────────  SECURITY BOUNDARIES  ──────────────────────── */
+const Boundaries = () => (
+  <section id="boundaries" className="section">
+    <div className="section-eyebrow">{t("docs.boundaries.eyebrow")}</div>
+    <h2 className="section-h">{t("docs.boundaries.h2")}</h2>
+    <p className="section-sub" dangerouslySetInnerHTML={{ __html: t("docs.boundaries.sub.html") }} />
+
+    <div className="boundary-grid">
+      <div className="boundary">
+        <div className="b-meta">L0 · TRANSPORT</div>
+        <h4>SV2 framing + Noise NX</h4>
+        <p>Inbound peer is anonymous TCP until the Noise handshake completes. Until then, frames are size-capped, rate-limited per-IP, and subject to handshake timeout.</p>
+        <p><strong style={{ color: "var(--fg)" }}>{t("docs.boundaries.refuses")}</strong></p>
+        <ul>
+          <li>Frames over <span className="mono">max_frame_bytes</span></li>
+          <li>Handshakes past <span className="mono">handshake_timeout_ms</span></li>
+          <li>Connections over <span className="mono">connection_rate_per_ip_per_min</span></li>
+          <li>Unsupported SV2 protocol versions</li>
+        </ul>
+      </div>
+
+      <div className="boundary">
+        <div className="b-meta">L1 · GATEWAY</div>
+        <h4>Authenticated channel + job routing</h4>
+        <p>Past handshake, the miner authenticates via whitelist. Channels open subject to per-connection caps; each job is bound to a template ID and prevhash epoch.</p>
+        <p><strong style={{ color: "var(--fg)" }}>{t("docs.boundaries.refuses")}</strong></p>
+        <ul>
+          <li>Unauthorized miners or stale identity prefixes</li>
+          <li>Channel-open requests for unsupported channel types</li>
+          <li>Submissions referencing unknown <span className="mono">job_id</span></li>
+          <li>Submissions from prior prevhash epoch (past grace)</li>
+        </ul>
+      </div>
+
+      <div className="boundary">
+        <div className="b-meta">L2 · INVARIANT SHIELD</div>
+        <h4>Re-derivation + cross-check</h4>
+        <p>Every template — whether locally generated or upstream — is re-decoded and re-derived. Phase 1 checks structural invariants. Phase 2 (opt-in) cross-checks against bitcoind mempool.</p>
+        <p><strong style={{ color: "var(--fg)" }}>{t("docs.boundaries.refuses")}</strong></p>
+        <ul>
+          <li>Mismatch on merkle root, witness commitment, sigops, weight</li>
+          <li>BIP-34 height mismatch or missing</li>
+          <li>Duplicate txids, null prevouts, undecodable txs</li>
+          <li>Phase 2: unknown-tx ratio over <span className="mono">tolerance_pct</span></li>
+        </ul>
+      </div>
+
+      <div className="boundary">
+        <div className="b-meta">L3 · SHARE PATH</div>
+        <h4>HMAC-signed, dedup'd, durable</h4>
+        <p>Every share is locally validated, then signed with the gateway's HMAC key and queued to upstream. The WAL persists the queue across crashes; the dedup window catches replays.</p>
+        <p><strong style={{ color: "var(--fg)" }}>{t("docs.boundaries.refuses")}</strong></p>
+        <ul>
+          <li>Shares below <span className="mono">min_difficulty</span></li>
+          <li>Shares whose <span className="mono">event_id</span> matches one in the dedup window</li>
+          <li>Shares forwarded without an HMAC signature</li>
+          <li>Shares from accounts past <span className="mono">pool_account_rate_limit</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div style={{
+      marginTop: 32, padding: "20px 24px",
+      background: "var(--bg-2)", border: "1px solid var(--line)", borderLeft: "3px solid var(--accent)",
+    }}>
+      <div className="mono" style={{ fontSize: 10, letterSpacing: "0.14em", color: "var(--accent)", marginBottom: 8 }}>
+        {t("docs.boundaries.default_posture")}
+      </div>
+      <div style={{ fontSize: 13.5, color: "var(--fg-dim)", lineHeight: 1.6 }}
+           dangerouslySetInnerHTML={{ __html: t("docs.boundaries.default_body.html") }} />
+    </div>
+  </section>
+);
+
+/* ────────────────────────────────  APP  ──────────────────────────────── */
+const App = () => {
+  // Re-render on lang change
+  const [, setTick] = useState(0);
+  useEffect(() => {
+    const onLang = () => setTick(x => x + 1);
+    window.addEventListener("__lang_changed", onLang);
+    return () => window.removeEventListener("__lang_changed", onLang);
+  }, []);
+
+  return (
+    <>
+      <TopNav active="docs" />
+      <SubNav />
+      <Hero />
+      <ReasonCodes />
+      <Configuration />
+      <ShareEvents />
+      <Boundaries />
+      <SiteFooter />
+    </>
+  );
+};
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+
+<!-- Scroll-driven reveal effects (section-reveal + fade-up) -->
+<script src="shared/scroll-effects.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>About · Veldra</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="Veldra builds operator-grade safety, verification, and audit infrastructure for Bitcoin mining pools." />
+
+<link rel="icon" href="../assets/brand/favicon-32.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Fraunces:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="../styles/shared.css" />
+
+<style>
+  html, body { margin: 0; background: var(--bg, #07101a); color: var(--fg, #f4f4f4); font-family: var(--sans, "Inter Tight", system-ui, sans-serif); }
+</style>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body data-variant="layers">
+<div id="root"></div>
+
+<script src="../shared/i18n.js"></script>
+<script type="text/babel" src="_shell.jsx"></script>
+
+<script type="text/babel" data-presets="env,react">
+const TOC = [
+  ["mission",   "Mission"],
+  ["why",       "Why this exists"],
+  ["scope",     "Scope, honestly"],
+  ["company",   "Company"],
+  ["contact",   "Contact"],
+];
+
+const AboutPage = () => (
+  <LegalShell eyebrow="about" title="About Veldra" updated="February 19, 2026" toc={TOC}>
+    <h2 id="mission" data-i18n="legal.about.s1.title">Mission</h2>
+    <p data-i18n="legal.about.s1.body">Veldra builds operator-grade safety, verification, and audit infrastructure for Bitcoin mining pools. We exist because the surface where miners build their own block templates — the SV2 surface — needs guardrails that are independent of the same template-manager that produced the work, and named where they end.</p>
+
+    <h2 id="why" data-i18n="legal.about.s2.title">Why this exists</h2>
+    <p data-i18n="legal.about.s2.body">Stratum V2 lets miners propose templates. Pools gain encrypted transport and reduced bandwidth. They lose the gateway view of every transaction the miner picked. The public mining record has accumulated incidents — fee-policy violations, malformed coinbases, stale prevhash references — that any single audited check would have flagged. Our <a href="../Failure Atlas.html">Failure Atlas</a> maps eight of them to the reason codes the gateway would have emitted.</p>
+    <p data-i18n="legal.about.s2.body2">ReserveGrid OS is the answer we wanted to read: an operational gateway that enforces declared-field policy, plus an Invariant Shield that re-derives every consensus quantity from the bytes themselves and cross-checks an independent mempool. One binary. Twenty-two invariant codes. One named boundary.</p>
+
+    <h2 id="scope" data-i18n="legal.about.s3.title">Scope, honestly</h2>
+    <p data-i18n="legal.about.s3.body">We name what we cannot do. The Shield cannot detect a compromise of the operator's own bitcoind. We are wired into v2.0.0 and tested in CI; validation against real mainnet templates is in observation cycle and will be reported as it accrues. We separate <em>wired</em> from <em>validated</em> in every public claim. If you find us overclaiming, tell us — we will shorten the page.</p>
+
+    <h2 id="company" data-i18n="legal.about.s4.title">Company</h2>
+    <p data-i18n="legal.about.s4.body">Veldra, Inc. is a Delaware C-corporation. The product is source-available with escrow continuity (see <a href="license.html">License</a>). The repository lives at <a href="https://github.com/LeavesJ/veldra" target="_blank" rel="noreferrer">github.com/LeavesJ/veldra</a>.</p>
+
+    <h2 id="contact" data-i18n="legal.about.s5.title">Contact</h2>
+    <p data-i18n="legal.about.s5.body">For product, licensing, or audit questions, see the <a href="contact.html">Request access</a> page.</p>
+  </LegalShell>
+);
+
+ReactDOM.createRoot(document.getElementById("root")).render(<AboutPage/>);
+</script>
+</body>
+</html>
