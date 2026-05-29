@@ -42,7 +42,7 @@ const LegalNav = () => {
           {[
             { l: t("nav.architecture"),  h: "../Architecture.html" },
             { l: t("shell.nav.product"), h: "../Product.html" },
-            { l: t("nav.atlas"),         h: "../Failure Atlas.html" },
+            { l: t("nav.atlas"),         h: "../failure-atlas.html" },
             { l: t("nav.qa"),            h: "../questions.html" },
           ].map(({ l, h }) => (
             <a key={h} href={h} style={{ color: "inherit", textDecoration: "none" }}>{l}</a>
@@ -88,7 +88,7 @@ const LegalFooter = () => {
           <FootCol title={t("shell.footer.col.surfaces")} items={[
             [t("nav.architecture"),  "../Architecture.html"],
             [t("shell.nav.product"), "../Product.html"],
-            [t("nav.atlas"),         "../Failure Atlas.html"],
+            [t("nav.atlas"),         "../failure-atlas.html"],
             [t("nav.qa"),            "../questions.html"],
           ]}/>
           <FootCol title={t("shell.footer.col.operate")} items={[

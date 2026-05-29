@@ -82,7 +82,7 @@ const LayersNav = () => {
   const navItems = [
     [t("nav.architecture"),  "Architecture.html"],
     [t("shell.nav.product"), "Product.html"],
-    [t("nav.atlas"),         "Failure Atlas.html"],
+    [t("nav.atlas"),         "failure-atlas.html"],
     [t("nav.qa"),            "questions.html"],
     ["Docs",                 "Docs.html"],
     ["Status",               "status.html"],
