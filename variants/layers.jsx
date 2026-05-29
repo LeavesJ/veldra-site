@@ -101,7 +101,7 @@ const LayersNav = () => {
     padding: "22px 48px", position: "absolute", top: 0, left: 0, right: 0, zIndex: 50,
   }}>
     <div style={{ display: "flex", alignItems: "center", gap: 36 }}>
-      <a href="Homepage.html" style={{ display: "flex", alignItems: "center", gap: 12, textDecoration: "none", color: "inherit" }}>
+      <a href="/" style={{ display: "flex", alignItems: "center", gap: 12, textDecoration: "none", color: "inherit" }}>
         <img src="assets/brand/veldra-mark.png" style={{ width: 26, height: 26, filter: "invert(1) brightness(0.95)" }} />
         <span style={{ fontFamily: "var(--grotesk)", fontSize: 18, fontWeight: 600, letterSpacing: "0.04em" }}>VELDRA</span>
       </a>

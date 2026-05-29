@@ -34,7 +34,7 @@ const AuthNav = ({ active }) => {
       background: "var(--bg)", position: "sticky", top: 0, zIndex: 50,
     }}>
       <div style={{ display: "flex", alignItems: "center", gap: 36 }}>
-        <a href="../Homepage.html" style={{
+        <a href="/" style={{
           display: "flex", alignItems: "center", gap: 12, textDecoration: "none", color: "inherit",
         }}>
           <img src="../assets/brand/veldra-mark.png" alt="Veldra"
