@@ -43,11 +43,11 @@ const AuthNav = ({ active }) => {
         </a>
         <div style={{ display: "flex", gap: 28, fontSize: 13, color: "var(--fg-dim)" }}>
           {[
-            { k: "architecture",  l: t("nav.architecture"),  h: "../Architecture.html" },
-            { k: "product",       l: t("shell.nav.product"), h: "../Product.html" },
+            { k: "architecture",  l: t("nav.architecture"),  h: "../architecture.html" },
+            { k: "product",       l: t("shell.nav.product"), h: "../product.html" },
             { k: "atlas",         l: t("nav.atlas"),         h: "../failure-atlas.html" },
             { k: "qa",            l: t("nav.qa"),            h: "../questions.html" },
-            { k: "docs",          l: t("nav.docs"),          h: "../Docs.html" },
+            { k: "docs",          l: t("nav.docs"),          h: "../docs.html" },
             { k: "status",        l: t("nav.status"),        h: "../status.html" },
           ].map(({ k, l, h }) => {
             const isActive = k === active;
@@ -104,11 +104,11 @@ const AuthFooter = () => {
         </div>
         <div style={{ display: "flex", gap: 64, flexWrap: "wrap" }}>
           <FootCol title={t("shell.footer.col.surfaces")} items={[
-            [t("nav.architecture"),  "../Architecture.html"],
-            [t("shell.nav.product"), "../Product.html"],
+            [t("nav.architecture"),  "../architecture.html"],
+            [t("shell.nav.product"), "../product.html"],
             [t("nav.atlas"),         "../failure-atlas.html"],
             [t("nav.qa"),            "../questions.html"],
-            [t("nav.docs"),          "../Docs.html"],
+            [t("nav.docs"),          "../docs.html"],
             [t("nav.status"),        "../status.html"],
           ]}/>
           <FootCol title={t("shell.footer.col.operate")} items={[

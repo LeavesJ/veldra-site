@@ -40,8 +40,8 @@ const LegalNav = () => {
         </a>
         <div style={{ display: "flex", gap: 28, fontSize: 13, color: "var(--fg-dim)" }}>
           {[
-            { l: t("nav.architecture"),  h: "../Architecture.html" },
-            { l: t("shell.nav.product"), h: "../Product.html" },
+            { l: t("nav.architecture"),  h: "../architecture.html" },
+            { l: t("shell.nav.product"), h: "../product.html" },
             { l: t("nav.atlas"),         h: "../failure-atlas.html" },
             { l: t("nav.qa"),            h: "../questions.html" },
           ].map(({ l, h }) => (
@@ -86,8 +86,8 @@ const LegalFooter = () => {
         </div>
         <div style={{ display: "flex", gap: 64, flexWrap: "wrap" }}>
           <FootCol title={t("shell.footer.col.surfaces")} items={[
-            [t("nav.architecture"),  "../Architecture.html"],
-            [t("shell.nav.product"), "../Product.html"],
+            [t("nav.architecture"),  "../architecture.html"],
+            [t("shell.nav.product"), "../product.html"],
             [t("nav.atlas"),         "../failure-atlas.html"],
             [t("nav.qa"),            "../questions.html"],
           ]}/>

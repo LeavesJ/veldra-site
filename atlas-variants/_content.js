@@ -304,6 +304,6 @@ window.ATLAS_CONTENT = {
       "If a future incident is not on this atlas, it is because it has not happened yet, not because Veldra would not name it.",
     ],
     cta_text: "Read the architecture →",
-    cta_link: "Architecture.html",
+    cta_link: "architecture.html",
   },
 };
