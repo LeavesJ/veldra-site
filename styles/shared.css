@@ -373,3 +373,49 @@ html, body { margin: 0; padding: 0; overflow-x: hidden; }
 }
 .auth-links a:hover { text-decoration: underline; text-underline-offset: 3px; }
 .auth-links .sep { color: var(--line); }
+
+/* ── Mobile layout layer (MOBILE-PLAN.md item A, 2026-06-10) ──────────
+   Single breakpoint: 720px. Desktop defaults live here too so components
+   can swap inline layout styles for these classes incrementally (C..I).
+   Inline styles win until a component adopts a class, so this layer is
+   additive and cannot disturb pages that have not opted in yet. */
+
+.site-nav { display: flex; justify-content: space-between; align-items: center; padding: 22px 48px; }
+.nav-pills { display: flex; gap: 28px; }
+.nav-actions { display: flex; align-items: center; gap: 14px; }
+
+.g-2, .g-3, .g-4 { display: grid; gap: var(--g-gap, 24px); }
+.g-2 { grid-template-columns: repeat(2, 1fr); }
+.g-3 { grid-template-columns: repeat(3, 1fr); }
+.g-4 { grid-template-columns: repeat(4, 1fr); }
+.g-side { display: grid; grid-template-columns: var(--g-side, 320px) 1fr; gap: var(--g-gap, 24px); }
+.g-ribbon { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(140px, 1fr); gap: 12px; }
+
+.table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.table-scroll table { min-width: 640px; }
+
+@media (max-width: 720px) {
+  .site-nav { padding: 14px 16px; flex-wrap: wrap; row-gap: 10px; }
+  .nav-pills { overflow-x: auto; gap: 6px; max-width: 100%; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+  .nav-pills::-webkit-scrollbar { display: none; }
+  .nav-pills a {
+    flex: 0 0 auto; display: inline-flex; align-items: center;
+    padding: 10px 14px !important; min-height: 40px;
+    border: 1px solid var(--line); border-radius: 999px;
+  }
+  .nav-actions { gap: 8px; flex-wrap: wrap; }
+
+  .g-2, .g-3, .g-4, .g-side { grid-template-columns: 1fr; }
+  .g-ribbon {
+    display: flex; overflow-x: auto; scroll-snap-type: x mandatory;
+    padding-bottom: 8px; -webkit-overflow-scrolling: touch;
+  }
+  .g-ribbon > * { flex: 0 0 auto; min-width: 140px; scroll-snap-align: start; }
+
+  .m-stack { flex-direction: column !important; align-items: stretch !important; }
+  .m-hide { display: none !important; }
+  .hero-h1 { font-size: clamp(34px, 9vw, 56px) !important; line-height: 1.05 !important; }
+
+  svg.illus { max-width: 100%; height: auto; }
+  .btn { min-height: 44px; display: inline-flex; align-items: center; }
+}

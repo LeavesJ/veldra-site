@@ -98,16 +98,15 @@ const SiteNav = ({ active = "" }) => {
     { id: "docs",         label: window.t ? window.t("nav.docs") : "Docs",              href: "#" },
   ];
   return (
-    <nav style={{
-      display: "flex", justifyContent: "space-between", alignItems: "center",
-      padding: "22px 48px", position: "absolute", top: 0, left: 0, right: 0, zIndex: 50,
+    <nav className="site-nav" style={{
+      position: "absolute", top: 0, left: 0, right: 0, zIndex: 50,
     }}>
-      <div style={{ display: "flex", alignItems: "center", gap: 36 }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 36, minWidth: 0 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
           <img src="assets/brand/veldra-mark.png" style={{ width: 26, height: 26, filter: "invert(1) brightness(0.95)" }} />
           <span style={{ fontFamily: "var(--grotesk)", fontSize: 18, fontWeight: 600, letterSpacing: "0.04em" }}>VELDRA</span>
         </div>
-        <div style={{ display: "flex", gap: 28, fontSize: 13 }}>
+        <div className="nav-pills" style={{ fontSize: 13 }}>
           {items.map(it => (
             <a key={it.id} href={it.href} style={{
               color: it.id === active ? "var(--fg)" : "var(--fg-dim)",
@@ -118,7 +117,7 @@ const SiteNav = ({ active = "" }) => {
           ))}
         </div>
       </div>
-      <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+      <div className="nav-actions">
         <div style={{ display: "flex", gap: 6, fontSize: 11, fontFamily: "var(--mono)", letterSpacing: "0.1em", color: "var(--fg-dim)" }}>
           <span style={{ color: "var(--fg)" }}>EN</span><span>·</span><span>ES</span><span>·</span><span>中</span>
         </div>
