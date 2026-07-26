@@ -4,3 +4,6 @@ tools/prerender/dist/
 # internal, never publish: this whole repo is served by GitHub Pages
 DEV-STATUS.md
 PRODUCT.md
+
+# agent tooling telemetry: carries absolute local paths, never publish
+.claude-flow/
