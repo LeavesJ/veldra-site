@@ -3,7 +3,8 @@
      Layer 1 = Operational Gateway
      Layer 2 = Invariant Shield (one feature, three check classes across two phases)
         Phase 1 = Class S (structural) + Class D (declared-vs-derived re-derivation)
-                  Phase 1.5 fills remaining 7 Tier 3 invariants under Phase 1
+                  Phase 1.5 wired the remaining 7 Tier 3 invariants 2026-07-22 (18/18 running);
+                  on branch, merge to main sequenced after the re-soak wrap 2026-07-29
         Phase 2 = Class M (mempool ground truth)
 
    Hero feature: a "trust prism" with TWO faces (the two layers).
