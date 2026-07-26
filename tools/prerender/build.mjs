@@ -2,8 +2,11 @@
 // crawlers see real content with zero runtime Babel or dev React.
 // Phase 1 of the SEO recovery (see Veldra Site/SEO-DIAGNOSTIC.md).
 //
-// Usage:  node tools/prerender/build.mjs [--lang en]
-// Output: tools/prerender/dist/...  (en at root; es/, zh/ subtrees later)
+// Usage:  node tools/prerender/build.mjs [--lang en|es|zh|all]
+// Output: tools/prerender/dist/...  (en at root, es/ and zh/ subtrees)
+//
+// Default is ALL languages. Building en alone leaves es/zh invisible to
+// search, which is root cause #6 in the SEO diagnostic.
 //
 // Model: each page shell loads shared scripts that define window-global
 // components, then an inline <script type="text/babel"> bootstrap that
@@ -46,9 +49,78 @@ const PAGES = [
   "legal/terms.html",
 ];
 
-const LANGS = process.argv.includes("--lang")
-  ? [process.argv[process.argv.indexOf("--lang") + 1]]
-  : ["en"];
+const ALL_LANGS = ["en", "es", "zh"];
+const ORIGIN = "https://veldra.org";
+
+// Directories shared by every language tree. They are NOT duplicated per
+// language, so a subtree page must reference the root copies absolutely.
+const SHARED_DIRS = ["styles", "assets", "shared"];
+
+const langArg = process.argv.includes("--lang")
+  ? process.argv[process.argv.indexOf("--lang") + 1]
+  : "all";
+if (!langArg || (langArg !== "all" && !ALL_LANGS.includes(langArg))) {
+  console.error(`[prerender] --lang must be one of: ${ALL_LANGS.join(", ")}, all`);
+  process.exit(2);
+}
+const LANGS = langArg === "all" ? ALL_LANGS : [langArg];
+
+// Extensionless site path for a page, per the canonical form decided
+// 2026-06-09. null means "no canonical" (error pages must not claim one,
+// and must not appear in an hreflang cluster).
+function pagePath(page) {
+  if (page === "404.html") return null;
+  if (page === "index.html") return "/";
+  return "/" + page.replace(/\.html$/, "");
+}
+
+function langUrl(page, lang) {
+  const p = pagePath(page);
+  if (p === null) return null;
+  if (lang === "en") return ORIGIN + p;
+  return ORIGIN + "/" + lang + (p === "/" ? "/" : p);
+}
+
+// <html lang>, canonical, and a reciprocal hreflang cluster. Without these
+// a translated subtree is worse than no subtree: Spanish content declaring
+// itself English and canonicalising to the English URL is duplicate content,
+// and Google folds it away.
+function rewriteHead(out, page, lang) {
+  out = out.replace(/<html([^>]*?)\slang="[^"]*"/i, `<html$1 lang="${lang}"`);
+
+  const self = langUrl(page, lang);
+  if (self === null) return out;
+
+  const canonical = `<link rel="canonical" href="${self}" />`;
+  const alts = ALL_LANGS
+    .map((l) => `<link rel="alternate" hreflang="${l}" href="${langUrl(page, l)}" />`)
+    .concat(`<link rel="alternate" hreflang="x-default" href="${langUrl(page, "en")}" />`)
+    .join("\n");
+
+  if (/<link rel="canonical"[^>]*>/i.test(out)) {
+    out = out.replace(/<link rel="canonical"[^>]*>/i, `${canonical}\n${alts}`);
+  } else {
+    out = out.replace(/<\/title>/i, `</title>\n${canonical}\n${alts}`);
+  }
+  return out;
+}
+
+// Repoint shared assets at the root copies, keep navigation inside the
+// language tree, and drop `../` on root-level pages (where it only ever
+// worked because browsers clamp it at the origin, and where it silently
+// escapes the language subtree).
+function rewriteLinks(out, page, lang) {
+  const depth = page.split("/").length - 1;
+  if (depth === 0) out = out.split('"../').join('"');
+  if (lang === "en") return out;
+
+  const up = "../".repeat(depth);
+  for (const dir of SHARED_DIRS) {
+    out = out.split(`"${up}${dir}/`).join(`"/${dir}/`);
+  }
+  out = out.split('href="/"').join(`href="/${lang}/"`);
+  return out;
+}
 
 function makeSandbox(lang, capture) {
   const storage = new Map();
@@ -196,13 +268,36 @@ function renderPage(page, lang) {
     .replace(/^\s*<script src="[^"]*i18n\.js"><\/script>\n?/gm, "")
     .replace(/^\s*<script src="[^"]*scroll-effects\.js" defer><\/script>\n?/gm, "");
 
+  out = rewriteHead(out, page, lang);
+  out = rewriteLinks(out, page, lang);
+
+  // Fail fast, same reasoning as the injection guard above: a subtree that
+  // ships with the wrong lang or an English canonical is duplicate content,
+  // and the failure is invisible until an index drops.
+  const declared = /<html[^>]*\slang="([^"]*)"/i.exec(out);
+  if (!declared || declared[1] !== lang) {
+    throw new Error(`${page}: <html lang> is "${declared && declared[1]}", expected "${lang}"`);
+  }
+  const expected = langUrl(page, lang);
+  if (expected !== null) {
+    if (!out.includes(`<link rel="canonical" href="${expected}" />`)) {
+      throw new Error(`${page}: canonical is not ${expected}`);
+    }
+    if (!out.includes('hreflang="x-default"')) {
+      throw new Error(`${page}: hreflang cluster missing`);
+    }
+  }
+
   const outDir = lang === "en" ? join(DIST, dirname(page)) : join(DIST, lang, dirname(page));
   mkdirSync(outDir, { recursive: true });
   const outPath = join(outDir, page.split("/").pop());
   writeFileSync(outPath, out);
 
   const text = markup.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
-  return { outPath, bytes: out.length, textChars: text.length, probe: text.slice(0, 90) };
+  return {
+    outPath, bytes: out.length, textChars: text.length,
+    canonical: expected, probe: text.slice(0, 90),
+  };
 }
 
 let failures = 0;
@@ -212,7 +307,7 @@ for (const lang of LANGS) {
       const t0 = Date.now();
       const r = renderPage(page, lang);
       console.log(
-        `[prerender] ${lang}/${page} -> ${r.textChars} text chars, ${r.bytes}b, ${Date.now() - t0}ms`
+        `[prerender] ${lang}/${page} -> ${r.textChars} text chars, ${r.bytes}b, ${Date.now() - t0}ms  canonical=${r.canonical ?? "(none)"}`
       );
       console.log(`  [probe] ${r.probe}`);
     } catch (e) {
