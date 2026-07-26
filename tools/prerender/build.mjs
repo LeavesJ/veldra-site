@@ -126,6 +126,31 @@ function langUrl(page, lang) {
   return ORIGIN + "/" + lang + (p === "/" ? "/" : p);
 }
 
+// The language switcher is a React <button onClick={switchLang}>. Prerendering
+// strips the handler, so it ships as an inert control that still shows
+// cursor:pointer: it looks clickable and does nothing, which is worse than
+// being visibly absent. Now that each language is its own URL tree, the
+// switcher should be links anyway, and links work with JavaScript disabled.
+const LANG_LABEL = { en: "EN", es: "ES", zh: "中" };
+
+function langHref(page, lang) {
+  const p = pagePath(page);
+  const base = p === null ? "/" : p; // 404 has no canonical: point at the language root
+  return lang === "en" ? base : "/" + lang + (base === "/" ? "/" : base);
+}
+
+function rewriteLangSwitch(out, page) {
+  for (const [code, label] of Object.entries(LANG_LABEL)) {
+    const re = new RegExp(`<button([^>]*)>${label}</button>`, "g");
+    out = out.replace(re, (_m, attrs) => {
+      // buttons are inline-block by default, anchors are not; keep the metrics.
+      const styled = attrs.replace(/style="/, 'style="display:inline-block;');
+      return `<a href="${langHref(page, code)}"${styled}>${label}</a>`;
+    });
+  }
+  return out;
+}
+
 // <html lang>, canonical, and a reciprocal hreflang cluster. Without these
 // a translated subtree is worse than no subtree: Spanish content declaring
 // itself English and canonicalising to the English URL is duplicate content,
@@ -316,6 +341,18 @@ function renderPage(page, lang) {
   out = rewriteMeta(out, page, ctx);
   out = rewriteHead(out, page, lang);
   out = rewriteLinks(out, page, lang);
+  // MUST run after rewriteLinks: that rewrites href="/" to href="/<lang>/"
+  // for the home link, which would otherwise clobber the switcher's EN
+  // target on every translated page.
+  out = rewriteLangSwitch(out, page);
+
+  // A switcher that renders but does not navigate is the failure this
+  // rewrite exists to prevent, so prove all three links landed.
+  for (const code of Object.keys(LANG_LABEL)) {
+    if (!out.includes(`href="${langHref(page, code)}"`)) {
+      throw new Error(`${page}: language switcher has no working ${code} link`);
+    }
+  }
 
   // Fail fast, same reasoning as the injection guard above: a subtree that
   // ships with the wrong lang or an English canonical is duplicate content,

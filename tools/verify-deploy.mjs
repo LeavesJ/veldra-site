@@ -165,6 +165,39 @@ for (const page of CORE) {
 }
 note(`${localised} translated descriptions confirmed distinct from English`);
 
+// ---- REACHABILITY --------------------------------------------------------
+// hreflang tells a crawler the translations exist. It does nothing for a
+// person. The switcher is a React <button onClick>, so prerendering strips
+// the handler and ships a control with cursor:pointer that does nothing:
+// the trees were live and unreachable from the UI for a full deploy.
+console.log("[verify] language switcher actually navigates");
+const LABELS = { en: "EN", es: "ES", zh: "中" };
+let navOk = 0;
+for (const lang of LANGS) {
+  for (const page of [...INDEXABLE, "404.html"]) {
+    const rel = lang === "en" ? page : join(lang, page);
+    const abs = join(ROOT, rel);
+    if (!existsSync(abs)) continue;
+    const html = readFileSync(abs, "utf8");
+
+    const inert = html.match(/<button[^>]*>(?:EN|ES|中)<\/button>/g);
+    if (inert) fail.push(`${rel}: ${inert.length} inert language button(s) — looks clickable, does nothing`);
+
+    for (const [code, label] of Object.entries(LABELS)) {
+      const re = new RegExp(`<a href="([^"]*)"[^>]*>${label}</a>`);
+      const m = re.exec(html);
+      if (!m) { fail.push(`${rel}: no ${code} language link`); continue; }
+      const target = m[1] === "/" ? "index.html"
+        : m[1].endsWith("/") ? join(m[1].slice(1), "index.html")
+        : m[1].slice(1) + ".html";
+      if (!existsSync(join(ROOT, target))) {
+        fail.push(`${rel}: ${code} link points at ${m[1]}, which is not in the tree`);
+      } else navOk += 1;
+    }
+  }
+}
+note(`${navOk} language links verified to resolve to real pages`);
+
 // ---- SITEMAP -------------------------------------------------------------
 // The previously published sitemap advertised five URLs that 404'd while the
 // real pages went unlisted, actively misdirecting recrawls.
