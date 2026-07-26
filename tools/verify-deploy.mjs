@@ -129,6 +129,62 @@ for (const lang of LANGS) {
 }
 note(`${checked} pages checked across ${LANGS.length} languages`);
 
+// ---- LOCALISED HEADS -----------------------------------------------------
+// A translated page with an English title and description shows English in
+// search results and link unfurls, which is most of what the translation was
+// for. Compared against the English page rather than asserted per string.
+console.log("[verify] titles and descriptions localise");
+const CORE = ["index.html", "architecture.html", "docs.html", "failure-atlas.html", "product.html", "questions.html"];
+let localised = 0;
+for (const page of CORE) {
+  const enPath = join(ROOT, page);
+  if (!existsSync(enPath)) continue;
+  const en = readFileSync(enPath, "utf8");
+  const enDesc = /name="description" content="([^"]*)"/i.exec(en);
+  for (const lang of LANGS.filter((l) => l !== "en")) {
+    const p = join(ROOT, lang, page);
+    if (!existsSync(p)) continue;
+    const html = readFileSync(p, "utf8");
+    const d = /name="description" content="([^"]*)"/i.exec(html);
+    if (!d || !d[1].trim()) {
+      fail.push(`${lang}/${page}: no meta description`);
+    } else if (enDesc && d[1] === enDesc[1]) {
+      fail.push(`${lang}/${page}: description is still the English string`);
+    } else {
+      localised += 1;
+    }
+  }
+}
+note(`${localised} translated descriptions confirmed distinct from English`);
+
+// ---- SITEMAP -------------------------------------------------------------
+// The previously published sitemap advertised five URLs that 404'd while the
+// real pages went unlisted, actively misdirecting recrawls.
+console.log("[verify] sitemap covers every language tree");
+const smPath = join(ROOT, "sitemap.xml");
+if (existsSync(smPath)) {
+  const sm = readFileSync(smPath, "utf8");
+  const locs = new Set([...sm.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]));
+  let missing = 0;
+  for (const lang of LANGS) {
+    for (const page of INDEXABLE) {
+      const u = pageUrl(page, lang);
+      if (!locs.has(u)) { missing += 1; if (missing <= 5) fail.push(`sitemap missing: ${u}`); }
+    }
+  }
+  if (missing > 5) fail.push(`sitemap missing ${missing} URLs in total`);
+  for (const u of locs) {
+    const rel = u.replace("https://veldra.org", "");
+    const guess = rel === "/" ? "index.html"
+      : rel.endsWith("/") ? join(rel.slice(1), "index.html")
+      : rel.slice(1) + ".html";
+    if (!existsSync(join(ROOT, guess))) fail.push(`sitemap advertises a URL with no file: ${u}`);
+  }
+  note(`${locs.size} sitemap URLs, all resolving to built files`);
+} else {
+  fail.push("missing sitemap.xml");
+}
+
 // ---- RESULT --------------------------------------------------------------
 if (fail.length) {
   console.error(`\n[verify] FAILED — ${fail.length} problem(s), refusing to deploy:`);

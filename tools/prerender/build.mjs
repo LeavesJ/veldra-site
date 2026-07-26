@@ -65,6 +65,51 @@ if (!langArg || (langArg !== "all" && !ALL_LANGS.includes(langArg))) {
 }
 const LANGS = langArg === "all" ? ALL_LANGS : [langArg];
 
+// Pages whose <title> and meta description come from i18n, so the head
+// localises with the body. Without this a translated page ships an English
+// title and description, which is what search results and link unfurls show.
+const PAGE_META = {
+  "index.html": "home",
+  "architecture.html": "arch",
+  "docs.html": "docs",
+  "failure-atlas.html": "atlas",
+  "product.html": "prod",
+  "questions.html": "qa",
+};
+
+// Sitemap priorities, preserving the scheme already published.
+const PRIORITY = { "index.html": "1.0", "product.html": "0.9" };
+
+const escText = (v) => v.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+const escAttr = (v) => escText(v).replace(/"/g, "&quot;");
+
+// Read a translated string out of the page's own sandbox. i18n.js is
+// executed during render (only scroll-effects is skipped), so `t` is live.
+// A miss returns null rather than the key, so a typo cannot silently ship
+// "home.page.title" as a page title.
+function tr(ctx, key) {
+  ctx.__lookupKey = key;
+  const v = vm.runInContext(
+    'typeof t === "function" ? t(__lookupKey) : null', ctx, { filename: "<i18n-lookup>" }
+  );
+  return typeof v === "string" && v.length > 0 && v !== key ? v : null;
+}
+
+function rewriteMeta(out, page, ctx) {
+  const prefix = PAGE_META[page];
+  if (!prefix) return out;
+  const title = tr(ctx, `${prefix}.page.title`);
+  const desc = tr(ctx, `${prefix}.page.meta`);
+  if (title) out = out.replace(/<title>[\s\S]*?<\/title>/i, `<title>${escText(title)}</title>`);
+  if (desc) {
+    const tag = `<meta name="description" content="${escAttr(desc)}">`;
+    out = /<meta name="description"[^>]*>/i.test(out)
+      ? out.replace(/<meta name="description"[^>]*>/i, tag)
+      : out.replace(/<\/title>/i, `</title>\n${tag}`);
+  }
+  return out;
+}
+
 // Extensionless site path for a page, per the canonical form decided
 // 2026-06-09. null means "no canonical" (error pages must not claim one,
 // and must not appear in an hreflang cluster).
@@ -268,6 +313,7 @@ function renderPage(page, lang) {
     .replace(/^\s*<script src="[^"]*i18n\.js"><\/script>\n?/gm, "")
     .replace(/^\s*<script src="[^"]*scroll-effects\.js" defer><\/script>\n?/gm, "");
 
+  out = rewriteMeta(out, page, ctx);
   out = rewriteHead(out, page, lang);
   out = rewriteLinks(out, page, lang);
 
@@ -320,4 +366,43 @@ if (failures > 0) {
   console.error(`[prerender] ${failures} page(s) failed`);
   process.exit(1);
 }
+
+// Sitemap, generated rather than hand-maintained. The published one went
+// stale the moment the URL set changed: five of its eight URLs 404'd while
+// the real pages went unlisted, which actively misdirected recrawls.
+// Only emitted on a full build, so a `--lang en` run cannot overwrite a
+// complete sitemap with an English-only one.
+if (LANGS.length === ALL_LANGS.length) {
+  const lastmod = new Date().toISOString().slice(0, 10);
+  const entries = PAGES.filter((p) => pagePath(p) !== null).map((page) => {
+    const alts = ALL_LANGS
+      .map((l) => `    <xhtml:link rel="alternate" hreflang="${l}" href="${langUrl(page, l)}"/>`)
+      .concat(`    <xhtml:link rel="alternate" hreflang="x-default" href="${langUrl(page, "en")}"/>`)
+      .join("\n");
+    // One <url> per language, each carrying the full alternate cluster, per
+    // the sitemap protocol's localisation guidance.
+    return ALL_LANGS.map((l) =>
+      [`  <url>`,
+       `    <loc>${langUrl(page, l)}</loc>`,
+       alts,
+       `    <lastmod>${lastmod}</lastmod>`,
+       `    <changefreq>weekly</changefreq>`,
+       `    <priority>${PRIORITY[page] || "0.8"}</priority>`,
+       `  </url>`].join("\n")
+    ).join("\n");
+  }).join("\n");
+
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+${entries}
+</urlset>
+`;
+  writeFileSync(join(DIST, "sitemap.xml"), xml);
+  const count = (xml.match(/<loc>/g) || []).length;
+  console.log(`[prerender] sitemap.xml -> ${count} URLs across ${ALL_LANGS.join(", ")}`);
+} else {
+  console.log(`[prerender] sitemap skipped (partial build: ${LANGS.join(", ")})`);
+}
+
 console.log("[prerender] done");
