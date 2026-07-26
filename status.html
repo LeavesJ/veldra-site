@@ -125,36 +125,41 @@ const { useState, useEffect } = React;
    first-paint flash before fetch resolves, or host-side misconfig).
 
    To update after a spot check:
-     1. Edit `Veldra Site/status-data.json` (bump classMChecks, asOf,
+     1. Edit `status-data.json` in THIS directory (bump classMChecks, asOf,
         flip the relevant milestone state from "running" to "pass",
         update nextCheckpoint label).
      2. No code change required.
+
+   Before publishing any count here, confirm the counter was produced by a
+   path that ACTUALLY RAN. `phase2_checks_total{agreed}` incremented on
+   templates where Class M never executed (PB-18a), which is how a skipped
+   check reached this page as a PASS. A withdrawn figure is `null`, never 0:
+   zero reads as measured, null renders as an em dash. See lessons R-182.
    ────────────────────────────────────────────────────────────────────── */
 
 const STATUS_FALLBACK = {
   asOf: "2026-05-05",
 
   setupA: {
-    status: "running",          // running | pass | gated
+    status: "gated",            // running | pass | gated
     startedISO: "2026-05-02",
-    classMChecks: 10031,
-    rejected: 0,
-    nextCheckpoint: "T+5 · 2026-05-07",
-    wrap: "T+7 · 2026-05-09",
+    // null, never 0: the figure is withdrawn, not measured-as-zero.
+    classMChecks: null,
+    rejected: null,
+    nextCheckpoint: "Blocked on PB-19 · raw_block_hex on the wire",
+    wrap: "WITHDRAWN 2026-07-22 · criterion never exercised",
     milestones: [
-      { date: "2026-05-02", label: "T+0 declared, baseline captured",          state: "pass" },
-      { date: "2026-05-03", label: "T+1 spot check",                            state: "pass" },
-      { date: "2026-05-05", label: "T+3 spot check",                            state: "pass" },
-      { date: "2026-05-07", label: "T+5 spot check",                            state: "running" },
-      { date: "2026-05-09", label: "T+7 wrap and PASS condition assessment",   state: "running" },
+      { date: "2026-05-02", label: "T+0 declared, baseline captured",                                              state: "pass" },
+      { date: "2026-05-27", label: "25-day window completed; pipeline and Phase 1 policy exercised",               state: "pass" },
+      { date: "2026-07-22", label: "Forensics: the Invariant Shield skipped every template, so the zero-breach result is withdrawn", state: "gated" },
     ],
   },
 
   setupB: {
     status: "gated",
     title: "Setup B · Real-bitcoind soak",
-    blurb: "Class S and Class D check chain against a real mainnet bitcoind under live template flow. Shadow soak has cleared the Class M rejection criterion against a synthetic feed; Setup B is the next evidence layer.",
-    blockedOn: "Mainnet bitcoind subscription or design-partner stack access.",
+    blurb: "Class S and Class D check chain against a real mainnet bitcoind under live template flow. A hardened re-soak is running: T+0 2026-07-22, T+7 wrap 2026-07-29, with evidence written outside the soaked process so it survives container death. It exercises mempool-view infrastructure and Phase 1 policy only. The Class M criterion stays unexercised until the template sender ships raw_block_hex, so no Class M evidence exists yet.",
+    blockedOn: "PB-19 (raw_block_hex on the wire), then a fresh soak asserting shield_skipped == 0 at T+0.",
   },
 
   setupC: {
@@ -208,13 +213,18 @@ const SetupAPanel = ({ data }) => {
       </div>
 
       <div className="kv-grid">
+        {/* null means the figure was withdrawn, not that it is zero. Render an
+            em dash in the neutral ink: a green 0 next to "Rejected" reads as a
+            pass, which is the exact claim being retracted. */}
         <div>
           <div className="k">{t("status.kv.checks")}</div>
-          <div className="v">{a.classMChecks.toLocaleString()}</div>
+          <div className="v">{a.classMChecks == null ? "—" : a.classMChecks.toLocaleString()}</div>
         </div>
         <div>
           <div className="k">{t("status.kv.rejected")}</div>
-          <div className="v" style={{ color: "#7ed4a8" }}>{a.rejected}</div>
+          <div className="v" style={{ color: a.rejected == null ? "var(--fg-dim)" : "#7ed4a8" }}>
+            {a.rejected == null ? "—" : a.rejected}
+          </div>
         </div>
         <div>
           <div className="k">{t("status.kv.next_checkpoint")}</div>

@@ -1,26 +1,35 @@
 {
-  "asOf": "2026-05-27",
+  "asOf": "2026-07-26",
   "setupA": {
-    "status": "pass",
+    "status": "gated",
     "startedISO": "2026-05-02",
-    "classMChecks": 103889,
-    "rejected": 0,
-    "nextCheckpoint": "Wrapped 2026-05-27",
-    "wrap": "PASS · 25-day cumulative",
+    "classMChecks": null,
+    "rejected": null,
+    "nextCheckpoint": "Blocked on PB-19 · raw_block_hex on the wire",
+    "wrap": "WITHDRAWN 2026-07-22 · criterion never exercised",
     "milestones": [
-      { "date": "2026-05-02", "label": "T+0 declared, baseline captured",                 "state": "pass" },
-      { "date": "2026-05-03", "label": "T+1 spot check",                                    "state": "pass" },
-      { "date": "2026-05-05", "label": "T+3 spot check",                                    "state": "pass" },
-      { "date": "2026-05-07", "label": "T+5 (subsumed by cumulative window)",               "state": "pass" },
-      { "date": "2026-05-09", "label": "T+7 (subsumed by cumulative window)",               "state": "pass" },
-      { "date": "2026-05-27", "label": "T+25 cumulative wrap, 103889 checks, 0 rejected",    "state": "pass" }
+      {
+        "date": "2026-05-02",
+        "label": "T+0 declared, baseline captured",
+        "state": "pass"
+      },
+      {
+        "date": "2026-05-27",
+        "label": "25-day window completed; pipeline and Phase 1 policy exercised",
+        "state": "pass"
+      },
+      {
+        "date": "2026-07-22",
+        "label": "Forensics: the Invariant Shield skipped every template, so the zero-breach result is withdrawn",
+        "state": "gated"
+      }
     ]
   },
   "setupB": {
     "status": "gated",
     "title": "Setup B · Real-bitcoind soak",
-    "blurb": "Class S and Class D check chain against a real mainnet bitcoind under live template flow. Shadow soak has cleared the Class M rejection criterion against a synthetic feed across more than 100,000 templates; Setup B is the next evidence layer.",
-    "blockedOn": "Mainnet bitcoind subscription or design-partner stack access."
+    "blurb": "Class S and Class D check chain against a real mainnet bitcoind under live template flow. A hardened re-soak is running: T+0 2026-07-22, T+7 wrap 2026-07-29, with evidence written outside the soaked process so it survives container death. It exercises mempool-view infrastructure and Phase 1 policy only. The Class M criterion stays unexercised until the template sender ships raw_block_hex, so no Class M evidence exists yet.",
+    "blockedOn": "PB-19 (raw_block_hex on the wire), then a fresh soak asserting shield_skipped == 0 at T+0."
   },
   "setupC": {
     "status": "gated",
