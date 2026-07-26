@@ -41,6 +41,10 @@ const PAGES = [
   "product.html",
   "questions.html",
   "404.html",
+  // status.html carries the company's own limits and was shipping 26
+  // crawlable characters; it also had no translated copy, so the Status nav
+  // link 404d on all 14 pages of the es and zh trees.
+  "status.html",
   "legal/about.html",
   "legal/contact.html",
   "legal/disclaimer.html",
@@ -126,30 +130,17 @@ function langUrl(page, lang) {
   return ORIGIN + "/" + lang + (p === "/" ? "/" : p);
 }
 
-// The language switcher is a React <button onClick={switchLang}>. Prerendering
-// strips the handler, so it ships as an inert control that still shows
-// cursor:pointer: it looks clickable and does nothing, which is worse than
-// being visibly absent. Now that each language is its own URL tree, the
-// switcher should be links anyway, and links work with JavaScript disabled.
+// Site-relative twin of langUrl. Two consumers: the sandbox's location.pathname
+// (so window.langPath() in i18n.js computes the same switcher targets the
+// browser will), and the post-render assertion that all three links exist.
 const LANG_LABEL = { en: "EN", es: "ES", zh: "中" };
 
 function langHref(page, lang) {
   const p = pagePath(page);
-  const base = p === null ? "/" : p; // 404 has no canonical: point at the language root
+  const base = p === null ? "/" : p; // 404 has no canonical: use the language root
   return lang === "en" ? base : "/" + lang + (base === "/" ? "/" : base);
 }
 
-function rewriteLangSwitch(out, page) {
-  for (const [code, label] of Object.entries(LANG_LABEL)) {
-    const re = new RegExp(`<button([^>]*)>${label}</button>`, "g");
-    out = out.replace(re, (_m, attrs) => {
-      // buttons are inline-block by default, anchors are not; keep the metrics.
-      const styled = attrs.replace(/style="/, 'style="display:inline-block;');
-      return `<a href="${langHref(page, code)}"${styled}>${label}</a>`;
-    });
-  }
-  return out;
-}
 
 // <html lang>, canonical, and a reciprocal hreflang cluster. Without these
 // a translated subtree is worse than no subtree: Spanish content declaring
@@ -188,11 +179,13 @@ function rewriteLinks(out, page, lang) {
   for (const dir of SHARED_DIRS) {
     out = out.split(`"${up}${dir}/`).join(`"/${dir}/`);
   }
-  out = out.split('href="/"').join(`href="/${lang}/"`);
+  // NOTE: no blanket href="/" rewrite. The home link and the switcher are
+  // both language-aware in the components now, and a blanket rule rewrote
+  // the switcher's EN target on every translated page.
   return out;
 }
 
-function makeSandbox(lang, capture) {
+function makeSandbox(lang, capture, pathname) {
   const storage = new Map();
   const window = {
     __lang: lang,
@@ -202,7 +195,10 @@ function makeSandbox(lang, capture) {
     requestAnimationFrame: () => 0,
     cancelAnimationFrame() {},
     setTimeout: () => 0, clearTimeout() {}, setInterval: () => 0, clearInterval() {},
-    location: { pathname: "/", href: "https://veldra.org/" },
+    // The real path for this page and language. window.langPath() derives the
+    // switcher targets from it, so the sandbox and the browser compute the
+    // same hrefs and the prerendered markup matches what React renders.
+    location: { pathname, href: ORIGIN + pathname },
     navigator: { language: lang },
     scrollTo() {},
   };
@@ -305,7 +301,7 @@ function renderPage(page, lang) {
   const shell = readFileSync(join(SITE, page), "utf8");
 
   let captured = null;
-  const ctx = makeSandbox(lang, (node) => { captured = node; });
+  const ctx = makeSandbox(lang, (node) => { captured = node; }, langHref(page, lang));
 
   for (const src of extractLocalScripts(shell)) {
     const path = resolve(pageDir, src);
@@ -330,22 +326,32 @@ function renderPage(page, lang) {
   if (!out.includes(markup)) {
     throw new Error(`${page}: markup injection failed`);
   }
-  // Static output: strip the runtime chain (CDN React/Babel, text/babel
-  // scripts including the bootstrap, i18n and scroll-effects tags).
-  out = out
-    .replace(/^\s*<script src="https:\/\/unpkg\.com\/[^"]+"[^>]*><\/script>\n?/gm, "")
-    .replace(/<script type="text\/babel"[\s\S]*?<\/script>\n?/g, "")
-    .replace(/^\s*<script src="[^"]*i18n\.js"><\/script>\n?/gm, "")
-    .replace(/^\s*<script src="[^"]*scroll-effects\.js" defer><\/script>\n?/gm, "");
+  // THE RUNTIME CHAIN STAYS. Stripping it made every page crawlable and inert
+  // at the same time: 81 controls across the three trees lost their handlers,
+  // and the content behind every non-default widget state (the T4/T5
+  // out-of-scope threat entries, the Class S and Class M anatomy panels, five
+  // of six walkthrough steps) became unreachable by crawlers AND people.
+  //
+  // The deindex was caused by content existing ONLY after a runtime compile.
+  // That is fixed by the markup now being present in the HTML: a crawler that
+  // executes nothing still gets the full text. React then mounts over it and
+  // interactivity returns. Keeping Babel is a performance cost, not an
+  // indexing one, and is tracked separately as the bundling follow-up.
+  //
+  // The URL is authoritative for language, so the client must be told before
+  // i18n.js reads it: getLang() is
+  //   window.__lang || localStorage.getItem("__lang") || "en"
+  // and without this a visitor whose stored preference is "en" would watch
+  // /es/ silently re-render into English, contradicting its own canonical.
+  const i18nTag = /(<script src="[^"]*i18n\.js"><\/script>)/;
+  if (!i18nTag.test(out)) {
+    throw new Error(`${page}: no i18n.js tag to anchor the language pin`);
+  }
+  out = out.replace(i18nTag, `<script>window.__lang=${JSON.stringify(lang)};</script>\n  $1`);
 
   out = rewriteMeta(out, page, ctx);
   out = rewriteHead(out, page, lang);
   out = rewriteLinks(out, page, lang);
-  // MUST run after rewriteLinks: that rewrites href="/" to href="/<lang>/"
-  // for the home link, which would otherwise clobber the switcher's EN
-  // target on every translated page.
-  out = rewriteLangSwitch(out, page);
-
   // A switcher that renders but does not navigate is the failure this
   // rewrite exists to prevent, so prove all three links landed.
   for (const code of Object.keys(LANG_LABEL)) {

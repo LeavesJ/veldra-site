@@ -2315,6 +2315,19 @@
     return window.__lang || localStorage.getItem("__lang") || "en";
   }
 
+  // URL-based language routing: /docs <-> /es/docs <-> /zh/docs.
+  // Prerendered pages ship one tree per language, so the URL is authoritative
+  // and the switcher must NAVIGATE rather than swap text in place. Swapping in
+  // place would leave the rendered language disagreeing with the URL, the
+  // canonical and the hreflang cluster, and a stored localStorage preference
+  // would silently override the tree the visitor actually asked for.
+  // Shared by the homepage banner and the page shell, which both render it.
+  function langPath(code) {
+    var p = (typeof window !== "undefined" && window.location && window.location.pathname) || "/";
+    var base = p.replace(/^\/(es|zh)(?=\/|$)/, "") || "/";
+    return code === "en" ? base : "/" + code + (base === "/" ? "/" : base);
+  }
+
   function t(key) {
     const lang = getLang();
     return (dict[lang] && dict[lang][key]) || dict.en[key] || key;
@@ -2355,4 +2368,5 @@
   window.tWith = tWith;
   window.setLang = setLang;
   window.getLang = getLang;
+  window.langPath = langPath;
 })();

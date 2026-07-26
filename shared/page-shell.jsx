@@ -19,12 +19,17 @@ const TopNav = ({ active }) => {
   }, []);
   const switchLang = (l) => { if (window.setLang) window.setLang(l); };
   const langBtn = (code, label) => (
-    <button onClick={() => switchLang(code)} style={{
+    // An <a>, not a <button>: each language is its own URL tree, so the
+    // switcher navigates. That keeps the rendered language, the URL, the
+    // canonical and the hreflang cluster in agreement, and it still works
+    // on a prerendered page with JavaScript disabled.
+    <a href={typeof window !== "undefined" && window.langPath ? window.langPath(code) : "/"} style={{
+      display: "inline-block",
       background: "transparent", border: "none", padding: "2px 4px", cursor: "pointer",
       color: lang === code ? "var(--fg)" : "var(--fg-dim)",
       fontFamily: "var(--mono)", fontSize: 11, letterSpacing: "0.1em",
       textDecoration: lang === code ? "underline" : "none", textUnderlineOffset: 4,
-    }}>{label}</button>
+      }}>{label}</a>
   );
 
   return (
@@ -34,7 +39,7 @@ const TopNav = ({ active }) => {
       background: "var(--bg)", position: "sticky", top: 0, zIndex: 50,
     }}>
       <div style={{ display: "flex", alignItems: "center", gap: 36 }}>
-        <a href="/" style={{
+        <a href={typeof window !== "undefined" && window.langPath ? window.langPath(window.__lang || "en") : "/"} style={{
           display: "flex", alignItems: "center", gap: 12, textDecoration: "none", color: "inherit",
         }}>
           <img src="assets/brand/veldra-mark.png" alt="Veldra"

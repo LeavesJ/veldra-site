@@ -7,8 +7,9 @@
 //   - CRAWLABLE   veldra.org shipped 13 to 43 characters of crawlable text
 //                 per page for twelve days and Google fully deindexed it.
 //                 A prerender that silently no-ops looks fine to a human.
-//   - NO_RUNTIME  the deindex cause was runtime Babel. If a text/babel tag
-//                 survives into an indexable page, the fix did not apply.
+//   - LANG_PIN    each translated page must pin window.__lang before i18n.js
+//                 loads, or a stored localStorage preference re-renders it
+//                 into English against its own canonical.
 //   - CANONICAL   a translated subtree that canonicalises to English is
 //                 duplicate content; Google folds it away silently.
 //   - HOSTING     a missing CNAME or .nojekyll breaks the domain or the
@@ -25,7 +26,7 @@ const LANGS = ["en", "es", "zh"];
 // ship a runtime chain.
 const INDEXABLE = [
   "index.html", "architecture.html", "docs.html", "failure-atlas.html",
-  "product.html", "questions.html",
+  "product.html", "questions.html", "status.html",
   "legal/about.html", "legal/contact.html", "legal/disclaimer.html",
   "legal/license.html", "legal/privacy.html", "legal/terms.html",
 ];
@@ -101,11 +102,24 @@ for (const lang of LANGS) {
     if (text.length < MIN_TEXT_CHARS) {
       fail.push(`${rel}: only ${text.length} crawlable chars (floor ${MIN_TEXT_CHARS}) — prerender did not apply`);
     }
-    if (/type="text\/babel"/.test(html)) {
-      fail.push(`${rel}: runtime Babel tag survived — this is the deindex cause`);
-    }
-    if (/unpkg\.com/.test(html)) {
-      fail.push(`${rel}: CDN React/Babel reference survived`);
+    // The runtime chain is ALLOWED to be present. The deindex was caused by
+    // content existing ONLY after a runtime compile, not by the scripts as
+    // such, and the crawlable-text floor above is what actually enforces that.
+    // Banning the scripts instead cost 81 working controls and hid the content
+    // behind every non-default widget state from crawlers and people alike.
+    //
+    // What must hold is that the URL wins on language: i18n.js resolves
+    // window.__lang || localStorage || "en", so a page in a translated tree
+    // must pin its language BEFORE i18n.js loads, or a stored "en" preference
+    // silently re-renders it into English against its own canonical.
+    const pin = /<script>window\.__lang=("[a-z]+");<\/script>/.exec(html);
+    if (!pin) {
+      fail.push(`${rel}: no window.__lang pin — localStorage can override the URL's language`);
+    } else {
+      if (JSON.parse(pin[1]) !== lang) fail.push(`${rel}: language pinned to ${pin[1]}, expected "${lang}"`);
+      if (html.indexOf("window.__lang") > html.indexOf("i18n.js")) {
+        fail.push(`${rel}: language pin comes after i18n.js, so it is read too late`);
+      }
     }
 
     const declared = /<html[^>]*\slang="([^"]*)"/i.exec(html);
