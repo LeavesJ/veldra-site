@@ -1,6 +1,6 @@
 /* Architecture · C — WALKTHROUGH (v2 · PDF-grounded)
    ============================================================================
-   Scrubbable timeline of one template through the gateway, told as 5 steps.
+   Scrubbable timeline of one template through the gateway, told as 6 steps.
 
    AUDIT (vs. site-redesign-content-additions.pdf):
      ✗ removed: "574 LOC", "12 FFI calls", "zero consensus rules" (invented exact #s)
@@ -46,7 +46,7 @@ const ArchWalkthrough = () => {
       title: t("arch.s2.title"),
       sub:   t("arch.s2.sub"),
       detail: t("arch.s2.detail"),
-      meta: { layer: t("arch.s2.layer"), code: "v1_consensus_*", color: "var(--accent)" },
+      meta: { layer: t("arch.s2.layer"), code: "v2_invariant_merkle_root_mismatch", color: "var(--accent-2)" },
     },
     {
       id: "classd",
@@ -72,6 +72,14 @@ const ArchWalkthrough = () => {
       sub:   t("arch.s5.sub"),
       detail: t("arch.s5.detail"),
       meta: { layer: t("arch.s5.layer"), code: "v1_* · v2_invariant_*", color: "var(--accent)" },
+    },
+    {
+      id: "gateway",
+      label: t("arch.s6.label"),
+      title: t("arch.s6.title"),
+      sub:   t("arch.s6.sub"),
+      detail: t("arch.s6.detail"),
+      meta: { layer: t("arch.s6.layer"), code: "prevhash_switch_timeout", color: "var(--accent)" },
     },
   ];
 

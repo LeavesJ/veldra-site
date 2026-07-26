@@ -219,13 +219,13 @@
 
     /* ──────────────── Architecture page (Phase 5c · deep content) ──────────────── */
     "arch.eyebrow":              "▸ ARCHITECTURE · WALKTHROUGH",
-    "arch.h1":                   "One template. Five stops.",
+    "arch.h1":                   "One template. Six stops.",
     "arch.lede":                 "Scrub the timeline to walk a template through the gateway. Pause to read the panel; resume to keep moving. Every claim on this page maps to a published reason code or a [policy.*] key.",
     "arch.scrubber.step":        "STEP",
 
     "arch.page.eyebrow":         "▸ ARCHITECTURE · ONE TEMPLATE THROUGH THE GATEWAY",
-    "arch.page.h1":              "Five steps. One template. Every named code on the way through.",
-    "arch.page.lede":            "The Failure Atlas tells you what has gone wrong. The Q&A tells you what to expect. This page tells you the path a single block template walks through ReserveGrid OS — from ingress at the SV2 gateway, through the kernel-backed facade, into Class D re-derivation, into Class M mempool ground truth, and out to the miner pool — with the reason-code surface named at every stage. Drag the scrubber, or let it play.",
+    "arch.page.h1":              "Six steps. One template. Every named code on the way through.",
+    "arch.page.lede":            "The Failure Atlas tells you what has gone wrong. The Q&A tells you what to expect. This page tells you the path a single block template walks through ReserveGrid OS — from ingress at the SV2 gateway, through independent re-derivation with rust-bitcoin, into Class D declared-versus-derived checks, into Class M mempool ground truth, and out to the miner pool — with the reason-code surface named at every stage. Drag the scrubber, or let it play.",
 
     "arch.next.eyebrow":         "▸ WHAT TO READ NEXT",
     "arch.next.atlas.t":         "Failure Atlas",
@@ -269,7 +269,7 @@
     "prod.cta.arch":    "Read the architecture →",
 
     "prod.next.arch.t":     "Architecture",
-    "prod.next.arch.sub":   "How a single block template walks through the gateway, the kernel facade, Class D, and Class M — five steps with the codes named at every stage.",
+    "prod.next.arch.sub":   "How a single block template walks through the gateway, independent re-derivation, Class D, and Class M, six steps with the codes named at every stage.",
     "prod.next.atlas.t":    "Failure Atlas",
     "prod.next.atlas.sub":  "A history of pool incidents, indexed by date — what each one was, what layer would have caught it, and what reason code would have fired.",
     "prod.next.qa.t":       "Q&A · Operator evaluation",
@@ -348,7 +348,7 @@
     "prod.compare.r1.veldra": "Yes · production-shaped",
     "prod.compare.r2.axis":   "v1 policy-class checks",
     "prod.compare.r2.sri":    "Partial",
-    "prod.compare.r2.veldra": "Full · 59 v1 gateway codes",
+    "prod.compare.r2.veldra": "Full · 59 gateway reason codes",
     "prod.compare.r3.axis":   "L2 invariant re-derivation",
     "prod.compare.r3.sri":    "No",
     "prod.compare.r3.veldra": "Yes · 22 v2_invariant codes",
@@ -372,7 +372,7 @@
     "arch.s1.label":   "T+0 · Ingress",
     "arch.s1.layer":   "Phase 1 · L1",
     /* Product · Phase 5e-2 batch 2: reason_codes, toml, telemetry, facade (EN) */
-    "prod.rc.stat1":  "v1 reason codes · gateway baseline",
+    "prod.rc.stat1":  "gateway reason codes · v1 baseline",
     "prod.rc.stat2":  "v2_invariant_* codes total · canonical from rg-consensus::ConsensusViolation::ALL_CODES",
     "prod.rc.t1.label":  "Tier 1 · critical",
     "prod.rc.t1.gloss":  "Defects that produce an immediately invalid block. Re-derived from raw block bytes.",
@@ -416,19 +416,19 @@
 
     "arch.s1.title":   "A template arrives.",
     "arch.s1.sub":     "Stratum V2 NewTemplate frame from the operator’s template-manager. Header + coinbase + transaction digests.",
-    "arch.s1.detail":  "rg-consensus parses the frame and hands the structural pieces to the kernel-backed facade.",
+    "arch.s1.detail":  "rg-consensus parses the frame and hands the structural pieces to its re-derivation facade.",
 
-    "arch.s2.label":   "Facade",
-    "arch.s2.layer":   "L1 · facade",
-    "arch.s2.title":   "Borrowed correctness fires first.",
-    "arch.s2.sub":     "rg-consensus re-derives values via FFI into libbitcoinkernel — the same code Bitcoin Core runs.",
-    "arch.s2.detail":  "If the header is structurally invalid, the kernel rejects it. The Shield never sees this template — the gateway emits a v1 reason code on the metric stream and the log line.",
+    "arch.s2.label":   "Class S",
+    "arch.s2.layer":   "L2 · Class S · WIRED",
+    "arch.s2.title":   "Independent re-derivation fires first.",
+    "arch.s2.sub":     "rg-consensus parses the raw block once with rust-bitcoin and re-derives the consensus quantities itself. It trusts none of the fields the template-manager declared.",
+    "arch.s2.detail":  "Class S is structural validity: the recomputed merkle root, the witness commitment, and the BIP-34 height all have to hold against the block's own bytes. If they do not, the Shield rejects the template with a v2_invariant_* code, with no declared field involved.",
 
     "arch.s3.label":   "Class D",
     "arch.s3.layer":   "L2 · Class D · WIRED",
-    "arch.s3.title":   "Five declared fields, five re-derivations.",
-    "arch.s3.sub":     "Tier 1 (5 critical): coinbase value, coinbase height, merkle root, witness commitment, coinbase template-id. Each declared by template-manager, each re-derived from the kernel.",
-    "arch.s3.detail":  "Mismatch → v2_invariant_*_mismatch. Class D is the borrowed-correctness layer of the Shield — it cannot be wrong if the kernel is right.",
+    "arch.s3.title":   "Every declared field, re-derived.",
+    "arch.s3.sub":     "Declared versus derived: coinbase value, coinbase height, transaction count, total sigops, coinbase sigops, and template weight. Each one the template-manager asserted, each one re-derived from the block and compared.",
+    "arch.s3.detail":  "Any disagreement resolves to a v2_invariant_*_mismatch code. Because the comparison value comes from the block itself and not from the declaration, a template-manager that lies about a field cannot slip it past Class D.",
 
     "arch.s4.label":   "Class M",
     "arch.s4.layer":   "L2 · Class M · WIRED · OBSERVATION CYCLE",
@@ -439,8 +439,13 @@
     "arch.s5.label":   "Verdict",
     "arch.s5.layer":   "Policy boundary",
     "arch.s5.title":   "A reason code resolves.",
+    "arch.s6.title":  "The gateway enforces the verdict.",
+    "arch.s6.sub":  "A passing verdict releases the job to miners over Noise NX. A failing one is gated: in inline mode, no job derived from a rejected template ever reaches a miner.",
+    "arch.s6.layer":  "L1 · Operational Gateway",
+    "arch.s6.label":  "Egress",
+    "arch.s6.detail":  "This is the operational layer v1 shipped and v2 inherits: standard and extended channels with vardiff, a two-event share lifecycle joined on one share id, fail-closed prevhash switching that holds work for up to a 2000ms verdict window and disconnects after a 5s stale hold rather than mine stale, and a write-ahead log that replays the share lifecycle after a crash. Every decision carries one of 59 gateway reason codes.",
     "arch.s5.sub":     "Every legal path through the gateway produces exactly one reason code on the metric stream and the log line.",
-    "arch.s5.detail":  "59 v1 gateway codes baseline + 22 v2_invariant_* codes for Class S/D/M. Operators wire policy on those codes — the gateway just declares.",
+    "arch.s5.detail":  "95 canonical reason codes in total: the v1 operational surface plus the 22 v2_invariant_* codes for Class S, D, and M. Operators wire policy on those codes; the gateway just declares.",
 
     /* ──────────────── Q&A page (Phase 5a · structural strings only) ──────────────── */
     "qa.eyebrow":          "▸ Q&A · OPERATOR EVALUATION",
@@ -470,7 +475,7 @@
     /* Q&A · Phase 5d body strings (HTML — <em> = accent color span) */
     "qa.cards.l1.body":    "Connection lifecycle, auth, share submission, bitcoind RPC. <em>Gateway-baseline reason codes</em>. The well-trodden surface.",
     "qa.cards.l2.body":    "Phase 1 — Class S (structural) + Class D (declared-vs-derived re-derivation): Tier 1 (5 critical) + Tier 2 (5 high) shipped, Tier 3 (7) queued for Phase 1.5. Phase 2 — Class M cross-references an independent bitcoind mempool. Both phases ship in v2.0.",
-    "qa.cards.summary.body": "Veldra re-derives every declared field of every template, against the same kernel that would validate the block. <em>Then names every disagreement.</em>",
+    "qa.cards.summary.body": "Veldra re-derives every declared field of every template, independently with rust-bitcoin. <em>Then names every disagreement.</em>",
     "qa.cards.license.body": "Every line auditable. Commercial deployment requires a license; no opacity. If Veldra ceases operations, full source releases under a permissive license — your deployment, configuration, and data stay yours. No lock-in.",
 
     /* ──────────────── Failure Atlas (Phase 5b · structural strings only) ──────────────── */
@@ -488,7 +493,7 @@
     "atlas.page.lede.html":  "Every pool incident in our public-source set, indexed by date. For each one — what went wrong, what layer of ReserveGrid OS would have caught it, and what reason code would have fired. The atlas argues nothing on its own; it lets the codes argue for themselves. <span style=\"color: var(--fg-dim)\">If a row is unwired, it says &quot;unwired.&quot; If a code didn't exist before v2.0, it says so.</span>",
     "atlas.page.next.eyebrow":"▸ WHAT TO READ NEXT",
     "atlas.page.next.arch.t":   "Architecture",
-    "atlas.page.next.arch.sub": "How a single template walks through the gateway, the kernel facade, Class D, and Class M — five steps with the codes named at every stage.",
+    "atlas.page.next.arch.sub": "How a single template walks through the gateway, independent re-derivation, Class D, and Class M, six steps with the codes named at every stage.",
     "atlas.page.next.qa.t":     "Q&A · Operator evaluation",
     "atlas.page.next.qa.sub":   "Six blunt questions in order. What it does. What it tells you. How to configure. Cost. Why not existing tools. What's WIRED today.",
     "atlas.page.next.prod.t":   "Product surface",
@@ -901,7 +906,7 @@
     "timeline.r2.status":      "LANZADO",
     "timeline.r2.body":        "Canales extendidos. Dificultad variable. Degradación automática de inline a observe ante la pérdida del heartbeat. Rotación del secreto HMAC sin reinicio.",
     "timeline.r3.title":       "Invariant Shield · Fase 1 (S+D) + Fase 2 (M)",
-    "timeline.r3.status":      "CABLEADO · CICLO DE OBSERVACIÓN",
+    "timeline.r3.status":      "INTEGRADO · CICLO DE OBSERVACIÓN",
     "timeline.r3.body":        "Invariant Shield de la capa 2 integrado. Fase 1: Class S estructural + re-derivación declarado frente a derivado de Class D, 22 reason codes canónicos v2_invariant_*. Fase 2: máquina de estados fail-stale de Class M. La afirmación de 'validado contra templates reales de mainnet' sigue a la espera del ciclo de observación de varias semanas.",
     "timeline.r4.title":       "Fase 1.5 · invariantes Tier 3 restantes",
     "timeline.r4.status":      "EN COLA",
@@ -932,7 +937,7 @@
 
     /* FOOTER */
     "footer.copy":             "© 2026 VELDRA, INC.",
-    "footer.version":          "RESERVEGRID OS · v1.1.0 · v2.0.0 INVARIANT SHIELD CABLEADO",
+    "footer.version":          "RESERVEGRID OS · v1.1.0 · v2.0.0 INVARIANT SHIELD INTEGRADO",
     "footer.about":            "ACERCA DE",
     "footer.privacy":          "PRIVACIDAD",
     "footer.terms":            "TÉRMINOS",
@@ -970,13 +975,13 @@
 
     /* Architecture · Phase 5c (método C: prosa traducida, términos técnicos en inglés) */
     "arch.eyebrow":              "▸ ARQUITECTURA · RECORRIDO",
-    "arch.h1":                   "Un template. Cinco paradas.",
+    "arch.h1":                   "Un template. Seis paradas.",
     "arch.lede":                 "Desplaza la línea de tiempo para seguir un template a través de la pasarela. Pausa para leer el panel; reanuda para avanzar. Cada afirmación de esta página remite a un reason code publicado o a una clave [policy.*].",
     "arch.scrubber.step":        "PASO",
 
     "arch.page.eyebrow":         "▸ ARQUITECTURA · UN TEMPLATE A TRAVÉS DEL GATEWAY",
-    "arch.page.h1":              "Cinco pasos. Un template. Cada código nombrado en el camino.",
-    "arch.page.lede":            "El Failure Atlas te dice qué ha fallado. Las Preguntas te dicen qué esperar. Esta página te muestra el camino que recorre un único template de bloque a través de ReserveGrid OS — desde la entrada en la pasarela SV2, pasando por la re-derivación independiente con rust-bitcoin, hacia las comprobaciones de declarado frente a derivado de Class D, hacia la referencia real del mempool de Class M, y de ahí al pool de mineros — con la superficie de reason codes nombrada en cada etapa. Arrastra el control deslizante o deja que se reproduzca.",
+    "arch.page.h1":              "Seis pasos. Un template. Cada código nombrado por el camino.",
+    "arch.page.lede":            "El Failure Atlas te dice qué ha salido mal. Las preguntas frecuentes te dicen qué esperar. Esta página te muestra el camino que recorre un solo block template a través de ReserveGrid OS — desde la entrada en la pasarela SV2, pasando por la re-derivación independiente con rust-bitcoin, hacia las comprobaciones Class D de declarado frente a derivado, hacia la referencia real del mempool de Class M, y de salida hacia los mineros — con la superficie de reason codes nombrada en cada etapa. Arrastra el control o déjalo reproducirse.",
 
     "arch.next.eyebrow":         "▸ QUÉ LEER A CONTINUACIÓN",
     "arch.next.atlas.t":         "Atlas de fallos",
@@ -992,7 +997,7 @@
     "prod.framing.lede":         "Veldra v2.0.0 entrega el Invariant Shield: 22 comprobaciones canónicas de re-derivación (Fase 1) más la referencia real del mempool (Fase 2). Montado sobre la pasarela de política v1 de 59 códigos y la base de configuración TOML de 61 claves ya existentes.",
     "prod.honest.label":         "ALCANCE HONESTO · ESTADO v2.0.0",
     "prod.honest.vs":            "vs.",
-    "prod.honest.body":          "v2.0.0 cableado, en origin, CI en verde. La re-derivación de consenso independiente se ejecuta. La referencia real del mempool se ejecuta. La afirmación de lanzamiento de que el sistema detecta en producción la manipulación consistente por parte del template-manager en la capa del verificador exige que antes se complete el ciclo de observación en producción. Hasta entonces, la comunicación pública distingue entre «cableado y probado en CI» y «validado contra templates reales de mainnet durante una ventana de observación de varias semanas».",
+    "prod.honest.body":          "v2.0.0 integrado, en origin, CI en verde. La re-derivación de consenso independiente se ejecuta. La referencia real del mempool se ejecuta. La afirmación de lanzamiento de que el sistema detecta en producción la manipulación consistente por parte del template-manager en la capa del verificador exige que antes se complete el ciclo de observación en producción. Hasta entonces, la comunicación pública distingue entre «integrado y probado en CI» y «validado contra templates reales de mainnet durante una ventana de observación de varias semanas».",
     "prod.sections.eyebrow":     "▸ SECCIONES",
     "prod.toc.label":            "PRODUCTO",
     "prod.next.eyebrow":         "▸ LEER A CONTINUACIÓN",
@@ -1020,7 +1025,7 @@
     "prod.cta.arch":    "Leer la arquitectura →",
 
     "prod.next.arch.t":     "Arquitectura",
-    "prod.next.arch.sub":   "Cómo un único template de bloque atraviesa la pasarela, la fachada del kernel, Class D y Class M — cinco pasos con los códigos nombrados en cada etapa.",
+    "prod.next.arch.sub":   "Cómo un solo block template recorre la pasarela, la re-derivación independiente, Class D y Class M: seis pasos con los códigos nombrados en cada etapa.",
     "prod.next.atlas.t":    "Atlas de fallos",
     "prod.next.atlas.sub":  "Un historial de incidentes de pool, indexado por fecha — qué fue cada uno, qué capa lo habría detectado y qué reason code se habría disparado.",
     "prod.next.qa.t":       "Preguntas · Evaluación del operador",
@@ -1099,7 +1104,7 @@
     "prod.compare.r1.veldra": "Sí · forma de producción",
     "prod.compare.r2.axis":   "Verificaciones de clase política v1",
     "prod.compare.r2.sri":    "Parcial",
-    "prod.compare.r2.veldra": "Completas · 59 reason codes v1 del gateway",
+    "prod.compare.r2.veldra": "Completas · 59 gateway reason codes",
     "prod.compare.r3.axis":   "Re-derivación de invariantes L2",
     "prod.compare.r3.sri":    "No",
     "prod.compare.r3.veldra": "Sí · 22 códigos v2_invariant",
@@ -1123,7 +1128,7 @@
     "arch.s1.label":   "T+0 · Ingress",
     "arch.s1.layer":   "Fase 1 · L1",
     /* Product · Phase 5e-2 batch 2 (ES) */
-    "prod.rc.stat1":  "reason codes de la pasarela · base v1",
+    "prod.rc.stat1":  "gateway reason codes · base v1",
     "prod.rc.stat2":  "códigos v2_invariant_* en total · canónicos desde rg-consensus::ConsensusViolation::ALL_CODES",
     "prod.rc.t1.label":  "Tier 1 · crítico",
     "prod.rc.t1.gloss":  "Defectos que producen un bloque inmediatamente inválido. Re-derivados a partir de los bytes en bruto del bloque.",
@@ -1169,17 +1174,17 @@
     "arch.s1.sub":     "Trama NewTemplate de Stratum V2 procedente del template-manager del operador. Cabecera + coinbase + digests de transacciones.",
     "arch.s1.detail":  "rg-consensus analiza la trama y entrega las piezas estructurales a su fachada de re-derivación.",
 
-    "arch.s2.label":   "Facade",
-    "arch.s2.layer":   "L1 · facade",
-    "arch.s2.title":   "La corrección prestada actúa primero.",
+    "arch.s2.label":   "Class S",
+    "arch.s2.layer":   "L2 · Class S · INTEGRADO",
+    "arch.s2.title":   "La re-derivación independiente se dispara primero.",
     "arch.s2.sub":     "rg-consensus analiza el bloque crudo una sola vez con rust-bitcoin y vuelve a derivar por sí mismo las magnitudes de consenso. No confía en ninguno de los campos declarados por el template-manager.",
-    "arch.s2.detail":  "Si el header es estructuralmente inválido, el kernel lo rechaza. El Shield nunca ve este template — el gateway emite un reason code v1 en el flujo de métricas y en la línea de log.",
+    "arch.s2.detail":  "Class S es validez estructural: el merkle root recalculado, el witness commitment y la altura BIP-34 tienen que sostenerse frente a los propios bytes del bloque. Si no lo hacen, el Shield rechaza el template con un código v2_invariant_*, sin que intervenga ningún campo declarado.",
 
     "arch.s3.label":   "Class D",
-    "arch.s3.layer":   "L2 · Class D · WIRED",
-    "arch.s3.title":   "Cinco campos declarados, cinco re-derivaciones.",
-    "arch.s3.sub":     "Tier 1 (5 críticos): coinbase value, coinbase height, merkle root, witness commitment, coinbase template-id. Cada uno declarado por el template-manager, cada uno re-derivado desde el kernel.",
-    "arch.s3.detail":  "Cualquier discrepancia se resuelve en un código v2_invariant_*_mismatch. Como el valor de comparación viene del propio bloque y no de la declaración, un template-manager que mienta sobre un campo no puede colárselo a Class D.",
+    "arch.s3.layer":   "L2 · Class D · INTEGRADO",
+    "arch.s3.title":   "Cada campo declarado, vuelto a derivar.",
+    "arch.s3.sub":     "Declarado frente a derivado: valor del coinbase, altura del coinbase, número de transacciones, sigops totales, sigops del coinbase y peso del template. Cada uno afirmado por el template-manager, cada uno vuelto a derivar a partir del bloque y comparado.",
+    "arch.s3.detail":  "Cualquier discrepancia se resuelve en un código v2_invariant_*_mismatch. Como el valor de comparación procede del propio bloque y no de la declaración, un template-manager que mienta sobre un campo no puede colarlo ante Class D.",
 
     "arch.s4.label":   "Class M",
     "arch.s4.layer":   "L2 · Class M · INTEGRADO · CICLO DE OBSERVACIÓN",
@@ -1190,8 +1195,13 @@
     "arch.s5.label":   "Veredicto",
     "arch.s5.layer":   "Límite de política",
     "arch.s5.title":   "Se resuelve un reason code.",
+    "arch.s6.title":  "La pasarela aplica el veredicto.",
+    "arch.s6.sub":  "Un veredicto que pasa libera el job a los mineros sobre Noise NX. Uno que falla queda bloqueado: en modo inline, ningún job derivado de un template rechazado llega jamás a un minero.",
+    "arch.s6.layer":  "L1 · Operational Gateway",
+    "arch.s6.label":  "Salida",
+    "arch.s6.detail":  "Esta es la capa operativa que v1 entregó y v2 hereda: canales estándar y extendidos con vardiff, un ciclo de vida de share de dos eventos unidos por un mismo share id, conmutación de prevhash fail-closed que retiene el trabajo hasta una ventana de veredicto de 2000 ms y desconecta tras una retención en obsoleto de 5 s en lugar de minar en obsoleto, y un write-ahead log que reproduce el ciclo de vida del share tras una caída. Cada decisión lleva uno de los 59 gateway reason codes.",
     "arch.s5.sub":     "Cada ruta legal a través de la pasarela produce exactamente un reason code en el flujo de métricas y en la línea de log.",
-    "arch.s5.detail":  "59 reason codes v1 del gateway de base + 22 códigos v2_invariant_* para Class S/D/M. Los operadores cablean la política sobre esos códigos — el gateway solo declara.",
+    "arch.s5.detail":  "95 reason codes canónicos en total: la superficie operativa v1 más los 22 códigos v2_invariant_* para Class S, D y M. Los operadores configuran la política sobre esos códigos; la pasarela solo declara.",
 
     /* Q&A · Phase 5a */
     "qa.eyebrow":          "▸ PREGUNTAS · EVALUACIÓN DEL OPERADOR",
@@ -1221,7 +1231,7 @@
     /* Q&A · Phase 5d body strings (HTML — <em> = span de color de acento) */
     "qa.cards.l1.body":    "Ciclo de vida de la conexión, autenticación, envío de shares, RPC de bitcoind. <em>Reason codes de base de la pasarela</em>. La superficie ya transitada.",
     "qa.cards.l2.body":    "Fase 1 — Class S (estructural) + Class D (re-derivación declarado frente a derivado): Tier 1 (5 críticos) + Tier 2 (5 altos) entregados, Tier 3 (7) en cola para la Fase 1.5. Fase 2 — Class M coteja contra un mempool de bitcoind independiente. Ambas fases salen en v2.0.",
-    "qa.cards.summary.body": "Veldra vuelve a derivar cada campo declarado de cada template, frente al mismo kernel que validaría el bloque. <em>Luego nombra cada desacuerdo.</em>",
+    "qa.cards.summary.body": "Veldra vuelve a derivar cada campo declarado de cada template, de forma independiente con rust-bitcoin. <em>Y luego nombra cada discrepancia.</em>",
     "qa.cards.license.body": "Cada línea es auditable. El despliegue comercial requiere licencia; sin opacidad. Si Veldra deja de operar, el código fuente completo se publica bajo una licencia permisiva — tu despliegue, tu configuración y tus datos siguen siendo tuyos. Sin dependencia del proveedor.",
 
     /* Failure Atlas · Phase 5b */
@@ -1239,9 +1249,9 @@
     "atlas.page.lede.html":  "Cada incidente de pool de nuestro conjunto de fuentes públicas, indexado por fecha. Para cada uno — qué salió mal, qué capa de ReserveGrid OS lo habría detectado y qué reason code se habría disparado. El atlas no argumenta nada por sí solo; deja que los códigos argumenten por sí mismos. <span style=\"color: var(--fg-dim)\">Si una fila está sin cablear, dice &quot;sin cablear&quot;. Si un código no existía antes de la v2.0, lo dice.</span>",
     "atlas.page.next.eyebrow":"▸ QUÉ LEER A CONTINUACIÓN",
     "atlas.page.next.arch.t":   "Arquitectura",
-    "atlas.page.next.arch.sub": "Cómo un único template recorre la pasarela, la re-derivación independiente, Class D y Class M: seis pasos con los códigos nombrados en cada etapa.",
+    "atlas.page.next.arch.sub": "Cómo un solo template recorre la pasarela, la re-derivación independiente, Class D y Class M: seis pasos con los códigos nombrados en cada etapa.",
     "atlas.page.next.qa.t":     "Q&A · Evaluación del operador",
-    "atlas.page.next.qa.sub":   "Seis preguntas directas, en orden. Qué hace. Qué te dice. Cómo se configura. Coste. Por qué no las herramientas existentes. Qué está CABLEADO hoy.",
+    "atlas.page.next.qa.sub":   "Seis preguntas directas, en orden. Qué hace. Qué te dice. Cómo se configura. Coste. Por qué no las herramientas existentes. Qué está INTEGRADO hoy.",
     "atlas.page.next.prod.t":   "Superficie de producto",
     "atlas.page.next.prod.sub": "Mapa de reason codes · claves TOML · telemetría · modos de adopción · hoja de ruta.",
     "atlas.lede":            "Incidentes públicos, fuentes públicas. Cada uno vinculado al reason code que Veldra emitiría y a la capa de confianza que lo habría detectado antes de que saliera del pool.",
@@ -1538,7 +1548,7 @@
     "prism.face.layerLabel":      "层",
     "prism.face.tag":             "RG-CONSENSUS",
     "prism.gateway.ingress":      "入口",
-    "prism.gateway.verdict":      "判决 →",
+    "prism.gateway.verdict":      "裁决 →",
     "prism.gateway.tagstrip":     "DECLARED 字段 · 已检查",
     "prism.gateway.metric.codes": "REASON CODES",
     "prism.gateway.metric.keys":  "POLICY 键",
@@ -1603,10 +1613,10 @@
     "flow.eyebrow":           "▸ 流程",
     "flow.h2.line1":          "一个 template 进入。",
     "flow.h2.line2":          "两层裁定。",
-    "flow.h2.line3":          "一个判决发出。",
-    "flow.lede":              "即便完整的 Shield 处于启用状态，平均判定延迟仍低于 10ms。矿工通过标准 SV2 接入，毫无察觉。",
+    "flow.h2.line3":          "一个裁决发出。",
+    "flow.lede":              "即便完整的 Shield 处于启用状态，平均裁决延迟仍低于 10ms。矿工通过标准 SV2 接入，毫无察觉。",
     "flow.svc.tm.desc":       "从 bitcoind 拉取 GBT。提交给验证器。",
-    "flow.svc.verifier.desc": "L1 + L2（S/D/M）判定。NDJSON 输出至仪表盘。",
+    "flow.svc.verifier.desc": "L1 + L2（S/D/M）裁决。NDJSON 输出至仪表盘。",
     "flow.svc.gateway.desc":  "Noise NX 传输。向矿工交接时 hold-on-stale。",
     "flow.svc.bitcoind.desc": "供 Class M 使用的独立 mempool 视图。",
 
@@ -1666,7 +1676,7 @@
     "footerCta.eyebrow":       "▸ 开始",
     "footerCta.h2.line1":      "试用 shadow。",
     "footerCta.h2.line2":      "零风险。",
-    "footerCta.body":          "针对精选的边界用例启动。数分钟内给出判定。矿工通过标准 SV2 接入，毫无察觉。ReserveGrid 从不触碰私钥、coinbase 输出或资金。",
+    "footerCta.body":          "针对精选的边界用例启动。数分钟内给出裁决。矿工通过标准 SV2 接入，毫无察觉。ReserveGrid 从不触碰私钥、coinbase 输出或资金。",
     "footerCta.cta.try":       "申请访问 →",
     "footerCta.tier.shadow":   "Shadow",
     "footerCta.tier.observe":  "Observe",
@@ -1717,13 +1727,13 @@
 
     /* Architecture · Phase 5c (方法 C：译文叙述，技术术语保留英文) */
     "arch.eyebrow":              "▸ 架构 · 逐步展示",
-    "arch.h1":                   "一个 template。五个站点。",
+    "arch.h1":                   "一个 template。六个环节。",
     "arch.lede":                 "拖动时间轴，让一个 template 走完整个网关。暂停以阅读面板，恢复播放以继续推进。本页的每一项主张都对应一个公开的 reason code 或一个 [policy.*] 键。",
     "arch.scrubber.step":        "步骤",
 
     "arch.page.eyebrow":         "▸ 架构 · 一个 TEMPLATE 穿越 GATEWAY",
-    "arch.page.h1":              "五个步骤。一个 template。沿途每一个被命名的 reason code。",
-    "arch.page.lede":            "Failure Atlas 告诉你哪里出过错。问答页告诉你可以期待什么。本页告诉你单个区块 template 在 ReserveGrid OS 中走过的路径——从 SV2 网关处的入口进入，经过以 kernel 为后盾的 facade，进入 Class D 重新推导，进入 Class M 的 mempool 真值基准，再送出到矿池——并逐一点明每个阶段的 reason code 表面。拖动进度条，或让它自动播放。",
+    "arch.page.h1":              "六个步骤。一个 template。沿途每一个被点名的码。",
+    "arch.page.lede":            "Failure Atlas 告诉你出过什么问题。Q&A 告诉你该预期什么。本页展示单个 block template 穿过 ReserveGrid OS 的路径——从 SV2 网关入口，经由 rust-bitcoin 的独立重推导，进入 Class D 的声明与推导比对，进入 Class M 的 mempool 真值基准，再出口到矿工——每一阶段都点名对应的 reason code 面。拖动滑块，或让它自动播放。",
 
     "arch.next.eyebrow":         "▸ 接下来建议阅读",
     "arch.next.atlas.t":         "故障图谱",
@@ -1767,7 +1777,7 @@
     "prod.cta.arch":    "阅读架构 →",
 
     "prod.next.arch.t":     "架构",
-    "prod.next.arch.sub":   "一个区块 template 如何穿过网关、kernel facade、Class D 与 Class M——五个步骤，每个阶段都指明 reason code。",
+    "prod.next.arch.sub":   "单个 block template 如何穿过网关、独立重推导、Class D 与 Class M：六个步骤，每一阶段都点名对应的码。",
     "prod.next.atlas.t":    "故障图谱",
     "prod.next.atlas.sub":  "一部按日期索引的矿池事故史——每一起是什么、哪一层本可以拦下它、会触发哪个 reason code。",
     "prod.next.qa.t":       "问答 · 运营者评估",
@@ -1822,7 +1832,7 @@
     "prod.adoption.shadow.label":  "Shadow",
     "prod.adoption.shadow.cost":   "免费",
     "prod.adoption.shadow.time":   "约 1 天接入",
-    "prod.adoption.shadow.gloss":  "让网关运行在你现有路径之后，判定 = 仅告警。share 流零改动。",
+    "prod.adoption.shadow.gloss":  "让网关运行在你现有路径之后，裁决 = 仅告警。share 流零改动。",
     "prod.adoption.observe.label": "Observe",
     "prod.adoption.observe.cost":  "需许可证",
     "prod.adoption.observe.time":  "约 1 周",
@@ -1846,7 +1856,7 @@
     "prod.compare.r1.veldra": "是 · 生产形态",
     "prod.compare.r2.axis":   "v1 政策类检查",
     "prod.compare.r2.sri":    "部分",
-    "prod.compare.r2.veldra": "完整 · 59 个 v1 gateway reason code",
+    "prod.compare.r2.veldra": "完整 · 59 个 gateway reason code",
     "prod.compare.r3.axis":   "L2 不变量再推导",
     "prod.compare.r3.sri":    "否",
     "prod.compare.r3.veldra": "是 · 22 个 v2_invariant 编码",
@@ -1870,7 +1880,7 @@
     "arch.s1.label":   "T+0 · Ingress",
     "arch.s1.layer":   "Phase 1 · L1",
     /* Product · Phase 5e-2 batch 2 (ZH) */
-    "prod.rc.stat1":  "v1 reason code · 网关基线",
+    "prod.rc.stat1":  "gateway reason code · v1 基线",
     "prod.rc.stat2":  "v2_invariant_* code 总数 · 以 rg-consensus::ConsensusViolation::ALL_CODES 为准",
     "prod.rc.t1.label":  "Tier 1 · 关键",
     "prod.rc.t1.gloss":  "会立即产生无效区块的缺陷。从原始区块字节重新推导。",
@@ -1914,19 +1924,19 @@
 
     "arch.s1.title":   "一个 template 抵达。",
     "arch.s1.sub":     "来自运营方 template-manager 的 Stratum V2 NewTemplate 帧。Header + coinbase + 交易摘要。",
-    "arch.s1.detail":  "rg-consensus 解析该帧，并把结构部分交给以 kernel 为后端的外观层。",
+    "arch.s1.detail":  "rg-consensus 解析该帧，并将结构化部分交给自身的重推导外观层。",
 
-    "arch.s2.label":   "Facade",
-    "arch.s2.layer":   "L1 · facade",
-    "arch.s2.title":   "借来的正确性最先触发。",
-    "arch.s2.sub":     "rg-consensus 通过 FFI 调用 libbitcoinkernel 重新推导数值——与 Bitcoin Core 运行的是同一份代码。",
-    "arch.s2.detail":  "若区块头在结构上不合法，kernel 会拒绝它。Shield 永远看不到这个 template——网关会在指标流和日志行上发出一个 v1 reason code。",
+    "arch.s2.label":   "Class S",
+    "arch.s2.layer":   "L2 · Class S · 已接通",
+    "arch.s2.title":   "独立重推导先行。",
+    "arch.s2.sub":     "rg-consensus 用 rust-bitcoin 将原始区块解析一次，并自行重新推导各项共识量。它不信任 template-manager 声明的任何字段。",
+    "arch.s2.detail":  "Class S 是结构有效性：重新计算的 merkle root、witness commitment 以及 BIP-34 高度，都必须与区块自身的字节相符。若不相符，Shield 会以 v2_invariant_* 码拒绝该 template，全程不涉及任何声明字段。",
 
     "arch.s3.label":   "Class D",
-    "arch.s3.layer":   "L2 · Class D · WIRED",
-    "arch.s3.title":   "五个声明字段，五次重新推导。",
-    "arch.s3.sub":     "Tier 1（5 个关键项）：coinbase value、coinbase height、merkle root、witness commitment、coinbase template-id。每一项由 template-manager 声明，每一项由 kernel 重新推导。",
-    "arch.s3.detail":  "不匹配 → v2_invariant_*_mismatch。Class D 是 Shield 中“借来的正确性”那一层——只要 kernel 是对的，它就不会错。",
+    "arch.s3.layer":   "L2 · Class D · 已接通",
+    "arch.s3.title":   "每一个声明字段，都重新推导。",
+    "arch.s3.sub":     "声明值与推导值比对：coinbase 金额、coinbase 高度、交易数量、sigops 总量、coinbase sigops，以及 template 权重。每一项都由 template-manager 声明，每一项都从区块重新推导并比对。",
+    "arch.s3.detail":  "任何不一致都会归结为一个 v2_invariant_*_mismatch 码。由于比对值取自区块本身而非声明，谎报字段的 template-manager 无法蒙混通过 Class D。",
 
     "arch.s4.label":   "Class M",
     "arch.s4.layer":   "L2 · Class M · 已接通 · 观察周期",
@@ -1937,8 +1947,13 @@
     "arch.s5.label":   "裁决",
     "arch.s5.layer":   "策略边界",
     "arch.s5.title":   "一个 reason code 收敛。",
+    "arch.s6.title":  "网关执行该裁决。",
+    "arch.s6.sub":  "通过的裁决会将 job 经 Noise NX 下发给矿工。未通过的会被拦截：在 inline 模式下，任何源自被拒 template 的 job 都不会到达矿工。",
+    "arch.s6.layer":  "L1 · Operational Gateway",
+    "arch.s6.label":  "出口",
+    "arch.s6.detail":  "这是 v1 交付、v2 继承的运营层：带 vardiff 的标准与扩展通道，由同一个 share id 串联的双事件 share 生命周期，fail-closed 的 prevhash 切换（最多将工作保留至 2000 毫秒的裁决窗口，并在 5 秒陈旧保留后断开，而不是在陈旧状态下继续挖矿），以及在崩溃后重放 share 生命周期的 write-ahead log。每一个决策都带有 59 个 gateway reason code 之一。",
     "arch.s5.sub":     "穿过网关的每一条合法路径，都会在指标流和日志行上恰好产生一个 reason code。",
-    "arch.s5.detail":  "59 个 v1 网关 reason code 作为基线 + 22 个面向 Class S/D/M 的 v2_invariant_* code。运营方在这些 code 之上接入策略——网关只负责声明。",
+    "arch.s5.detail":  "共 95 个规范 reason code：v1 运营面，加上覆盖 Class S、D、M 的 22 个 v2_invariant_* 码。运营方在这些码上配置策略；网关只负责声明。",
 
     /* Q&A · Phase 5a */
     "qa.eyebrow":          "▸ 问答 · 运营者评估",
@@ -1968,7 +1983,7 @@
     /* Q&A · Phase 5d 正文（HTML — <em> = 强调色 span） */
     "qa.cards.l1.body":    "连接生命周期、认证、share 提交、bitcoind RPC。<em>网关基线 reason code</em>。早已被走熟的表面。",
     "qa.cards.l2.body":    "Phase 1——Class S（结构类）+ Class D（声明值 vs 推导值的重新推导）：Tier 1（5 个关键项）+ Tier 2（5 个高危项）已交付，Tier 3（7 个）排入 Phase 1.5。Phase 2——Class M 与一个独立的 bitcoind mempool 交叉比对。两个阶段同在 v2.0 交付。",
-    "qa.cards.summary.body": "Veldra 针对每个 template 的每个声明字段，使用与验证该区块相同的 kernel 重新推导。<em>然后为每一处分歧命名。</em>",
+    "qa.cards.summary.body": "Veldra 用 rust-bitcoin 独立重新推导每个 template 的每个声明字段。<em>然后点名每一处不一致。</em>",
     "qa.cards.license.body": "每一行都可审计。商业部署需要许可证；不留任何不透明之处。若 Veldra 停止运营，完整源码将以宽松许可证发布——你的部署、配置与数据仍然属于你。不存在锁定。",
 
     /* Failure Atlas · Phase 5b */
@@ -1991,7 +2006,7 @@
     "atlas.page.lede.html":  "我们公开来源集合中的每一起矿池事件，按日期索引。对每一起——出了什么错、ReserveGrid OS 的哪一层本可以拦下它、会触发哪个 reason code。本图谱自身不作论证；它让这些 code 自行论证。<span style=\"color: var(--fg-dim)\">若某一行尚未接通，就标注 &quot;unwired.&quot;。若某个 code 在 v2.0 之前并不存在，也会注明。</span>",
     "atlas.page.next.eyebrow":"▸ 下一步阅读",
     "atlas.page.next.arch.t":   "架构",
-    "atlas.page.next.arch.sub": "单个 template 如何穿过网关、kernel 外观层、Class D 与 Class M——五个步骤，每一步都点名对应的 reason code。",
+    "atlas.page.next.arch.sub": "单个 template 如何穿过网关、独立重推导、Class D 与 Class M：六个步骤，每一阶段都点名对应的码。",
     "atlas.page.next.qa.t":     "Q&A · 运营者评估",
     "atlas.page.next.qa.sub":   "六个直白的问题，依次排列。它做什么。它告诉你什么。如何配置。成本。为什么不用现有工具。今天哪些已经接通。",
     "atlas.page.next.prod.t":   "产品总览",
@@ -2133,7 +2148,7 @@
 
     /* ──────────────── STATUS PAGE ──────────────── */
     "status.page.title":             "Veldra · 验证状态",
-    "status.page.meta":              "ReserveGrid OS v2.0 Invariant Shield 主网分阶段验证的实时状态：Setup A 的 shadow soak 进度、Setup B 与 C 的放行判定，以及 Phase 1.5 Tier 3 的接通。",
+    "status.page.meta":              "ReserveGrid OS v2.0 Invariant Shield 主网分阶段验证的实时状态：Setup A 的 shadow soak 进度、Setup B 与 C 的放行裁决，以及 Phase 1.5 Tier 3 的接通。",
     "status.eyebrow":                "▸ 验证状态 · 分阶段主网 SOAK",
     "status.h1":                     "v2.0 soak 当前进度。",
     "status.lede":                   "ReserveGrid OS v2.0 Invariant Shield 处于分阶段验证中。本页跟踪正在进行的浸泡测试、已经通过的部分，以及仍需真实 bitcoind 运行或矿池侧设计合作伙伴才能推进的部分。每落地一个检查点，数字随之更新。",
