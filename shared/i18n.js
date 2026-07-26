@@ -238,7 +238,7 @@
     /* ──────────────── Product page (Phase 5e-1 · chrome + section titles) ──────────────── */
     "prod.framing.eyebrow":      "▸ PRODUCT · v2.0.0",
     "prod.framing.title":        "The verifier doesn’t trust the template. It re-derives it.",
-    "prod.framing.lede":         "Veldra v2.0.0 ships the Invariant Shield: 22 canonical re-derivation checks (Phase 1) plus mempool ground truth (Phase 2). Layered on top of the existing 91-code v1 policy gateway and 61-key TOML config baseline.",
+    "prod.framing.lede":         "Veldra v2.0.0 ships the Invariant Shield: 22 canonical re-derivation checks (Phase 1) plus mempool ground truth (Phase 2). Layered on top of the existing 59-code v1 policy gateway and 61-key TOML config baseline.",
     "prod.honest.label":         "HONEST SCOPING · v2.0.0 STATE",
     "prod.honest.vs":            "vs.",
     "prod.honest.body":          "v2.0.0 wired, on origin, CI green. Independent consensus re-derivation runs. Mempool ground truth runs. The launch claim that the system catches consistent template-manager tampering at the verifier layer in production requires the production observation cycle to complete first. Until then, public messaging distinguishes “wired and tested in CI” from “validated against real mainnet templates over a multi-week observation window.”",
@@ -348,7 +348,7 @@
     "prod.compare.r1.veldra": "Yes · production-shaped",
     "prod.compare.r2.axis":   "v1 policy-class checks",
     "prod.compare.r2.sri":    "Partial",
-    "prod.compare.r2.veldra": "Full · 91 v1 reason codes",
+    "prod.compare.r2.veldra": "Full · 59 v1 gateway codes",
     "prod.compare.r3.axis":   "L2 invariant re-derivation",
     "prod.compare.r3.sri":    "No",
     "prod.compare.r3.veldra": "Yes · 22 v2_invariant codes",
@@ -440,7 +440,7 @@
     "arch.s5.layer":   "Policy boundary",
     "arch.s5.title":   "A reason code resolves.",
     "arch.s5.sub":     "Every legal path through the gateway produces exactly one reason code on the metric stream and the log line.",
-    "arch.s5.detail":  "91 v1 codes baseline + 22 v2_invariant_* codes for Class S/D/M. Operators wire policy on those codes — the gateway just declares.",
+    "arch.s5.detail":  "59 v1 gateway codes baseline + 22 v2_invariant_* codes for Class S/D/M. Operators wire policy on those codes — the gateway just declares.",
 
     /* ──────────────── Q&A page (Phase 5a · structural strings only) ──────────────── */
     "qa.eyebrow":          "▸ Q&A · OPERATOR EVALUATION",
@@ -989,7 +989,7 @@
     /* Product · Phase 5e-1 (método C) */
     "prod.framing.eyebrow":      "▸ PRODUCTO · v2.0.0",
     "prod.framing.title":        "El verifier no confía en el template. Lo vuelve a derivar.",
-    "prod.framing.lede":         "Veldra v2.0.0 entrega el Invariant Shield: 22 verificaciones canónicas de re-derivación (Fase 1) más la verdad de campo del mempool (Fase 2). Sobre la base existente del gateway de política v1 con 91 reason codes y la configuración TOML de 61 claves.",
+    "prod.framing.lede":         "Veldra v2.0.0 entrega el Invariant Shield: 22 verificaciones canónicas de re-derivación (Fase 1) más la verdad de campo del mempool (Fase 2). Sobre la base existente del gateway de política v1 con 59 reason codes y la configuración TOML de 61 claves.",
     "prod.honest.label":         "ENCUADRE HONESTO · ESTADO v2.0.0",
     "prod.honest.vs":            "vs.",
     "prod.honest.body":          "v2.0.0 cableado, en origin, CI en verde. La re-derivación de consenso independiente funciona. La verdad de campo del mempool funciona. La afirmación de lanzamiento de que el sistema detecta tampering consistente del template-manager en la capa del verifier en producción exige completar antes el ciclo de observación en producción. Hasta entonces, la comunicación pública distingue entre “cableado y probado en CI” y “validado contra templates reales de mainnet durante una ventana de observación de varias semanas”.",
@@ -1099,7 +1099,7 @@
     "prod.compare.r1.veldra": "Sí · forma de producción",
     "prod.compare.r2.axis":   "Verificaciones de clase política v1",
     "prod.compare.r2.sri":    "Parcial",
-    "prod.compare.r2.veldra": "Completas · 91 reason codes v1",
+    "prod.compare.r2.veldra": "Completas · 59 reason codes v1 del gateway",
     "prod.compare.r3.axis":   "Re-derivación de invariantes L2",
     "prod.compare.r3.sri":    "No",
     "prod.compare.r3.veldra": "Sí · 22 códigos v2_invariant",
@@ -1191,7 +1191,7 @@
     "arch.s5.layer":   "Límite de política",
     "arch.s5.title":   "Se resuelve un reason code.",
     "arch.s5.sub":     "Cada camino legal a través del gateway produce exactamente un reason code en el flujo de métricas y en la línea de log.",
-    "arch.s5.detail":  "91 reason codes v1 de base + 22 códigos v2_invariant_* para Class S/D/M. Los operadores cablean la política sobre esos códigos — el gateway solo declara.",
+    "arch.s5.detail":  "59 reason codes v1 del gateway de base + 22 códigos v2_invariant_* para Class S/D/M. Los operadores cablean la política sobre esos códigos — el gateway solo declara.",
 
     /* Q&A · Phase 5a */
     "qa.eyebrow":          "▸ PREGUNTAS · EVALUACIÓN DEL OPERADOR",
@@ -1736,7 +1736,7 @@
     /* Product · Phase 5e-1 (方法 C) */
     "prod.framing.eyebrow":      "▸ 产品 · v2.0.0",
     "prod.framing.title":        "verifier 不信任 template。它重新推导。",
-    "prod.framing.lede":         "Veldra v2.0.0 交付 Invariant Shield：22 项规范重推导检查（Phase 1）加上 mempool 现场事实（Phase 2）。叠加在现有的 91 个 v1 reason code 的策略 gateway 与 61 键 TOML 配置基线之上。",
+    "prod.framing.lede":         "Veldra v2.0.0 交付 Invariant Shield：22 项规范重推导检查（Phase 1）加上 mempool 现场事实（Phase 2）。叠加在现有的 59 个 v1 reason code 的策略 gateway 与 61 键 TOML 配置基线之上。",
     "prod.honest.label":         "诚实范围 · v2.0.0 状态",
     "prod.honest.vs":            "vs.",
     "prod.honest.body":          "v2.0.0 已接入、在 origin、CI 通过。独立的共识重推导可运行。mempool 现场事实可运行。关于“系统在 verifier 层于生产中捕获一致性的 template-manager 篡改”这一发布主张，需要先完成生产环境下的观察周期。在此之前，公开表述会区分“在 CI 中接入并测试”与“在数周观察窗口内针对真实 mainnet template 验证”。",
@@ -1846,7 +1846,7 @@
     "prod.compare.r1.veldra": "是 · 生产形态",
     "prod.compare.r2.axis":   "v1 政策类检查",
     "prod.compare.r2.sri":    "部分",
-    "prod.compare.r2.veldra": "完整 · 91 个 v1 reason code",
+    "prod.compare.r2.veldra": "完整 · 59 个 v1 gateway reason code",
     "prod.compare.r3.axis":   "L2 不变量再推导",
     "prod.compare.r3.sri":    "否",
     "prod.compare.r3.veldra": "是 · 22 个 v2_invariant 编码",
@@ -1938,7 +1938,7 @@
     "arch.s5.layer":   "策略边界",
     "arch.s5.title":   "一个 reason code 收敛。",
     "arch.s5.sub":     "穿越 gateway 的每一条合法路径，在指标流和日志行上恫好产生一个 reason code。",
-    "arch.s5.detail":  "91 个 v1 reason code 作为基线 + 22 个 v2_invariant_* 码覆盖 Class S/D/M。运营者在这些码上接线策略 —— gateway 只负责声明。",
+    "arch.s5.detail":  "59 个 v1 gateway reason code 作为基线 + 22 个 v2_invariant_* 码覆盖 Class S/D/M。运营者在这些码上接线策略 —— gateway 只负责声明。",
 
     /* Q&A · Phase 5a */
     "qa.eyebrow":          "▸ 问答 · 运营者评估",
