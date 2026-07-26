@@ -35,6 +35,10 @@ const MIN_TEXT_CHARS = 600;
 
 const MUST_EXIST = ["CNAME", ".nojekyll", "robots.txt", "sitemap.xml", "styles/shared.css"];
 const MUST_NOT_SHIP = ["DEV-STATUS.md", "PRODUCT.md", "AUDIT.md", "SEO-DIAGNOSTIC.md"];
+// Directories that are gitignored, so a CI checkout never has them, but that
+// a local rsync assembly WILL copy: rsync does not read .gitignore. The
+// telemetry one carries absolute local paths.
+const MUST_NOT_SHIP_DIRS = [".claude-flow", "node_modules", ".git", ".github"];
 
 const fail = [];
 const note = (m) => console.log(`  ${m}`);
@@ -70,7 +74,11 @@ const stray = [];
 (function walk(dir) {
   for (const e of readdirSync(dir)) {
     const p = join(dir, e);
-    if (statSync(p).isDirectory()) { walk(p); continue; }
+    if (statSync(p).isDirectory()) {
+      if (MUST_NOT_SHIP_DIRS.includes(e)) { stray.push(relative(ROOT, p) + "/"); continue; }
+      walk(p);
+      continue;
+    }
     if (MUST_NOT_SHIP.includes(e)) stray.push(relative(ROOT, p));
     if (e.endsWith(".md")) stray.push(relative(ROOT, p));
   }
