@@ -1,0 +1,93 @@
+# Build and publish veldra.org.
+#
+# REQUIRES A ONE-TIME REPO SETTING: Settings -> Pages -> Build and deployment
+# -> Source must be changed from "Deploy from a branch" to "GitHub Actions".
+# Until that switch is made this workflow runs green and changes nothing,
+# because Pages keeps serving main/ verbatim.
+#
+# Why this exists: the site is authored as browser-compiled JSX, which is
+# what deindexed it. The published tree must therefore be BUILT, and the
+# build has to be the only path to production. A manual copy step is what
+# stranded a false crate claim, two dead buttons and a whole page section
+# for weeks; this removes the step.
+
+name: Deploy site
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Never cancel a deploy that is already publishing: a half-written Pages
+# artifact is worse than a late one.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: tools/prerender/package-lock.json
+
+      # npm ci, not npm install: the lockfile pins esbuild, react and
+      # react-dom. An unpinned install is how a build quietly stops
+      # reproducing, and esbuild in particular ships per-platform binaries.
+      - name: Install prerender deps
+        working-directory: tools/prerender
+        run: npm ci
+
+      # Renders every indexable page to static HTML in en, es and zh, with
+      # per-language canonical and hreflang. Exits non-zero on any page.
+      - name: Prerender
+        working-directory: tools/prerender
+        run: node build.mjs --lang all
+
+      # The site tree is the base (assets, styles, non-prerendered status and
+      # auth pages, hosting contract); the prerendered HTML overlays it.
+      # Markdown is excluded wholesale: this repo is served verbatim and
+      # internal notes must never become URLs.
+      - name: Assemble deploy tree
+        run: |
+          mkdir -p _site
+          rsync -a \
+            --exclude '.git' \
+            --exclude '.github' \
+            --exclude 'tools' \
+            --exclude 'node_modules' \
+            --exclude '*.md' \
+            ./ _site/
+          rsync -a tools/prerender/dist/ _site/
+          echo "assembled $(find _site -type f | wc -l) files"
+
+      # Refuses to publish a tree that repeats a failure this site has had:
+      # empty crawlable pages, a surviving runtime Babel chain, an English
+      # canonical on a translated page, a missing CNAME, or a published
+      # internal doc. Run it locally the same way against any _site tree.
+      - name: Verify deploy tree
+        run: node tools/verify-deploy.mjs _site
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
