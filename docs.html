@@ -407,88 +407,85 @@ const ReasonCodes = () => {
 /* ─────────────────────────────  CONFIG  ──────────────────────────────── */
 
 /* Authoritative config keys. Sourced from policy.toml + gateway.toml schema.
-   Counts: 51 Phase-1 keys (gateway + verifier + transport + share + invariant)
-         + 8  Phase-2 [policy.mempool] keys = 59. */
+   Counts: 26 verifier keys (policy 12 + safety 6 + mempool 8)
+         + 43 gateway keys (mode + [gateway] 34 + [verifier] 4 + [share_upstream] 4) = 69. */
 const CONFIG = [
-  // ─── policy.toml — verifier ───
-  ["policy.toml", "[policy]", "max_tx_count", "u32", "100000", "Maximum non-coinbase transactions per template."],
-  ["policy.toml", "[policy]", "min_total_fees_sat", "u64", "0", "Minimum sum of fees in template (sats)."],
-  ["policy.toml", "[policy]", "min_avg_fee_per_vb", "f64", "0.0", "Minimum average fee per vByte."],
-  ["policy.toml", "[policy]", "max_template_age_ms", "u64", "60000", "Reject templates older than this."],
-  ["policy.toml", "[policy]", "max_weight_ratio", "f64", "1.0", "Reject templates whose weight exceeds this fraction of 4M."],
-  ["policy.toml", "[policy]", "min_coinbase_value", "u64", "0", "Minimum coinbase output value in sats."],
-  ["policy.toml", "[policy]", "sigops_warn_ratio", "f64", "0.85", "Emit warning when sigops/MAX exceed this ratio."],
-  ["policy.toml", "[policy]", "max_protocol_version", "u32", "2", "Highest protocol_version accepted."],
-  ["policy.toml", "[policy]", "reject_empty_templates", "bool", "true", "Reject templates with zero non-coinbase txs."],
-  ["policy.toml", "[policy]", "reject_zero_value_coinbase", "bool", "true", "Reject coinbase output value == 0."],
-
-  // ─── policy.toml — invariant shield Phase 1 ───
-  ["policy.toml", "[invariant]", "enabled", "bool", "true", "Master switch for re-derivation pass."],
-  ["policy.toml", "[invariant]", "fail_closed", "bool", "true", "If false, log mismatches but still forward."],
-  ["policy.toml", "[invariant]", "check_merkle_root", "bool", "true", "Re-derive merkle root from txids."],
-  ["policy.toml", "[invariant]", "check_witness_commitment", "bool", "true", "Re-derive witness commitment OP_RETURN."],
-  ["policy.toml", "[invariant]", "check_sigops", "bool", "true", "Re-count total + coinbase sigops."],
-  ["policy.toml", "[invariant]", "check_coinbase_value", "bool", "true", "Re-sum coinbase outputs."],
-  ["policy.toml", "[invariant]", "check_template_weight", "bool", "true", "Re-derive total template weight."],
-  ["policy.toml", "[invariant]", "check_bip34_height", "bool", "true", "Verify BIP-34 height push in coinbase script."],
-  ["policy.toml", "[invariant]", "check_duplicate_txids", "bool", "true", "Reject templates containing dupe txids."],
-
-  // ─── policy.toml — Phase 2 mempool (8 keys) ───
-  ["policy.toml", "[policy.mempool]", "enabled", "bool", "false", "Master switch for Phase 2 cross-check."],
-  ["policy.toml", "[policy.mempool]", "rpc_url", "string", "—", "bitcoind RPC URL (http://user:pass@host:port)."],
-  ["policy.toml", "[policy.mempool]", "tolerance_pct", "f64", "1.0", "Max % of template txs allowed to be unknown to mempool."],
-  ["policy.toml", "[policy.mempool]", "max_stale_secs", "u64", "10", "Refuse mempool snapshots older than this."],
-  ["policy.toml", "[policy.mempool]", "rpc_timeout_ms", "u64", "2000", "Per-RPC-call timeout."],
-  ["policy.toml", "[policy.mempool]", "fail_closed_on_unavailable", "bool", "false", "If true, reject when bitcoind RPC is unreachable."],
-  ["policy.toml", "[policy.mempool]", "snapshot_refresh_ms", "u64", "5000", "Background refresh interval for mempool view."],
-  ["policy.toml", "[policy.mempool]", "max_unknown_log_per_min", "u32", "60", "Cap structured log lines for unknown-tx events."],
-
-  // ─── gateway.toml — listener / transport ───
-  ["gateway.toml", "[listen]", "sv2_addr", "string", "0.0.0.0:34255", "SV2 inbound listener bind address."],
-  ["gateway.toml", "[listen]", "http_admin_addr", "string", "127.0.0.1:9090", "HTTP admin + health endpoint."],
-  ["gateway.toml", "[listen]", "max_connections", "u32", "10000", "Concurrent SV2 connections cap."],
-  ["gateway.toml", "[transport]", "handshake_timeout_ms", "u64", "5000", "Noise NX handshake timeout."],
-  ["gateway.toml", "[transport]", "max_frame_bytes", "u32", "1048576", "Maximum SV2 frame size."],
-  ["gateway.toml", "[transport]", "rate_limit_messages_per_sec", "u32", "1000", "Per-peer message rate."],
-  ["gateway.toml", "[transport]", "rate_limit_bytes_per_sec", "u32", "8388608", "Per-peer bandwidth cap."],
-  ["gateway.toml", "[transport]", "connection_rate_per_ip_per_min", "u32", "60", "Inbound connection rate per source IP."],
-
-  // ─── gateway.toml — channel / job ───
-  ["gateway.toml", "[channel]", "max_channels_per_connection", "u32", "32", "Per-connection channel cap."],
-  ["gateway.toml", "[channel]", "channel_open_timeout_ms", "u64", "10000", "Time to first OpenMiningChannel after handshake."],
-  ["gateway.toml", "[channel]", "max_worker_id_bytes", "u32", "64", "Reject worker identities longer than this."],
-  ["gateway.toml", "[job]", "prevhash_verdict_timeout_ms", "u64", "1500", "Max wait for prevhash verdict from upstream."],
-  ["gateway.toml", "[job]", "template_cache_size", "u32", "1024", "Number of recent templates kept in memory."],
-  ["gateway.toml", "[job]", "stale_share_grace_ms", "u64", "5000", "Accept shares from prior epoch up to this lag."],
-
-  // ─── gateway.toml — share path ───
-  ["gateway.toml", "[share]", "min_difficulty", "f64", "1.0", "Reject shares below this difficulty."],
-  ["gateway.toml", "[share]", "dedup_window_ms", "u64", "60000", "Replay-detection window for share event_id."],
-  ["gateway.toml", "[share]", "outbound_queue_capacity", "u32", "8192", "Max in-flight share forwards."],
-  ["gateway.toml", "[share]", "outbound_backpressure", "string", "\"drop_oldest\"", "drop_oldest | drop_newest | block."],
-  ["gateway.toml", "[share]", "forward_url", "string", "—", "Upstream share-receiver endpoint."],
-  ["gateway.toml", "[share]", "forward_timeout_ms", "u64", "5000", "Per-attempt forward timeout."],
-  ["gateway.toml", "[share]", "forward_max_retries", "u32", "3", "Retry budget per share."],
-  ["gateway.toml", "[share]", "pool_account_rate_limit", "u32", "0", "Per-account share rate cap (0 = off)."],
-
-  // ─── gateway.toml — auth / hmac ───
-  ["gateway.toml", "[auth]", "miner_whitelist_path", "string", "—", "Path to miner credential file."],
-  ["gateway.toml", "[auth]", "request_signature_skew_ms", "u64", "30000", "Replay window for signed admin requests."],
-  ["gateway.toml", "[hmac]", "share_signing_key_path", "string", "—", "Path to outbound share HMAC key."],
-  ["gateway.toml", "[hmac]", "rotate_grace_ms", "u64", "300000", "Accept previous key during rotation window."],
-
-  // ─── gateway.toml — handler / payload ───
-  ["gateway.toml", "[handler]", "handler_timeout_ms", "u64", "10000", "Generic handler ceiling."],
-  ["gateway.toml", "[handler]", "max_payload_bytes", "u32", "262144", "Max admin POST body size."],
-  ["gateway.toml", "[handler]", "max_json_nesting", "u32", "32", "Strict JSON nesting limit."],
-
-  // ─── gateway.toml — health / shutdown ───
-  ["gateway.toml", "[health]", "drain_timeout_ms", "u64", "30000", "Graceful shutdown drain ceiling."],
-  ["gateway.toml", "[health]", "startup_grace_ms", "u64", "5000", "Reject probes as 'pending' until ready."],
-
-  // ─── wal / storage ───
-  ["gateway.toml", "[wal]", "path", "string", "/var/lib/veldra/wal", "Write-ahead log directory."],
-  ["gateway.toml", "[wal]", "fsync_every", "u32", "1", "fsync cadence (in entries)."],
+  // policy.toml — [policy]
+  ["policy.toml", "[policy]", "protocol_version", "u16", "2", "Highest accepted TemplatePropose protocol_version."],
+  ["policy.toml", "[policy]", "required_prevhash_len", "usize", "64", "Required prev_hash length in hex characters."],
+  ["policy.toml", "[policy]", "min_total_fees", "u64", "0", "Minimum sum of fees in a template (sats)."],
+  ["policy.toml", "[policy]", "max_tx_count", "u32", "10000", "Maximum non-coinbase transactions per template."],
+  ["policy.toml", "[policy]", "low_mempool_tx", "u64", "50", "Below this mempool tx count the low fee tier applies."],
+  ["policy.toml", "[policy]", "high_mempool_tx", "u64", "500", "At or above this mempool tx count the high fee tier applies."],
+  ["policy.toml", "[policy]", "min_avg_fee_lo", "u64", "0", "Minimum average fee per tx, low tier (sats)."],
+  ["policy.toml", "[policy]", "min_avg_fee_mid", "u64", "0", "Minimum average fee per tx, mid tier (sats)."],
+  ["policy.toml", "[policy]", "min_avg_fee_hi", "u64", "0", "Minimum average fee per tx, high tier (sats)."],
+  ["policy.toml", "[policy]", "reject_empty_templates", "bool", "true", "Reject templates with zero non-coinbase transactions."],
+  ["policy.toml", "[policy]", "reject_coinbase_zero", "bool", "false", "Reject templates whose coinbase value is zero."],
+  ["policy.toml", "[policy]", "unknown_mempool_as_high", "bool", "true", "Treat an unknown mempool size as the high fee tier."],
+  // policy.toml — [policy.safety]
+  ["policy.toml", "[policy.safety]", "max_weight_ratio", "f64", "0.999", "Maximum template weight as a fraction of the 4M weight cap."],
+  ["policy.toml", "[policy.safety]", "enforce_weight_ratio", "bool", "false", "Reject, not just warn, when the weight ratio is exceeded."],
+  ["policy.toml", "[policy.safety]", "max_template_age_ms", "u64?", "unset", "Reject templates older than this; unset disables the check."],
+  ["policy.toml", "[policy.safety]", "enforce_template_age", "bool", "false", "Reject, not just warn, when a template exceeds max_template_age_ms."],
+  ["policy.toml", "[policy.safety]", "warn_sigops_ratio", "f64", "0.95", "Warn above this fraction of the consensus sigops cap."],
+  ["policy.toml", "[policy.safety]", "warn_coinbase_sigops_max", "u32", "400", "Warn when coinbase sigops exceed this count."],
+  // policy.toml — [policy.mempool]
+  ["policy.toml", "[policy.mempool]", "enforce", "bool", "false", "Gate templates on the Class M mempool check (inline mode only)."],
+  ["policy.toml", "[policy.mempool]", "tolerance_pct", "f64", "4.0", "Max percent of template txs allowed to be unknown to the mempool view."],
+  ["policy.toml", "[policy.mempool]", "poll_interval_secs", "u64", "10", "Interval between bitcoind getrawmempool polls."],
+  ["policy.toml", "[policy.mempool]", "max_stale_secs", "u64", "60", "Mempool view age before it degrades and Class M abstains."],
+  ["policy.toml", "[policy.mempool]", "per_tx_detail", "bool", "false", "Expand rejection detail to list every unknown txid."],
+  ["policy.toml", "[policy.mempool]", "rpc_url", "string", "—", "bitcoind JSON-RPC URL."],
+  ["policy.toml", "[policy.mempool]", "rpc_user", "string", "—", "bitcoind RPC username."],
+  ["policy.toml", "[policy.mempool]", "rpc_pass", "string", "—", "bitcoind RPC password (prefer VELDRA_BITCOIND_RPC_PASS env)."],
+  // gateway.toml — (root)
+  ["gateway.toml", "(root)", "mode", "enum", "inline", "Deployment mode: inline | observe | shadow."],
+  // gateway.toml — [gateway]
+  ["gateway.toml", "[gateway]", "listen_addr", "string", "0.0.0.0:3333", "SV2 (Noise NX) miner-facing listener address."],
+  ["gateway.toml", "[gateway]", "health_addr", "string", "127.0.0.1:8080", "HTTP health, metrics and events address."],
+  ["gateway.toml", "[gateway]", "noise_keypair_path", "string", "—", "Path to the gateway Noise static keypair."],
+  ["gateway.toml", "[gateway]", "noise_cert_path", "string", "—", "Path to the signed Noise certificate."],
+  ["gateway.toml", "[gateway]", "authority_pubkey", "string", "—", "x-only authority public key miners verify."],
+  ["gateway.toml", "[gateway]", "max_connections", "u32", "1024", "Global concurrent SV2 connection cap."],
+  ["gateway.toml", "[gateway]", "max_connections_per_ip", "u32", "16", "Per-source-IP connection cap (0 = unlimited)."],
+  ["gateway.toml", "[gateway]", "max_channels_per_conn", "u32", "256", "Per-connection mining channel cap."],
+  ["gateway.toml", "[gateway]", "noise_cert_validity_secs", "u32", "3600", "Noise certificate validity window."],
+  ["gateway.toml", "[gateway]", "noise_handshake_timeout_ms", "u64", "5000", "Noise NX handshake timeout."],
+  ["gateway.toml", "[gateway]", "template_url", "string", "—", "Template-manager base URL."],
+  ["gateway.toml", "[gateway]", "template_poll_interval_ms", "u64", "3000", "Template-manager poll interval."],
+  ["gateway.toml", "[gateway]", "max_template_age_ms", "u64", "30000", "Reject templates older than this at the gateway."],
+  ["gateway.toml", "[gateway]", "prevhash_verdict_timeout_ms", "u64", "2000", "Max wait for a verifier verdict on a new block; warns below 1000."],
+  ["gateway.toml", "[gateway]", "prevhash_stale_hold_ms", "u64", "5000", "Hold stale work this long before disconnecting miners."],
+  ["gateway.toml", "[gateway]", "upstream_stale_max_ms", "u64", "30000", "Max upstream staleness before the fail policy acts."],
+  ["gateway.toml", "[gateway]", "upstream_failure_policy", "enum", "fail_closed", "fail_closed | fail_open on upstream loss."],
+  ["gateway.toml", "[gateway]", "job_retention_ms", "u64", "300000", "How long jobs are retained for share validation."],
+  ["gateway.toml", "[gateway]", "ntime_elapsed_slack_seconds", "u32", "2", "Tolerance for miner ntime drift (seconds)."],
+  ["gateway.toml", "[gateway]", "max_shares_per_second_per_channel", "u32", "0", "Per-channel share rate cap (0 = off)."],
+  ["gateway.toml", "[gateway]", "channel_target_hex", "string?", "unset", "Fixed channel difficulty target (regtest); unset = real difficulty."],
+  ["gateway.toml", "[gateway]", "extended_channels_enabled", "bool", "true", "Accept OpenExtendedMiningChannel (0x13)."],
+  ["gateway.toml", "[gateway]", "vardiff_enabled", "bool", "false", "Enable variable-difficulty retargeting."],
+  ["gateway.toml", "[gateway]", "vardiff_target_shares_per_min", "f64", "20.0", "Target share submission rate for vardiff."],
+  ["gateway.toml", "[gateway]", "vardiff_retarget_interval_secs", "u64", "90", "Vardiff retarget interval."],
+  ["gateway.toml", "[gateway]", "vardiff_min_difficulty", "u64", "1", "Vardiff difficulty floor."],
+  ["gateway.toml", "[gateway]", "vardiff_max_difficulty", "u64", "u64::MAX", "Vardiff difficulty ceiling."],
+  ["gateway.toml", "[gateway]", "vardiff_max_adjustment_factor", "f64", "4.0", "Max per-retarget vardiff change factor."],
+  ["gateway.toml", "[gateway]", "noise_keypair_reload_sighup", "bool", "true", "Reload the Noise keypair on SIGHUP."],
+  ["gateway.toml", "[gateway]", "wal_path", "string", "—", "Share write-ahead log path (empty = disabled)."],
+  ["gateway.toml", "[gateway]", "wal_compaction_threshold", "usize", "1000", "Completed-record count that triggers WAL compaction."],
+  ["gateway.toml", "[gateway]", "gateway_instance_id", "string", "$HOSTNAME", "Stable instance ID for split-brain prevention and share tracing."],
+  ["gateway.toml", "[gateway]", "auto_degrade", "bool", "true", "Auto inline-to-observe degradation on verifier heartbeat loss."],
+  ["gateway.toml", "[gateway]", "auto_degrade_after_ms", "u64", "10000", "Heartbeat-loss window before auto-degrade."],
+  // gateway.toml — [verifier]
+  ["gateway.toml", "[verifier]", "addr", "string", "—", "Pool-verifier NDJSON TCP address."],
+  ["gateway.toml", "[verifier]", "health_probe_staleness_ms", "u64", "10000", "Mark the verifier unhealthy after this silence."],
+  ["gateway.toml", "[verifier]", "reconnect_delay_ms", "u64", "2000", "Delay between verifier reconnect attempts."],
+  ["gateway.toml", "[verifier]", "heartbeat_interval_ms", "u64", "5000", "Verifier heartbeat interval."],
+  // gateway.toml — [share_upstream]
+  ["gateway.toml", "[share_upstream]", "url", "string", "—", "Upstream share-receiver endpoint."],
+  ["gateway.toml", "[share_upstream]", "retries", "u32", "2", "Retry budget per share forward (5xx / timeout only)."],
+  ["gateway.toml", "[share_upstream]", "forward_queue_size", "usize", "50000", "Bounded outbound share-forward queue."],
+  ["gateway.toml", "[share_upstream]", "forward_max_in_flight", "usize", "256", "Max concurrent in-flight share forwards."],
 ];
 
 const Configuration = () => {

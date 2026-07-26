@@ -7,7 +7,7 @@
 window.DOCS_DATA = {
   totals: {
     reason_codes: 95,
-    config_keys: 60,
+    config_keys: 69,
     phase1_codes: 91,
     phase2_codes: 4,
   },

@@ -14,14 +14,14 @@ window.PRODUCT_CONTENT = {
   framing: {
     eyebrow: "▸ PRODUCT · v2.0.0",
     title: "The verifier doesn't trust the template. It re-derives it.",
-    lede: "Veldra v2.0.0 ships the Invariant Shield: 22 canonical re-derivation checks (Phase 1) plus mempool ground truth (Phase 2). Layered on top of the existing 91-code v1 policy gateway and 61-key TOML config baseline.",
+    lede: "Veldra v2.0.0 ships the Invariant Shield: 22 canonical re-derivation checks (Phase 1) plus mempool ground truth (Phase 2). Layered on top of the existing 59-code v1 policy gateway and 61-key TOML config baseline.",
     note_in_ci: "v2.0.0 is wired, on origin, CI green. The launch claim that the system catches consistent template-manager tampering in production at the verifier layer requires the production observation cycle to complete. Until then this site distinguishes “wired and tested in CI” from “validated against mainnet over a multi-week observation window.”",
   },
 
   /* -----------------------------------------------------------
      1) Reason-code surface — PDF-grounded counts only
      PDF facts:
-       - 91 v1 reason codes (current site baseline)
+       - 59 gateway reason codes (v1 baseline)
        - 22 canonical v2_invariant_* codes (PDF #3, list lives in
          rg-consensus::ConsensusViolation::ALL_CODES — we do NOT fabricate names)
        - Tier 1 (5 critical) + Tier 2 (5 high) shipped Phase 1 (#4)
@@ -35,7 +35,7 @@ window.PRODUCT_CONTENT = {
                    DuplicateTx
      ----------------------------------------------------------- */
   reason_codes: {
-    v1_baseline: 91,
+    v1_baseline: 59,
     v2_invariant_total: 22,
     canonical_source: "rg-consensus::ConsensusViolation::ALL_CODES",
 
@@ -213,7 +213,7 @@ window.PRODUCT_CONTENT = {
     intro: "The Stratum Reference Implementation (SRI) is the canonical proof that the SV2 protocol is implementable. Veldra is built for pool operators who need verification, not just connectivity.",
     rows: [
       { axis: "SV2 protocol surface",            sri: "Yes · canonical reference",  veldra: "Yes · production-shaped" },
-      { axis: "v1 policy-class checks",          sri: "Partial",                    veldra: "Full · 91 v1 reason codes" },
+      { axis: "v1 policy-class checks",          sri: "Partial",                    veldra: "Full · 59 gateway reason codes" },
       { axis: "L2 invariant re-derivation",      sri: "No",                         veldra: "Yes · 22 v2_invariant codes" },
       { axis: "L3 mempool ground truth",         sri: "No",                         veldra: "Yes · Phase 2 Class M" },
       { axis: "Built for pool operator deployment", sri: "Implementation reference",  veldra: "Yes" },
