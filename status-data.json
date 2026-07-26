@@ -40,7 +40,7 @@
   "phase15": {
     "status": "gated",
     "title": "Phase 1.5 · Tier 3 invariant wiring",
-    "blurb": "Wired 2026-07-22. All seven Tier 3 invariants (coinbase_script_length, coinbase_output_count, weight_exceeds_max, sigops_exceed_max, non_coinbase_null_prevout, header_version_low, duplicate_tx) are implemented and tested behind the shield facade, bringing the Invariant Shield to 18 of 18 ADR-002 invariants running. Wired is not validated and not yet merged: the change sits on branch, and the merge to main is sequenced after the in-flight re-soak wraps.",
+    "blurb": "Wired 2026-07-22. All seven Tier 3 invariants (coinbase_script_length, coinbase_output_count, weight_exceeds_max, sigops_exceed_max, nontcb_null_prevout, header_version_low, duplicate_tx) are implemented and tested behind the shield facade, bringing the Invariant Shield to 18 of 18 ADR-002 invariants running. Wired is not validated and not yet merged: the change sits on branch, and the merge to main is sequenced after the in-flight re-soak wraps.",
     "blockedOn": "Re-soak wrap 2026-07-29, then merge to main."
   }
 }
