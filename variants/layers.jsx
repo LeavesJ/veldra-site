@@ -195,8 +195,8 @@ const LayersHero = ({ layer, setLayer, shieldClass, setShieldClass, setAutoRotat
           </div>
 
           <div style={{ display: "flex", gap: 12, marginTop: 32 }}>
-            <a className="btn btn-primary" key={`p-${layer}`}>{active.cta.primary}</a>
-            <a className="btn btn-ghost"   key={`g-${layer}`}>{active.cta.ghost}</a>
+            <a className="btn btn-primary" key={`p-${layer}`} href="architecture.html">{active.cta.primary}</a>
+            <a className="btn btn-ghost"   key={`g-${layer}`} href="docs.html">{active.cta.ghost}</a>
           </div>
         </div>
 
@@ -597,7 +597,7 @@ const LayersTicker = () => {
     "v2_invariant_tx_count_mismatch",
     "noise_handshake_timeout",
     "v2_invariant_coinbase_height_mismatch",
-    "verifier_phase2_degraded",
+    "verifier_phase2_degraded_total",
   ];
   return (
     <div style={{
