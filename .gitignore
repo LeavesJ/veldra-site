@@ -1,2 +1,6 @@
 tools/prerender/node_modules/
 tools/prerender/dist/
+
+# internal, never publish: this whole repo is served by GitHub Pages
+DEV-STATUS.md
+PRODUCT.md
